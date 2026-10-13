@@ -347,44 +347,6 @@
   }
 
   // Next / prev step chips.
-  &__nav {
-    display: grid;
-    place-items: center;
-    width: 52px;
-    height: 52px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    color: $color-white;
-    transition:
-      background-color $duration $ease-out,
-      transform $duration $ease-out,
-      opacity $duration $ease-out;
-
-    svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateX(var(--nudge, 2px));
-    }
-
-    &--prev {
-      --nudge: -2px;
-    }
-
-    &:disabled {
-      opacity: 0.35;
-      cursor: default;
-    }
-
-    &:focus-visible {
-      outline: 2px solid $color-yellow-bright;
-      outline-offset: 2px;
-    }
-  }
 }
 
 // ---- Laptop / tablet: tighter cards ----
@@ -510,7 +472,13 @@
     padding: $space-12;
   }
 
-  // CTA gets its own full-width row; prev / next sit above it.
+  // Panel sits inside the stepper, under the selected step (journey.js).
+  .journey-steps > .journey-panel {
+    position: relative;
+    z-index: 1; // over the vertical line
+  }
+
+  // CTA gets its own full-width row.
   .journey-panel__actions {
     flex-wrap: wrap;
     justify-content: flex-start;

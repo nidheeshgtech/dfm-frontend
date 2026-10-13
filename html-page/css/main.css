@@ -3167,36 +3167,6 @@ body {
 .journey-panel__cta {
   width: 322px;
 }
-.journey-panel__nav {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.journey-panel__nav svg {
-  width: 20px;
-  height: 20px;
-}
-.journey-panel__nav:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateX(var(--nudge, 2px));
-}
-.journey-panel__nav--prev {
-  --nudge: -2px;
-}
-.journey-panel__nav:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-.journey-panel__nav:focus-visible {
-  outline: 2px solid #f4ff22;
-  outline-offset: 2px;
-}
 
 @media (max-width: 1439.98px) {
   .journey-step {
@@ -3291,6 +3261,10 @@ body {
   .journey-panel {
     min-height: 420px;
     padding: 12px;
+  }
+  .journey-steps > .journey-panel {
+    position: relative;
+    z-index: 1;
   }
   .journey-panel__actions {
     flex-wrap: wrap;

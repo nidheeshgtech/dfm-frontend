@@ -1,8 +1,12 @@
 // "Your listing journey" tabs. Each [data-journey-tab] selects a step:
 // the lime progress line grows to its dot, earlier steps become
 // "visited", and the panel swaps photo (soft zoom + wipe in the line's
-// direction) and caption (roll up). Prev / next chips, arrow keys,
-// Home / End all work; ARIA tab pattern.
+// direction) and caption (roll up). Arrow keys and Home / End work;
+// ARIA tab pattern.
+//
+// Narrow (vertical stepper): the photo panel moves to sit right under the
+// selected step, so the picture changes where you tapped — and the page
+// is nudged so the tapped step doesn't jump.
 export function initJourney() {
   document.querySelectorAll("[data-journey]").forEach(setup);
 }
@@ -15,13 +19,38 @@ function setup(root) {
   const stepLabel = root.querySelector("[data-journey-step]");
   const copy = root.querySelector(".journey-panel__copy");
   const note = root.querySelector(".journey-panel__note");
-  const prev = root.querySelector("[data-journey-prev]");
-  const next = root.querySelector("[data-journey-next]");
   if (!tabs.length || !steps) return;
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const vertical = window.matchMedia("(max-width: 899.98px)");
   let current = Math.max(0, tabs.findIndex((tab) => tab.getAttribute("aria-selected") === "true"));
+
+  // Panel follows the selected step on the vertical layout.
+  const panel = root.querySelector(".journey-panel");
+  const panelHome = panel?.parentNode;
+
+  const placePanel = (index, animate) => {
+    if (!panel) return;
+    if (!vertical.matches) {
+      if (panel.parentNode !== panelHome) panelHome.append(panel);
+      return;
+    }
+    const tab = tabs[index];
+    if (panel.previousElementSibling === tab) return;
+
+    // Keep the tapped step where it is on screen while content moves.
+    const before = tab.getBoundingClientRect().top;
+    tab.after(panel);
+    const delta = tab.getBoundingClientRect().top - before;
+    if (Math.abs(delta) > 1) {
+      if (window.lenis) window.lenis.scrollTo(window.scrollY + delta, { immediate: true, force: true });
+      else window.scrollBy(0, delta);
+    }
+
+    if (animate && gsap && !reduceMotion) {
+      gsap.fromTo(panel, { opacity: 0, y: 16, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out", clearProps: "opacity,transform" });
+    }
+  };
 
   // Line length up to the selected dot (centre of its card).
   const placeLine = () => {
@@ -43,9 +72,8 @@ function setup(root) {
       tab.tabIndex = active ? 0 : -1;
       tab.classList.toggle("is-visited", i < index);
     });
-    if (focus) tabs[index].focus();
-    if (prev) prev.disabled = index === 0;
-    if (next) next.disabled = index === tabs.length - 1;
+    if (focus) tabs[index].focus({ preventScroll: true });
+    placePanel(index, animate);
 
     // Wait a frame on the vertical layout so expanded text has resized.
     requestAnimationFrame(placeLine);
@@ -151,9 +179,6 @@ function setup(root) {
       select(target, { focus: true });
     });
   });
-
-  prev?.addEventListener("click", () => select(current - 1));
-  next?.addEventListener("click", () => select(current + 1));
 
   // Re-measure on resize / layout switch / font load.
   new ResizeObserver(() => placeLine()).observe(steps);
