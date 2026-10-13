@@ -89,11 +89,27 @@
     }
   }
 
+  // Three screens stacked; the step's one fades in (investor-xp.js).
   &__screen {
     position: relative;
     display: block;
     width: 100%;
     height: auto;
+    opacity: 0;
+    transform: scale(0.985);
+    transition:
+      opacity 0.6s $ease-out,
+      transform 0.8s $ease-out;
+
+    & + & {
+      position: absolute;
+      inset: 0;
+    }
+
+    &.is-active {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   // Spotlight: dims the screen except a soft ellipse at --spot-y.
@@ -140,7 +156,8 @@
       transition: none;
     }
 
-    &__spot {
+    &__spot,
+    &__screen {
       transition: none;
     }
   }

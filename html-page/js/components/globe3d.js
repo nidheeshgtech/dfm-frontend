@@ -137,7 +137,7 @@ async function setup(root) {
   const stage = map.querySelector(".globe__stage");
   const canvas = stage.querySelector("canvas");
   const anchorLayer = stage.querySelector(".globe__anchors");
-  const link = stage.querySelector(".globe__link");
+  const links = Array.from(stage.querySelectorAll(".globe__link")); // line + travelling pulse
   const pins = Array.from(map.querySelectorAll(".globe-pin[data-lat]"));
   const items = pins.map((pin) => pin.closest(".globe-pins__item") || pin);
 
@@ -474,7 +474,7 @@ async function setup(root) {
   const drawLink = () => {
     const a = anchors[active];
     const show = a && a.facing > 0.12 && window.innerWidth >= 768;
-    link.classList.toggle("is-visible", !!show);
+    links.forEach((l) => l.classList.toggle("is-visible", !!show));
     if (!show) return;
     const avatar = a.pin.querySelector(".globe-pin__avatar").getBoundingClientRect();
     const canvasBox = canvas.getBoundingClientRect();
@@ -482,7 +482,8 @@ async function setup(root) {
     const y1 = avatar.top + avatar.height / 2 - canvasBox.top;
     const midX = (x1 + a.x) / 2;
     const midY = Math.min(y1, a.y) - Math.abs(a.x - x1) * 0.18;
-    link.setAttribute("d", `M${x1.toFixed(1)} ${y1.toFixed(1)} Q${midX.toFixed(1)} ${midY.toFixed(1)} ${a.x.toFixed(1)} ${a.y.toFixed(1)}`);
+    const d = `M${x1.toFixed(1)} ${y1.toFixed(1)} Q${midX.toFixed(1)} ${midY.toFixed(1)} ${a.x.toFixed(1)} ${a.y.toFixed(1)}`;
+    links.forEach((l) => l.setAttribute("d", d));
   };
 
   const start = () => {

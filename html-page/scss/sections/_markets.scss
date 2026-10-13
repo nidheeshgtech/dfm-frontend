@@ -500,6 +500,16 @@
     top: calc(var(--market-top) + var(--i, 0) * var(--market-gap));
     padding-bottom: $space-24;
   }
+
+  // v2 deck (stack.js setupDeck): all cards share one slot, low enough
+  // that the cards behind can step up into the gap above it.
+  .markets__list--deck {
+    --deck-peek: var(--market-gap);
+
+    .market {
+      top: calc(var(--market-top) + (var(--stack-n, 3) - 1) * var(--market-gap));
+    }
+  }
 }
 
 // ---- Ring loops ----

@@ -24,6 +24,7 @@ function setup(root) {
   const visual = root.querySelector(".xp__visual");
   const visualHome = visual?.parentNode;
   const phone = visual?.querySelector(".xp__phone");
+  const screens = Array.from(root.querySelectorAll("[data-xp-screen]"));
   let current = 0;
   let auto = !reduceMotion && !stacked.matches;
   let timer = null;
@@ -37,8 +38,8 @@ function setup(root) {
     }
     const frame = visual.clientHeight;
     const height = phone.offsetHeight;
-    const spot = parseFloat(steps[current].dataset.spot || "50") / 100;
-    const y = Math.min(0, Math.max(frame - height, frame / 2 - spot * height));
+    // Each step has its own screen now: show the phone from the top.
+    const y = Math.min(0, Math.max(frame - height, screens.length ? 0 : frame / 2 - (parseFloat(steps[current].dataset.spot || "50") / 100) * height));
     phone.style.translate = `0 ${Math.round(y)}px`;
   };
 
@@ -70,6 +71,8 @@ function setup(root) {
       step.querySelector("[aria-expanded]").setAttribute("aria-expanded", String(active));
     });
     if (spot) spot.style.setProperty("--spot-y", steps[index].dataset.spot || "50%");
+    // One phone screen per step (cross-fade).
+    screens.forEach((img, i) => img.classList.toggle("is-active", i === Math.min(index, screens.length - 1)));
     placeVisual(true);
     playLine();
   };

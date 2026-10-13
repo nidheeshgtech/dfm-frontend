@@ -178,7 +178,7 @@
     </section>
 
     <section class="markets" aria-labelledby="markets-title">
-      <div class="markets__list" data-stack>
+      <div class="markets__list" data-stack data-stack-variant="v2">
         <article class="market market--growth" data-stack-item>
           <div class="market__card">
             <div class="market__media" aria-hidden="true" data-skeleton>
@@ -413,8 +413,9 @@
         <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
         <img class="xp__dots" src="images/investor/xp-dots.webp" width="1024" height="708" alt="" loading="lazy" data-skeleton-content>
         <div class="xp__phone" data-scroll-reveal>
-          <img class="xp__screen" src="images/investor/xp-phone.webp" width="809" height="1024" alt="" loading="lazy" data-skeleton-content>
-          <span class="xp__spot"></span>
+          <img class="xp__screen is-active" src="images/investor/process-img-01.webp" width="657" height="772" alt="" loading="lazy" data-skeleton-content data-xp-screen>
+          <img class="xp__screen" src="images/investor/process-img-02.webp" width="657" height="772" alt="" loading="lazy" data-xp-screen>
+          <img class="xp__screen" src="images/investor/process-img-03.webp" width="657" height="772" alt="" loading="lazy" data-xp-screen>
         </div>
       </div>
     </section>
@@ -430,7 +431,7 @@
             <div class="globe__stage" aria-hidden="true">
               <canvas></canvas>
               <div class="globe__anchors"></div>
-              <svg class="globe__links"><path class="globe__link" d="" /></svg>
+              <svg class="globe__links"><path class="globe__link" d="" /><path class="globe__link globe__link--pulse" d="" pathLength="100" /></svg>
             </div>
             <ul class="globe-pins" aria-label="Investors on ARENA around the world">
               <li class="globe-pins__item globe-pins__item--edge" style="--d: 0.00s">
