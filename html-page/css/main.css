@@ -1402,10 +1402,21 @@ body {
   gap: 4px;
   max-width: 100%;
   padding: 2px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0);
   border-radius: 80px;
   background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 8px 32px rgba(13, 14, 26, 0.08), 0 2px 8px rgba(13, 14, 26, 0.05);
+}
+.switch > .liquid-glass__effect {
+  filter: none;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.switch > .liquid-glass__tint {
+  background: none;
+}
+.switch > .liquid-glass__shine {
+  box-shadow: none;
 }
 .switch__option, .switch__active {
   position: relative;
@@ -1441,8 +1452,7 @@ body {
 }
 .switch__active {
   color: var(--switch-active-text);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 60%), linear-gradient(90deg, rgba(13, 14, 26, 0.4), rgba(13, 14, 26, 0.08));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.385), inset 0 -1px 0 rgba(255, 255, 255, 0.088), inset 0 0 0 1px rgba(255, 255, 255, 0.066), 0 6px 18px rgba(13, 14, 26, 0.18);
+  background: linear-gradient(90deg, rgba(13, 14, 26, 0.4), rgba(13, 14, 26, 0.08));
 }
 .switch__chip {
   display: grid;
@@ -1451,8 +1461,7 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 70px;
-  background: radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 46%), radial-gradient(circle at 50% 120%, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0) 60%), #f4ff22;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), inset 0 -2px 3px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.18);
+  background: #f4ff22;
 }
 .switch__chip img {
   width: 24px;
