@@ -57,7 +57,9 @@ function setup(root) {
       visual.classList.add("is-inline");
       target.append(visual);
       if (animate && gsap && !reduceMotion) {
-        gsap.fromTo(visual, { opacity: 0, scale: 0.94, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.1, clearProps: "transform,opacity" });
+        // Only the phone animates in — the dot backdrop stays steady
+        // (no flash of the background on every step change).
+        if (phone) gsap.fromTo(phone, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.05 });
       }
     }
     requestAnimationFrame(pan);

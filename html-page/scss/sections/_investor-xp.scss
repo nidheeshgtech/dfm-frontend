@@ -53,6 +53,22 @@
     background: #000;
   }
 
+  // Animated dot wave (js/components/xp-wave.js) replaces the static
+  // image when it's running.
+  &__wave {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  // Kept in layout (just invisible) so the skeleton's image wait resolves.
+  &__visual.has-wave &__dots {
+    visibility: hidden;
+    animation: none;
+  }
+
   &__dots {
     position: absolute;
     inset: 0;
