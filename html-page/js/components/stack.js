@@ -17,6 +17,7 @@ export function initStack() {
   if (!lists.length || !gsap || !ScrollTrigger) return;
 
   gsap.registerPlugin(ScrollTrigger);
+  revealCardContent(gsap);
 
   // matchMedia sets up / tears down the tweens as the query flips.
   const mm = gsap.matchMedia();
@@ -124,4 +125,36 @@ function setupDeck(list, cards) {
     onRefresh: update,
   });
   update();
+}
+
+// ---- Card content reveal (all sizes) ----
+// As each card comes up, its text rises out of a mask line by line:
+// title, subtitle, description, then the glass box lifts in and its stats
+// + button follow. Plays on the way down, reverses on the way back up.
+function revealCardContent(gsap) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  document.querySelectorAll("[data-stack-item]").forEach((item) => {
+    const card = item.querySelector(".market__card");
+    const lines = [".market__title", ".market__subtitle", ".market__text"].map((s) => item.querySelector(s)).filter(Boolean);
+    const panel = item.querySelector(".market__panel");
+    const bits = Array.from(item.querySelectorAll(".market__stat, .market__cta"));
+    if (!card) return;
+
+    gsap.set(lines, { yPercent: 60, opacity: 0, clipPath: "inset(0 0 100% 0)" });
+    if (panel) gsap.set(panel, { y: 40, opacity: 0, scale: 0.97, transformOrigin: "50% 100%" });
+    gsap.set(bits, { y: 18, opacity: 0 });
+
+    const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+    tl.to(lines, { yPercent: 0, opacity: 1, clipPath: "inset(0 0 0% 0)", duration: 0.9, stagger: 0.12 }, 0);
+    if (panel) tl.to(panel, { y: 0, opacity: 1, scale: 1, duration: 0.9 }, 0.3);
+    tl.to(bits, { y: 0, opacity: 1, duration: 0.6, stagger: 0.07 }, 0.5);
+
+    window.ScrollTrigger.create({
+      trigger: card,
+      start: "top 65%",
+      onEnter: () => tl.play(),
+      onLeaveBack: () => tl.reverse(),
+    });
+  });
 }
