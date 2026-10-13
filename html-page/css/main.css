@@ -3037,8 +3037,8 @@ body {
 }
 .journey-step__text {
   opacity: 0.5;
-  font-size: clamp(1rem, 0.39vw + 0.9089805825rem, 1.375rem);
-  line-height: 1.05;
+  font-size: clamp(0.9375rem, 0.32vw + 0.8616504854rem, 1.25rem);
+  line-height: 1.25;
   letter-spacing: -0.01em;
   transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -3122,7 +3122,20 @@ body {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 2;
   background: linear-gradient(180deg, rgba(13, 14, 26, 0) 40%, rgba(13, 14, 26, 0.8));
+}
+.journey-panel__warp {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+.journey-panel__warp.is-on {
+  opacity: 1;
 }
 .journey-panel__img {
   position: absolute;

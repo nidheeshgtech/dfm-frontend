@@ -1,3 +1,5 @@
+import { createWarp } from "./journey-warp.js";
+
 // "Your listing journey" tabs. Each [data-journey-tab] selects a step:
 // the lime progress line grows to its dot, earlier steps become
 // "visited", and the panel swaps photo (soft zoom + wipe in the line's
@@ -82,6 +84,25 @@ function setup(root) {
     swapPanel(from, index, animate && !reduceMotion && gsap);
   };
 
+  // WebGL warp, loaded when the section gets close.
+  let warp = null;
+  let warpToken = 0;
+  const wantWarp = new URLSearchParams(window.location.search).get("journey") !== "v1" && !reduceMotion && gsap;
+  const mediaBox = root.querySelector(".journey-panel__media");
+  if (wantWarp && mediaBox && "IntersectionObserver" in window) {
+    const wio = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        wio.disconnect();
+        createWarp(mediaBox)
+          .then((w) => (warp = w))
+          .catch((e) => console.warn("journey: warp unavailable, using wipe", e));
+      },
+      { rootMargin: "400px 0px" },
+    );
+    wio.observe(root);
+  }
+
   // A tab's photo may not have arrived yet (lazy / slow network): show
   // the shimmer over the panel until it has, then run the swap.
   const media = root.querySelector(".journey-panel__media");
@@ -133,6 +154,21 @@ function setup(root) {
     }
 
     const forward = to > from;
+
+    // Liquid warp (default; ?journey=v1 keeps the wipe below).
+    if (warp && outgoing && outgoing.complete && incoming.complete) {
+      images.forEach((img) => gsap.killTweensOf(img));
+      const token = ++warpToken;
+      warp.play(outgoing, incoming, forward ? 1 : -1, gsap).then(() => {
+        if (token !== warpToken) return;
+        images.forEach((img, i) => img.classList.toggle("is-active", i === to));
+      });
+      // Swap the real image under the canvas mid-way, so the end frame matches.
+      setTimeout(() => token === warpToken && images.forEach((img, i) => img.classList.toggle("is-active", i === to)), 700);
+      if (copy) rollCopy(gsap, stepLabel, note, label);
+      return;
+    }
+
     const wipeFrom = vertical.matches
       ? forward ? "inset(100% 0 0 0)" : "inset(0 0 100% 0)"
       : forward ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)";

@@ -159,8 +159,8 @@
 
   &__text {
     opacity: 0.5;
-    font-size: fluid(16px, 22px);
-    line-height: 1.05;
+    font-size: fluid(15px, 20px);
+    line-height: 1.25;
     letter-spacing: tracking(-0.24px, 24px);
     transition: opacity 0.4s $ease-out;
   }
@@ -271,7 +271,23 @@
       content: "";
       position: absolute;
       inset: 0;
+      z-index: 2; // over the photos and the warp canvas
       background: linear-gradient(180deg, rgba(13, 14, 26, 0) 40%, rgba(13, 14, 26, 0.8));
+    }
+  }
+
+  // WebGL warp overlay (journey-warp.js), only visible mid-transition.
+  &__warp {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+
+    &.is-on {
+      opacity: 1;
     }
   }
 
