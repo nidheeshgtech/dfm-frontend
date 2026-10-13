@@ -27,3 +27,7 @@ Serve `dfm_arena/` from any local server (e.g. MAMP: http://localhost:8888/dfm_a
 - `assets/` — fonts
 - `backups/globe-v1-canvas/` — original flat globe (restore notes inside)
 - `image-originals/` — uncompressed source images
+
+## Deploy (Vercel)
+
+Static, no build step — `css/main.css` is committed (run `npm run build` in `html-page/` before pushing SCSS changes). `vercel.json` redirects `/` to `/html-page/` (investor page); company page is `/html-page/company.html`. Keep the Vercel project root at the repo root so `../assets/fonts` resolves.
