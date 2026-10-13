@@ -100,18 +100,6 @@
     }
   }
 
-  // Over split light/dark sections: frosted bar so logo + links stay
-  // legible on both halves.
-  &.is-on-glass {
-    background: rgba(246, 246, 249, 0.72);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    backdrop-filter: blur(20px) saturate(180%);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
-    transition:
-      transform 0.6s $ease-out,
-      background-color $duration $ease-out;
-  }
-
   // Light-hero override: over white sections, back to the dark header.
   &.is-on-light {
     --header-fg: #{$color-black};

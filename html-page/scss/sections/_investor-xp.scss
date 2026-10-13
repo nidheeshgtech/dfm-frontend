@@ -83,24 +83,28 @@
   &__phone {
     position: relative;
     width: min(684px, 72%);
-    margin-bottom: -2px;
+    // Sits below the frame edge by more than the float (12px), so the
+    // bob never opens a gap under the phone (overflow clips the rest).
+    margin-bottom: -18px;
     animation: xp-float 7s ease-in-out infinite;
     transition: translate 0.9s $ease-out; // panning (stacked layout)
   }
 
   // Stacked layout: the visual lives inside the open step (investor-xp.js)
   // as a framed window onto the phone, panned to the step's screen area.
+  // Height follows the phone, which runs just past the bottom edge — no
+  // gap under it on any phone width.
   &__visual.is-inline {
     display: block;
-    height: clamp(300px, 92vw, 460px);
+    height: auto;
     min-height: 0;
     margin: 0 0 21px;
-    padding: 0;
+    padding: $space-24 0 0;
     border-radius: $radius-md;
 
     .xp__phone {
       width: min(380px, 78%);
-      margin: $space-24 auto 0;
+      margin: 0 auto -6px;
       animation: none;
     }
   }

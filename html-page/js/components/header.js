@@ -13,7 +13,6 @@ export function initHeader() {
 
   watchSections(header, '[data-header="light"]', "is-on-dark");
   watchSections(header, '[data-header="dark"]', "is-on-light");
-  watchSections(header, '[data-header="glass"]', "is-on-glass");
   bindMenu(header);
 }
 
