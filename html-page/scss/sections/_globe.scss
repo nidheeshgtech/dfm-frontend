@@ -309,6 +309,7 @@
     inset: auto;
     display: flex;
     gap: $space-12;
+    pointer-events: auto; // the row itself must take touches to swipe
     margin: 0 calc(-1 * #{$container-gutter});
     padding: $space-4 $container-gutter $space-16;
     overflow-x: auto;

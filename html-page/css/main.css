@@ -3565,6 +3565,7 @@ body {
     inset: auto;
     display: flex;
     gap: 12px;
+    pointer-events: auto;
     margin: 0 calc(-1 * 40px);
     padding: 4px 40px 16px;
     overflow-x: auto;

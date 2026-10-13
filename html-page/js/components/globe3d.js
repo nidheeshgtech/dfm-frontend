@@ -279,7 +279,11 @@ async function setup(root) {
     camera.setViewOffset(fullW, fullH, fullW / 2 - centerX, fullH / 2 - centerY, W, H);
     camera.updateProjectionMatrix();
 
-    const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.5 : 2);
+    // Render at the screen's real pixel density (iPhones are 3×) and, when
+    // the page is pinch-zoomed, at that zoom too — so dots stay crisp.
+    // Capped to keep the GPU work sane.
+    const zoom = window.visualViewport?.scale || 1;
+    const dpr = Math.min((window.devicePixelRatio || 1) * zoom, 3);
     renderer.setPixelRatio(dpr);
     renderer.setSize(W, H, false);
     material.uniforms.uPixelRatio.value = dpr;
@@ -500,6 +504,19 @@ async function setup(root) {
     }
   });
   ro.observe(stage);
+  // Pinch-zoom doesn't resize the canvas, so re-render at the new zoom.
+  let zoomTimer = 0;
+  window.visualViewport?.addEventListener("resize", () => {
+    clearTimeout(zoomTimer);
+    zoomTimer = setTimeout(() => {
+      layout();
+      if (!running) {
+        apply();
+        renderer.render(scene, camera);
+        placeAnchors();
+      }
+    }, 120);
+  });
   layout();
 
   const io = new IntersectionObserver(
