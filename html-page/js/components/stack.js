@@ -8,7 +8,7 @@
 // Skiper UI "Card stack scroll"): every card sticks at the same spot; as
 // each new card rises in, the ones behind shrink and step UP, so their top
 // edges fan out above the current card.
-const STACK_QUERY = "(min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference)";
+const STACK_QUERY = "(min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)";
 
 export function initStack() {
   const gsap = window.gsap;

@@ -421,7 +421,7 @@
 
 // Sticky 3D stack — wide and tall enough screens only, and not for
 // reduced motion (stack.js applies the same query).
-@media (min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
   // Heading sticks once its top padding has scrolled away, keeping only
   // title / lead / button (+ a small gap) on screen.
   // Heading scrolls away normally (not sticky); cards stack near the top.

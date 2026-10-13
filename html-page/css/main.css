@@ -2530,7 +2530,7 @@ body {
   }
 }
 
-@media (min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
   .markets-wrap {
     --markets-stuck-h: 24px;
   }
