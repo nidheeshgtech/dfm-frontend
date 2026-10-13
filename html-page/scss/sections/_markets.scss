@@ -424,25 +424,9 @@
 @media (min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
   // Heading sticks once its top padding has scrolled away, keeping only
   // title / lead / button (+ a small gap) on screen.
-  .markets-head {
-    position: sticky;
-    top: calc(var(--head-stuck-gap) - var(--head-pad-top));
-    padding-bottom: $space-24;
-
-    // Stuck heading stays on screen the whole stack — keep it compact
-    // so the cards get the room.
-    &__text {
-      gap: $space-12;
-    }
-
-    &__title {
-      font-size: min(#{fluid(36px, 64px)}, 6vh);
-      line-height: 1.1;
-    }
-
-    &__lead {
-      font-size: min(#{fluid(18px, 24px)}, 2.4vh);
-    }
+  // Heading scrolls away normally (not sticky); cards stack near the top.
+  .markets-wrap {
+    --markets-stuck-h: #{$space-24};
   }
 
   .markets__list {

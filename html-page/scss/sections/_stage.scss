@@ -28,6 +28,16 @@
     overflow: hidden;
   }
 
+  // Dark layer faded in by stage.js (orbit) as section two arrives.
+  &__shade {
+    position: absolute;
+    inset: 0;
+    background: #07080f;
+    opacity: 0;
+    will-change: opacity;
+    pointer-events: none;
+  }
+
   // Moved/scaled by GSAP. Full-width flex row so the image centres
   // without a CSS translate that would fight GSAP's transform.
   &__media {

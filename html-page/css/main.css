@@ -1850,6 +1850,14 @@ body {
   height: 100lvh;
   overflow: hidden;
 }
+.stage__shade {
+  position: absolute;
+  inset: 0;
+  background: #07080f;
+  opacity: 0;
+  will-change: opacity;
+  pointer-events: none;
+}
 .stage__media {
   position: absolute;
   top: 0;
@@ -2530,20 +2538,8 @@ body {
 }
 
 @media (min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
-  .markets-head {
-    position: sticky;
-    top: calc(var(--head-stuck-gap) - var(--head-pad-top));
-    padding-bottom: 24px;
-  }
-  .markets-head__text {
-    gap: 12px;
-  }
-  .markets-head__title {
-    font-size: min(clamp(2.25rem, 1.81vw + 1.8252427184rem, 4rem), 6vh);
-    line-height: 1.1;
-  }
-  .markets-head__lead {
-    font-size: min(clamp(1.125rem, 0.39vw + 1.0339805825rem, 1.5rem), 2.4vh);
+  .markets-wrap {
+    --markets-stuck-h: 24px;
   }
   .markets__list {
     gap: 0;

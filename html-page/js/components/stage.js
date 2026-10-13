@@ -42,6 +42,9 @@ export function initStage() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   gsap.registerPlugin(ScrollTrigger);
+  // Mobile address bar showing/hiding resizes the viewport; don't
+  // recalculate every trigger mid-scroll for that (causes jumps).
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   stages.forEach((stage) => {
     const bg = stage.querySelector(".stage__pin");
@@ -403,20 +406,26 @@ function orbit(gsap, stage, bg, media, scrollTrigger) {
     { y: endY, scale: 1, opacity: 0.2, ease: "none", scrollTrigger },
   );
 
-  // Backdrop colour follows section two's arrival, not the whole stage,
-  // so its white heading lands on dark.
+  // Backdrop goes light → near-black as section two arrives, so its white
+  // heading lands on dark. Done as a dark layer fading in (opacity only,
+  // GPU-composited) rather than animating background-color, which repaints
+  // the whole screen every frame and stutters on phones.
   const next = stage.querySelector(".what-is");
+  gsap.set(bg, { backgroundColor: "#f0f3f2" });
+  const shade = document.createElement("div");
+  shade.className = "stage__shade";
+  bg.prepend(shade);
   gsap.fromTo(
-    bg,
-    { backgroundColor: "#f0f3f2" },
+    shade,
+    { opacity: 0 },
     {
-      backgroundColor: "#07080f",
+      opacity: 1,
       ease: "none",
       scrollTrigger: {
         trigger: next || stage,
         start: "top bottom",
         end: "top 45%",
-        scrub: true,
+        scrub: 0.6, // a touch of smoothing — no stepping on touch scroll
       },
     },
   );
