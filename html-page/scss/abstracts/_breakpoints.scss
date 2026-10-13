@@ -1,0 +1,32 @@
+@use "sass:map";
+
+// Desktop-first: design is 1920 wide, so base styles target desktop and
+// these mixins step down. Filled in properly during the responsive pass.
+$breakpoints: (
+  "mobile": 576px,
+  "tablet": 768px,
+  "laptop": 1024px,
+  "desktop": 1440px,
+);
+
+@function bp($name) {
+  @if map.has-key($breakpoints, $name) {
+    @return map.get($breakpoints, $name);
+  }
+
+  @warn "Unknown breakpoint `#{$name}`.";
+  @return null;
+}
+
+// Below a breakpoint (max-width). 0.02px avoids fractional-width gaps.
+@mixin down($name) {
+  @media (max-width: bp($name) - 0.02px) {
+    @content;
+  }
+}
+
+@mixin up($name) {
+  @media (min-width: bp($name)) {
+    @content;
+  }
+}

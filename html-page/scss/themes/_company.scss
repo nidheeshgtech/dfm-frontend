@@ -1,0 +1,18 @@
+@use "../abstracts" as *;
+
+// Company page: navy.
+.theme-company {
+  --color-bg: #{$color-white};
+  --color-surface: #{$color-navy};
+  --color-surface-mid: #{$color-navy-mid};
+  --color-surface-card: rgba(255, 255, 255, 0.05);
+  --color-surface-light: #{$color-bg-light};
+  --color-text: #{$color-black};
+  --color-text-strong: #{$color-text-dark};
+  --color-text-muted: #{$color-text-muted-light};
+  --color-text-inverse: #{$color-white};
+  --color-text-inverse-muted: #{$color-text-muted-dark};
+  --color-accent: #{$color-purple};
+  --color-accent-tint: #{$color-purple-tint};
+  --color-highlight: #{$color-yellow-bright};
+}

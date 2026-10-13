@@ -1,0 +1,85 @@
+@use "../abstracts" as *;
+
+// Type scale from Figma (desktop px @1920 → mobile px @375, fluid between).
+//   .t-display  hero h1        96/95  -3.84  uppercase
+//   .t-h2       section title  64/48  +1.28
+//   .t-h3       card title     40/40  -0.4
+//   .t-lead     lead para      24/32
+//   .t-body     card body      24/28  -0.24
+//   .t-tag      chips / tags   20     -0.2
+//   .t-button   toggle/buttons 20/20  -0.4
+//   .t-eyebrow  overline       18     +1.8   uppercase
+//   .t-nav      nav links      18     +1.8   uppercase semibold
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: $font-weight-regular;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.t-display {
+  font-size: fluid(40px, 96px);
+  line-height: 0.99;
+  letter-spacing: tracking(-3.84px, 96px);
+  text-transform: uppercase;
+}
+
+.t-h2 {
+  font-size: fluid(36px, 64px);
+  line-height: 1.1;
+  letter-spacing: tracking(1.28px, 64px);
+}
+
+.t-h3 {
+  font-size: fluid(28px, 40px);
+  line-height: 1;
+  letter-spacing: tracking(-0.4px, 40px);
+}
+
+.t-lead {
+  font-size: fluid(18px, 24px);
+  line-height: 1.333;
+}
+
+.t-body {
+  font-size: fluid(17px, 24px);
+  line-height: 1.167;
+  letter-spacing: tracking(-0.24px, 24px);
+}
+
+.t-tag {
+  font-size: fluid(15px, 20px);
+  line-height: 1.2;
+  letter-spacing: tracking(-0.2px, 20px);
+}
+
+.t-button {
+  font-size: fluid(16px, 20px);
+  line-height: 1;
+  letter-spacing: tracking(-0.4px, 20px);
+}
+
+.t-eyebrow {
+  font-size: fluid(13px, 18px);
+  line-height: 1.2;
+  letter-spacing: tracking(1.8px, 18px);
+  text-transform: uppercase;
+}
+
+.t-nav {
+  font-size: fluid(15px, 18px);
+  font-weight: $font-weight-semibold;
+  line-height: 1.2;
+  letter-spacing: tracking(1.8px, 18px);
+  text-transform: uppercase;
+}
+
+.t-muted {
+  opacity: 0.75;
+}

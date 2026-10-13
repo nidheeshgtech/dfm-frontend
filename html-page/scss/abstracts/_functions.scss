@@ -1,0 +1,25 @@
+@use "sass:math";
+
+// Strip the unit from a number, e.g. strip-unit(16px) => 16
+@function strip-unit($value) {
+  @return math.div($value, ($value * 0 + 1));
+}
+
+// Convert a px value (as measured in Figma) to rem, 16px root.
+@function rem($px, $base: 16px) {
+  @return math.div(strip-unit($px), strip-unit($base)) * 1rem;
+}
+
+// Fluid size: $min at a 375px viewport, $max at the 1920px design width,
+// clamped either side. fluid(40px, 96px) => clamp(2.5rem, …vw + …rem, 6rem)
+@function fluid($min, $max, $min-vw: 375px, $max-vw: 1920px) {
+  $slope: math.div(strip-unit($max) - strip-unit($min), strip-unit($max-vw) - strip-unit($min-vw));
+  $intercept: strip-unit($min) - $slope * strip-unit($min-vw);
+  @return clamp(#{rem($min)}, #{math.div(math.round($slope * 10000), 100)}vw + #{rem($intercept)}, #{rem($max)});
+}
+
+// Figma letter-spacing (px at a given font size) to em, so it scales
+// with fluid type. tracking(-3.84px, 96px) => -0.04em
+@function tracking($px, $size) {
+  @return math.div(math.round(math.div(strip-unit($px), strip-unit($size)) * 1000), 1000) * 1em;
+}

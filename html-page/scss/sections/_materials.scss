@@ -1,0 +1,369 @@
+@use "../abstracts" as *;
+
+// "Materials and downloads" (Figma 2797:895).
+.materials {
+  position: relative;
+  z-index: 2;
+  padding: fluid(64px, 96px) 0;
+  background: $color-white;
+  color: $color-text-dark;
+
+  // Same vertical rhythm as every standard section below desktop.
+  @include down("laptop") {
+    padding-block: 72px;
+  }
+
+  @include down("tablet") {
+    padding-block: 64px;
+  }
+
+  &__head {
+    margin-bottom: fluid(32px, 64px);
+    text-align: center;
+  }
+
+  &__title {
+    font-size: fluid(36px, 64px);
+    line-height: 1.5;
+    letter-spacing: tracking(-1.28px, 64px);
+  }
+
+  &__lead {
+    max-width: 840px;
+    margin-inline: auto;
+    opacity: 0.75;
+    font-size: fluid(18px, 24px);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-20;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-12;
+  }
+
+  &__note {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+    margin-top: $space-20;
+    color: $color-text-muted-light;
+    font-size: fluid(14px, 20px);
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @include down("laptop") {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// ---- Video card ----
+.video-card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: fluid(380px, 640px);
+  padding: $space-24;
+  overflow: hidden;
+  border-radius: $radius-lg;
+  color: $color-white;
+  isolation: isolate;
+
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.75));
+    }
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    transform: scale(1.001); // already on its own layer — no snap on hover
+    transition: transform 1.4s $ease-out;
+    will-change: transform;
+  }
+
+  &:hover &__img {
+    transform: scale(1.05);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $space-24;
+    max-width: 562px;
+  }
+
+  &__eyebrow {
+    margin-bottom: $space-12;
+    font-size: fluid(14px, 18px);
+    font-weight: $font-weight-semibold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    font-size: fluid(30px, 48px);
+    line-height: 1;
+    letter-spacing: tracking(-0.48px, 48px);
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-12 26px;
+    font-size: fluid(16px, 20px);
+    font-weight: $font-weight-semibold;
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: $space-12;
+    }
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  // Play button = Figma: rounded-square frosted glass with a white play
+  // icon. Hover: fills purple and glows.
+  &__play {
+    position: absolute;
+    right: $space-24;
+    bottom: $space-24;
+    display: grid;
+    place-items: center;
+    width: 75px;
+    height: 75px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 16px;
+    background: rgba(70, 68, 66, 0.45);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 0 0 rgba(78, 23, 229, 0);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    transition:
+      background-color 0.5s $ease-out,
+      border-color 0.5s $ease-out,
+      box-shadow 0.6s $ease-out,
+      transform 0.6s $ease-out;
+
+    // play.svg is the whole Figma button (75×75 tile + triangle).
+    img {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s $ease-out;
+    }
+  }
+
+  // Light that follows the cursor across the photo.
+  &__sheen {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.18), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s $ease-out;
+    pointer-events: none;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.7s $ease-out;
+  }
+
+  &__meta span {
+    transition: transform 0.6s $ease-out;
+  }
+
+  &:hover &__sheen {
+    opacity: 1;
+  }
+
+  &:hover &__content {
+    transform: translateY(-8px);
+  }
+
+  &:hover &__play,
+  &:focus-visible &__play {
+    border-color: rgba(190, 170, 255, 0.6);
+    background: rgba(78, 23, 229, 0.88);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      0 0 0 6px rgba(78, 23, 229, 0.18),
+      0 8px 40px rgba(78, 23, 229, 0.65);
+    transform: scale(1.06);
+
+    img {
+      transform: scale(1.04);
+    }
+  }
+
+  &:focus-visible {
+    outline: 3px solid $color-purple;
+    outline-offset: 3px;
+  }
+
+  @include down("tablet") {
+    padding: $space-16;
+
+    &__play {
+      top: $space-16;
+      right: $space-16;
+      bottom: auto;
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__img,
+    &__play,
+    &__content,
+    &__sheen {
+      transition: none;
+    }
+  }
+}
+
+// ---- Download row ----
+.download {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-24;
+  padding: $space-32 $space-24;
+  border-radius: $radius-lg;
+  background: $color-bg-light;
+  transition:
+    background-color 0.4s $ease-out,
+    transform 0.4s $ease-out;
+
+  &:hover {
+    background: #eeeef4;
+    transform: translateX(4px);
+  }
+
+  &__title {
+    font-size: fluid(22px, 32px);
+    letter-spacing: tracking(-0.96px, 32px);
+  }
+
+  &__text {
+    max-width: 368px;
+    margin-top: 2px;
+    opacity: 0.75;
+    font-size: fluid(16px, 20px);
+    line-height: 1.1;
+  }
+
+  // Grey "Request" variant (Figma fee structure).
+  .btn-pill--muted {
+    border-color: rgba(13, 14, 26, 0.1);
+    background: linear-gradient(90deg, rgba(13, 14, 26, 0.3), rgba(64, 69, 128, 0.18));
+    color: $color-bg-dark;
+  }
+
+  .btn-pill:hover .btn-pill__chip img[src*="download"] {
+    animation: dl-bounce 0.8s $ease-out;
+  }
+
+  // Mobile: compact file rows — text on the left, just the round icon
+  // on the right (label kept for screen readers), whole card tappable.
+  @include down("tablet") {
+    position: relative;
+    gap: $space-16;
+    padding: $space-20 $space-16 $space-20 $space-20;
+    border-radius: $radius-md;
+
+    &:hover {
+      transform: none;
+    }
+
+    &__title {
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    &__text {
+      margin-top: $space-4;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .btn-pill {
+      flex-shrink: 0;
+      padding: 0;
+      border: 0;
+      background: none;
+
+      // Stretch the link over the whole card.
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+      }
+
+      &:hover {
+        box-shadow: none;
+        transform: none;
+      }
+    }
+
+    .btn-pill__label {
+      @include visually-hidden;
+    }
+
+    .btn-pill__chip {
+      width: 44px;
+      height: 44px;
+      box-shadow: 0 6px 16px rgba(78, 23, 229, 0.3);
+    }
+
+    .btn-pill--muted .btn-pill__chip {
+      background: $color-bg-dark;
+      box-shadow: 0 6px 16px rgba(13, 14, 26, 0.2);
+    }
+
+    &:active {
+      background: #eeeef4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+@keyframes dl-bounce {
+  40% {
+    transform: translateY(3px);
+  }
+}

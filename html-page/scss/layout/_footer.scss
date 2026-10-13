@@ -1,0 +1,159 @@
+@use "../abstracts" as *;
+
+// Footer (Figma Team 2797:1043).
+.site-footer {
+  position: relative;
+  z-index: 2;
+  padding: 30px 0 40px;
+  background: linear-gradient(180deg, $color-white, rgba(1, 33, 74, 0.05));
+  color: $color-text-dark;
+
+  &__inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-24;
+
+    // Figma: content sits ~193px in from each edge of the 1920 frame
+    // (≈10%), scaled with the viewport on desktop.
+    @include up("laptop") {
+      max-width: none;
+      padding-inline: max(#{$container-gutter}, 10vw);
+    }
+  }
+
+  &__brand {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 9px;
+  }
+
+  &__tagline {
+    font-size: fluid(30px, 48px);
+    font-weight: $font-weight-semibold;
+    letter-spacing: tracking(-1.44px, 48px);
+  }
+
+  &__mail {
+    margin-bottom: 13px;
+    padding: 2px 6px 6px;
+    border-radius: 6px;
+    background: $color-purple;
+    color: $color-white;
+    font-size: fluid(15px, 18px);
+    transition: background-color $duration $ease-out;
+
+    &:hover {
+      background: #3d0fc0;
+    }
+  }
+
+  &__side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: $space-12;
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: $space-8;
+
+    a {
+      padding: 4px $space-12 5px;
+      border: 1px solid rgba(110, 114, 136, 0.4);
+      border-radius: 6px;
+      color: rgba(1, 33, 74, 0.9);
+      font-size: fluid(15px, 18px);
+      transition:
+        background-color $duration $ease-out,
+        border-color $duration $ease-out;
+
+      &:hover {
+        border-color: $color-navy;
+        background: rgba(1, 33, 74, 0.06);
+      }
+    }
+  }
+
+  &__copy {
+    color: $color-text-muted-light;
+    font-size: fluid(14px, 16px);
+  }
+
+  @include down("laptop") {
+    &__inner {
+      flex-direction: column;
+    }
+
+    &__side {
+      align-items: flex-start;
+    }
+
+    &__links {
+      justify-content: flex-start;
+    }
+  }
+
+  // Mobile: stacked, evenly spaced blocks — tagline + email, a tidy
+  // 2×2 link grid, then the copyright under a hairline.
+  @include down("tablet") {
+    padding: $space-40 0 calc(#{$space-32} + env(safe-area-inset-bottom));
+
+    &__inner {
+      gap: $space-32;
+    }
+
+    &__brand {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $space-12;
+    }
+
+    &__tagline {
+      font-size: 32px;
+      line-height: 1.1;
+    }
+
+    &__mail {
+      margin: 0;
+      padding: 5px $space-12 7px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    &__side {
+      gap: $space-24;
+      width: 100%;
+    }
+
+    &__links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: $space-8;
+      width: 100%;
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px; // comfortable tap target
+        padding: 4px $space-12 6px;
+        border-radius: 10px;
+        font-size: 16px;
+        text-align: center;
+      }
+    }
+
+    &__copy {
+      width: 100%;
+      padding-top: $space-20;
+      border-top: 1px solid rgba(110, 114, 136, 0.2);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+  }
+}

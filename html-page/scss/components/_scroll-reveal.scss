@@ -1,0 +1,30 @@
+@use "../abstracts" as m;
+
+// Pre-JS baseline for components/gsap-reveal.js. Scoped to .js (added
+// by an inline <script> in <head>) so content stays visible with JS
+// off. No CSS transition here: it would fight the GSAP tween.
+.js [data-scroll-reveal],
+.js [data-scroll-reveal-group] > * {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+@include m.reduced-motion {
+  .js [data-scroll-reveal],
+  .js [data-scroll-reveal-group] > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Hero load-in (js/components/hero.js). Same .js scoping; never applied
+// to the h1.
+.js [data-hero-intro] {
+  opacity: 0;
+}
+
+@include m.reduced-motion {
+  .js [data-hero-intro] {
+    opacity: 1;
+  }
+}

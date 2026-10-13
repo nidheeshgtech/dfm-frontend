@@ -1,0 +1,233 @@
+@use "../abstracts" as *;
+
+// Video popup (js/components/video-modal.js). Dark navy glass panel over a
+// blurred, dimmed page; 16:9 Vimeo frame with the site's dark shimmer
+// until the player loads. Panel rises + scales in; everything reverses
+// on close (.is-open toggled by JS around showModal / close).
+.video-modal {
+  --vm-ease: #{$ease-out};
+
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: fluid(16px, 40px);
+  border: 0;
+  background: transparent;
+  color: $color-white;
+  overflow: hidden;
+
+  &[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  &::backdrop {
+    background: rgba(7, 8, 15, 0);
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    transition:
+      background-color 0.4s var(--vm-ease),
+      backdrop-filter 0.4s var(--vm-ease),
+      -webkit-backdrop-filter 0.4s var(--vm-ease);
+  }
+
+  &.is-open::backdrop {
+    background: rgba(7, 8, 15, 0.78);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  &__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: fluid(16px, 24px);
+    // Never taller than the screen: width follows the height available
+    // for a 16:9 frame (minus head + meta), capped at 1180px.
+    width: min(1180px, 100%, calc((100svh - 260px) * 16 / 9));
+    min-width: min(100%, 320px);
+    padding: fluid(16px, 28px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-lg;
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgba(78, 23, 229, 0.28), rgba(78, 23, 229, 0) 60%),
+      linear-gradient(160deg, rgba(27, 29, 43, 0.92), rgba(13, 14, 26, 0.96));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 40px 120px rgba(0, 0, 0, 0.5),
+      0 0 80px rgba(78, 23, 229, 0.18);
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+    transition:
+      opacity 0.4s var(--vm-ease),
+      transform 0.5s var(--vm-ease);
+  }
+
+  &.is-open &__panel {
+    opacity: 1;
+    transform: none;
+  }
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-16;
+  }
+
+  &__eyebrow {
+    margin-bottom: $space-8;
+    color: $color-purple-tint;
+    font-size: fluid(13px, 15px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    font-size: fluid(22px, 36px);
+    font-weight: $font-weight-regular;
+    line-height: 1.1;
+    letter-spacing: tracking(-0.36px, 36px);
+  }
+
+  // Round glass close button; turns + fills purple on hover.
+  &__close {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    color: $color-white;
+    transition:
+      background-color 0.4s var(--vm-ease),
+      border-color 0.4s var(--vm-ease),
+      box-shadow 0.4s var(--vm-ease),
+      transform 0.5s var(--vm-ease);
+
+    &:hover {
+      border-color: rgba(190, 170, 255, 0.6);
+      background: $color-purple;
+      box-shadow: 0 0 24px rgba(78, 23, 229, 0.6);
+      transform: rotate(90deg);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-purple-tint;
+      outline-offset: 3px;
+    }
+  }
+
+  &__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: $radius-md;
+    background: #000;
+
+    iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      opacity: 0;
+      transition: opacity 0.5s var(--vm-ease);
+    }
+
+    // Shimmer until the player has loaded.
+    .skeleton {
+      display: block;
+      z-index: 0;
+      transition: opacity 0.5s var(--vm-ease);
+    }
+
+    &.is-ready {
+      iframe {
+        opacity: 1;
+      }
+
+      .skeleton {
+        opacity: 0;
+      }
+    }
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-8 $space-24;
+    opacity: 0.75;
+    font-size: fluid(14px, 18px);
+
+    > span {
+      display: inline-flex;
+      align-items: center;
+      gap: $space-8;
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Mobile: edge-to-edge-ish sheet, smaller close.
+  @include down("tablet") {
+    padding: $space-12;
+
+    &__panel {
+      width: 100%;
+      border-radius: $radius-md;
+    }
+
+    &__close {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  // Phones in landscape: drop the text so the video gets the height.
+  @media (max-height: 500px) and (orientation: landscape) {
+    padding: $space-8;
+
+    &__panel {
+      width: min(100%, calc((100svh - 40px) * 16 / 9));
+      padding: $space-8;
+    }
+
+    &__head > div,
+    &__meta {
+      display: none;
+    }
+
+    &__head {
+      position: absolute;
+      top: $space-12;
+      right: $space-12;
+      z-index: 2;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__panel,
+    &::backdrop,
+    &__close,
+    &__frame iframe {
+      transition: none;
+    }
+  }
+}
+
+// Page behind stays put while the popup is open.
+.has-modal,
+.has-modal body {
+  overflow: hidden;
+}

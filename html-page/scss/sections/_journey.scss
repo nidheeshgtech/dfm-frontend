@@ -1,0 +1,522 @@
+@use "../abstracts" as *;
+
+// "Your listing journey" (company page, Figma 2797:631 + Journey section
+// variants 2574:721 → 2575:1292). Tabs: each step card is a tab; the
+// photo, caption and CTA below are its panel. js/components/journey.js
+// drives state + motion. Wide: 5 cards in a row with a horizontal
+// progress line. Narrow: vertical stepper (line down the left).
+.journey {
+  position: relative;
+  z-index: 2;
+  padding: fluid(64px, 120px) $space-24 fluid(48px, 96px);
+  background: $color-white;
+  color: $color-text-dark;
+
+  // Site gutter + the shared vertical rhythm below desktop.
+  @include down("laptop") {
+    padding: 72px $container-gutter;
+  }
+
+  @include down("tablet") {
+    padding: 64px $container-gutter-mobile;
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-12;
+    margin-bottom: fluid(32px, 48px);
+    text-align: center;
+  }
+
+  &__title {
+    font-size: fluid(36px, 64px);
+    line-height: 1.22;
+    letter-spacing: tracking(-1.28px, 64px);
+  }
+
+  &__lead {
+    max-width: 791px;
+    opacity: 0.75;
+    font-size: fluid(18px, 24px);
+    line-height: 1.2;
+  }
+
+  // Dark rounded frame around tabs + panel.
+  &__frame {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    max-width: 1556px;
+    margin-inline: auto;
+    padding: 10px;
+    border-radius: 20px;
+    background: $color-bg-dark-card;
+    color: $color-white;
+  }
+}
+
+// ---- Tabs + progress line ----
+.journey-steps {
+  --line-y: 28px; // dot centre from the top of the cards
+  --progress: 0px; // filled length, set by JS
+
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: $space-8;
+
+  // Track + fill (Figma: grey 40% line, lime fill to the active dot).
+  &__track,
+  &__fill {
+    position: absolute;
+    top: var(--line-y);
+    left: 0;
+    height: 1px;
+    pointer-events: none;
+  }
+
+  &__track {
+    right: 0;
+    background: rgba(139, 142, 164, 0.4);
+  }
+
+  &__fill {
+    z-index: 2;
+    width: var(--progress);
+    background: linear-gradient(90deg, rgba(244, 255, 34, 0.2), $color-yellow-bright);
+    box-shadow: 0 0 8px rgba(244, 255, 34, 0.6);
+    transition: width 0.9s $ease-out;
+  }
+}
+
+.journey-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $space-16;
+  min-height: 263px;
+  padding: 54px $space-20 $space-24;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $radius-lg;
+  background: $color-black;
+  color: $color-white;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 0.5s $ease-out,
+    border-color 0.5s $ease-out,
+    transform 0.4s $ease-out;
+
+  // Dot on the line.
+  &__dot {
+    position: absolute;
+    top: calc(var(--line-y) - 6px);
+    left: 50%;
+    z-index: 3;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    border: 3px solid #dee0ec;
+    border-radius: 50%;
+    background: $color-bg-dark;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    transition:
+      border-color 0.4s $ease-out,
+      box-shadow 0.4s $ease-out,
+      transform 0.4s $ease-out;
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-8;
+  }
+
+  &__badge {
+    padding: 4px 10px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: fluid(15px, 20px);
+    font-weight: $font-weight-semibold;
+    line-height: 16px;
+    white-space: nowrap;
+    transition:
+      background-color 0.4s $ease-out,
+      border-color 0.4s $ease-out,
+      color 0.4s $ease-out;
+  }
+
+  &__name {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: fluid(24px, 32px);
+    letter-spacing: tracking(-0.64px, 32px);
+    transition: color 0.4s $ease-out;
+  }
+
+  &__text {
+    opacity: 0.5;
+    font-size: fluid(16px, 22px);
+    line-height: 1.05;
+    letter-spacing: tracking(-0.24px, 24px);
+    transition: opacity 0.4s $ease-out;
+  }
+
+  &:hover:not([aria-selected="true"]) {
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-yellow-bright;
+    outline-offset: 2px;
+  }
+
+  // Passed steps: dark card, purple badge, lime dot.
+  &.is-visited {
+    background: $color-text-dark;
+
+    .journey-step__badge {
+      border-color: $color-purple;
+      background: $color-purple;
+    }
+
+    .journey-step__dot {
+      border-color: $color-yellow-bright;
+    }
+  }
+
+  // Current step.
+  &[aria-selected="true"] {
+    border-color: $color-white;
+    background: $color-text-dark;
+
+    .journey-step__name {
+      color: $color-bg-light;
+    }
+
+    .journey-step__text {
+      opacity: 1;
+    }
+
+    .journey-step__dot {
+      border-color: $color-yellow-bright;
+      box-shadow: 0 0 0 4px rgba(244, 255, 34, 0.18), 0 0 12px rgba(244, 255, 34, 0.7);
+      transform: scale(1.15);
+    }
+  }
+
+  // Listing day: always purple, white badge.
+  &--milestone {
+    background: $color-purple;
+
+    .journey-step__badge {
+      border-color: $color-white;
+      background: $color-white;
+      color: $color-bg-dark;
+    }
+
+    .journey-step__text {
+      opacity: 1;
+    }
+
+    &.is-visited,
+    &[aria-selected="true"] {
+      background: $color-purple;
+
+      .journey-step__badge {
+        border-color: $color-white;
+        background: $color-white;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &__dot,
+    &__badge,
+    &__name,
+    &__text {
+      transition: none;
+    }
+  }
+}
+
+// ---- Panel: photo + glass caption bar ----
+.journey-panel {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(380px, 32vw, 561px);
+  padding: $space-20 26px $space-20 $space-20;
+  overflow: hidden;
+  border-radius: $radius-lg;
+  background: #d9d9d9;
+  isolation: isolate;
+
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    // Above the photos, which take z-index 2 while wiping in.
+    > .skeleton {
+      z-index: 3;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(13, 14, 26, 0) 40%, rgba(13, 14, 26, 0.8));
+    }
+  }
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    opacity: 0;
+    visibility: hidden;
+
+    &.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-24;
+    width: 100%;
+    padding: 14px $space-20 14px 30px;
+    border-radius: $radius-md;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 760px;
+    min-width: 0;
+
+    // Letters / words of the caption roll (journey.js rollCopy).
+    .roll-word {
+      display: inline-block;
+      white-space: nowrap;
+      perspective: 400px;
+    }
+
+    .roll-unit {
+      display: inline-block;
+      transform-origin: 50% 50% -0.5em; // rolls round a drum, not a flat flip
+      backface-visibility: hidden;
+    }
+  }
+
+  &__step {
+    color: $color-yellow-bright;
+    font-size: fluid(14px, 16px);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__note {
+    font-size: fluid(15px, 20px);
+    line-height: 1.2;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-12;
+    flex-shrink: 0;
+  }
+
+  &__cta {
+    width: 322px;
+  }
+
+  // Next / prev step chips.
+  &__nav {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: $color-white;
+    transition:
+      background-color $duration $ease-out,
+      transform $duration $ease-out,
+      opacity $duration $ease-out;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(var(--nudge, 2px));
+    }
+
+    &--prev {
+      --nudge: -2px;
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-yellow-bright;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// ---- Laptop / tablet: tighter cards ----
+@include down("desktop") {
+  .journey-step {
+    min-height: 230px;
+    padding: 50px $space-12 $space-16;
+  }
+
+  .journey-panel__cta {
+    width: 260px;
+  }
+}
+
+@include down("laptop") {
+  .journey-panel__bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: $space-16;
+  }
+
+  .journey-panel__actions {
+    justify-content: space-between;
+  }
+
+  .journey-panel__cta {
+    flex: 1;
+    width: auto;
+  }
+}
+
+// ---- Narrow: vertical stepper. Only the current step shows its text;
+// the line runs down the left, through each dot. ----
+@media (max-width: 899.98px) {
+  .journey-steps {
+    --line-x: 22px;
+
+    grid-template-columns: 1fr;
+    gap: 6px;
+
+    &__track,
+    &__fill {
+      top: 0;
+      left: var(--line-x);
+      width: 1px;
+      height: auto;
+    }
+
+    &__track {
+      bottom: 0;
+    }
+
+    &__fill {
+      width: 1px;
+      height: var(--progress);
+      background: linear-gradient(180deg, rgba(244, 255, 34, 0.2), $color-yellow-bright);
+      transition: height 0.9s $ease-out;
+    }
+  }
+
+  .journey-step {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    min-height: 0;
+    padding: $space-16 $space-16 $space-16 48px;
+    text-align: left;
+
+    &:hover:not([aria-selected="true"]) {
+      transform: none;
+    }
+
+    &__dot {
+      top: 22px;
+      left: var(--line-x);
+      margin-left: -6px;
+    }
+
+    &__top {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: $space-8;
+    }
+
+    &__name {
+      order: -1;
+    }
+
+    // Collapsed text expands for the selected step (accordion feel).
+    &__text {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition:
+        grid-template-rows 0.5s $ease-out,
+        opacity 0.4s $ease-out,
+        margin 0.5s $ease-out;
+
+      > span {
+        overflow: hidden;
+      }
+    }
+
+    &[aria-selected="true"] .journey-step__text {
+      grid-template-rows: 1fr;
+      margin-top: $space-8;
+      opacity: 1;
+    }
+
+    &--milestone .journey-step__text {
+      opacity: 0;
+    }
+
+    &--milestone[aria-selected="true"] .journey-step__text {
+      opacity: 1;
+    }
+  }
+
+  .journey-panel {
+    min-height: 420px;
+    padding: $space-12;
+  }
+
+  // CTA gets its own full-width row; prev / next sit above it.
+  .journey-panel__actions {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .journey-panel__cta {
+    flex: 1 1 100%;
+  }
+}

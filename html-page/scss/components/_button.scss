@@ -1,0 +1,394 @@
+@use "../abstracts" as *;
+
+// CTA button (Figma "Primary__btn__V2", glass variants).
+//   <a class="btn-cta liquid-glass btn-cta--purple" href="#">
+//     <span class="liquid-glass__effect"></span>
+//     <span class="liquid-glass__tint"></span>
+//     <span class="liquid-glass__shine"></span>
+//     <span class="btn-cta__label">
+//       <span class="btn-cta__text">Start a conversation</span>
+//       <span class="btn-cta__text" aria-hidden="true">Start a conversation</span>
+//     </span>
+//     <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
+//   </a>
+// Surface = liquid glass layers (components/_liquid-glass.scss): the
+// page behind is blurred and warped by #glass-distortion, under the
+// Figma variant fill. Hover (Figma "*_active"): the faint dot behind the
+// chevron grows to flood the button, the label rolls up to its
+// duplicate, and a glow appears. Variants only swap custom properties.
+.btn-cta {
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-bg-hover: var(--btn-bg);
+  --btn-border-hover: var(--btn-border);
+  --btn-glow: transparent;
+  --btn-dot: rgba(255, 255, 255, 0.2);
+  --btn-text: #{$color-white};
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  min-width: 0;
+  padding: $space-20;
+  overflow: hidden;
+  border: 1px solid var(--btn-border);
+  border-radius: $radius-sm;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-size: fluid(17px, 20px);
+  line-height: 20px;
+  transition:
+    box-shadow 0.5s $ease-out,
+    border-color 0.5s $ease-out,
+    background-color 0.5s $ease-out,
+    transform 0.35s $ease-out;
+
+  // The growing dot. Sits where Figma's 20px ellipse is (right 19px),
+  // above the glass layers (0–2), below the content (4).
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 19px;
+    z-index: 3;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    border-radius: 50%;
+    background: var(--btn-dot);
+    transition: transform 0.7s $ease-out;
+  }
+
+  &__label {
+    position: relative;
+    z-index: 4;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 20px;
+    overflow: hidden;
+  }
+
+  &__text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: transform 0.5s $ease-out;
+
+    & + & {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  &__icon {
+    position: relative;
+    z-index: 4;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-left: $space-12;
+    transition: transform 0.5s $ease-out;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--btn-border-hover);
+    background: var(--btn-bg-hover);
+    box-shadow: 0 0 30px 3px var(--btn-glow);
+    transform: translateY(-1px);
+
+    &::before {
+      transform: scale(40);
+    }
+
+    .btn-cta__text {
+      transform: translateY(-100%);
+    }
+
+    .btn-cta__icon {
+      transform: translateX(2px);
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  &--purple {
+    --btn-bg: linear-gradient(90deg, rgba(78, 23, 229, 0.28), rgba(78, 23, 229, 0.08));
+    --btn-border: rgba(100, 41, 236, 0.2);
+    --btn-bg-hover: rgba(78, 23, 229, 0.2);
+    --btn-border-hover: rgba(163, 139, 242, 0.3);
+    --btn-glow: rgba(78, 23, 229, 0.27);
+    --btn-dot: rgba(78, 23, 229, 0.2);
+  }
+
+  &--dark {
+    --btn-bg: linear-gradient(90deg, rgba(7, 8, 15, 0.67), rgba(7, 8, 15, 0.3));
+    --btn-border: rgba(7, 8, 15, 0.1);
+    --btn-bg-hover: rgba(7, 8, 15, 0.07);
+    --btn-border-hover: rgba(7, 8, 15, 0.1);
+    --btn-glow: rgba(7, 8, 15, 0.35);
+    --btn-dot: rgba(7, 8, 15, 0.2);
+
+    // Figma btn_glass_black_purple: hover fill is light, so text goes dark.
+    &:hover,
+    &:focus-visible {
+      color: $color-bg-dark;
+    }
+  }
+
+  // Market colours (Figma btn_green_glass / btn_yellow_glass).
+  &--jade {
+    --btn-bg: linear-gradient(90deg, rgba(100, 251, 160, 0.28), rgba(100, 251, 160, 0.08));
+    --btn-border: rgba(100, 251, 160, 0.2);
+    --btn-bg-hover: rgba(100, 251, 160, 0.2);
+    --btn-border-hover: rgba(100, 251, 160, 0.35);
+    --btn-glow: rgba(100, 251, 160, 0.22);
+    --btn-dot: rgba(100, 251, 160, 0.2);
+  }
+
+  &--yellow {
+    --btn-bg: linear-gradient(90deg, rgba(244, 255, 34, 0.28), rgba(244, 255, 34, 0.08));
+    --btn-border: rgba(244, 255, 34, 0.2);
+    --btn-bg-hover: rgba(244, 255, 34, 0.2);
+    --btn-border-hover: rgba(244, 255, 34, 0.35);
+    --btn-glow: rgba(244, 255, 34, 0.2);
+    --btn-dot: rgba(244, 255, 34, 0.2);
+  }
+
+  &--white {
+    --btn-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    --btn-border: rgba(255, 255, 255, 0.2);
+    --btn-bg-hover: rgba(255, 255, 255, 0.07);
+    --btn-border-hover: rgba(255, 255, 255, 0.2);
+    --btn-glow: rgba(255, 255, 255, 0.1);
+    --btn-dot: rgba(255, 255, 255, 0.2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover,
+    &:active {
+      transform: none;
+    }
+
+    &,
+    &::before,
+    &__text,
+    &__icon {
+      transition: none;
+    }
+  }
+}
+
+// Pill CTA with a round icon chip (Figma "Check your eligibility" /
+// "Register interest" in the markets heading).
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+  border: 1px solid $color-purple;
+  border-radius: 50px;
+  background: linear-gradient(90deg, rgba(78, 23, 229, 0.2), rgba(78, 23, 229, 0.1));
+  color: $color-text-dark;
+  white-space: nowrap;
+  transition:
+    background-color $duration $ease-out,
+    box-shadow $duration $ease-out,
+    transform $duration $ease-out;
+
+  &__label {
+    padding: 6px $space-24 8px;
+    font-size: fluid(16px, 20px);
+    line-height: 20px;
+    letter-spacing: tracking(-0.4px, 20px);
+  }
+
+  &__chip {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    overflow: hidden;
+    border-radius: 70px;
+    background: $color-purple;
+    transition: transform 0.5s $ease-out;
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  // Arrow "launch": it flies out along its own direction (top-right) and a
+  // fresh one slides in from the bottom-left. One element, one animation.
+  &:hover,
+  &:focus-visible {
+    background: rgba(78, 23, 229, 0.18);
+    box-shadow: 0 0 24px rgba(78, 23, 229, 0.25);
+    transform: translateY(-1px);
+
+    .btn-pill__chip img {
+      animation: arrow-launch 0.65s $ease-out;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-purple;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &__chip {
+      transition: none;
+    }
+
+    &:hover,
+    &:hover .btn-pill__chip {
+      transform: none;
+    }
+
+    &:hover .btn-pill__chip img,
+    &:focus-visible .btn-pill__chip img {
+      animation: none;
+    }
+  }
+}
+
+// ---- Download chip: the arrow drops into the tray, the tray gives a
+// little, and a ring ripples off the chip. (Arrow chips keep arrow-launch.)
+.btn-pill__chip--download {
+  position: relative;
+  overflow: visible;
+
+  .dl-icon {
+    overflow: hidden; // arrow drops out of / back into the 24px box
+  }
+
+  .dl-icon__arrow,
+  .dl-icon__tray {
+    transform-box: fill-box;
+  }
+
+  .dl-icon__tray {
+    transform-origin: 50% 100%;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 rgba(78, 23, 229, 0.5);
+    opacity: 0;
+  }
+}
+
+.btn-pill:hover .btn-pill__chip--download,
+.btn-pill:focus-visible .btn-pill__chip--download {
+  .dl-icon__arrow {
+    animation: dl-drop 0.75s $ease-out;
+  }
+
+  .dl-icon__tray {
+    animation: dl-tray 0.75s $ease-out;
+  }
+
+  &::after {
+    animation: dl-ripple 0.9s ease-out 0.3s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-pill .btn-pill__chip--download {
+    .dl-icon__arrow,
+    .dl-icon__tray,
+    &::after {
+      animation: none !important;
+    }
+  }
+}
+
+@keyframes dl-drop {
+  0% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0.55, 0, 0.75, 0.2);
+  }
+
+  40% {
+    transform: translateY(150%);
+  }
+
+  41% {
+    transform: translateY(-150%);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.4, 1);
+  }
+
+  75% {
+    transform: translateY(8%);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes dl-tray {
+  0%,
+  65% {
+    transform: none;
+  }
+
+  78% {
+    transform: scale(1.08, 0.75);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes dl-ripple {
+  0% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(78, 23, 229, 0.45);
+  }
+
+  100% {
+    opacity: 0;
+    box-shadow: 0 0 0 12px rgba(78, 23, 229, 0);
+  }
+}
+
+@keyframes arrow-launch {
+  0% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0.55, 0, 0.75, 0.2); // accelerate out
+  }
+
+  45% {
+    transform: translate(140%, -140%);
+  }
+
+  46% {
+    transform: translate(-140%, 140%);
+    animation-timing-function: $ease-out; // settle in
+  }
+
+  100% {
+    transform: none;
+  }
+}

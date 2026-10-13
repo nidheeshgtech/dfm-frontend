@@ -1,0 +1,568 @@
+@use "../abstracts" as *;
+
+// Markets: heading sheet + three market cards that stack (flat) on scroll
+// (js/components/stack.js). Figma: company 2797:368/392/442/491,
+// investor 2797:1242/1266/1316/1365.
+
+// Wrapper = sticky range: heading + cards stay pinned until the last
+// card has passed, then leave together.
+.markets-wrap {
+  --head-pad-top: #{fluid(64px, 120px)};
+  --head-stuck-gap: 16px; // white space kept above the title once stuck
+  --markets-stuck-h: 0px; // visible heading height when stuck (stack.js)
+
+  position: relative;
+}
+
+// ---- Heading: white sheet whose rounded top rises over the stage ----
+.markets-head {
+  position: relative;
+  z-index: 6;
+  margin-top: -38px;
+  padding: var(--head-pad-top) 0 fluid(24px, 40px);
+  border-radius: 40px 40px 0 0;
+  background: $color-white;
+  color: $color-text-dark;
+
+  &__inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $space-48;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: $space-24;
+  }
+
+  &__title {
+    max-width: 792px;
+    font-size: fluid(36px, 64px);
+    line-height: 1.3125; // 84/64
+    letter-spacing: tracking(-1.28px, 64px);
+  }
+
+  &__lead {
+    max-width: 756px;
+    opacity: 0.75;
+    font-size: fluid(18px, 24px);
+    line-height: 1.25;
+    letter-spacing: tracking(-0.24px, 24px);
+  }
+
+  @include down("tablet") {
+    margin-top: -24px;
+    border-radius: 24px 24px 0 0;
+
+    &__inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $space-24;
+    }
+  }
+}
+
+// ---- Card list ----
+.markets {
+  --market-top: var(--markets-stuck-h); // first card sits right under the heading
+  --market-gap: 28px; // each later card stops this much lower (stack peek)
+
+  position: relative;
+  z-index: 2;
+  padding: 0 $space-24 $space-24;
+  background: $color-white;
+
+  // Cards on the site gutter below desktop.
+  @include down("laptop") {
+    padding-inline: $container-gutter;
+  }
+
+  @include down("tablet") {
+    padding: 0 $container-gutter-mobile $container-gutter-mobile;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-24;
+  }
+}
+
+.market {
+  // Sticky stacking only where a whole card fits on screen; elsewhere the
+  // cards simply flow (see the media query at the bottom).
+  position: relative;
+
+  &__card {
+    --dot: #{$color-purple};
+
+    position: relative;
+    display: flex;
+    align-items: center; // content sits mid-card, not on the bottom edge
+    height: min(1040px, calc(100vh - 40px));
+    height: min(1040px, calc(100svh - 40px));
+    min-height: 680px;
+    overflow: hidden;
+    border-radius: $radius-md;
+    background: $color-bg-dark-card;
+    color: $color-white;
+    transform-origin: 50% 0; // shrinks toward its top edge, peeking above the next card
+    will-change: transform;
+  }
+
+  // Background photo (+ optional flip / zoom crops from Figma).
+  &__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  &__photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: 50% 100%;
+
+    &--flip {
+      transform: scaleX(-1);
+    }
+
+    &--zoom {
+      inset: auto;
+      top: -31.6%;
+      left: -19.7%;
+      width: 137%;
+      height: 139%;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 14, 26, 0.5);
+
+    &--deep {
+      background: rgba(7, 8, 15, 0.5);
+    }
+  }
+
+  // Line-art ring (910px in Figma, centred vertically, right side).
+  // Wrapper = position; __art = GSAP entrance; imgs = CSS idle loops.
+  // The single-path SVGs can't animate per line, so each market lights
+  // a glowing copy (__ring-glow) through an animated mask instead.
+  &__ring {
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    width: auto;
+    height: min(910px, 88%);
+    aspect-ratio: 1;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  &__ring-art {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__ring-img,
+  &__ring-glow {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+  }
+
+  &__ring-img {
+    opacity: 0.5;
+  }
+
+  &__ring-glow {
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.45));
+  }
+
+  // Growth — ripple: a band of light travels outward through the rings.
+  &--growth &__ring-glow {
+    -webkit-mask-image: radial-gradient(circle, transparent calc(var(--ring-r) - 7%), #000 var(--ring-r), transparent calc(var(--ring-r) + 7%));
+    mask-image: radial-gradient(circle, transparent calc(var(--ring-r) - 7%), #000 var(--ring-r), transparent calc(var(--ring-r) + 7%));
+    animation: ring-ripple 3.6s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+  }
+
+  // Private — radar: a beam sweeps round while the ring turns slowly.
+  &--private &__ring-img {
+    animation: ring-turn 90s linear infinite;
+  }
+
+  &--private &__ring-glow {
+    -webkit-mask-image: conic-gradient(from var(--ring-a), transparent 0deg 290deg, #000 345deg, transparent 360deg);
+    mask-image: conic-gradient(from var(--ring-a), transparent 0deg 290deg, #000 345deg, transparent 360deg);
+    animation:
+      ring-sweep 4.5s linear infinite,
+      ring-turn 90s linear infinite;
+  }
+
+  // Closed — breathing lattice: gentle twist + glow swelling from centre.
+  &--closed &__ring-img,
+  &--closed &__ring-glow {
+    animation: ring-twist 10s ease-in-out infinite alternate;
+  }
+
+  &--closed &__ring-glow {
+    -webkit-mask-image: radial-gradient(circle, #000 var(--ring-r), transparent calc(var(--ring-r) + 22%));
+    mask-image: radial-gradient(circle, #000 var(--ring-r), transparent calc(var(--ring-r) + 22%));
+    animation:
+      ring-twist 10s ease-in-out infinite alternate,
+      ring-swell 5s ease-in-out infinite alternate;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__ring-img,
+    &__ring-glow {
+      animation: none !important;
+    }
+
+    &__ring-glow {
+      display: none;
+    }
+  }
+
+  // Darkens the card as the next one slides over it (stack.js).
+  &__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: fluid(24px, 48px);
+    width: 100%;
+    max-width: $container-max + $container-gutter * 2;
+    margin-inline: auto;
+    padding: fluid(32px, 60px) $container-gutter;
+  }
+
+  &__title {
+    opacity: 0.9;
+    font-size: fluid(34px, 76px);
+    line-height: 1;
+    letter-spacing: tracking(-2.88px, 96px);
+    text-transform: uppercase;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: fluid(28px, 48px);
+    max-width: 900px;
+  }
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    gap: fluid(16px, 32px);
+    max-width: 830px;
+  }
+
+  &__subtitle {
+    max-width: 665px;
+    font-size: fluid(24px, 48px);
+    line-height: 1.08; // 68/64
+    letter-spacing: tracking(-1.92px, 64px);
+  }
+
+  &__text {
+    max-width: 600px;
+    color: $color-bg-light;
+    font-size: fluid(16px, 20px);
+    line-height: 1.33;
+  }
+
+  // ---- Stats panel (liquid glass) ----
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    gap: $space-32;
+    padding: $space-32 $space-20 $space-20;
+    border-radius: $radius-md;
+    background: linear-gradient(90deg, rgba(233, 234, 234, 0.1) 44%, rgba(226, 228, 228, 0.1));
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  &__stat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: $space-8;
+    padding: 0 $space-12 0 22px;
+
+    // Market colour dot (Figma 10px circle).
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0.55em;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--dot);
+      font-size: fluid(18px, 24px);
+    }
+
+    // Fading vertical divider (Figma "Line 27": #f6f6f9 → transparent, 25%).
+    & + & {
+      margin-left: $space-12;
+      border-left: 1px solid transparent;
+      border-image: linear-gradient(180deg, rgba(246, 246, 249, 0.25), rgba(255, 255, 255, 0)) 1;
+      padding-left: calc(22px + #{$space-12});
+
+      &::before {
+        left: $space-12;
+      }
+    }
+  }
+
+  &__label {
+    font-size: fluid(18px, 24px);
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  &__value {
+    font-size: fluid(15px, 19px);
+    font-weight: $font-weight-semibold;
+    line-height: 1.1;
+    letter-spacing: tracking(-0.24px, 24px);
+  }
+
+  &__cta {
+    width: min(346px, 100%);
+  }
+
+  // Market colours.
+  &--private &__card {
+    --dot: #{$color-jade};
+  }
+
+  &--closed &__card {
+    --dot: #{$color-yellow-bright};
+  }
+
+  // ---- Tablet / small laptop ----
+  @include down("laptop") {
+    &__ring {
+      height: min(640px, 70%);
+      opacity: 0.6;
+    }
+  }
+
+  // ---- Mobile: cards flow normally, stats stack ----
+  @include down("tablet") {
+    &__card {
+      height: auto;
+      min-height: 0;
+    }
+
+    &__content {
+      padding: $space-32 $space-16 $space-16;
+    }
+
+    &__ring {
+      top: 0;
+      right: -20%;
+      width: 90%;
+      height: auto;
+      opacity: 0.45;
+      transform: none;
+    }
+
+    &__stats {
+      grid-template-columns: 1fr;
+      gap: $space-16;
+    }
+
+    &__stat + &__stat {
+      margin-left: 0;
+      padding-left: 22px;
+      padding-top: $space-16;
+      border-left: 0;
+      border-top: 1px solid rgba(246, 246, 249, 0.15);
+      border-image: none;
+
+      &::before {
+        top: calc(#{$space-16} + 0.55em);
+        left: 0;
+      }
+    }
+
+    &__cta {
+      width: 100%;
+    }
+  }
+}
+
+// Sticky 3D stack — wide and tall enough screens only, and not for
+// reduced motion (stack.js applies the same query).
+@media (min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  // Heading sticks once its top padding has scrolled away, keeping only
+  // title / lead / button (+ a small gap) on screen.
+  .markets-head {
+    position: sticky;
+    top: calc(var(--head-stuck-gap) - var(--head-pad-top));
+    padding-bottom: $space-24;
+
+    // Stuck heading stays on screen the whole stack — keep it compact
+    // so the cards get the room.
+    &__text {
+      gap: $space-12;
+    }
+
+    &__title {
+      font-size: min(#{fluid(36px, 64px)}, 6vh);
+      line-height: 1.1;
+    }
+
+    &__lead {
+      font-size: min(#{fluid(18px, 24px)}, 2.4vh);
+    }
+  }
+
+  .markets__list {
+    gap: 0;
+  }
+
+  .market__card {
+    height: calc(100vh - var(--markets-stuck-h) - 2 * var(--market-gap) - #{$space-24});
+    height: calc(100svh - var(--markets-stuck-h) - 2 * var(--market-gap) - #{$space-24});
+    min-height: 0;
+  }
+
+  // Cards are shorter under the stuck heading: cap type + spacing by
+  // viewport height too, so a card's content always fits.
+  .market__content {
+    gap: min(#{fluid(24px, 48px)}, 2.6vh);
+    padding-block: min(#{fluid(32px, 60px)}, 3.6vh);
+  }
+
+  .market__title {
+    font-size: min(#{fluid(34px, 76px)}, 6vh);
+  }
+
+  .market__body {
+    gap: min(#{fluid(28px, 48px)}, 2.6vh);
+  }
+
+  .market__copy {
+    gap: min(#{fluid(16px, 32px)}, 1.6vh);
+  }
+
+  .market__subtitle {
+    font-size: min(#{fluid(24px, 48px)}, 3.8vh);
+  }
+
+  .market__text {
+    font-size: min(#{fluid(16px, 20px)}, 1.9vh);
+  }
+
+  .market__panel {
+    gap: min(#{$space-32}, 2.2vh);
+    padding-top: min(#{$space-32}, 2.6vh);
+  }
+
+  .market__label {
+    font-size: min(#{fluid(18px, 24px)}, 2.2vh);
+  }
+
+  .market__value {
+    font-size: min(#{fluid(15px, 19px)}, 1.8vh);
+  }
+
+  .market {
+    position: sticky;
+    top: calc(var(--market-top) + var(--i, 0) * var(--market-gap));
+    padding-bottom: $space-24;
+  }
+}
+
+// ---- Ring loops ----
+@property --ring-r {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --ring-a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes ring-ripple {
+  0% {
+    --ring-r: 8%;
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    --ring-r: 75%;
+    opacity: 0;
+  }
+}
+
+@keyframes ring-sweep {
+  to {
+    --ring-a: 360deg;
+  }
+}
+
+@keyframes ring-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ring-twist {
+  from {
+    transform: rotate(-6deg) scale(1);
+  }
+
+  to {
+    transform: rotate(6deg) scale(1.04);
+  }
+}
+
+@keyframes ring-swell {
+  from {
+    --ring-r: 10%;
+  }
+
+  to {
+    --ring-r: 52%;
+  }
+}

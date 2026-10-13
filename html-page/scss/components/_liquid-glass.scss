@@ -1,0 +1,56 @@
+@use "../abstracts" as *;
+
+// Liquid glass card surface — ported from the ARENA v2 build
+// (webdemos.tech/2026/dfm_arena/v2, .liquidGlass-*). Four stacked layers:
+//
+//   <article class="liquid-glass">
+//     <div class="liquid-glass__effect"></div>   blur + SVG warp of what's behind
+//     <div class="liquid-glass__tint"></div>     5% white wash
+//     <div class="liquid-glass__shine"></div>    inset light edges
+//     <div class="liquid-glass__content">…</div>
+//   </article>
+//
+// The warp is the #glass-distortion SVG filter (feTurbulence → displacement)
+// inlined once per page. Browsers that can't combine filter + backdrop-filter
+// (Safari) just get the frosted blur — still reads as glass.
+.liquid-glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  &__effect,
+  &__tint,
+  &__shine {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  &__effect {
+    z-index: 0;
+    overflow: hidden;
+    isolation: isolate;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    filter: url("#glass-distortion");
+  }
+
+  &__tint {
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &__shine {
+    z-index: 2;
+    overflow: hidden;
+    box-shadow:
+      inset 1px 1px 1px rgba(255, 255, 255, 0.25),
+      inset -1px -1px 1px 1px rgba(255, 255, 255, 0.25);
+  }
+
+  &__content {
+    position: relative;
+    z-index: 4;
+  }
+}

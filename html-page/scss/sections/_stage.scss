@@ -1,0 +1,161 @@
+@use "../abstracts" as *;
+
+// Stage: hero + "What is ARENA" share ONE background layer, scrubbed by
+// js/components/stage.js — half the circle in the hero, the camera
+// "pulls back" on scroll until the full circle frames section two.
+//
+// .stage__bg is hidden until JS adds .stage--live, so with no JS, failed
+// GSAP or reduced motion each section shows its own static background
+// (see _hero.scss / _what-is.scss) instead of a frozen shared layer.
+.stage {
+  position: relative;
+
+  // Wrapper spans the whole stage; the pin inside is sticky for exactly
+  // the stage's height, so the layer never leaks into the next section.
+  &__bg {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  &__pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100lvh;
+    overflow: hidden;
+  }
+
+  // Moved/scaled by GSAP. Full-width flex row so the image centres
+  // without a CSS translate that would fight GSAP's transform.
+  &__media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    transform-origin: 50% 0;
+    will-change: transform;
+  }
+
+  // v5 full-circle layer (added by stage.js). --reveal drives a soft
+  // circular mask that widens from the centre.
+  &__swap {
+    position: absolute;
+    inset: 0;
+    will-change: transform, opacity;
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 calc(var(--reveal, 0%) - 25%), transparent var(--reveal, 0%));
+    mask-image: radial-gradient(circle at 50% 50%, #000 calc(var(--reveal, 0%) - 25%), transparent var(--reveal, 0%));
+
+    img {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      object-fit: cover;
+    }
+  }
+
+  // v3 ghost exposure (cloned by stage.js), screen-blended over the main.
+  &__media--ghost {
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  // Idle "breathing" — separate element so it never fights the scrub.
+  &__float {
+    flex-shrink: 0;
+    animation: stage-breathe 9s ease-in-out infinite alternate;
+  }
+
+  &__img {
+    display: block;
+    max-width: none;
+  }
+
+  &--live {
+    .stage__bg {
+      display: block;
+    }
+
+    > section {
+      position: relative;
+      z-index: 1;
+      background: none;
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  // ---- Company: tall navy mesh photo, pans up + scales 1.15 → 1 ----
+  &--pan {
+    .stage__pin {
+      background: $color-navy;
+    }
+
+    .stage__img {
+      // Portrait screens need a taller image to cover the pan.
+      width: max(100vw, 900px, 160vh);
+      height: auto;
+      // Edges melt into the navy pin instead of ending on a hard line
+      // when a tall phone screen runs past the image.
+      -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 75%, transparent 100%);
+      mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 75%, transparent 100%);
+    }
+
+    // Light sky haze at the top of the hero (Figma: silver glow inside
+    // the oval). Faded out by stage.js as the camera pulls back.
+    .stage__haze {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 55% at 50% 0%, rgba(214, 216, 222, 0.85), rgba(214, 216, 222, 0) 70%),
+        linear-gradient(180deg, rgba(196, 200, 210, 0.55) 0%, rgba(196, 200, 210, 0) 55%);
+      pointer-events: none;
+    }
+  }
+
+  // ---- Investor: silver swirl rises + grows; bg fades light → black ----
+  &--orbit {
+    .stage__pin {
+      background: #f0f3f2;
+    }
+
+    .stage__media {
+      transform-origin: 50% 50%;
+    }
+
+    .stage__img {
+      width: max(76vw, 560px);
+      height: auto;
+      animation: stage-spin 140s linear infinite;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__float,
+    &__img {
+      animation: none !important;
+    }
+  }
+}
+
+@keyframes stage-breathe {
+  from {
+    transform: scale(1) translateY(0);
+  }
+
+  to {
+    transform: scale(1.025) translateY(-8px);
+  }
+}
+
+@keyframes stage-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

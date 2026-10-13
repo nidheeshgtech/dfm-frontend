@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ARENA — Invest in what's next</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preload" href="../assets/fonts/Fester-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="theme-investor">
+  <!-- Liquid glass distortion (used by .liquid-glass__effect). -->
+  <svg class="sr-filter" width="0" height="0" aria-hidden="true" focusable="false">
+    <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" seed="5" result="turbulence" />
+      <feComponentTransfer in="turbulence" result="mapped">
+        <feFuncR type="gamma" amplitude="1" exponent="10" offset="0.5" />
+        <feFuncG type="gamma" amplitude="0" exponent="1" offset="0" />
+        <feFuncB type="gamma" amplitude="0" exponent="1" offset="0.5" />
+      </feComponentTransfer>
+      <feGaussianBlur in="turbulence" stdDeviation="3" result="softMap" />
+      <feSpecularLighting in="softMap" surfaceScale="5" specularConstant="1" specularExponent="100" lighting-color="white" result="specLight">
+        <fePointLight x="-200" y="-200" z="300" />
+      </feSpecularLighting>
+      <feComposite in="specLight" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litImage" />
+      <feDisplacementMap in="SourceGraphic" in2="softMap" scale="150" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+
+  <header class="site-header" data-site-header data-menu-theme="light" data-menu-bg="dots">
+    <div class="site-header__inner">
+      <div class="site-header__brand">
+        <a class="site-header__logo" href="index.html" aria-label="ARENA by Dubai Financial Market — home">
+          <img class="logo--dark" src="images/shared/logo-dark.svg" width="180" height="64" alt="ARENA">
+          <img class="logo--light" src="images/shared/logo-light.svg" width="180" height="64" alt="ARENA">
+        </a>
+        <nav class="toggle liquid-glass" aria-label="Audience">
+          <span class="liquid-glass__effect"></span>
+          <span class="liquid-glass__tint"></span>
+          <span class="liquid-glass__shine"></span>
+          <a class="toggle__option" href="company.html">Raise Capital</a>
+          <a class="toggle__option" href="index.html" aria-current="page">Invest</a>
+        </nav>
+      </div>
+
+      <button class="site-header__menu-btn" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu" data-menu-button><span></span></button>
+
+      <nav class="site-header__nav" id="site-menu" aria-label="Main" data-menu>
+        <span class="site-header__menu-bg" aria-hidden="true"></span>
+        <a class="site-header__link t-nav" href="#about" style="--i: 0"><span class="site-header__link-text">About</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
+        <a class="site-header__link t-nav" href="#contact" style="--i: 1"><span class="site-header__link-text">Contact</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
+        <div class="site-header__menu-foot">
+          <a class="site-header__menu-cta" href="#contact">Start a conversation<span aria-hidden="true"></span></a>
+          <a class="site-header__menu-mail" href="mailto:arena@dfm.ae">arena@dfm.ae</a>
+          <p class="site-header__menu-tag">Capital, made simple.</p>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="stage stage--orbit" data-stage="orbit">
+      <div class="stage__bg" aria-hidden="true">
+        <div class="stage__pin">
+          <div class="stage__media" data-stage-media>
+            <div class="stage__float">
+              <img class="stage__img" src="images/investor/swirl.png" width="1023" height="1024" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="hero hero--investor" data-hero>
+        <div class="hero__content">
+          <div class="hero__intro">
+            <p class="t-eyebrow" data-hero-intro>ARENA by Dubai Financial Market</p>
+            <nav class="switch liquid-glass" aria-label="I am" data-hero-intro>
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <a class="switch__option" href="company.html"><span class="switch__label">I'm raising capital</span></a>
+              <span class="switch__active" aria-current="page">
+                <span class="switch__chip switch__chip--right"><img src="images/shared/icons/arrow.svg" width="24" height="24" alt=""></span>
+                <span class="switch__label">I’m here to invest</span>
+              </span>
+            </nav>
+          </div>
+          <h1 class="hero__title t-display"><span class="hero__line hero__line--sm">Invest in</span> <span class="hero__line hero__line--sm">what's next</span></h1>
+          <p class="hero__lead t-lead" data-hero-intro>Discover growth companies before they go public. Evaluate, subscribe and track every opportunity inside one regulated DFM platform.</p>
+        </div>
+
+        <div class="hero__actions">
+          <a class="btn-cta liquid-glass btn-cta--purple" href="#contact" data-hero-intro>
+            <span class="liquid-glass__effect"></span>
+            <span class="liquid-glass__tint"></span>
+            <span class="liquid-glass__shine"></span>
+            <span class="btn-cta__label">
+              <span class="btn-cta__text">Start a conversation</span>
+              <span class="btn-cta__text" aria-hidden="true">Start a conversation</span>
+            </span>
+            <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
+          </a>
+          <a class="btn-cta liquid-glass btn-cta--dark" href="#about" data-hero-intro>
+            <span class="liquid-glass__effect"></span>
+            <span class="liquid-glass__tint"></span>
+            <span class="liquid-glass__shine"></span>
+            <span class="btn-cta__label">
+              <span class="btn-cta__text">See how it works</span>
+              <span class="btn-cta__text" aria-hidden="true">See how it works</span>
+            </span>
+            <img class="btn-cta__icon" src="images/shared/icons/chevron-dark.svg" width="20" height="20" alt="">
+          </a>
+        </div>
+      </section>
+
+      <section class="what-is what-is--investor" id="about" data-header="light" data-scroll-offset="0">
+        <div class="container what-is__inner">
+          <div class="what-is__head">
+            <h2 class="what-is__title t-h2" data-scroll-reveal>What is ARENA</h2>
+            <p class="what-is__lead t-lead" data-scroll-reveal>Raising capital today can be complex, costly, and time-consuming. Arena simplifies the process. Arena connects companies with qualified investors, giving businesses a faster, more efficient way to access funding through a trusted platform powered by Dubai Financial Market.</p>
+          </div>
+        <div class="what-is__cards" data-scroll-reveal-group>
+          <article class="market-card liquid-glass">
+            <div class="liquid-glass__effect"></div>
+            <div class="liquid-glass__tint"></div>
+            <div class="liquid-glass__shine"></div>
+            <div class="liquid-glass__content market-card__inner">
+              <span class="market-card__tag market-card__tag--growth t-tag">01 — SMEs and growth companies</span>
+              <div class="market-card__body">
+                <h3 class="t-h3">Growth Market</h3>
+                <p class="market-card__text t-body">Raise from the open market and trade daily.</p>
+              </div>
+            </div>
+          </article>
+          <article class="market-card liquid-glass">
+            <div class="liquid-glass__effect"></div>
+            <div class="liquid-glass__tint"></div>
+            <div class="liquid-glass__shine"></div>
+            <div class="liquid-glass__content market-card__inner">
+              <span class="market-card__tag market-card__tag--private t-tag">02 — Pre-IPO companies</span>
+              <div class="market-card__body">
+                <h3 class="t-h3">Private Market</h3>
+                <p class="market-card__text t-body">Raise from whitelisted investors ahead of an IPO.</p>
+              </div>
+            </div>
+          </article>
+          <article class="market-card liquid-glass">
+            <div class="liquid-glass__effect"></div>
+            <div class="liquid-glass__tint"></div>
+            <div class="liquid-glass__shine"></div>
+            <div class="liquid-glass__content market-card__inner">
+              <span class="market-card__tag market-card__tag--closed t-tag">03 — Family businesses and ESOPs</span>
+              <div class="market-card__body">
+                <h3 class="t-h3">Closed Market</h3>
+                <p class="market-card__text t-body">Move shares privately, without going public.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="markets-wrap" data-markets data-header="dark">
+    <section class="markets-head" id="markets">
+      <div class="container markets-head__inner">
+        <div class="markets-head__text">
+          <h2 class="markets-head__title" id="markets-title" data-scroll-reveal>Three ways to invest</h2>
+          <p class="markets-head__lead" data-scroll-reveal>Each market has its own eligibility, transfer terms and disclosure. See which offerings are open to you.</p>
+        </div>
+        <a class="btn-pill" href="#contact" data-scroll-reveal>
+          <span class="btn-pill__label">Register interest</span>
+          <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="markets" aria-labelledby="markets-title">
+      <div class="markets__list" data-stack>
+        <article class="market market--growth" data-stack-item>
+          <div class="market__card">
+            <div class="market__media" aria-hidden="true" data-skeleton>
+              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img data-skeleton-content class="market__photo market__photo--flip" src="images/markets/investor-growth.jpg" width="1024" height="577" alt="" loading="lazy">
+            </div>
+              <div class="market__ring" aria-hidden="true">
+                <div class="market__ring-art">
+                  <img class="market__ring-img" src="images/markets/ring-investor-growth.svg" width="910" height="910" alt="" loading="lazy">
+                  <img class="market__ring-glow" src="images/markets/ring-investor-growth.svg" width="910" height="910" alt="" loading="lazy">
+                </div>
+              </div>
+            <div class="market__content">
+              <h3 class="market__title">Growth Market — 01</h3>
+              <div class="market__body">
+                <div class="market__copy">
+                  <p class="market__subtitle">Open subscription, priced by the market.</p>
+                  <p class="market__text">Open to institutions and qualified individual investors, with daily trading once listed.</p>
+                </div>
+                <div class="market__panel liquid-glass">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                  <div class="market__stats liquid-glass__content">
+                  <div class="market__stat">
+                    <p class="market__label">Eligibility</p>
+                    <p class="market__value">All DFM investors</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">After admission</p>
+                    <p class="market__value">Freely tradable</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">Disclosure</p>
+                    <p class="market__value">Full prospectus</p>
+                  </div>
+                  </div>
+                  <div class="liquid-glass__content">
+                    <a class="btn-cta liquid-glass btn-cta--purple market__cta" href="#contact">
+                      <span class="liquid-glass__effect"></span>
+                      <span class="liquid-glass__tint"></span>
+                      <span class="liquid-glass__shine"></span>
+                      <span class="btn-cta__label">
+                        <span class="btn-cta__text">See live offerings</span>
+                        <span class="btn-cta__text" aria-hidden="true">See live offerings</span>
+                      </span>
+                      <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="market__shade" aria-hidden="true"></div>
+          </div>
+        </article>
+        <article class="market market--private" data-stack-item>
+          <div class="market__card">
+            <div class="market__media" aria-hidden="true" data-skeleton>
+              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img data-skeleton-content class="market__photo market__photo--flip market__photo--zoom" src="images/markets/investor-private.jpg" width="1024" height="577" alt="" loading="lazy">
+                <div class="market__overlay market__overlay--deep"></div>
+            </div>
+              <div class="market__ring" aria-hidden="true">
+                <div class="market__ring-art">
+                  <img class="market__ring-img" src="images/markets/ring-investor-private.svg" width="910" height="910" alt="" loading="lazy">
+                  <img class="market__ring-glow" src="images/markets/ring-investor-private.svg" width="910" height="910" alt="" loading="lazy">
+                </div>
+              </div>
+            <div class="market__content">
+              <h3 class="market__title">Private Market — 02</h3>
+              <div class="market__body">
+                <div class="market__copy">
+                  <p class="market__subtitle">Pre-IPO access, by invitation.</p>
+                  <p class="market__text">Open to approved institutions and professional investors, by invitation.</p>
+                </div>
+                <div class="market__panel liquid-glass">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                  <div class="market__stats liquid-glass__content">
+                  <div class="market__stat">
+                    <p class="market__label">Eligibility</p>
+                    <p class="market__value">Qualified investors</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">Transfer terms</p>
+                    <p class="market__value">Set per offer</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">Disclosure</p>
+                    <p class="market__value">Full prospectus</p>
+                  </div>
+                  </div>
+                  <div class="liquid-glass__content">
+                    <a class="btn-cta liquid-glass btn-cta--jade market__cta" href="#contact">
+                      <span class="liquid-glass__effect"></span>
+                      <span class="liquid-glass__tint"></span>
+                      <span class="liquid-glass__shine"></span>
+                      <span class="btn-cta__label">
+                        <span class="btn-cta__text">Check your eligibility</span>
+                        <span class="btn-cta__text" aria-hidden="true">Check your eligibility</span>
+                      </span>
+                      <img class="btn-cta__icon" src="images/shared/icons/chevron-jade.svg" width="20" height="20" alt="">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="market__shade" aria-hidden="true"></div>
+          </div>
+        </article>
+        <article class="market market--closed" data-stack-item>
+          <div class="market__card">
+            <div class="market__media" aria-hidden="true" data-skeleton>
+              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img data-skeleton-content class="market__photo" src="images/markets/investor-closed.jpg" width="1024" height="577" alt="" loading="lazy">
+                <div class="market__overlay market__overlay--deep"></div>
+            </div>
+              <div class="market__ring" aria-hidden="true">
+                <div class="market__ring-art">
+                  <img class="market__ring-img" src="images/markets/ring-investor-closed.svg" width="910" height="910" alt="" loading="lazy">
+                  <img class="market__ring-glow" src="images/markets/ring-investor-closed.svg" width="910" height="910" alt="" loading="lazy">
+                </div>
+              </div>
+            <div class="market__content">
+              <h3 class="market__title">Closed Market — 03</h3>
+              <div class="market__body">
+                <div class="market__copy">
+                  <p class="market__subtitle">Transfers within a defined group.</p>
+                  <p class="market__text">Not open to outside investors. Trading is limited to approved family members, employees and shareholders.</p>
+                </div>
+                <div class="market__panel liquid-glass">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                  <div class="market__stats liquid-glass__content">
+                  <div class="market__stat">
+                    <p class="market__label">Eligibility</p>
+                    <p class="market__value">By admission only</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">Transfer terms</p>
+                    <p class="market__value">Restricted</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">Valuation</p>
+                    <p class="market__value">Independent</p>
+                  </div>
+                  </div>
+                  <div class="liquid-glass__content">
+                    <a class="btn-cta liquid-glass btn-cta--yellow market__cta" href="#contact">
+                      <span class="liquid-glass__effect"></span>
+                      <span class="liquid-glass__tint"></span>
+                      <span class="liquid-glass__shine"></span>
+                      <span class="btn-cta__label">
+                        <span class="btn-cta__text">Learn more</span>
+                        <span class="btn-cta__text" aria-hidden="true">Learn more</span>
+                      </span>
+                      <img class="btn-cta__icon" src="images/shared/icons/chevron-yellow.svg" width="20" height="20" alt="">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="market__shade" aria-hidden="true"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+    </div>
+
+    <section class="xp" id="experience" aria-labelledby="xp-title" data-xp data-header="glass">
+      <div class="xp__content">
+        <div class="xp__head">
+          <h2 class="xp__title" id="xp-title" data-scroll-reveal>A familiar investor experience</h2>
+          <p class="xp__lead" data-scroll-reveal>Taking our proven DFM IPO subscription process and applying it to pre-IPO opportunities</p>
+        </div>
+        <div class="xp-steps" data-scroll-reveal>
+          <div class="xp-steps__track" aria-hidden="true"><span class="xp-steps__fill"></span></div>
+          <div class="xp-step is-open" data-xp-step data-spot="26%">
+            <h3>
+              <button class="xp-step__btn" type="button" id="xp-btn-1" aria-expanded="true" aria-controls="xp-panel-1">
+                <span>
+                  <span class="xp-step__label">Access</span>
+                  <span class="xp-step__title">You are likely already registered.</span>
+                </span>
+                <span class="xp-step__icon" aria-hidden="true"><img src="images/shared/icons/arrow-down.svg" width="40" height="40" alt=""></span>
+              </button>
+            </h3>
+            <div class="xp-step__panel" id="xp-panel-1" role="region" aria-labelledby="xp-btn-1">
+              <div class="xp-step__inner">
+                <div class="xp-step__body"><p>If you hold a DFM Investor Number, no new account is required and no new process applies.</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="xp-step" data-xp-step data-spot="92%">
+            <h3>
+              <button class="xp-step__btn" type="button" id="xp-btn-2" aria-expanded="false" aria-controls="xp-panel-2">
+                <span>
+                  <span class="xp-step__label">Subscribe</span>
+                  <span class="xp-step__title">Review the offer and subscribe.</span>
+                </span>
+                <span class="xp-step__icon" aria-hidden="true"><img src="images/shared/icons/arrow-down.svg" width="40" height="40" alt=""></span>
+              </button>
+            </h3>
+            <div class="xp-step__panel" id="xp-panel-2" role="region" aria-labelledby="xp-btn-2">
+              <div class="xp-step__inner">
+                <div class="xp-step__body"><p>Read the offer documents on the platform, then subscribe in a few taps, just as you would for a DFM IPO.</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="xp-step" data-xp-step data-spot="56%">
+            <h3>
+              <button class="xp-step__btn" type="button" id="xp-btn-3" aria-expanded="false" aria-controls="xp-panel-3">
+                <span>
+                  <span class="xp-step__label">Trade</span>
+                  <span class="xp-step__title">Trade after admission.</span>
+                </span>
+                <span class="xp-step__icon" aria-hidden="true"><img src="images/shared/icons/arrow-down.svg" width="40" height="40" alt=""></span>
+              </button>
+            </h3>
+            <div class="xp-step__panel" id="xp-panel-3" role="region" aria-labelledby="xp-btn-3">
+              <div class="xp-step__inner">
+                <div class="xp-step__body"><p>Once admitted, your shares sit in your DFM portfolio and can be traded within the rules of their market.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="xp__visual" aria-hidden="true" data-skeleton>
+        <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+        <img class="xp__dots" src="images/investor/xp-dots.webp" width="1024" height="708" alt="" loading="lazy" data-skeleton-content>
+        <div class="xp__phone" data-scroll-reveal>
+          <img class="xp__screen" src="images/investor/xp-phone.webp" width="809" height="1024" alt="" loading="lazy" data-skeleton-content>
+          <span class="xp__spot"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="globe" id="investors" aria-labelledby="globe-title" data-globe data-header="dark">
+      <div class="container globe__inner">
+        <div class="globe__top">
+          <div class="globe__text">
+            <h2 class="globe__title" id="globe-title" data-scroll-reveal>Capital reaches ARENA from around the world</h2>
+            <p class="globe__lead" data-scroll-reveal>More than 1.25 million registered investors subscribe to offerings on Dubai Financial Market, from over 200 nationalities and 13,000 institutions. A raise on Arena reaches them from day one.</p>
+          </div>
+          <div class="globe__map" data-globe-map>
+            <div class="globe__stage" aria-hidden="true">
+              <canvas></canvas>
+              <div class="globe__anchors"></div>
+              <svg class="globe__links"><path class="globe__link" d="" /></svg>
+            </div>
+            <ul class="globe-pins" aria-label="Investors on ARENA around the world">
+              <li class="globe-pins__item globe-pins__item--edge" style="--d: 0.00s">
+                <button class="globe-pin" type="button" data-lat="39.8" data-lon="-98.6" aria-label="Maria Lu Bex, Individual Investor, USA. Show on globe">
+                  <span class="globe-pin__avatar"><img src="images/globe/a1.webp" width="60" height="60" alt="" loading="lazy"><img class="globe-pin__flag" src="images/globe/f1.webp" width="21" height="21" alt="" loading="lazy"></span>
+                  <span><span class="globe-pin__name">Maria Lu Bex</span><span class="globe-pin__role">Individual Investor</span></span>
+                </button>
+              </li>
+              <li class="globe-pins__item" style="--d: 0.15s">
+                <button class="globe-pin" type="button" data-lat="22.0" data-lon="79.0" aria-label="Deepa Anani, Professional Investor, India. Show on globe">
+                  <span class="globe-pin__avatar"><img src="images/globe/a2.webp" width="60" height="60" alt="" loading="lazy"><img class="globe-pin__flag" src="images/globe/f2.webp" width="21" height="21" alt="" loading="lazy"></span>
+                  <span><span class="globe-pin__name">Deepa Anani</span><span class="globe-pin__role">Professional Investor</span></span>
+                </button>
+              </li>
+              <li class="globe-pins__item" style="--d: 0.30s">
+                <button class="globe-pin" type="button" data-lat="54.0" data-lon="-2.5" aria-label="Isabella Taylor, Institutional Investor, UK. Show on globe">
+                  <span class="globe-pin__avatar"><img src="images/globe/a5.webp" width="60" height="60" alt="" loading="lazy"><img class="globe-pin__flag" src="images/globe/f5.webp" width="21" height="21" alt="" loading="lazy"></span>
+                  <span><span class="globe-pin__name">Isabella Taylor</span><span class="globe-pin__role">Institutional Investor</span></span>
+                </button>
+              </li>
+              <li class="globe-pins__item" style="--d: 0.45s">
+                <button class="globe-pin" type="button" data-lat="24.4" data-lon="54.4" aria-label="Ali Mansoor, Institutional Investor, UAE. Show on globe">
+                  <span class="globe-pin__avatar"><img src="images/globe/a3.webp" width="60" height="60" alt="" loading="lazy"><img class="globe-pin__flag" src="images/globe/f3.webp" width="21" height="21" alt="" loading="lazy"></span>
+                  <span><span class="globe-pin__name">Ali Mansoor</span><span class="globe-pin__role">Institutional Investor</span></span>
+                </button>
+              </li>
+              <li class="globe-pins__item" style="--d: 0.60s">
+                <button class="globe-pin" type="button" data-lat="26.8" data-lon="30.8" aria-label="Medhat Fathi, Professional Investor, Egypt. Show on globe">
+                  <span class="globe-pin__avatar"><img src="images/globe/a4.webp" width="60" height="60" alt="" loading="lazy"><img class="globe-pin__flag" src="images/globe/f4.webp" width="21" height="21" alt="" loading="lazy"></span>
+                  <span><span class="globe-pin__name">Medhat Fathi</span><span class="globe-pin__role">Professional Investor</span></span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="globe__stats" data-scroll-reveal-group>
+          <div class="stat-card">
+            <p class="stat-card__value"><span data-count-to="1.2" data-count-decimals="1">1.2</span>M<span class="stat-card__sup">+</span></p>
+            <p class="stat-card__label">Active investors</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-card__value"><span data-count-to="200">200</span><span class="stat-card__sup">+</span></p>
+            <p class="stat-card__label">Nationalities</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-card__value"><span data-count-to="1.3" data-count-decimals="1">1.3</span>tr</p>
+            <p class="stat-card__label">AED total investor demand</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-card__value"><span data-count-to="54">54</span><span class="stat-card__sup stat-card__sup--small">%</span></p>
+            <p class="stat-card__label">International participation</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-card__value"><span data-count-to="33">33</span><span class="stat-card__sup stat-card__sup--small">%</span></p>
+            <p class="stat-card__label">Subscribed directly on DFM</p>
+          </div>
+        </div>
+        <p class="globe__note" data-scroll-reveal><img src="images/shared/icons/info.svg" width="20" height="20" alt="">DFM figures, first half of 2026.</p>
+      </div>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="faq__panel" data-header="light">
+        <img class="faq__contours" src="images/faq/contours.svg" width="1463" height="1463" alt="" aria-hidden="true" loading="lazy">
+        <div class="container">
+          <h2 class="faq__title" id="faq-title" data-scroll-reveal>Common questions</h2>
+          <div class="faq__grid">
+            <div class="faq__list" data-faq data-scroll-reveal-group>
+            <div class="faq-item liquid-glass is-open">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-1" aria-expanded="true" aria-controls="faq-a-1">
+                  <span class="faq-item__q">DFM’s platform for raising capital, with three regulated markets and a DFM team throughout.</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-1" role="region" aria-labelledby="faq-q-1">
+                <div class="faq-item__inner"><p class="faq-item__a">Arena is Dubai Financial Market’s platform for companies raising capital. It brings three regulated markets (Growth, Private and Closed) and DFM’s investor base into one place, with a DFM team alongside you from the first call to listing day.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-2" aria-expanded="false" aria-controls="faq-a-2">
+                  <span class="faq-item__q">Is our company eligible?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-2" role="region" aria-labelledby="faq-q-2">
+                <div class="faq-item__inner"><p class="faq-item__a">Capital flows into ARENA from investors across three continents, connecting ambitious companies with regional and international funding opportunities.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-3" aria-expanded="false" aria-controls="faq-a-3">
+                  <span class="faq-item__q">How long does the process take?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-3" role="region" aria-labelledby="faq-q-3">
+                <div class="faq-item__inner"><p class="faq-item__a">Capital flows into ARENA from investors across three continents, connecting ambitious companies with regional and international funding opportunities.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-4" aria-expanded="false" aria-controls="faq-a-4">
+                  <span class="faq-item__q">What does it cost?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-4" role="region" aria-labelledby="faq-q-4">
+                <div class="faq-item__inner"><p class="faq-item__a">Capital flows into ARENA from investors across three continents, connecting ambitious companies with regional and international funding opportunities.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-5" aria-expanded="false" aria-controls="faq-a-5">
+                  <span class="faq-item__q">Do we have to give up control?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-5" role="region" aria-labelledby="faq-q-5">
+                <div class="faq-item__inner"><p class="faq-item__a">Capital flows into ARENA from investors across three continents, connecting ambitious companies with regional and international funding opportunities.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-6" aria-expanded="false" aria-controls="faq-a-6">
+                  <span class="faq-item__q">What if we are not ready yet?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-6" role="region" aria-labelledby="faq-q-6">
+                <div class="faq-item__inner"><p class="faq-item__a">Capital flows into ARENA from investors across three continents, connecting ambitious companies with regional and international funding opportunities.</p></div>
+              </div>
+            </div>
+            </div>
+            <div class="faq__aside" id="contact" data-scroll-reveal-group>
+              <div class="assist-card">
+                <div>
+                  <p class="assist-card__title">Ask the assistant</p>
+                  <p class="assist-card__text">Ask the Arena assistant about the markets, eligibility or how subscription works, and get an answer in seconds.</p>
+                </div>
+                <a class="assist-card__btn" href="#assistant">
+                  <span class="assist-card__orb" aria-hidden="true">
+                    <svg class="orb" viewBox="0 0 64 64">
+                      <defs>
+                        <radialGradient id="orb-body" cx="50%" cy="50%" r="50%">
+                          <stop offset="0" stop-color="#8f6bff" stop-opacity="0.08" />
+                          <stop offset="0.72" stop-color="#a98bff" stop-opacity="0.22" />
+                          <stop offset="0.93" stop-color="#d9ccff" stop-opacity="0.5" />
+                          <stop offset="1" stop-color="#efe9ff" stop-opacity="0.15" />
+                        </radialGradient>
+                        <radialGradient id="orb-gloss" cx="38%" cy="28%" r="40%">
+                          <stop offset="0" stop-color="#ffffff" stop-opacity="0.32" />
+                          <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+                        </radialGradient>
+                        <filter id="orb-glow" x="-30%" y="-30%" width="160%" height="160%">
+                          <feGaussianBlur stdDeviation="0.9" result="b" />
+                          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+                        </filter>
+                      </defs>
+                      <circle cx="32" cy="32" r="25.5" fill="url(#orb-body)" />
+                      <circle class="orb__gloss" cx="32" cy="32" r="25" fill="url(#orb-gloss)" />
+                      <g class="orb__rings" filter="url(#orb-glow)" fill="none" stroke="#efe9ff">
+                        <path class="orb__ring orb__ring--1" d="M58.62 32.00C58.79 33.15 58.87 34.36 58.81 35.53C58.75 36.70 58.57 37.90 58.28 39.04C57.99 40.18 57.56 41.31 57.06 42.38C56.55 43.44 55.93 44.47 55.27 45.44C54.61 46.40 53.86 47.31 53.09 48.18C52.31 49.05 51.48 49.86 50.63 50.63C49.78 51.40 48.89 52.13 47.96 52.80C47.04 53.48 46.08 54.11 45.09 54.67C44.10 55.23 43.06 55.74 42.00 56.15C40.95 56.56 39.84 56.91 38.74 57.15C37.63 57.40 36.50 57.55 35.37 57.62C34.25 57.69 33.11 57.65 32.00 57.57C30.89 57.49 29.78 57.31 28.69 57.11C27.61 56.91 26.54 56.65 25.47 56.37C24.40 56.09 23.35 55.78 22.29 55.43C21.24 55.09 20.18 54.73 19.12 54.31C18.07 53.88 17.00 53.43 15.97 52.89C14.94 52.35 13.90 51.75 12.95 51.05C12.00 50.35 11.06 49.56 10.25 48.69C9.44 47.81 8.70 46.83 8.10 45.80C7.50 44.77 7.01 43.64 6.65 42.50C6.29 41.37 6.06 40.16 5.93 38.99C5.80 37.81 5.80 36.61 5.85 35.44C5.90 34.28 6.05 33.13 6.22 32.00C6.39 30.87 6.62 29.78 6.86 28.69C7.10 27.60 7.37 26.54 7.66 25.48C7.96 24.42 8.27 23.37 8.64 22.33C9.02 21.29 9.41 20.24 9.89 19.24C10.37 18.23 10.90 17.22 11.51 16.28C12.13 15.34 12.82 14.42 13.58 13.58C14.34 12.74 15.18 11.95 16.06 11.23C16.95 10.52 17.91 9.87 18.89 9.29C19.87 8.71 20.90 8.20 21.95 7.74C23.00 7.28 24.08 6.88 25.18 6.54C26.27 6.19 27.40 5.89 28.53 5.67C29.67 5.44 30.83 5.25 32.00 5.17C33.17 5.09 34.36 5.06 35.53 5.16C36.71 5.26 37.90 5.44 39.03 5.75C40.17 6.06 41.30 6.49 42.35 7.02C43.39 7.55 44.40 8.21 45.32 8.93C46.24 9.64 47.09 10.47 47.87 11.32C48.65 12.16 49.34 13.09 50.00 14.00C50.66 14.91 51.24 15.86 51.82 16.79C52.40 17.72 52.94 18.66 53.48 19.60C54.02 20.54 54.55 21.48 55.06 22.45C55.57 23.42 56.09 24.40 56.55 25.42C57.00 26.45 57.46 27.51 57.80 28.60C58.15 29.70 58.45 30.85 58.62 32.00Z" stroke-width="0.9" stroke-opacity="0.7" />
+                        <path class="orb__ring orb__ring--2" d="M58.07 32.00C58.04 33.14 57.95 34.27 57.80 35.40C57.65 36.52 57.44 37.64 57.16 38.74C56.89 39.84 56.55 40.94 56.13 42.00C55.71 43.05 55.22 44.10 54.65 45.08C54.09 46.06 53.44 47.02 52.71 47.90C51.99 48.77 51.19 49.60 50.33 50.33C49.48 51.07 48.54 51.73 47.59 52.31C46.63 52.89 45.61 53.38 44.58 53.80C43.56 54.21 42.50 54.54 41.45 54.82C40.40 55.09 39.34 55.29 38.28 55.45C37.23 55.62 36.18 55.72 35.13 55.80C34.09 55.88 33.05 55.92 32.00 55.94C30.95 55.95 29.91 55.94 28.85 55.89C27.80 55.85 26.74 55.78 25.67 55.64C24.60 55.51 23.51 55.34 22.43 55.09C21.36 54.84 20.27 54.54 19.22 54.14C18.17 53.74 17.11 53.26 16.12 52.69C15.13 52.12 14.16 51.46 13.28 50.72C12.40 49.97 11.57 49.13 10.83 48.24C10.10 47.35 9.44 46.36 8.87 45.35C8.31 44.34 7.83 43.26 7.43 42.18C7.04 41.09 6.74 39.96 6.50 38.83C6.27 37.71 6.12 36.56 6.02 35.42C5.93 34.28 5.90 33.14 5.93 32.00C5.96 30.86 6.05 29.73 6.20 28.60C6.35 27.48 6.56 26.36 6.84 25.26C7.11 24.16 7.45 23.06 7.87 22.00C8.29 20.95 8.78 19.90 9.35 18.92C9.91 17.94 10.56 16.98 11.29 16.10C12.01 15.23 12.81 14.40 13.67 13.67C14.52 12.93 15.46 12.27 16.41 11.69C17.37 11.11 18.39 10.62 19.42 10.20C20.44 9.79 21.50 9.46 22.55 9.18C23.60 8.91 24.66 8.71 25.72 8.55C26.77 8.38 27.82 8.28 28.87 8.20C29.91 8.12 30.95 8.08 32.00 8.06C33.05 8.05 34.09 8.06 35.15 8.11C36.20 8.15 37.26 8.22 38.33 8.36C39.40 8.49 40.49 8.66 41.57 8.91C42.64 9.16 43.73 9.46 44.78 9.86C45.83 10.26 46.89 10.74 47.88 11.31C48.87 11.88 49.84 12.54 50.72 13.28C51.60 14.03 52.43 14.87 53.17 15.76C53.90 16.65 54.56 17.64 55.13 18.65C55.69 19.66 56.17 20.74 56.57 21.82C56.96 22.91 57.26 24.04 57.50 25.17C57.73 26.29 57.88 27.44 57.98 28.58C58.07 29.72 58.10 30.86 58.07 32.00Z" stroke-width="0.7" stroke-opacity="0.55" />
+                        <path class="orb__ring orb__ring--3" d="M57.78 32.00C57.67 33.13 57.49 34.23 57.31 35.33C57.14 36.44 56.95 37.53 56.74 38.63C56.52 39.73 56.31 40.84 56.02 41.95C55.73 43.06 55.42 44.19 54.99 45.27C54.56 46.36 54.06 47.45 53.45 48.46C52.83 49.46 52.11 50.43 51.30 51.30C50.49 52.17 49.57 52.95 48.61 53.65C47.66 54.35 46.61 54.94 45.56 55.48C44.51 56.02 43.41 56.47 42.30 56.88C41.20 57.29 40.08 57.64 38.95 57.94C37.82 58.23 36.67 58.49 35.51 58.67C34.35 58.84 33.17 58.96 32.00 58.96C30.83 58.96 29.64 58.88 28.49 58.68C27.34 58.47 26.19 58.15 25.10 57.74C24.02 57.33 22.97 56.79 21.97 56.22C20.97 55.65 20.03 54.98 19.11 54.32C18.19 53.66 17.33 52.96 16.46 52.26C15.59 51.55 14.74 50.85 13.89 50.11C13.04 49.37 12.19 48.63 11.37 47.83C10.56 47.02 9.74 46.19 9.01 45.27C8.29 44.36 7.59 43.38 7.02 42.35C6.46 41.31 5.98 40.19 5.64 39.06C5.29 37.93 5.07 36.74 4.94 35.56C4.82 34.38 4.83 33.18 4.89 32.00C4.95 30.82 5.11 29.64 5.30 28.49C5.50 27.33 5.76 26.18 6.06 25.05C6.37 23.92 6.72 22.80 7.15 21.71C7.58 20.62 8.07 19.53 8.65 18.52C9.23 17.50 9.90 16.51 10.65 15.62C11.41 14.73 12.26 13.90 13.16 13.16C14.06 12.42 15.05 11.78 16.04 11.20C17.03 10.62 18.08 10.14 19.11 9.68C20.14 9.21 21.19 8.81 22.23 8.41C23.27 8.01 24.31 7.63 25.37 7.26C26.43 6.90 27.50 6.52 28.61 6.22C29.71 5.92 30.85 5.63 32.00 5.45C33.15 5.28 34.35 5.17 35.53 5.20C36.71 5.23 37.91 5.37 39.06 5.64C40.22 5.90 41.36 6.31 42.44 6.79C43.53 7.27 44.57 7.88 45.56 8.52C46.55 9.16 47.49 9.89 48.39 10.64C49.30 11.39 50.16 12.18 50.99 13.01C51.81 13.85 52.61 14.71 53.34 15.63C54.07 16.54 54.76 17.51 55.35 18.52C55.94 19.53 56.46 20.61 56.86 21.70C57.26 22.80 57.55 23.96 57.74 25.10C57.92 26.25 57.98 27.43 57.99 28.58C58.00 29.73 57.89 30.87 57.78 32.00Z" stroke-width="0.6" stroke-opacity="0.45" />
+                        <path class="orb__ring orb__ring--4" d="M56.86 32.00C56.73 33.08 56.51 34.15 56.28 35.20C56.05 36.24 55.76 37.27 55.46 38.29C55.16 39.31 54.84 40.31 54.48 41.31C54.13 42.32 53.76 43.32 53.34 44.32C52.91 45.32 52.47 46.32 51.94 47.30C51.42 48.28 50.85 49.27 50.19 50.19C49.53 51.11 48.80 52.03 47.99 52.84C47.17 53.64 46.27 54.41 45.30 55.04C44.34 55.68 43.29 56.23 42.21 56.65C41.13 57.06 39.98 57.36 38.85 57.55C37.71 57.73 36.53 57.78 35.39 57.75C34.25 57.71 33.10 57.56 32.00 57.35C30.90 57.15 29.82 56.85 28.77 56.54C27.72 56.22 26.71 55.84 25.71 55.46C24.72 55.08 23.75 54.67 22.79 54.24C21.82 53.82 20.88 53.38 19.93 52.90C18.99 52.43 18.05 51.94 17.13 51.38C16.21 50.83 15.29 50.24 14.42 49.58C13.55 48.92 12.70 48.20 11.93 47.40C11.16 46.60 10.44 45.73 9.82 44.80C9.21 43.88 8.67 42.87 8.24 41.84C7.82 40.81 7.51 39.71 7.29 38.62C7.07 37.53 6.98 36.40 6.95 35.30C6.93 34.19 7.02 33.08 7.14 32.00C7.27 30.92 7.49 29.85 7.72 28.80C7.95 27.76 8.24 26.73 8.54 25.71C8.84 24.69 9.16 23.69 9.52 22.69C9.87 21.68 10.24 20.68 10.66 19.68C11.09 18.68 11.53 17.68 12.06 16.70C12.58 15.72 13.15 14.73 13.81 13.81C14.47 12.89 15.20 11.97 16.01 11.16C16.83 10.36 17.73 9.59 18.70 8.96C19.66 8.32 20.71 7.77 21.79 7.35C22.87 6.94 24.02 6.64 25.15 6.45C26.29 6.27 27.47 6.22 28.61 6.25C29.75 6.29 30.90 6.44 32.00 6.65C33.10 6.85 34.18 7.15 35.23 7.46C36.28 7.78 37.29 8.16 38.29 8.54C39.28 8.92 40.25 9.33 41.21 9.76C42.18 10.18 43.12 10.62 44.07 11.10C45.01 11.57 45.95 12.06 46.87 12.62C47.79 13.17 48.71 13.76 49.58 14.42C50.45 15.08 51.30 15.80 52.07 16.60C52.84 17.40 53.56 18.27 54.18 19.20C54.79 20.12 55.33 21.13 55.76 22.16C56.18 23.19 56.49 24.29 56.71 25.38C56.93 26.47 57.02 27.60 57.05 28.70C57.07 29.81 56.98 30.92 56.86 32.00Z" stroke-width="0.6" stroke-opacity="0.5" />
+                        <path class="orb__ring orb__ring--5" d="M57.13 32.00C56.95 33.10 56.71 34.16 56.50 35.23C56.28 36.29 56.05 37.32 55.83 38.38C55.60 39.44 55.39 40.50 55.13 41.58C54.87 42.66 54.61 43.76 54.25 44.85C53.90 45.93 53.50 47.05 52.97 48.09C52.44 49.13 51.83 50.17 51.09 51.09C50.36 52.01 49.50 52.87 48.57 53.60C47.64 54.32 46.59 54.93 45.53 55.43C44.46 55.93 43.31 56.29 42.18 56.57C41.05 56.86 39.88 57.03 38.74 57.17C37.60 57.30 36.47 57.36 35.34 57.41C34.22 57.46 33.11 57.47 32.00 57.46C30.89 57.45 29.78 57.43 28.66 57.35C27.55 57.26 26.42 57.17 25.31 56.96C24.20 56.76 23.08 56.50 22.01 56.13C20.93 55.75 19.87 55.28 18.89 54.71C17.91 54.14 16.97 53.45 16.11 52.70C15.26 51.95 14.49 51.09 13.78 50.22C13.07 49.35 12.45 48.40 11.85 47.46C11.26 46.52 10.73 45.55 10.20 44.58C9.68 43.62 9.18 42.65 8.69 41.66C8.19 40.66 7.70 39.67 7.25 38.63C6.80 37.59 6.34 36.53 5.98 35.43C5.63 34.32 5.30 33.16 5.13 32.00C4.95 30.84 4.86 29.62 4.94 28.44C5.02 27.26 5.24 26.05 5.60 24.93C5.96 23.80 6.48 22.69 7.09 21.68C7.69 20.67 8.45 19.72 9.22 18.85C9.99 17.97 10.87 17.19 11.72 16.44C12.57 15.68 13.46 15.00 14.32 14.32C15.19 13.64 16.05 13.00 16.92 12.34C17.78 11.69 18.63 11.03 19.53 10.40C20.42 9.76 21.32 9.11 22.28 8.53C23.24 7.96 24.24 7.38 25.28 6.94C26.33 6.49 27.44 6.10 28.56 5.85C29.68 5.61 30.85 5.47 32.00 5.46C33.15 5.45 34.32 5.58 35.45 5.79C36.58 6.00 37.69 6.35 38.77 6.73C39.85 7.12 40.89 7.60 41.90 8.09C42.92 8.58 43.91 9.12 44.89 9.68C45.86 10.24 46.83 10.82 47.77 11.45C48.71 12.08 49.66 12.72 50.55 13.45C51.44 14.18 52.33 14.95 53.11 15.80C53.89 16.66 54.63 17.59 55.24 18.58C55.84 19.58 56.36 20.66 56.73 21.76C57.10 22.86 57.34 24.03 57.48 25.17C57.61 26.32 57.60 27.50 57.54 28.64C57.48 29.78 57.30 30.90 57.13 32.00Z" stroke-width="0.5" stroke-opacity="0.4" />
+                        <path class="orb__ring orb__ring--6" d="M58.69 32.00C58.62 33.16 58.42 34.32 58.20 35.45C57.98 36.58 57.68 37.69 57.35 38.79C57.03 39.89 56.67 40.98 56.25 42.04C55.83 43.11 55.38 44.18 54.83 45.18C54.28 46.18 53.66 47.18 52.94 48.07C52.22 48.96 51.40 49.79 50.52 50.52C49.65 51.25 48.67 51.88 47.69 52.45C46.71 53.01 45.67 53.48 44.66 53.92C43.64 54.37 42.61 54.75 41.58 55.12C40.55 55.50 39.52 55.85 38.47 56.16C37.42 56.46 36.36 56.76 35.28 56.95C34.21 57.14 33.10 57.28 32.00 57.29C30.90 57.31 29.79 57.22 28.70 57.04C27.62 56.86 26.55 56.55 25.51 56.22C24.47 55.88 23.46 55.46 22.46 55.03C21.46 54.60 20.48 54.14 19.50 53.65C18.52 53.17 17.53 52.67 16.57 52.11C15.61 51.54 14.64 50.95 13.75 50.25C12.86 49.56 11.99 48.79 11.23 47.94C10.47 47.09 9.79 46.14 9.21 45.16C8.63 44.18 8.16 43.11 7.75 42.05C7.33 40.98 7.01 39.88 6.72 38.77C6.42 37.67 6.18 36.56 5.98 35.43C5.77 34.30 5.59 33.15 5.51 32.00C5.42 30.85 5.37 29.66 5.47 28.51C5.56 27.35 5.75 26.17 6.07 25.05C6.39 23.93 6.85 22.83 7.39 21.80C7.92 20.78 8.59 19.80 9.27 18.88C9.96 17.96 10.72 17.10 11.49 16.26C12.25 15.42 13.04 14.63 13.86 13.86C14.68 13.09 15.50 12.33 16.38 11.65C17.26 10.96 18.18 10.29 19.15 9.73C20.11 9.18 21.14 8.69 22.19 8.32C23.24 7.95 24.35 7.70 25.44 7.52C26.53 7.34 27.65 7.28 28.74 7.24C29.83 7.20 30.92 7.24 32.00 7.27C33.08 7.31 34.15 7.37 35.23 7.46C36.31 7.55 37.40 7.64 38.48 7.82C39.56 8.00 40.66 8.22 41.71 8.55C42.77 8.89 43.82 9.31 44.80 9.84C45.78 10.36 46.71 11.00 47.59 11.68C48.47 12.37 49.28 13.15 50.06 13.94C50.85 14.73 51.58 15.57 52.30 16.42C53.03 17.28 53.73 18.15 54.40 19.07C55.06 19.99 55.73 20.93 56.29 21.94C56.85 22.94 57.38 24.00 57.76 25.10C58.15 26.19 58.43 27.35 58.59 28.50C58.74 29.65 58.75 30.84 58.69 32.00Z" stroke-width="0.5" stroke-opacity="0.35" />
+                      </g>
+                      <g class="orb__stars" transform="translate(7.3 14.2) scale(1.3)">
+                        <path class="orb__star orb__star--big" d="M15.3576 8.5776C15.7507 6.76587 18.3026 6.73761 18.7631 8.49278L18.7834 8.5776L19.3438 11.1613C19.7595 13.0773 21.2571 14.5739 23.1744 14.9893L25.7598 15.5494C27.6014 15.9485 27.6014 18.5739 25.7598 18.9729L23.1744 19.533C21.2571 19.9485 19.7595 21.4451 19.3438 23.3611L18.7834 25.9448C18.384 27.7852 15.757 27.7852 15.3576 25.9448L14.7972 23.3611C14.3815 21.4451 12.8838 19.9485 10.9666 19.533L8.38123 18.9729C6.53958 18.5739 6.5396 15.9485 8.38123 15.5494L10.9666 14.9893C12.8838 14.5739 14.3815 13.0773 14.7972 11.1613L15.3576 8.5776ZM17.0704 11.6711C16.4573 14.4658 14.2732 16.6484 11.4768 17.2611C14.2732 17.8737 16.4573 20.0565 17.0704 22.851C17.6835 20.0565 19.8676 17.8738 22.664 17.2611C19.8676 16.6483 17.6834 14.4657 17.0704 11.6711Z" fill="#DFD6F9" />
+                        <path class="orb__star orb__star--small" d="M26.0057 0.738076C26.2639 -0.246038 27.6761 -0.246012 27.9343 0.738076L27.9458 0.786449L28.155 1.75011C28.2814 2.33281 28.7368 2.78807 29.3199 2.91441L30.2843 3.12327C31.3335 3.35066 31.3335 4.84632 30.2843 5.07372L29.3199 5.28273C28.7368 5.40907 28.2814 5.86419 28.155 6.44688L27.9458 7.41069C27.7183 8.45917 26.2217 8.45918 25.9941 7.41069L25.7851 6.44688C25.6587 5.86418 25.2032 5.40907 24.6201 5.28273L23.6558 5.07372C22.6066 4.84636 22.6066 3.35063 23.6558 3.12327L24.6201 2.91441C25.2032 2.78807 25.6587 2.33281 25.7851 1.75011L25.9941 0.786449L26.0057 0.738076ZM26.97 2.95868C26.6979 3.43288 26.3039 3.8266 25.8294 4.09849C26.3039 4.37038 26.6979 4.76412 26.97 5.23831C27.242 4.76412 27.636 4.37038 28.1105 4.09849C27.636 3.8266 27.242 3.43288 26.97 2.95868Z" fill="#DFD6F9" />
+                      </g>
+                    </svg>
+                  </span>
+                  Ask the assistant
+                </a>
+              </div>
+              <div class="contact-card">
+                <p class="contact-card__title">Business development team</p>
+                <div class="contact-card__rows">
+                  <a class="contact-card__link" href="tel:+97140000000"><span class="contact-card__icon" aria-hidden="true"><img src="images/shared/icons/call.svg" width="28" height="28" alt=""></span>+971 4 000 0000</a>
+                  <a class="contact-card__link" href="mailto:arena@dfm.ae"><span class="contact-card__icon" aria-hidden="true"><img src="images/shared/icons/mail.svg" width="28" height="28" alt=""></span>arena@dfm.ae</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="materials" id="materials" aria-labelledby="materials-title" data-header="dark">
+      <div class="container">
+        <div class="materials__head">
+          <h2 class="materials__title" id="materials-title" data-scroll-reveal>Materials and downloads</h2>
+          <p class="materials__lead" data-scroll-reveal>Materials to share with your board, and short videos that explain how it all works.</p>
+        </div>
+        <div class="materials__grid">
+          <a class="video-card" href="https://vimeo.com/76979871" data-video-modal data-vimeo-id="76979871" aria-haspopup="dialog" aria-label="Play: How raising on ARENA works" data-scroll-reveal data-spotlight>
+            <span class="video-card__media" data-skeleton>
+              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img class="video-card__img" src="images/materials/video.webp" width="1600" height="1068" alt="" loading="lazy" data-skeleton-content>
+            </span>
+            <span class="video-card__content">
+              <span>
+                <span class="video-card__eyebrow" style="display:block">Education series</span>
+                <span class="video-card__title" style="display:block">How raising on ARENA works</span>
+              </span>
+              <span class="video-card__meta">
+                <span><img src="images/shared/icons/videos.svg" width="24" height="24" alt="">6 short videos</span>
+                <span><img src="images/shared/icons/schedule.svg" width="24" height="24" alt="">3 to 5 minutes each</span>
+              </span>
+            </span>
+            <span class="video-card__play" aria-hidden="true"><img src="images/shared/icons/play.svg" width="75" height="75" alt=""></span>
+            <span class="video-card__sheen" aria-hidden="true"></span>
+          </a>
+          <div class="materials__list" data-scroll-reveal-group>
+            <div class="download">
+              <div>
+                <h3 class="download__title">ARENA brochure</h3>
+                <p class="download__text">The platform, the three markets and the journey, in brief.</p>
+              </div>
+              <a class="btn-pill" href="#download">
+                <span class="btn-pill__label">Download</span>
+                <span class="btn-pill__chip btn-pill__chip--download"><svg class="dl-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff" aria-hidden="true"><path class="dl-icon__arrow" d="M12 15.7885L7.73075 11.5192L8.78475 10.4348L11.25 12.9V4.5H12.75V12.9L15.2153 10.4348L16.2693 11.5192L12 15.7885Z" /><path class="dl-icon__tray" d="M6.30775 19.5C5.80258 19.5 5.375 19.325 5.025 18.975C4.675 18.625 4.5 18.1974 4.5 17.6923V14.9808H6V17.6923C6 17.7693 6.03208 17.8398 6.09625 17.9038C6.16025 17.9679 6.23075 18 6.30775 18H17.6923C17.7693 18 17.8398 17.9679 17.9038 17.9038C17.9679 17.8398 18 17.7693 18 17.6923V14.9808H19.5V17.6923C19.5 18.1974 19.325 18.625 18.975 18.975C18.625 19.325 18.1974 19.5 17.6923 19.5H6.30775Z" /></svg></span>
+              </a>
+            </div>
+            <div class="download">
+              <div>
+                <h3 class="download__title">Company presentation</h3>
+                <p class="download__text">The full deck for your board and shareholders.</p>
+              </div>
+              <a class="btn-pill" href="#download">
+                <span class="btn-pill__label">Download</span>
+                <span class="btn-pill__chip btn-pill__chip--download"><svg class="dl-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff" aria-hidden="true"><path class="dl-icon__arrow" d="M12 15.7885L7.73075 11.5192L8.78475 10.4348L11.25 12.9V4.5H12.75V12.9L15.2153 10.4348L16.2693 11.5192L12 15.7885Z" /><path class="dl-icon__tray" d="M6.30775 19.5C5.80258 19.5 5.375 19.325 5.025 18.975C4.675 18.625 4.5 18.1974 4.5 17.6923V14.9808H6V17.6923C6 17.7693 6.03208 17.8398 6.09625 17.9038C6.16025 17.9679 6.23075 18 6.30775 18H17.6923C17.7693 18 17.8398 17.9679 17.9038 17.9038C17.9679 17.8398 18 17.7693 18 17.6923V14.9808H19.5V17.6923C19.5 18.1974 19.325 18.625 18.975 18.975C18.625 19.325 18.1974 19.5 17.6923 19.5H6.30775Z" /></svg></span>
+              </a>
+            </div>
+            <div class="download">
+              <div>
+                <h3 class="download__title">Listing requirements</h3>
+                <p class="download__text">The seven core requirements and the documents to prepare.</p>
+              </div>
+              <a class="btn-pill" href="#download">
+                <span class="btn-pill__label">Download</span>
+                <span class="btn-pill__chip btn-pill__chip--download"><svg class="dl-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff" aria-hidden="true"><path class="dl-icon__arrow" d="M12 15.7885L7.73075 11.5192L8.78475 10.4348L11.25 12.9V4.5H12.75V12.9L15.2153 10.4348L16.2693 11.5192L12 15.7885Z" /><path class="dl-icon__tray" d="M6.30775 19.5C5.80258 19.5 5.375 19.325 5.025 18.975C4.675 18.625 4.5 18.1974 4.5 17.6923V14.9808H6V17.6923C6 17.7693 6.03208 17.8398 6.09625 17.9038C6.16025 17.9679 6.23075 18 6.30775 18H17.6923C17.7693 18 17.8398 17.9679 17.9038 17.9038C17.9679 17.8398 18 17.7693 18 17.6923V14.9808H19.5V17.6923C19.5 18.1974 19.325 18.625 18.975 18.975C18.625 19.325 18.1974 19.5 17.6923 19.5H6.30775Z" /></svg></span>
+              </a>
+            </div>
+            <div class="download">
+              <div>
+                <h3 class="download__title">Fee structure</h3>
+                <p class="download__text">Walked through in your first call, before you commit to anything.</p>
+              </div>
+              <a class="btn-pill btn-pill--muted" href="#contact">
+                <span class="btn-pill__label">Request</span>
+                <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <p class="materials__note" data-scroll-reveal><img src="images/shared/icons/info.svg" width="20" height="20" alt="">Illustrative materials. Final documents and videos are published at launch.</p>
+      </div>
+    </section>
+
+    <section class="people" id="team" aria-labelledby="people-title" data-header="dark">
+      <div class="container">
+        <div class="people__head">
+          <h2 class="people__title" id="people-title" data-scroll-reveal>The people behind ARENA</h2>
+          <p class="people__lead" data-scroll-reveal>A dedicated team from Dubai Financial Market, with you from the first conversation to listing day.</p>
+        </div>
+        <div class="people__grid" data-swipe aria-label="Team" data-scroll-reveal-group>
+          <article class="person">
+            <div class="person__photo" data-skeleton>
+              <div class="skeleton skeleton--fill"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img src="images/team/p1.webp" width="1000" height="1100" alt="Ramzi Bazzy" loading="lazy" data-skeleton-content>
+            </div>
+            <div class="person__info">
+              <h3 class="person__name">Ramzi Bazzy</h3>
+              <p class="person__role"><strong>Head of Business Development</strong>Capital Markets<br>Dubai Financial Market (DFM)</p>
+            </div>
+            <a class="btn-cta liquid-glass btn-cta--dark person__cta" href="#contact">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <span class="btn-cta__label">
+                <span class="btn-cta__text">Book a call</span>
+                <span class="btn-cta__text" aria-hidden="true">Book a call</span>
+              </span>
+              <img class="btn-cta__icon" src="images/shared/icons/chevron-dark.svg" width="20" height="20" alt="">
+            </a>
+          </article>
+          <article class="person">
+            <div class="person__photo" data-skeleton>
+              <div class="skeleton skeleton--fill"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img src="images/team/p2.webp" width="1000" height="1100" alt="Kam Mattu" loading="lazy" data-skeleton-content>
+            </div>
+            <div class="person__info">
+              <h3 class="person__name">Kam Mattu</h3>
+              <p class="person__role"><strong>Head of Listings</strong>Capital Markets<br>Dubai Financial Market (DFM)</p>
+            </div>
+            <a class="btn-cta liquid-glass btn-cta--dark person__cta" href="#contact">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <span class="btn-cta__label">
+                <span class="btn-cta__text">Book a call</span>
+                <span class="btn-cta__text" aria-hidden="true">Book a call</span>
+              </span>
+              <img class="btn-cta__icon" src="images/shared/icons/chevron-dark.svg" width="20" height="20" alt="">
+            </a>
+          </article>
+          <article class="person">
+            <div class="person__photo" data-skeleton>
+              <div class="skeleton skeleton--fill"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img src="images/team/p3.webp" width="1000" height="1100" alt="Meera Al Ghobash" loading="lazy" data-skeleton-content>
+            </div>
+            <div class="person__info">
+              <h3 class="person__name">Meera Al Ghobash</h3>
+              <p class="person__role"><strong>Senior Manager, Business Development</strong>Capital Markets<br>Dubai Financial Market (DFM)</p>
+            </div>
+            <a class="btn-cta liquid-glass btn-cta--dark person__cta" href="#contact">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <span class="btn-cta__label">
+                <span class="btn-cta__text">Book a call</span>
+                <span class="btn-cta__text" aria-hidden="true">Book a call</span>
+              </span>
+              <img class="btn-cta__icon" src="images/shared/icons/chevron-dark.svg" width="20" height="20" alt="">
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" aria-labelledby="cta-title">
+      <div class="cta__card" data-header="light">
+        <div class="cta__bg" aria-hidden="true"><img src="images/shared/cta-mesh.webp" width="1024" height="869" alt="" loading="lazy"></div>
+        <div>
+          <h2 class="cta__title" id="cta-title" data-scroll-reveal>Your clear path to growth</h2>
+          <p class="cta__lead" data-scroll-reveal>Raise on ARENA, or invest in what's next.<br>It starts with one conversation.</p>
+        </div>
+        <div class="cta__actions" data-scroll-reveal-group>
+          <a class="btn-pill btn-pill--glass-purple" href="#contact">
+            <span class="btn-pill__label">Book a call</span>
+            <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
+          </a>
+          <a class="btn-pill btn-pill--glass-white" href="#markets">
+            <span class="btn-pill__label">Explore offerings</span>
+            <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward-dark.svg" width="24" height="24" alt=""></span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-header="dark">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <p class="site-footer__tagline">Capital, made simple.</p>
+        <a class="site-footer__mail" href="mailto:arena@dfm.ae">arena@dfm.ae</a>
+      </div>
+      <div class="site-footer__side">
+        <nav class="site-footer__links" aria-label="Footer">
+          <a href="#about">About ARENA</a>
+          <a href="#contact">Contact</a>
+          <a href="#legal">Legal</a>
+          <a href="#risk">Risk warnings</a>
+        </nav>
+        <p class="site-footer__copy">© 2026 Dubai Financial Market — Accelerating Tomorrow</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

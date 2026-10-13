@@ -1,0 +1,555 @@
+@use "../abstracts" as *;
+
+// "Capital reaches ARENA from around the world" (Figma Locations 2797:664,
+// same on both pages). Canvas dot globe (js/components/globe.js) with
+// investor pins, stats row overlapping its faded bottom.
+.globe {
+  position: relative;
+  z-index: 2;
+  padding: fluid(64px, 132px) 0 fluid(48px, 100px);
+  overflow: hidden;
+  background: $color-white;
+  color: $color-text-dark;
+
+  // Same vertical rhythm as every standard section below desktop.
+  @include down("laptop") {
+    padding-block: 72px;
+  }
+
+  @include down("tablet") {
+    padding-block: 64px;
+  }
+
+  &__inner {
+    position: relative;
+  }
+
+  &__top {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 590px) 1fr;
+    align-items: center;
+    gap: $space-24;
+    min-height: fluid(420px, 640px);
+  }
+
+  &__text {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: $space-24;
+  }
+
+  &__title {
+    font-size: fluid(36px, 64px);
+    line-height: 1.125;
+    letter-spacing: tracking(-1.28px, 64px);
+  }
+
+  &__lead {
+    max-width: 476px;
+    color: $color-text-muted-light;
+    font-size: fluid(18px, 24px);
+    line-height: 1.2;
+    letter-spacing: tracking(-0.72px, 24px);
+  }
+
+  // Globe box = Figma 1085 × 787, hanging off to the right.
+  &__map {
+    position: absolute;
+    top: -6%;
+    left: calc(41.67% + 20px - #{$container-gutter});
+    width: min(1085px, 62vw);
+    aspect-ratio: 1085 / 787;
+  }
+
+  // Globe drawing area (= map box on desktop). --globe-* place the 3D
+  // sphere inside it (fractions of the box; r is of its height).
+  &__stage {
+    --globe-r: 0.555;
+    --globe-cx: 0.5;
+    --globe-cy: 0.55;
+
+    position: absolute;
+    inset: 0;
+    touch-action: pan-y; // horizontal drag spins the globe, vertical scrolls the page
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    // Figma: white fade over the lower globe so the stats sit on white.
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 31% -12% -18%;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0), $color-white 92%);
+      pointer-events: none;
+    }
+  }
+
+  // 3D: the canvas overhangs the box so float / parallax never clip.
+  &--3d &__stage canvas {
+    position: absolute;
+    top: -18%;
+    left: -12%;
+    width: 124%;
+    height: 136%;
+    cursor: grab;
+  }
+
+  &--3d.is-dragging &__stage canvas {
+    cursor: grabbing;
+  }
+
+  // Marker + link layers share the canvas box.
+  &__anchors,
+  &__links {
+    position: absolute;
+    top: -18%;
+    left: -12%;
+    z-index: 2;
+    width: 124%;
+    height: 136%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  &__link {
+    fill: none;
+    stroke: rgba(78, 23, 229, 0.55);
+    stroke-width: 1;
+    stroke-dasharray: 3 4;
+    opacity: 0;
+    transition: opacity 0.4s $ease-out;
+
+    &.is-visible {
+      opacity: 1;
+    }
+  }
+
+  // ---- Stats ----
+  &__stats {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: $space-20;
+    margin-top: fluid(24px, 40px);
+  }
+
+  &__note {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+    margin-top: $space-20;
+    color: $color-text-muted-light;
+    font-size: fluid(14px, 18px);
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @include down("laptop") {
+    &__top {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 0;
+    }
+
+    &__map {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      max-width: 760px;
+      margin: -2% auto -14%;
+    }
+
+    &__stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  // Mobile: globe on its own, investor cards in a swipe row under it.
+  @include down("tablet") {
+    &__map {
+      aspect-ratio: auto;
+      max-width: none;
+      margin: $space-8 0 0;
+    }
+
+    &__stage {
+      --globe-r: 0.47;
+      --globe-cy: 0.52;
+
+      position: relative;
+      inset: auto;
+      aspect-ratio: 1 / 0.92;
+    }
+
+    &__stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: $space-12;
+    }
+  }
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $space-24;
+  min-height: 218px;
+  padding: $space-20;
+  border: 1px solid $color-white;
+  border-radius: $radius-lg;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.2));
+  box-shadow: 0 8px 72px rgba(163, 139, 242, 0.2);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 0.5s $ease-out,
+    box-shadow 0.5s $ease-out;
+
+  &:hover {
+    box-shadow: 0 12px 80px rgba(163, 139, 242, 0.35);
+    transform: translateY(-4px);
+  }
+
+  &__value {
+    display: flex;
+    align-items: flex-start;
+    gap: 2px;
+    color: $color-bg-dark;
+    font-size: fluid(48px, 84px);
+    font-weight: $font-weight-semibold;
+    line-height: 0.96;
+    letter-spacing: tracking(-2.52px, 84px);
+  }
+
+  &__sup {
+    color: $color-purple;
+    font-size: 0.48em;
+    font-weight: $font-weight-regular;
+    line-height: 1;
+  }
+
+  &__sup--small {
+    font-size: 0.29em;
+    margin-top: 0.25em;
+  }
+
+  &__label {
+    padding-top: $space-8;
+    border-top: 1px solid transparent;
+    border-image: linear-gradient(90deg, rgba(13, 14, 26, 0.15), rgba(13, 14, 26, 0)) 1;
+    opacity: 0.75;
+    color: $color-bg-dark;
+    font-size: fluid(16px, 24px);
+    line-height: 1.33;
+    letter-spacing: tracking(-0.48px, 24px);
+  }
+
+  @include down("tablet") {
+    min-height: 150px;
+    padding: $space-16;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// ---- Investor pins on the globe ----
+.globe-pins {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+
+  // Card positions (% of the map box), per layout. Order: Maria, Deepa,
+  // Isabella, Ali, Medhat.
+  &__item {
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    pointer-events: auto;
+
+    &:nth-child(1) { --x: 2.8%; --y: 22.2%; }
+    &:nth-child(2) { --x: 61.4%; --y: 7.6%; }
+    &:nth-child(3) { --x: 41.7%; --y: 24.5%; }
+    &:nth-child(4) { --x: 66%; --y: 38.5%; }
+    &:nth-child(5) { --x: 48.8%; --y: 51.8%; }
+
+    // Laptop: the map is narrower than the cards' combined width — spread.
+    @media (min-width: 1024px) and (max-width: 1439.98px) {
+      &:nth-child(1) { --x: -2%; --y: 20%; }
+      &:nth-child(2) { --x: 56%; --y: 2%; }
+      &:nth-child(3) { --x: 29%; --y: 30%; }
+      &:nth-child(4) { --x: 58%; --y: 50%; }
+      &:nth-child(5) { --x: 18%; --y: 64%; }
+    }
+  }
+
+  @include down("tablet") {
+    position: relative;
+    inset: auto;
+    display: flex;
+    gap: $space-12;
+    margin: 0 calc(-1 * #{$container-gutter});
+    padding: $space-4 $container-gutter $space-16;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: $container-gutter;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &__item {
+      position: static;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+    }
+  }
+}
+
+.globe-pin {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $space-16;
+  padding: 6px $space-12 9px;
+  border: 1px solid rgba(242, 255, 0, 0.12);
+  border-radius: $radius-sm;
+  background: linear-gradient(180deg, rgba(255, 248, 0, 0.2), rgba(255, 248, 0, 0.1));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: $color-navy;
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color 0.4s $ease-out,
+    box-shadow 0.4s $ease-out,
+    background-color 0.4s $ease-out;
+  transform-origin: 0 100%;
+
+  &:hover,
+  &.is-active {
+    border-color: rgba(78, 23, 229, 0.35);
+    box-shadow: 0 10px 32px rgba(78, 23, 229, 0.14);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-purple;
+    outline-offset: 3px;
+  }
+
+  &__avatar {
+    position: relative;
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+
+    > img:not(.globe-pin__flag) {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    // Ping ring.
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border: 2px solid rgba(78, 23, 229, 0.5);
+      border-radius: 50%;
+      opacity: 0;
+    }
+  }
+
+  &__flag {
+    position: absolute;
+    top: 42px;
+    left: 46px;
+    width: 20.5px;
+    height: 20.5px;
+    border: 3px solid $color-white;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__name {
+    display: block;
+    font-size: fluid(16px, 24px);
+    font-weight: $font-weight-semibold;
+    line-height: 1.16;
+    letter-spacing: tracking(-0.72px, 24px);
+  }
+
+  &__role {
+    display: block;
+    font-size: fluid(12px, 16px);
+    letter-spacing: tracking(-0.48px, 16px);
+  }
+
+  // v1 flat globe: pop-in (staggered via --d) then gentle float.
+  // (3D globe staggers the items in with GSAP instead.)
+  .globe--flat & {
+    opacity: 0;
+    transform: translateY(16px) scale(0.85);
+  }
+
+  .globe--flat.is-live & {
+    animation:
+      pin-in 0.9s $ease-out calc(0.9s + var(--d, 0s)) forwards,
+      pin-float 6s ease-in-out calc(1.8s + var(--d, 0s)) infinite;
+  }
+
+  .globe--flat.is-live &__avatar::after {
+    animation: pin-ping 2.8s ease-out calc(1.6s + var(--d, 0s)) infinite;
+  }
+
+  @include down("laptop") {
+    gap: $space-8;
+
+    &__avatar {
+      width: 44px;
+      height: 44px;
+    }
+
+    &__flag {
+      top: 30px;
+      left: 32px;
+      width: 16px;
+      height: 16px;
+      border-width: 2px;
+    }
+  }
+
+  @include down("tablet") {
+    padding: 6px $space-12 8px 8px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transform: none;
+
+    .globe--flat &,
+    .globe--flat.is-live &,
+    .globe--flat.is-live &__avatar::after {
+      animation: none;
+    }
+  }
+}
+
+@keyframes pin-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pin-float {
+  0%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pin-ping {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.9);
+  }
+
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+// ---- 3D globe anchors: a dot + slow pulse riding the surface ----
+.globe-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  will-change: transform, opacity;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  &::before {
+    background: $color-purple;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9);
+    transition: transform 0.4s $ease-out;
+  }
+
+  &::after {
+    border: 1px solid rgba(78, 23, 229, 0.6);
+    animation: anchor-pulse 2.8s ease-out infinite;
+  }
+
+  &.is-active::before {
+    transform: scale(1.5);
+  }
+
+  &.is-active::after {
+    animation-duration: 1.6s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@keyframes anchor-pulse {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(4.2);
+  }
+}

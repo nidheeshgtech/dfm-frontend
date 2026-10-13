@@ -1,0 +1,57 @@
+@use "../abstracts" as *;
+
+// Utility classes over the glass mixins.
+//   .glass                      regular glass, capsule by default
+//   .glass--rect / --circle     shape (Apple: .rect(cornerRadius:), .circle)
+//   .glass--tint                accent-tinted (Apple: .tint(color))
+//   .glass--dark                darker glass for light backgrounds
+//   .glass--interactive         pointer highlight + hover/press (Apple: .interactive())
+//   .btn-glass                  button (Apple: .buttonStyle(.glass))
+//   .btn-glass--prominent       tinted CTA (Apple: .glassProminent)
+// Only put --interactive on things people click.
+
+.glass {
+  @include glass($radius: $radius-pill);
+
+  &--rect {
+    border-radius: $radius-md;
+  }
+
+  &--circle {
+    border-radius: 50%;
+    aspect-ratio: 1;
+  }
+
+  &--tint {
+    background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+    border-color: color-mix(in srgb, var(--color-accent) 50%, white 20%);
+  }
+
+  &--dark {
+    background: rgba(10, 10, 16, 0.35);
+  }
+
+  &--interactive {
+    @include glass-interactive;
+  }
+}
+
+.btn-glass {
+  @include glass($radius: $radius-pill);
+  @include glass-interactive;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.75em 1.5em;
+  color: var(--color-text-inverse);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+
+  &--prominent {
+    background: color-mix(in srgb, var(--color-accent) 70%, transparent);
+    border-color: color-mix(in srgb, var(--color-accent) 60%, white 30%);
+  }
+}

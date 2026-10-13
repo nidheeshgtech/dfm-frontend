@@ -1,0 +1,104 @@
+@use "../abstracts" as *;
+
+// Header audience switch "Raise Capital | Invest" — exact Figma spec
+// (Navbar 2797:1936 investor / 2797:1108 company). Each option is a link
+// to the other page; the current page's option is the filled one
+// (aria-current="page"). Colours come from --toggle-* so the dark/light
+// variants just swap variables.
+.toggle {
+  --toggle-border: rgba(44, 41, 37, 0.5);
+  --toggle-text: #{$color-black};
+  --toggle-active-bg: #{$color-black};
+  --toggle-active-text: #{$color-white};
+  --toggle-hover-bg: rgba(44, 41, 37, 0.08);
+
+  display: inline-flex;
+  align-items: center;
+  gap: $space-4;
+  padding: 6px;
+  border: 1px solid var(--toggle-border);
+  border-radius: 80px;
+  // Liquid glass container (layers from components/_liquid-glass.scss).
+  box-shadow: 0 8px 24px rgba(13, 14, 26, 0.1);
+
+  &__option {
+    position: relative;
+    z-index: 4; // above the glass layers
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 66px;
+    // Fester sits high in its line box; Figma compensates 3px top / 6px bottom.
+    padding: 3px $space-12 6px;
+    border-radius: 50px;
+    color: var(--toggle-text);
+    font-size: fluid(15px, 18px);
+    letter-spacing: tracking(-0.36px, 18px);
+    line-height: normal;
+    white-space: nowrap;
+    transition:
+      background-color $duration $ease-out,
+      box-shadow $duration $ease-out,
+      color $duration $ease-out,
+      transform $duration $ease-out;
+
+    &:first-child {
+      min-width: 113px; // Figma: "Raise Capital" pill is 113 wide
+    }
+
+    &:hover:not([aria-current="page"]) {
+      background: var(--toggle-hover-bg);
+      box-shadow: glass-rim(0.8);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    // Current page: a glass lens — fill + top gloss + light rim.
+    &[aria-current="page"] {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 60%),
+        var(--toggle-active-bg);
+      box-shadow: glass-rim(1.1, 0 4px 14px rgba(13, 14, 26, 0.18));
+      color: var(--toggle-active-text);
+    }
+  }
+
+  // On dark backgrounds (company page, or investor header over a dark
+  // section): white outline, white-gradient active pill, dark text.
+  &--light,
+  .is-on-dark & {
+    --toggle-border: rgba(255, 255, 255, 0.5);
+    --toggle-text: #{$color-white};
+    --toggle-active-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.17));
+    --toggle-active-text: #{$color-text-dark};
+    --toggle-hover-bg: rgba(255, 255, 255, 0.12);
+  }
+
+  // Light section on a dark-hero page: back to the dark toggle.
+  .is-on-light & {
+    --toggle-border: rgba(44, 41, 37, 0.5);
+    --toggle-text: #{$color-black};
+    --toggle-active-bg: #{$color-black};
+    --toggle-active-text: #{$color-white};
+    --toggle-hover-bg: rgba(44, 41, 37, 0.08);
+  }
+
+  @include down("mobile") {
+    &__option:first-child {
+      min-width: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__option {
+      transition: none;
+    }
+  }
+}

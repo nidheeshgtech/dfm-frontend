@@ -1,0 +1,21 @@
+// Fester, served from the project-level assets/fonts folder.
+// Path is relative to the compiled css/main.css.
+$font-path: "../../assets/fonts";
+
+$fester-faces: (
+  ("Fester-Book", 350, "opentype", "otf"),
+  ("Fester-Regular", 400, "truetype", "ttf"),
+  ("Fester-SemiBold", 600, "truetype", "ttf"),
+  ("Fester-Bold", 700, "opentype", "otf"),
+  ("Fester-Heavy", 900, "truetype", "ttf"),
+);
+
+@each $file, $weight, $format, $ext in $fester-faces {
+  @font-face {
+    font-family: "Fester";
+    src: url("#{$font-path}/#{$file}.#{$ext}") format("#{$format}");
+    font-weight: $weight;
+    font-style: normal;
+    font-display: swap;
+  }
+}

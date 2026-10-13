@@ -1,0 +1,310 @@
+@use "../abstracts" as *;
+
+// "A familiar investor experience" (investor page, Figma Process 2797:1414).
+// Left: heading + 3-step accordion with a lime progress line that fills
+// while each step plays (auto-advances while in view, any interaction
+// takes over). Right: phone on a dot field; a spotlight moves to the part
+// of the screen each step talks about. js/components/investor-xp.js.
+.xp {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: min(1080px, 100vh);
+  background: $color-bg-light;
+  color: $color-text-dark;
+
+  // ---- Left column ----
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: $space-64;
+    padding: fluid(64px, 120px) fluid(16px, 64px) fluid(48px, 96px) max(#{$container-gutter}, calc((100vw - #{$container-max}) / 2));
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    gap: $space-32;
+  }
+
+  &__title {
+    max-width: 544px;
+    font-size: fluid(36px, 64px);
+    line-height: 1.09;
+    letter-spacing: tracking(-1.92px, 64px);
+  }
+
+  &__lead {
+    max-width: 431px;
+    opacity: 0.75;
+    font-size: fluid(18px, 24px);
+    line-height: 1.25;
+  }
+
+  // ---- Right column ----
+  &__visual {
+    position: relative;
+    display: grid;
+    place-items: end center;
+    min-height: 560px;
+    overflow: hidden;
+    background: #000;
+  }
+
+  &__dots {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: 100% 0;
+    animation: xp-drift 24s ease-in-out infinite alternate;
+  }
+
+  &__phone {
+    position: relative;
+    width: min(684px, 72%);
+    margin-bottom: -2px;
+    animation: xp-float 7s ease-in-out infinite;
+    transition: translate 0.9s $ease-out; // panning (stacked layout)
+  }
+
+  // Stacked layout: the visual lives inside the open step (investor-xp.js)
+  // as a framed window onto the phone, panned to the step's screen area.
+  &__visual.is-inline {
+    display: block;
+    height: clamp(300px, 92vw, 460px);
+    min-height: 0;
+    margin: 0 0 21px;
+    padding: 0;
+    border-radius: $radius-md;
+
+    .xp__phone {
+      width: min(380px, 78%);
+      margin: $space-24 auto 0;
+      animation: none;
+    }
+  }
+
+  &__screen {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  // Spotlight: dims the screen except a soft ellipse at --spot-y.
+  &__spot {
+    --spot-y: 26%;
+
+    position: absolute;
+    inset: 3% 10% 0;
+    border-radius: 9% 9% 0 0;
+    background: radial-gradient(ellipse 70% 16% at 50% var(--spot-y), transparent 55%, rgba(0, 0, 0, 0.5));
+    pointer-events: none;
+    transition: --spot-y 0.9s $ease-out;
+  }
+
+  @include down("laptop") {
+    grid-template-columns: 1fr;
+    min-height: 0;
+
+    &__content {
+      padding: 72px $container-gutter;
+    }
+
+    &__visual {
+      min-height: 0;
+      padding-top: $space-64;
+    }
+
+    &__phone {
+      width: min(460px, 82%);
+    }
+  }
+
+  @include down("tablet") {
+    &__content {
+      gap: $space-40;
+      padding: 64px $container-gutter-mobile;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__dots,
+    &__phone {
+      animation: none;
+      transition: none;
+    }
+
+    &__spot {
+      transition: none;
+    }
+  }
+}
+
+@property --spot-y {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 26%;
+}
+
+@keyframes xp-float {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes xp-drift {
+  to {
+    transform: scale(1.08) translate(-2%, 2%);
+  }
+}
+
+// ---- Accordion ----
+.xp-steps {
+  display: flex;
+  flex-direction: column;
+  max-width: 722px;
+
+  // Progress track on top (Figma "Group 48095512").
+  &__track {
+    position: relative;
+    height: 1px;
+    margin-bottom: 21px;
+    background: rgba(13, 14, 26, 0.2);
+  }
+
+  &__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    background: $color-text-dark;
+  }
+}
+
+.xp-step {
+  border-bottom: 1px solid rgba(13, 14, 26, 0.12);
+
+  & + & {
+    padding-top: 21px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-24;
+    width: 100%;
+    padding-bottom: 21px;
+    color: inherit;
+    text-align: left;
+  }
+
+  &__label {
+    display: block;
+    opacity: 0.5;
+    font-size: fluid(15px, 20px);
+    line-height: 1.85;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: opacity 0.4s $ease-out;
+  }
+
+  &__title {
+    display: block;
+    opacity: 0.5;
+    font-size: fluid(22px, 32px);
+    font-weight: $font-weight-semibold;
+    line-height: 1.2;
+    letter-spacing: tracking(-0.32px, 32px);
+    transition: opacity 0.4s $ease-out;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-sm;
+    background: rgba(139, 142, 164, 0.09);
+    transition: background-color 0.4s $ease-out;
+
+    img {
+      width: 40px;
+      height: 40px;
+      transition: transform 0.5s $ease-out;
+    }
+  }
+
+  &__btn:hover &__title,
+  &__btn:hover &__label {
+    opacity: 0.8;
+  }
+
+  &__btn:focus-visible {
+    outline: 2px solid $color-purple;
+    outline-offset: 4px;
+    border-radius: $radius-xs;
+  }
+
+  // Collapsible body (grid-rows trick, no height measuring).
+  &__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.55s $ease-out;
+  }
+
+  &__inner {
+    overflow: hidden;
+  }
+
+  &__body {
+    margin-bottom: 21px;
+    padding: $space-16 $space-16 $space-20;
+    border-radius: $radius-xs;
+    background: $color-white;
+    color: $color-black;
+    font-size: fluid(17px, 24px);
+    line-height: 1.2;
+
+    p {
+      max-width: 460px;
+      opacity: 0.75;
+    }
+  }
+
+  &.is-open {
+    .xp-step__label,
+    .xp-step__title {
+      opacity: 1;
+    }
+
+    .xp-step__icon {
+      background: $color-yellow-bright;
+
+      img {
+        transform: rotate(180deg);
+      }
+    }
+
+    .xp-step__panel {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__panel,
+    &__icon img {
+      transition: none;
+    }
+  }
+}

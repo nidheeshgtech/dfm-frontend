@@ -1,0 +1,115 @@
+@use "../abstracts" as *;
+
+// "Your clear path to growth" (Figma Team 2797:1012 top block).
+.cta {
+  position: relative;
+  z-index: 2;
+  padding: $space-20 $space-20 0;
+  background: $color-white;
+
+  &__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-48;
+    padding: fluid(80px, 128px) $space-24;
+    overflow: hidden;
+    border-radius: $radius-lg;
+    background: $color-navy;
+    color: $color-white;
+    text-align: center;
+    isolation: isolate;
+  }
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #6d8ab4;
+
+    img {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      object-fit: cover;
+      object-position: 50% 100%;
+      opacity: 0.5;
+      animation: cta-pan 30s ease-in-out infinite alternate;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(1, 33, 74, 0.8), $color-navy);
+    }
+  }
+
+  &__title {
+    max-width: 700px;
+    font-size: fluid(44px, 96px);
+    line-height: 0.9;
+    letter-spacing: tracking(-0.96px, 96px);
+    text-transform: uppercase;
+  }
+
+  &__lead {
+    max-width: 654px;
+    margin-top: $space-24;
+    font-size: fluid(18px, 24px);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $space-16;
+
+    .btn-pill {
+      justify-content: space-between;
+      min-width: 239px;
+      color: $color-white;
+    }
+  }
+
+  // Figma CTA pills: purple glass + white glass.
+  .btn-pill--glass-purple {
+    border-color: rgba(163, 139, 242, 0.2);
+    background: linear-gradient(95deg, rgba(78, 23, 229, 0.4) 1%, rgba(78, 23, 229, 0.08) 84%);
+  }
+
+  .btn-pill--glass-white {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+
+    .btn-pill__chip {
+      background: $color-white;
+    }
+  }
+
+  // Card edges sit on the site gutter, like every other section.
+  @include down("laptop") {
+    padding: $space-20 $container-gutter 0;
+  }
+
+  @include down("tablet") {
+    padding: $space-16 $container-gutter-mobile 0;
+
+    &__actions .btn-pill {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__bg img {
+      animation: none;
+    }
+  }
+}
+
+@keyframes cta-pan {
+  to {
+    transform: scale(1.12) translateY(-3%);
+  }
+}

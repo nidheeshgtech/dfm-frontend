@@ -1,0 +1,17 @@
+@use "../abstracts" as *;
+
+// Investor page: black / grey.
+.theme-investor {
+  --color-bg: #{$color-white};
+  --color-surface: #{$color-bg-dark};
+  --color-surface-card: #{$color-bg-dark-card};
+  --color-surface-light: #{$color-bg-light};
+  --color-text: #{$color-black};
+  --color-text-strong: #{$color-text-dark};
+  --color-text-muted: #{$color-text-muted-light};
+  --color-text-inverse: #{$color-white};
+  --color-text-inverse-muted: #{$color-text-muted-dark};
+  --color-accent: #{$color-purple};
+  --color-accent-tint: #{$color-purple-tint};
+  --color-highlight: #{$color-yellow-bright};
+}

@@ -1,0 +1,607 @@
+@use "../abstracts" as *;
+
+// Fixed and always transparent (Figma navbar fill is ~0 alpha).
+// js/components/header.js slides it away while scrolling down
+// (.is-hidden) and back in as soon as the user scrolls up.
+// Variant .site-header--light = white logo/text for dark heroes (company).
+.site-header {
+  --header-fg: #{$color-black};
+  --header-glass: rgba(255, 255, 255, 0.72);
+
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  color: var(--header-fg);
+  transition: transform 0.6s $ease-out;
+
+  &.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-24;
+    height: var(--header-height);
+    padding: $space-20;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: $space-32;
+    min-width: 0;
+  }
+
+  &__logo {
+    flex-shrink: 0;
+
+    img {
+      width: 180px;
+      height: auto;
+    }
+
+    .logo--light {
+      display: none;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: $space-40;
+    height: 50px;
+    padding-inline: $space-24;
+  }
+
+  &__link {
+    position: relative;
+    color: inherit;
+
+    // Underline grows from the left on hover.
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform $duration $ease-out;
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+      transform: scaleX(1);
+    }
+  }
+
+  &__menu-btn {
+    display: none;
+  }
+
+  // White logo/text: always on dark-hero pages (--light), and on the
+  // investor page while the header sits over a dark section (.is-on-dark,
+  // toggled by header.js from [data-header="light"] sections).
+  &--light,
+  &.is-on-dark {
+    --header-fg: #{$color-white};
+    --header-glass: rgba(1, 33, 74, 0.6);
+
+    .logo--dark {
+      display: none;
+    }
+
+    .logo--light {
+      display: block;
+    }
+  }
+
+  // Over split light/dark sections: frosted bar so logo + links stay
+  // legible on both halves.
+  &.is-on-glass {
+    background: rgba(246, 246, 249, 0.72);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+    transition:
+      transform 0.6s $ease-out,
+      background-color $duration $ease-out;
+  }
+
+  // Light-hero override: over white sections, back to the dark header.
+  &.is-on-light {
+    --header-fg: #{$color-black};
+    --header-glass: rgba(255, 255, 255, 0.72);
+
+    .logo--dark {
+      display: block;
+    }
+
+    .logo--light {
+      display: none;
+    }
+  }
+
+  &.is-on-dark:not(.site-header--light) {
+    --header-glass: rgba(7, 8, 15, 0.6);
+  }
+
+
+  // ---- Tablet: tighter logo, nav gap ----
+  @include down("laptop") {
+    &__brand {
+      gap: $space-20;
+    }
+
+    &__logo img {
+      width: 140px;
+    }
+
+    &__nav {
+      gap: $space-24;
+      padding-inline: 0;
+    }
+  }
+
+  // ---- Mobile: logo + toggle + menu button; links drop into a panel ----
+  @include down("tablet") {
+    --header-height: 72px;
+
+    &__inner {
+      padding: $space-12 $container-gutter-mobile;
+      gap: $space-12;
+    }
+
+    &__brand {
+      gap: $space-12;
+    }
+
+    &__logo img {
+      width: 104px;
+    }
+  }
+
+  // ---- Tablet + mobile: menu button opens a full-screen panel ----
+  // Two themes: light (default) and dark — data-menu-theme="dark" on the
+  // header, or ?menu=dark / ?menu=light in the URL (header.js).
+  @include down("laptop") {
+    --menu-gutter: #{$container-gutter};
+    --menu-link-size: 56px;
+
+    &__menu-btn {
+      display: inline-grid;
+      place-items: center;
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      margin-right: -10px;
+      color: inherit;
+
+      span,
+      span::before,
+      span::after {
+        display: block;
+        width: 22px;
+        height: 1.5px;
+        background: currentColor;
+        transition: transform $duration $ease-out, opacity $duration $ease-out;
+      }
+
+      span {
+        position: relative;
+
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+        }
+
+        &::before {
+          top: -7px;
+        }
+
+        &::after {
+          top: 7px;
+        }
+      }
+
+      &[aria-expanded="true"] span {
+        background: transparent;
+
+        &::before {
+          transform: translateY(7px) rotate(45deg);
+        }
+
+        &::after {
+          transform: translateY(-7px) rotate(-45deg);
+        }
+      }
+    }
+
+    // ---- Full-screen menu: a dark panel that opens as a circle from the
+    // menu button; big numbered links rise in, then the contact block.
+    &__nav {
+      position: fixed;
+      inset: 0;
+      z-index: -1; // under the logo / toggle / close button
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 0;
+      height: 100dvh;
+      padding: calc(var(--header-height) + #{$space-40}) var(--menu-gutter) calc(#{$space-32} + env(safe-area-inset-bottom));
+      overflow: hidden;
+      background:
+        radial-gradient(90% 60% at 100% 0%, rgba(78, 23, 229, 0.45), rgba(78, 23, 229, 0) 60%),
+        radial-gradient(80% 50% at 0% 100%, rgba(78, 23, 229, 0.25), rgba(78, 23, 229, 0) 60%),
+        $color-bg-dark;
+      color: $color-white;
+      counter-reset: menu;
+      clip-path: circle(0 at var(--menu-x, calc(100% - 38px)) var(--menu-y, 36px));
+      visibility: hidden;
+      transition:
+        clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1),
+        visibility 0s linear 0.7s;
+    }
+
+    &.is-menu-open &__nav {
+      clip-path: circle(150% at var(--menu-x, calc(100% - 38px)) var(--menu-y, 36px));
+      visibility: visible;
+      transition-delay: 0s;
+    }
+
+    // Fine dot grid (echoes the globe dots), strongest top-right and
+    // fading out, drifting very slowly. Pure CSS — never stretches.
+    &__menu-bg {
+      --dot: rgba(255, 255, 255, 0.3);
+
+      position: absolute;
+      inset: -40px;
+      z-index: -1;
+      background-image: radial-gradient(circle, var(--dot) 1.2px, transparent 1.6px);
+      background-size: 22px 22px;
+      -webkit-mask-image: radial-gradient(120% 90% at 100% 0%, #000 0%, rgba(0, 0, 0, 0.35) 45%, transparent 75%);
+      mask-image: radial-gradient(120% 90% at 100% 0%, #000 0%, rgba(0, 0, 0, 0.35) 45%, transparent 75%);
+      pointer-events: none;
+      animation: menu-dots 24s linear infinite;
+    }
+
+    // Variation "aurora" (data-menu-bg="aurora" / ?menubg=aurora): two big
+    // soft colour fields drifting and blending, instead of the dot grid.
+    &[data-menu-bg="aurora"] &__menu-bg {
+      inset: 0;
+      background: none;
+      -webkit-mask-image: none;
+      mask-image: none;
+      animation: none;
+      overflow: hidden;
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        width: 120vmax;
+        height: 120vmax;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.55;
+      }
+
+      &::before {
+        top: -60vmax;
+        right: -50vmax;
+        background: radial-gradient(circle, var(--aurora-a) 0%, transparent 65%);
+        animation: aurora-a 16s ease-in-out infinite alternate;
+      }
+
+      &::after {
+        bottom: -70vmax;
+        left: -55vmax;
+        background: radial-gradient(circle, var(--aurora-b) 0%, transparent 65%);
+        animation: aurora-b 20s ease-in-out infinite alternate;
+      }
+    }
+
+    &[data-menu-bg="aurora"] {
+      --aurora-a: rgba(124, 77, 255, 0.9);
+      --aurora-b: rgba(78, 23, 229, 0.8);
+    }
+
+    &[data-menu-bg="aurora"][data-menu-theme="light"] {
+      --aurora-a: rgba(163, 139, 242, 0.95);
+      --aurora-b: rgba(214, 200, 255, 0.95);
+    }
+
+    &__link {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: $space-16;
+      padding: $space-20 0;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: $color-white;
+      font-size: var(--menu-link-size);
+      font-weight: $font-weight-regular;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      text-transform: none;
+      counter-increment: menu;
+
+      &::after {
+        display: none;
+      }
+
+      // Small index number before each label.
+      &::before {
+        content: "0" counter(menu);
+        align-self: flex-start;
+        order: -1;
+        margin-top: 4px;
+        color: $color-purple-tint;
+        font-size: 14px;
+        letter-spacing: 0.1em;
+      }
+    }
+
+    &__link-text,
+    &__link-arrow,
+    &__link::before {
+      opacity: 0;
+      transform: translateY(100%);
+      transition:
+        opacity 0.5s $ease-out,
+        transform 0.7s $ease-out;
+    }
+
+    &__link-text {
+      margin-right: auto;
+    }
+
+    // Round arrow chip (same purple chip as the pill buttons).
+    &__link-arrow {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: $color-purple url("../images/shared/icons/arrow-outward.svg") center / 22px no-repeat;
+      box-shadow: 0 6px 18px rgba(78, 23, 229, 0.45);
+    }
+
+    &__link:active &__link-arrow {
+      transform: translate(3px, -3px);
+    }
+
+    &.is-menu-open &__link-text,
+    &.is-menu-open &__link-arrow,
+    &.is-menu-open &__link::before {
+      opacity: 1;
+      transform: none;
+      transition-delay: calc(0.3s + var(--i, 0) * 0.08s);
+    }
+
+    &__menu-foot {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $space-16;
+      margin-top: auto;
+      opacity: 0;
+      transform: translateY(16px);
+      transition:
+        opacity 0.5s $ease-out,
+        transform 0.6s $ease-out;
+    }
+
+    &.is-menu-open &__menu-foot {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0.5s;
+    }
+
+    &__menu-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: $space-12 $space-12 $space-12 $space-24;
+      border: 1px solid rgba(169, 139, 255, 0.45);
+      border-radius: 80px;
+      background: linear-gradient(90deg, rgba(78, 23, 229, 0.55), rgba(78, 23, 229, 0.25));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      color: $color-white;
+      font-size: 18px;
+
+      span {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: $color-white url("../images/shared/icons/arrow-outward-dark.svg") center / 20px no-repeat;
+      }
+    }
+
+    &__menu-mail {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 18px;
+      text-decoration: underline;
+      text-decoration-color: rgba(255, 255, 255, 0.3);
+      text-underline-offset: 4px;
+    }
+
+    &__menu-tag {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 14px;
+    }
+
+    // While open: header content turns white over the dark panel.
+    &.is-menu-open {
+      --header-fg: #{$color-white};
+
+      .logo--dark {
+        display: none;
+      }
+
+      .logo--light {
+        display: block;
+      }
+
+      .toggle {
+        --toggle-border: rgba(255, 255, 255, 0.5);
+        --toggle-text: #{$color-white};
+        --toggle-active-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.17));
+        --toggle-active-text: #{$color-text-dark};
+        --toggle-hover-bg: rgba(255, 255, 255, 0.12);
+      }
+    }
+
+    // ---- Light theme ----
+    &[data-menu-theme="light"] {
+      .site-header__nav {
+        background:
+          radial-gradient(90% 60% at 100% 0%, rgba(163, 139, 242, 0.45), rgba(163, 139, 242, 0) 60%),
+          radial-gradient(80% 50% at 0% 100%, rgba(78, 23, 229, 0.14), rgba(78, 23, 229, 0) 60%),
+          #f6f6f9;
+        color: $color-text-dark;
+      }
+
+      .site-header__menu-bg {
+        --dot: rgba(78, 23, 229, 0.3);
+      }
+
+      .site-header__link {
+        border-bottom-color: rgba(13, 14, 26, 0.1);
+        color: $color-text-dark;
+
+        &::before {
+          color: $color-purple;
+        }
+      }
+
+      .site-header__link-arrow {
+        box-shadow: 0 6px 18px rgba(78, 23, 229, 0.3);
+      }
+
+      .site-header__menu-cta {
+        border-color: rgba(78, 23, 229, 0.5);
+        background: linear-gradient(90deg, rgba(78, 23, 229, 0.2), rgba(78, 23, 229, 0.08));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        color: $color-text-dark;
+
+        span {
+          background: $color-purple url("../images/shared/icons/arrow-outward.svg") center / 20px no-repeat;
+        }
+      }
+
+      .site-header__menu-mail {
+        color: rgba(13, 14, 26, 0.8);
+        text-decoration-color: rgba(13, 14, 26, 0.3);
+      }
+
+      .site-header__menu-tag {
+        color: rgba(13, 14, 26, 0.45);
+      }
+    }
+
+    // Light panel open: header content back to dark.
+    &[data-menu-theme="light"].is-menu-open {
+      --header-fg: #{$color-black};
+
+      .logo--dark {
+        display: block;
+      }
+
+      .logo--light {
+        display: none;
+      }
+
+      .toggle {
+        --toggle-border: rgba(44, 41, 37, 0.5);
+        --toggle-text: #{$color-black};
+        --toggle-active-bg: #{$color-black};
+        --toggle-active-text: #{$color-white};
+        --toggle-hover-bg: rgba(44, 41, 37, 0.08);
+      }
+    }
+  }
+
+  @include down("tablet") {
+    --menu-gutter: #{$container-gutter-mobile};
+    --menu-link-size: 44px;
+  }
+
+  // Menu extras exist only in the full-screen panel.
+  @include up("laptop") {
+    &__menu-bg,
+    &__menu-foot,
+    &__link-arrow {
+      display: none;
+    }
+  }
+
+  // Very narrow phones: toggle labels must still fit beside the logo.
+  @include down("mobile") {
+    &__logo img {
+      width: 88px;
+    }
+
+    .toggle {
+      padding: 4px;
+      gap: 2px;
+    }
+
+    .toggle__option {
+      min-width: 0;
+      padding-inline: $space-8;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &__nav,
+    &__link::after,
+    &__link-text,
+    &__link-arrow,
+    &__link::before,
+    &__menu-foot {
+      transition: none;
+    }
+  }
+}
+
+// Page behind the open mobile menu doesn't scroll.
+.has-menu,
+.has-menu body {
+  overflow: hidden;
+}
+
+@keyframes aurora-a {
+  to {
+    transform: translate(-18vmax, 22vmax) scale(1.15);
+  }
+}
+
+@keyframes aurora-b {
+  to {
+    transform: translate(20vmax, -16vmax) scale(0.9);
+  }
+}
+
+@keyframes menu-dots {
+  to {
+    transform: translate(22px, 22px); // one grid cell: seamless loop
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header__menu-bg,
+  .site-header__menu-bg::before,
+  .site-header__menu-bg::after {
+    animation: none !important;
+  }
+}

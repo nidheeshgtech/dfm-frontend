@@ -1,0 +1,79 @@
+// Design tokens, from Figma variables (file tKzxwBjKugPpDRDHhMNpPK,
+// pages "Homepage" 2797:256 and 2797:1124).
+
+// ---- Colour: brand (Figma "Primary/*", "Secondary/*") ----
+$color-black: #2c2925; // Primary/Black
+$color-white: #ffffff; // Primary/White
+$color-yellow: #fff800; // Primary/Yellow
+$color-yellow-bright: #f4ff22; // hero toggle arrow button
+$color-purple: #4e17e5; // Secondary/Purple
+$color-purple-tint: #a38bf2; // Secondary/Purple Tint
+$color-velvet-blue: #062dfd; // Secondary/Velvet Blue
+$color-jade: #64fba0; // Secondary/Bright Jade
+$color-red: #ff2439; // Secondary/Red
+
+// ---- Colour: ARENA UI (Figma "ARENA/*") ----
+$color-bg-dark: #07080f; // ARENA/Background/Dark
+$color-bg-dark-card: #12131f; // ARENA/Background/Dark Card
+$color-bg-light: #f6f6f9; // ARENA/Background/Light
+$color-text-dark: #0d0e1a; // ARENA/Text/Dark
+$color-text-muted-dark: #8b8ea4; // ARENA/Text/Muted Dark (on dark bg)
+$color-text-muted-light: #6e7288; // ARENA/Text/Muted Light (on light bg)
+
+// ---- Colour: company theme navy (What is ARENA radial gradient) ----
+$color-navy: #01214a; // rgb(1, 33, 74)
+$color-navy-mid: #062d64; // rgb(6, 45, 100)
+
+// ---- Market tags (What is ARENA cards) ----
+$tag-growth-bg: rgba(78, 23, 229, 0.2);
+$tag-growth-border: rgba(163, 139, 242, 0.2);
+$tag-private-bg: rgba(100, 251, 160, 0.2);
+$tag-private-border: rgba(100, 251, 160, 0.2);
+$tag-closed-bg: rgba(255, 248, 0, 0.2);
+$tag-closed-border: rgba(244, 255, 34, 0.2);
+
+// ---- Type ----
+// Pages use Fester for everything (style guide's Inter is not used).
+$font-family-base: "Fester", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+$font-weight-book: 350;
+$font-weight-regular: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-heavy: 900;
+
+// ---- Layout ----
+// 1920 design: content runs x 192 → 1728 = 1536 wide.
+$container-max: 1536px;
+$container-gutter: 40px;
+$container-gutter-mobile: 16px;
+
+$header-height: 104px; // Navbar frame 103.6
+
+// ---- Spacing (Figma "Spacing/*", 4pt grid) ----
+$space-4: 4px;
+$space-8: 8px;
+$space-12: 12px;
+$space-16: 16px;
+$space-20: 20px;
+$space-24: 24px;
+$space-32: 32px;
+$space-40: 40px;
+$space-48: 48px;
+$space-64: 64px;
+$space-80: 80px;
+$space-96: 96px;
+$space-120: 120px;
+
+// ---- Radius ----
+$radius-xs: 4px;
+$radius-tag: 7px;
+$radius-sm: 8px; // Figma "Radius/sm · 8"
+$radius-md: 12px;
+$radius-lg: 16px; // cards
+$radius-xl: 24px;
+$radius-pill: 999px;
+
+// ---- Motion ----
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+$duration: 0.35s;

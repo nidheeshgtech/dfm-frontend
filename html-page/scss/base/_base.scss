@@ -1,0 +1,24 @@
+@use "../abstracts" as *;
+
+body {
+  --header-height: #{$header-height};
+
+  @include down("tablet") {
+    --header-height: 72px;
+  }
+
+  font-family: $font-family-base;
+  font-weight: 400;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+
+// Inline SVG filter defs (e.g. #glass-distortion): out of flow, but not
+// display:none — that disables the filter in some browsers.
+.sr-filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}

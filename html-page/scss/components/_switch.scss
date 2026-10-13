@@ -1,0 +1,162 @@
+@use "../abstracts" as *;
+
+// Hero audience switch: "I'm raising capital | I'm here to invest".
+// Current page = .switch__active (tinted pill + yellow arrow chip);
+// the other option is a plain link to the other page.
+.switch {
+  --switch-text: #{$color-black};
+  --switch-active-text: #{$color-black};
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: $space-4;
+  max-width: 100%;
+  padding: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 80px;
+  // Liquid glass container (layers from components/_liquid-glass.scss)
+  // over the Figma fill rgba(255,255,255,.1).
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  &__option,
+  &__active {
+    position: relative;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 6px;
+    border-radius: 50px;
+    white-space: nowrap;
+  }
+
+  &__label {
+    padding: 6px $space-24 8px;
+    font-size: fluid(15px, 20px);
+    line-height: 20px;
+    letter-spacing: tracking(-0.4px, 20px);
+  }
+
+  &__option {
+    color: var(--switch-text);
+    transition:
+      background-color $duration $ease-out,
+      box-shadow $duration $ease-out,
+      transform $duration $ease-out;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: glass-rim(0.9);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+  }
+
+  // Current page: tinted lens (Figma gradient) with a rim + top gloss.
+  &__active {
+    color: var(--switch-active-text);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 60%),
+      linear-gradient(90deg, rgba(13, 14, 26, 0.4), rgba(13, 14, 26, 0.08));
+    box-shadow: glass-rim(1.1, 0 6px 18px rgba(13, 14, 26, 0.18));
+  }
+
+  &__chip {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 70px;
+    @include glass-bead($color-yellow-bright);
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  // Arrow points right (investor) or left (company); on hover of the
+  // switch it nudges further that way, hinting the other option.
+  &__chip--right img {
+    transform: rotate(180deg);
+  }
+
+  &:hover &__chip img {
+    animation: switch-nudge 0.9s $ease-out;
+  }
+
+  &:hover &__chip--right img {
+    animation-name: switch-nudge-right;
+  }
+
+  &--light {
+    --switch-text: #{$color-text-dark};
+    --switch-active-text: #{$color-white};
+  }
+
+  @include down("tablet") {
+    &__label {
+      padding: 4px $space-12 6px;
+    }
+
+    &__chip {
+      width: 30px;
+      height: 30px;
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  @include down("mobile") {
+    &__option,
+    &__active {
+      gap: 4px;
+      padding: 4px;
+    }
+
+    &__label {
+      padding-inline: $space-8;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover &__chip img {
+      animation: none;
+    }
+
+    &__option {
+      transition: none;
+    }
+  }
+}
+
+@keyframes switch-nudge {
+  50% {
+    transform: translateX(-4px);
+  }
+}
+
+@keyframes switch-nudge-right {
+  0%,
+  100% {
+    transform: rotate(180deg);
+  }
+
+  50% {
+    transform: translateX(4px) rotate(180deg);
+  }
+}

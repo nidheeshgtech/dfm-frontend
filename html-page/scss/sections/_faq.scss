@@ -1,0 +1,660 @@
+@use "../abstracts" as *;
+
+// "Common questions" (Figma 2797:755). Dark rounded panel with a faint
+// contour illustration; FAQ accordion (js/components/faq.js) + assistant
+// and contact cards.
+.faq {
+  position: relative;
+  z-index: 2;
+  padding: $space-20;
+  background: $color-white;
+
+  &__panel {
+    position: relative;
+    isolation: isolate;
+    padding: fluid(56px, 78px) 0 fluid(56px, 96px);
+    overflow: hidden;
+    border-radius: 30px;
+    background: $color-bg-dark-card;
+    color: $color-white;
+  }
+
+  &__contours {
+    position: absolute;
+    right: -18%;
+    bottom: -40%;
+    z-index: -1;
+    width: min(1463px, 120vw);
+    max-width: none;
+    transform: rotate(-45deg);
+    pointer-events: none;
+    animation: faq-turn 120s linear infinite;
+  }
+
+  &__title {
+    margin-bottom: fluid(32px, 48px);
+    font-size: fluid(36px, 64px);
+    line-height: 1.25;
+    letter-spacing: tracking(-1.28px, 64px);
+    text-align: center;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1017fr) minmax(0, 499fr);
+    gap: $space-20;
+    align-items: start;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-12;
+  }
+
+  &__aside {
+    display: flex;
+    flex-direction: column;
+    gap: $space-20;
+    height: 100%;
+  }
+
+  // Panel edge on the site gutter (like the CTA card); content gets a
+  // fixed inner inset instead of the container gutter on top of it.
+  @include down("laptop") {
+    padding: $space-20 $container-gutter;
+
+    &__panel > .container {
+      padding-inline: $space-24;
+    }
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+
+    &__aside {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @include down("tablet") {
+    padding: $space-16 $container-gutter-mobile;
+
+    &__panel > .container {
+      padding-inline: $space-16;
+    }
+
+    &__panel {
+      border-radius: 20px;
+    }
+
+    &__aside {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__contours {
+      animation: none;
+    }
+  }
+}
+
+@keyframes faq-turn {
+  to {
+    transform: rotate(315deg);
+  }
+}
+
+// ---- Question ----
+.faq-item {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: $radius-md;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  transition:
+    border-color 0.5s $ease-out,
+    box-shadow 0.5s $ease-out,
+    background-color 0.5s $ease-out;
+
+  // Open-state purple wash fades in (gradients can't transition directly).
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: 3;
+    border-radius: inherit;
+    background: linear-gradient(100deg, rgba(100, 41, 236, 0.22) 6%, rgba(163, 139, 242, 0.13) 98%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s $ease-out;
+  }
+
+  // Liquid glass (shared .liquid-glass layers sit underneath at z 0–2).
+  > h3,
+  &__panel {
+    position: relative;
+    z-index: 4;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-24;
+    width: 100%;
+    padding: fluid(22px, 32px) fluid(20px, 30px);
+    color: inherit;
+    text-align: left;
+  }
+
+  &__q {
+    max-width: 724px;
+    font-size: fluid(20px, 32px);
+    line-height: 1.25;
+    letter-spacing: tracking(-0.32px, 32px);
+  }
+
+  &__icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border: 1px solid transparent;
+    border-radius: 70px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+    transition:
+      background-color 0.4s $ease-out,
+      border-color 0.4s $ease-out,
+      transform 0.5s $ease-out;
+
+    // Plus built from two bars so it can morph into a minus.
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 1.5px;
+      border-radius: 2px;
+      background: $color-purple-tint;
+      transition:
+        transform 0.5s $ease-out,
+        background-color 0.4s $ease-out;
+    }
+
+    &::after {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__btn:hover &__icon {
+    transform: rotate(90deg);
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &__btn:focus-visible {
+    outline: 2px solid $color-purple-tint;
+    outline-offset: -4px;
+    border-radius: $radius-md;
+  }
+
+  &__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.55s $ease-out;
+  }
+
+  &__inner {
+    overflow: hidden;
+  }
+
+  &__a {
+    margin: 0 fluid(20px, 31px) fluid(24px, 33px);
+    padding-top: $space-24;
+    border-top: 1px solid transparent;
+    border-image: linear-gradient(90deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0)) 1;
+    max-width: 850px;
+    opacity: 0.65;
+    font-size: fluid(17px, 24px);
+    line-height: 1.25;
+    letter-spacing: tracking(-0.24px, 24px);
+  }
+
+  &.is-open {
+    border-color: rgba(169, 139, 255, 0.35);
+    box-shadow: 0 0 99px rgba(78, 23, 229, 0.2);
+    isolation: isolate;
+
+    &::before {
+      opacity: 1;
+    }
+
+    .faq-item__panel {
+      grid-template-rows: 1fr;
+    }
+
+    .faq-item__icon {
+      border-color: rgba(78, 23, 229, 0.55);
+      background: linear-gradient(180deg, rgba(78, 23, 229, 0.6), rgba(78, 23, 229, 0.8));
+      transform: rotate(180deg);
+
+      &::before,
+      &::after {
+        background: $color-white;
+      }
+
+      &::after {
+        transform: rotate(0deg);
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &::before,
+    &__panel,
+    &__icon,
+    &__icon::before,
+    &__icon::after {
+      transition: none;
+    }
+  }
+}
+
+// ---- Assistant card ----
+.assist-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $space-32;
+  min-height: 313px;
+  padding: $space-20 30px 30px;
+  border-radius: $radius-md;
+  background: linear-gradient(162deg, $color-purple 9%, #2b0d7f 62%);
+  filter: drop-shadow(0 4px 17px rgba(78, 23, 229, 0.35));
+  text-align: center;
+
+  &__title {
+    margin-bottom: $space-16;
+    font-size: fluid(24px, 32px);
+  }
+
+  &__text {
+    font-size: fluid(16px, 20px);
+    line-height: 1.15;
+  }
+
+  // Pill with glowing orb (Figma Primary__btn "Ask the assistant").
+  &__btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-16;
+    width: 100%;
+    padding: $space-12 $space-24 $space-12 $space-12;
+    overflow: hidden;
+    border-radius: 80px;
+    background: $color-purple;
+    color: $color-bg-light;
+    font-size: fluid(17px, 20px);
+    font-weight: $font-weight-semibold;
+    isolation: isolate;
+    transition: transform 0.4s $ease-out;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background: linear-gradient(136deg, rgba(46, 9, 149, 0.5) 42%, rgba(33, 1, 122, 0.5) 70%, rgba(213, 91, 234, 0.5) 89%);
+      box-shadow: inset 0 4px 15px 3px rgba(144, 16, 255, 0.56);
+      background-size: 200% 100%;
+      animation: assist-sheen 6s ease-in-out infinite alternate;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-white;
+      outline-offset: 3px;
+    }
+  }
+
+  // Figma orb: a translucent lavender bubble whose edge is a bundle of
+  // fine wavy outlines that drift and morph (fluid energy ring), with the
+  // Figma sparkle stars inside — the big one breathes, the small one
+  // twinkles and turns. Breathing glow behind.
+  &__orb {
+    position: relative;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+
+    // Breathing glow.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(169, 139, 255, 0.55) 35%, rgba(169, 139, 255, 0) 70%);
+      filter: blur(6px);
+      animation: orb-breathe 4s ease-in-out infinite;
+    }
+
+    .orb {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .orb__ring,
+    .orb__star {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .orb__ring--1 {
+      animation:
+        orb-spin 9s linear infinite,
+        orb-morph-a 4.6s ease-in-out infinite alternate;
+    }
+
+    .orb__ring--2 {
+      animation:
+        orb-spin 7s linear infinite reverse,
+        orb-morph-b 3.8s ease-in-out infinite alternate;
+    }
+
+    .orb__ring--3 {
+      animation:
+        orb-spin 12s linear infinite,
+        orb-morph-b 5.4s ease-in-out infinite alternate-reverse;
+    }
+
+    .orb__ring--4 {
+      animation:
+        orb-spin 10s linear infinite reverse,
+        orb-morph-a 4.2s ease-in-out infinite alternate-reverse;
+    }
+
+    .orb__ring--5 {
+      animation:
+        orb-spin 14s linear infinite,
+        orb-morph-a 6s ease-in-out infinite alternate;
+    }
+
+    .orb__ring--6 {
+      animation:
+        orb-spin 8s linear infinite reverse,
+        orb-morph-b 4.8s ease-in-out infinite alternate;
+    }
+
+    // Subtle 3D: the bubble's gloss drifts as if it were turning.
+    .orb__gloss {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: orb-gloss 7s ease-in-out infinite alternate;
+    }
+
+    .orb__star--big {
+      animation: star-breathe 3.2s ease-in-out infinite;
+    }
+
+    .orb__star--small {
+      animation: star-twinkle 2.6s ease-in-out infinite;
+    }
+  }
+
+  &__btn:hover &__orb::before {
+    animation-duration: 1.8s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__btn::before,
+    &__orb::before,
+    &__orb .orb__ring,
+    &__orb .orb__gloss,
+    &__orb .orb__star {
+      animation: none;
+    }
+  }
+}
+
+@keyframes assist-sheen {
+  to {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes orb-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+// Morphs use `scale` (separate from `rotate`) so both animations combine.
+@keyframes orb-morph-a {
+  from {
+    scale: 1 0.92;
+  }
+
+  to {
+    scale: 0.94 1.04;
+  }
+}
+
+@keyframes orb-morph-b {
+  from {
+    scale: 1.04 0.95;
+  }
+
+  to {
+    scale: 0.93 1.02;
+  }
+}
+
+@keyframes orb-gloss {
+  from {
+    translate: -2px -1px;
+    scale: 1;
+  }
+
+  to {
+    translate: 2px 1px;
+    scale: 0.96 1;
+  }
+}
+
+// Big star: gentle breath + a slight Y-turn (scaleX) for depth.
+@keyframes star-breathe {
+  0%,
+  100% {
+    scale: 1;
+    opacity: 0.95;
+  }
+
+  50% {
+    scale: 0.88 1.06;
+    opacity: 1;
+  }
+}
+
+// Small star: twinkle — shrinks, turns, flares back.
+@keyframes star-twinkle {
+  0%,
+  100% {
+    scale: 1;
+    rotate: 0deg;
+    opacity: 1;
+  }
+
+  45% {
+    scale: 0.4;
+    rotate: 90deg;
+    opacity: 0.4;
+  }
+
+  60% {
+    scale: 1.25;
+    rotate: 90deg;
+    opacity: 1;
+  }
+}
+
+@keyframes orb-breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+    scale: 0.9;
+  }
+
+  50% {
+    opacity: 1;
+    scale: 1.12;
+  }
+}
+
+// ---- Contact card ----
+.contact-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $space-40;
+  min-height: 220px;
+  padding: $space-20 30px 30px;
+  border-radius: $radius-md;
+  background: linear-gradient(135deg, rgba(35, 37, 51, 0.5) 70%, rgba(78, 23, 229, 0.5));
+
+  &__title {
+    font-size: fluid(24px, 32px);
+  }
+
+  &__rows {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-24 $space-40;
+  }
+
+  &__link {
+    display: flex;
+    flex-direction: column;
+    gap: $space-12;
+    font-size: fluid(18px, 24px);
+    line-height: 1.33;
+
+    &:hover .contact-card__icon {
+      background: rgba(244, 255, 34, 0.25);
+      transform: scale(1.06);
+    }
+
+    // Phone rings, envelope lifts; a lime ring ripples off the circle.
+    &:hover .contact-card__icon,
+    &:focus-visible .contact-card__icon {
+      &::after {
+        animation: contact-ripple 0.9s ease-out;
+      }
+
+      img[src*="call"] {
+        animation: icon-ring 0.7s ease-in-out;
+      }
+
+      img[src*="mail"] {
+        animation: icon-lift 0.7s $ease-out;
+      }
+    }
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    position: relative;
+    border-radius: 80px;
+    background: rgba(244, 255, 34, 0.1);
+    transition:
+      background-color $duration $ease-out,
+      transform $duration $ease-out;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    img {
+      width: 28px;
+      height: 28px;
+    }
+  }
+}
+
+@keyframes contact-ripple {
+  0% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(244, 255, 34, 0.45);
+  }
+
+  100% {
+    opacity: 0;
+    box-shadow: 0 0 0 12px rgba(244, 255, 34, 0);
+  }
+}
+
+@keyframes icon-ring {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+
+  15%,
+  45%,
+  75% {
+    rotate: -14deg;
+  }
+
+  30%,
+  60%,
+  90% {
+    rotate: 14deg;
+  }
+}
+
+@keyframes icon-lift {
+  0%,
+  100% {
+    transform: none;
+  }
+
+  40% {
+    transform: translateY(-5px) rotate(-6deg);
+  }
+
+  70% {
+    transform: translateY(1px) rotate(2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-card__icon::after,
+  .contact-card__icon img {
+    animation: none !important;
+  }
+}

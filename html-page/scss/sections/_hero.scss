@@ -1,0 +1,128 @@
+@use "../abstracts" as *;
+
+// Hero (Figma "Main banner" 2797:259 company / 2797:1127 investor).
+.hero {
+  --hero-text: #{$color-black};
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: calc(var(--header-height) + #{fluid(48px, 90px)}) $container-gutter $space-40;
+  overflow: hidden;
+  color: var(--hero-text);
+  text-align: center;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-24;
+    width: 100%;
+    max-width: 960px;
+    margin-inline: auto;
+  }
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-24;
+  }
+
+  &__title {
+    @include up("tablet") {
+      white-space: nowrap;
+    }
+  }
+
+  &__line {
+    display: block;
+
+    // Mobile-only break (investor title is one line from tablet up).
+    &--sm {
+      display: inline;
+    }
+  }
+
+  &__lead {
+    max-width: 668px;
+
+    @include down("laptop") {
+      max-width: 400px;
+    }
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-12;
+    width: 100%;
+    max-width: 753px;
+    margin: $space-64 auto 0;
+    padding: $space-8;
+    text-align: left;
+
+    @include down("laptop") {
+      padding-inline: 0;
+    }
+  }
+
+  // ---- Static fallback backgrounds (replaced by the stage when live) ----
+  &--investor {
+    background: #f0f3f2;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      z-index: -1;
+      width: max(64vw, 520px);
+      aspect-ratio: 1;
+      background: url("../images/investor/swirl.png") center / contain no-repeat;
+      opacity: 0.5;
+      transform: translate(-50%, 50%);
+    }
+
+    .hero__lead {
+      opacity: 0.75;
+    }
+  }
+
+  &--company {
+    --hero-text: #{$color-white};
+
+    background:
+      radial-gradient(ellipse 60% 55% at 50% 0%, rgba(214, 216, 222, 0.85), rgba(214, 216, 222, 0) 70%),
+      url("../images/company/banner-bg-long.webp") 50% 52% / max(190vw, 1700px) auto no-repeat,
+      $color-navy;
+  }
+
+  @include down("tablet") {
+    padding-inline: $container-gutter-mobile;
+    padding-bottom: $space-24;
+
+    &__content,
+    &__intro {
+      gap: $space-16;
+    }
+
+    &__line {
+      display: inline;
+
+      &--sm {
+        display: block;
+      }
+    }
+
+    &__actions {
+      grid-template-columns: 1fr;
+      margin-top: $space-40;
+      padding: 0;
+    }
+  }
+}

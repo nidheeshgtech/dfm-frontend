@@ -1,0 +1,178 @@
+// Liquid Glass (web port of Apple's iOS 26 material).
+// Blur + saturate what's behind, a faint tint, a bright top-left rim and
+// a soft inner shadow so it reads as a lens rather than a flat frost.
+// Use the mixin inside a section, or the .glass classes in markup.
+
+$glass-blur: 20px;
+$glass-saturate: 180%;
+
+@mixin glass($tint: rgba(255, 255, 255, 0.08), $blur: $glass-blur, $radius: null) {
+  position: relative;
+  isolation: isolate;
+  background: $tint;
+  -webkit-backdrop-filter: blur($blur) saturate($glass-saturate);
+  backdrop-filter: blur($blur) saturate($glass-saturate);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.18);
+
+  @if $radius {
+    border-radius: $radius;
+  }
+
+  // Reflection: light sweep across the top edge.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.04) 40%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+
+  // No backdrop-filter support: fall back to a solid-ish dark fill so
+  // text on top keeps its contrast.
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background: rgba(20, 20, 28, 0.85);
+  }
+}
+
+// Reacts to pointer: radial highlight follows the cursor (position fed in
+// as --glass-x / --glass-y by js/components/glass.js), lifts on hover,
+// squishes on press.
+@mixin glass-interactive {
+  cursor: pointer;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    background-color 0.35s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(
+      120px circle at var(--glass-x, 50%) var(--glass-y, 50%),
+      rgba(255, 255, 255, 0.28),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+      0 12px 40px rgba(0, 0, 0, 0.24);
+
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------
+// Lighter-weight building blocks for components that already use their
+// own ::before (e.g. .btn-cta's growing dot) or keep Figma fills.
+// ---------------------------------------------------------------------
+
+// Lens rim: bright top edge, faint bottom edge, hairline all round.
+// $outer = optional drop/glow shadow appended after the rim.
+@function glass-rim($strength: 1, $outer: null) {
+  $rim:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35 * $strength),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08 * $strength),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06 * $strength);
+  @if $outer {
+    @return #{$rim}, #{$outer};
+  }
+  @return $rim;
+}
+
+// Frost what's behind (blur + saturate) without touching the fill.
+@mixin glass-frost($blur: $glass-blur) {
+  -webkit-backdrop-filter: blur($blur) saturate($glass-saturate);
+  backdrop-filter: blur($blur) saturate($glass-saturate);
+}
+
+// Animatable 0→1 "pointer glow" amount for glass-sheen.
+@property --glass-glow {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+// Reflection + pointer highlight on ::after (needs position: relative on
+// the host; sits under the content via z-index -1 + isolation).
+@mixin glass-sheen($sheen: 0.22) {
+  isolation: isolate;
+  transition: --glass-glow 0.35s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background:
+      radial-gradient(
+        140px circle at var(--glass-x, 50%) var(--glass-y, 50%),
+        rgba(255, 255, 255, calc(0.3 * var(--glass-glow))),
+        transparent 70%
+      ),
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, $sheen) 0%,
+        rgba(255, 255, 255, $sheen * 0.2) 38%,
+        transparent 62%
+      );
+    pointer-events: none;
+  }
+
+  &:hover {
+    --glass-glow: 1;
+  }
+}
+
+// Glossy bead (small solid chips like the yellow arrow).
+@mixin glass-bead($color) {
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 46%),
+    radial-gradient(circle at 50% 120%, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0) 60%),
+    $color;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.18);
+}
