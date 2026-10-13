@@ -103,6 +103,8 @@
   }
 
   @include down("tablet") {
+    // Content sits at the bottom, right above the buttons.
+    justify-content: flex-end;
     padding-inline: $container-gutter-mobile;
     padding-bottom: $space-24;
 
@@ -121,8 +123,32 @@
 
     &__actions {
       grid-template-columns: 1fr;
-      margin-top: $space-40;
+      margin-top: $space-32;
       padding: 0;
+
+      .btn-cta {
+        font-size: 16px;
+      }
+
+      // 414px+ phones: both buttons side by side (tighter padding so
+      // "Start a conversation" fits at 16px with its arrow).
+      @media (min-width: 414px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: $space-8;
+
+        .btn-cta {
+          padding: 18px 12px;
+
+          &::before {
+            right: 11px;
+          }
+        }
+
+        .btn-cta__icon {
+          margin-left: $space-8;
+        }
+      }
     }
+
   }
 }
