@@ -36,6 +36,9 @@ function watchSections(header, selector, className) {
         trigger: section,
         start: () => `top ${headerHeight()}px`,
         end: () => `bottom ${headerHeight()}px`,
+        // Measure after the pinned sections (journey, markets) have added
+        // their scroll space, or every section below them is offset.
+        refreshPriority: -10,
         onToggle: (self) => {
           if (self.isActive) active.add(section);
           else active.delete(section);

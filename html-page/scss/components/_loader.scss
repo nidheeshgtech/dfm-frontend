@@ -678,8 +678,12 @@
 // and a big light counter on the right, both sitting on a full-width
 // progress hairline that runs edge to edge along the very bottom.
 .loader-default .loader {
-  // Plain dark stage — no purple glow, no tagline, no bar; just the swirl
-  // and the big counter.
+  // ARENA navy stage (the company banner blue), soft lift at the top —
+  // no purple glow, no tagline, no bar; just the swirl and the big counter.
+  background:
+    radial-gradient(70% 55% at 50% 0%, rgba(110, 138, 180, 0.28), rgba(110, 138, 180, 0) 70%),
+    $color-navy;
+
   .loader__glow,
   .loader__tag,
   .loader__bar {

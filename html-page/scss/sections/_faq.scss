@@ -29,6 +29,13 @@
     transform: rotate(-45deg);
     pointer-events: none;
     animation: faq-turn 120s linear infinite;
+
+    // Laptop / desktop: smaller, so it reads as a backdrop, not a wall.
+    @media (min-width: 1199px) and (max-width: 1920px) {
+      right: -12%;
+      bottom: -28%;
+      width: min(1000px, 62vw);
+    }
   }
 
   &__title {

@@ -6,7 +6,7 @@
 // Variant .site-header--light = white logo/text for dark heroes (company).
 .site-header {
   --header-fg: #{$color-black};
-  --header-glass: rgba(255, 255, 255, 0.72);
+  --header-glass: rgba(255, 255, 255, 0.62);
 
   position: fixed;
   inset: 0 0 auto;
@@ -16,6 +16,36 @@
 
   &.is-hidden {
     transform: translateY(-100%);
+  }
+
+  // Once the page has scrolled: a soft frosted haze behind the header that
+  // fades out downward (no hard edge). Tint follows the section underneath
+  // via --header-glass — white on light sections, ARENA navy on dark ones.
+  // None at the very top (per Figma).
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 -40px;
+    z-index: -1;
+    background: linear-gradient(180deg, var(--header-glass) 0%, var(--header-glass) 45%, transparent 100%);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+    opacity: 0;
+    transition:
+      opacity 0.5s $ease-out,
+      background-color 0.4s $ease-out;
+    pointer-events: none;
+  }
+
+  &.is-scrolled::before {
+    opacity: 1;
+  }
+
+  // Full-screen mobile menu brings its own background.
+  &.is-menu-open::before {
+    opacity: 0;
   }
 
   &__inner {
@@ -89,7 +119,7 @@
   &--light,
   &.is-on-dark {
     --header-fg: #{$color-white};
-    --header-glass: rgba(1, 33, 74, 0.6);
+    --header-glass: rgba(1, 33, 74, 0.55); // ARENA navy
 
     .logo--dark {
       display: none;
@@ -103,7 +133,7 @@
   // Light-hero override: over white sections, back to the dark header.
   &.is-on-light {
     --header-fg: #{$color-black};
-    --header-glass: rgba(255, 255, 255, 0.72);
+    --header-glass: rgba(255, 255, 255, 0.62);
 
     .logo--dark {
       display: block;
@@ -115,7 +145,7 @@
   }
 
   &.is-on-dark:not(.site-header--light) {
-    --header-glass: rgba(7, 8, 15, 0.6);
+    --header-glass: rgba(1, 33, 74, 0.55); // ARENA navy
   }
 
 
