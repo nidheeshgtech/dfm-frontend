@@ -14,7 +14,7 @@ body {
 }
 
 
-// Inline SVG filter defs (e.g. #glass-distortion): out of flow, but not
+// Inline SVG filter defs: out of flow, but not
 // display:none — that disables the filter in some browsers.
 .sr-filter {
   position: absolute;

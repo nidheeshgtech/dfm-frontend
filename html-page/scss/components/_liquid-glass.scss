@@ -10,9 +10,7 @@
 //     <div class="liquid-glass__content">…</div>
 //   </article>
 //
-// The warp is the #glass-distortion SVG filter (feTurbulence → displacement)
-// inlined once per page. Browsers that can't combine filter + backdrop-filter
-// (Safari) just get the frosted blur — still reads as glass.
+// Frosted blur only (the old SVG warp filter was dropped for performance).
 .liquid-glass {
   position: relative;
   isolation: isolate;
@@ -33,7 +31,10 @@
     isolation: isolate;
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
-    filter: url("#glass-distortion");
+    // The #glass-distortion warp (SVG feTurbulence + displacement) was
+    // removed: on ~20 elements it re-rendered every scroll frame and made
+    // the page stutter / feel stuck while loading. Blur + tint + shine
+    // still read as glass.
   }
 
   &__tint {
