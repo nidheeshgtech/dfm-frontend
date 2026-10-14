@@ -1960,6 +1960,22 @@ body {
   min-height: 100vh;
   min-height: 100svh;
   padding: calc(var(--header-height) + clamp(3rem, 2.72vw + 2.3628640777rem, 5.625rem)) 40px 40px;
+}
+@media (min-width: 1024px) {
+  .hero {
+    padding-top: max(var(--header-height) + clamp(3rem, 2.72vw + 2.3628640777rem, 5.625rem), 22vh);
+  }
+}
+@media (min-width: 1921px) {
+  .hero .hero__title {
+    font-size: 5vw;
+  }
+  .hero .hero__lead {
+    max-width: 34.8vw;
+    font-size: 1.25vw;
+  }
+}
+.hero {
   overflow: hidden;
   color: var(--hero-text);
   text-align: center;

@@ -12,6 +12,26 @@
   min-height: 100vh;
   min-height: 100svh;
   padding: calc(var(--header-height) + #{fluid(48px, 90px)}) $container-gutter $space-40;
+
+  // Desktop: content starts where Figma puts it (eyebrow at ~22% of the
+  // 1096px frame) instead of a fixed offset, so it doesn't ride high on
+  // taller / larger screens.
+  @include up("laptop") {
+    padding-top: max(calc(var(--header-height) + #{fluid(48px, 90px)}), 22vh);
+  }
+
+  // Beyond the 1920 design width, scale the type with the screen so the
+  // block keeps its Figma proportion (fluid() stops growing at 1920).
+  @media (min-width: 1921px) {
+    .hero__title {
+      font-size: 5vw; // 96px at 1920
+    }
+
+    .hero__lead {
+      max-width: 34.8vw; // 668px at 1920
+      font-size: 1.25vw; // 24px at 1920
+    }
+  }
   overflow: hidden;
   color: var(--hero-text);
   text-align: center;
