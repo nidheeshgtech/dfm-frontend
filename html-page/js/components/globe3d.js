@@ -125,6 +125,53 @@ const FRAGMENT = /* glsl */ `
   }
 `;
 
+// ---- Investor crowd: small lime dots on real investor cities, so the five
+// named cards read as examples from a worldwide crowd (not endorsers).
+// Each twinkles on its own phase; rear-facing ones fade like the globe.
+const CROWD = [
+  [25.2, 55.3], [24.5, 54.4], [25.3, 51.5], [26.2, 50.6], [29.4, 48.0], [24.7, 46.7], [21.5, 39.2], [23.6, 58.4], [31.9, 35.9], [33.9, 35.5],
+  [30.0, 31.2], [36.8, 10.2], [33.6, -7.6], [6.5, 3.4], [-1.3, 36.8], [-26.2, 28.0], [9.0, 38.7], [5.6, -0.2], [41.0, 29.0], [39.9, 32.9],
+  [51.5, -0.1], [53.5, -2.2], [48.9, 2.4], [52.5, 13.4], [50.1, 8.7], [52.4, 4.9], [47.4, 8.5], [45.5, 9.2], [40.4, -3.7], [38.7, -9.1],
+  [59.3, 18.1], [55.7, 12.6], [52.2, 21.0], [48.2, 16.4], [37.9, 23.7], [19.1, 72.9], [28.6, 77.2], [13.1, 80.3], [12.9, 77.6], [17.4, 78.5],
+  [22.6, 88.4], [24.9, 67.0], [23.8, 90.4], [6.9, 79.9], [1.3, 103.8], [3.1, 101.7], [13.8, 100.5], [22.3, 114.2], [31.2, 121.5], [39.9, 116.4],
+  [35.7, 139.7], [37.6, 127.0], [-33.9, 151.2], [-37.8, 145.0], [40.7, -74.0], [43.7, -79.4], [41.9, -87.6], [37.8, -122.4], [-23.6, -46.6], [19.4, -99.1],
+];
+
+const CROWD_VERTEX = /* glsl */ `
+  uniform float uReveal;
+  uniform float uSize;
+  uniform float uPixelRatio;
+  uniform float uTime;
+  attribute float aPhase;
+  varying float vAlpha;
+
+  void main() {
+    vec4 world = modelMatrix * vec4(position, 1.0);
+    vec3 normal = normalize(mat3(modelMatrix) * position);
+    float facing = dot(normal, normalize(cameraPosition - world.xyz));
+    float front = smoothstep(0.0, 0.45, facing);
+    float t = clamp((uReveal * 1.4 - 0.35 - aPhase * 0.4) / 0.35, 0.0, 1.0);
+    float tw = 0.65 + 0.35 * sin(uTime * 1.6 + aPhase * 6.2831);
+    vAlpha = front * t * tw;
+    vec4 mv = viewMatrix * world;
+    gl_Position = projectionMatrix * mv;
+    gl_PointSize = uSize * (0.7 + 0.3 * tw) * t * uPixelRatio * (${DIST.toFixed(1)} / -mv.z);
+  }
+`;
+
+const CROWD_FRAGMENT = /* glsl */ `
+  uniform vec3 uColor;
+  varying float vAlpha;
+  void main() {
+    float d = length(gl_PointCoord - 0.5);
+    float core = 1.0 - smoothstep(0.22, 0.3, d);
+    float halo = (1.0 - smoothstep(0.3, 0.5, d)) * 0.35;
+    float a = max(core, halo) * vAlpha;
+    if (a <= 0.01) discard;
+    gl_FragColor = vec4(uColor, a);
+  }
+`;
+
 // Dot density per layout (degrees between dots).
 const densityFor = (width) => (width < 768 ? 2.3 : width < 1024 ? 1.85 : 1.45);
 
@@ -222,6 +269,39 @@ async function setup(root) {
     globe.add(points);
   };
 
+  // ---- Investor crowd ----
+  const crowdOn = new URLSearchParams(window.location.search).get("crowd") !== "0";
+  const crowdMaterial = new THREE.ShaderMaterial({
+    vertexShader: CROWD_VERTEX,
+    fragmentShader: CROWD_FRAGMENT,
+    transparent: true,
+    depthWrite: false,
+    uniforms: {
+      uReveal: material.uniforms.uReveal, // shares the globe's entrance
+      uSize: { value: 10 },
+      uPixelRatio: material.uniforms.uPixelRatio,
+      uTime: { value: 0 },
+      uColor: { value: new THREE.Color("#f4ff22") },
+    },
+  });
+  let crowd = null;
+  if (crowdOn) {
+    const list = window.innerWidth < 768 ? CROWD.filter((_, i) => i % 5 !== 1 && i % 5 !== 3) : CROWD;
+    const pos = [];
+    const phase = [];
+    list.forEach(([lat, lon], i) => {
+      const v = toVec(THREE, lat, lon).multiplyScalar(1.004);
+      pos.push(v.x, v.y, v.z);
+      phase.push(((i * 37) % 60) / 60);
+    });
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+    geo.setAttribute("aPhase", new THREE.Float32BufferAttribute(phase, 1));
+    crowd = new THREE.Points(geo, crowdMaterial);
+    crowd.renderOrder = 2;
+    globe.add(crowd);
+  }
+
   // ---- Anchors (HTML markers riding the surface) ----
   const anchors = pins.map((pin) => {
     const lat = parseFloat(pin.dataset.lat);
@@ -288,6 +368,7 @@ async function setup(root) {
     renderer.setSize(W, H, false);
     material.uniforms.uPixelRatio.value = dpr;
     material.uniforms.uSize.value = Math.max(2.4, radiusPx * 0.0135);
+    crowdMaterial.uniforms.uSize.value = Math.max(7, radiusPx * 0.032);
 
     stageBox = { w: W, h: H, left: canvasBox.left, top: canvasBox.top };
     anchorLayer.style.setProperty("--w", `${W}px`);
@@ -429,6 +510,7 @@ async function setup(root) {
       state.parallaxX += (pointer.x * 0.06 - state.parallaxX) * Math.min(1, dt * 3);
       state.parallaxY += (pointer.y * 0.05 - state.parallaxY) * Math.min(1, dt * 3);
       state.float = Math.sin((now / 1000) * ((Math.PI * 2) / 7)) * 0.012;
+      crowdMaterial.uniforms.uTime.value = now / 1000;
       dirty = true;
     }
 
@@ -626,6 +708,8 @@ async function setup(root) {
       document.removeEventListener("visibilitychange", onVisibility);
       points?.geometry.dispose();
       material.dispose();
+      crowd?.geometry.dispose();
+      crowdMaterial.dispose();
       renderer.dispose();
     },
     { once: true },
