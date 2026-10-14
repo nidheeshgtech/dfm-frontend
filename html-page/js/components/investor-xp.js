@@ -75,6 +75,7 @@ function setup(root) {
     if (spot) spot.style.setProperty("--spot-y", steps[index].dataset.spot || "50%");
     // One phone screen per step (cross-fade).
     screens.forEach((img, i) => img.classList.toggle("is-active", i === Math.min(index, screens.length - 1)));
+    root.dispatchEvent(new CustomEvent("xp:step", { detail: index }));
     placeVisual(true);
     playLine();
   };

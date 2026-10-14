@@ -17,6 +17,7 @@ import { initSkeletonLoader } from "./components/skeleton-loader.js";
 import { initVideoModal } from "./components/video-modal.js";
 import { initSwipeDots } from "./components/swipe-dots.js";
 import { initXpWave } from "./components/xp-wave.js";
+import { initXpApp } from "./components/xp-app.js";
 
 function init() {
   // ORDER MATTERS: Lenis first (it hooks ScrollTrigger.update), then reveal.
@@ -26,7 +27,7 @@ function init() {
     console.error("init: initSmoothScroll threw", e);
   }
 
-  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initGlobe, initFaq, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch].forEach((fn) => {
+  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initXpApp, initGlobe, initFaq, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch].forEach((fn) => {
     try {
       fn();
     } catch (e) {
