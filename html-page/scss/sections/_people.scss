@@ -195,8 +195,8 @@
     transform: scale(1.06);
   }
 
-  &:hover &__photo::before,
-  &:hover &__photo::after {
+  // Hover: rim only — no dark gradient over the photo.
+  &:hover &__photo::before {
     opacity: 1;
   }
 

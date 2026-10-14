@@ -89,6 +89,27 @@
   }
 
   // Card edges sit on the site gutter, like every other section.
+  // Investor page (Figma 2797:1841): black card, dark swirl photo at 30%
+  // opacity, desaturated (colour blend #010101), anchored to the bottom.
+  &--dark &__card {
+    background: #000;
+  }
+
+  &--dark &__bg {
+    background: #000;
+
+    // Figma stretches the (transparent) swirl to the card: fill, not cover.
+    img {
+      object-fit: fill;
+      opacity: 1;
+      animation: none;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
   @include down("laptop") {
     padding: $space-20 $container-gutter 0;
   }

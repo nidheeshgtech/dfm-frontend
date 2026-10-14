@@ -121,7 +121,8 @@ const FRAGMENT = /* glsl */ `
     if (a <= 0.0) discard;
     vec3 color = mix(uLight, uDark, vShade);
     color = mix(color, uAccent, vFocus * 0.7);
-    gl_FragColor = vec4(color, a * vAlpha * (0.82 + vFocus * 0.18));
+    // Grey dots softened to 55%; purple (focused) dots go to full opacity.
+    gl_FragColor = vec4(color, a * vAlpha * (0.55 + vFocus * 0.45));
   }
 `;
 
@@ -152,7 +153,7 @@ const CROWD_VERTEX = /* glsl */ `
     float front = smoothstep(0.0, 0.45, facing);
     float t = clamp((uReveal * 1.4 - 0.35 - aPhase * 0.4) / 0.35, 0.0, 1.0);
     float tw = 0.65 + 0.35 * sin(uTime * 1.6 + aPhase * 6.2831);
-    vAlpha = front * t * tw;
+    vAlpha = front * t; // full opacity; the twinkle only pulses the size
     vec4 mv = viewMatrix * world;
     gl_Position = projectionMatrix * mv;
     gl_PointSize = uSize * (0.7 + 0.3 * tw) * t * uPixelRatio * (${DIST.toFixed(1)} / -mv.z);

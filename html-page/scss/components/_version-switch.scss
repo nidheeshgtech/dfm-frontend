@@ -28,3 +28,15 @@
     }
   }
 }
+
+// Journey image-effect picker sits on the right so both can show.
+.version-switch--journey {
+  left: auto;
+  right: $space-16;
+  flex-wrap: wrap;
+  max-width: calc(100vw - 32px);
+
+  a {
+    text-transform: capitalize;
+  }
+}

@@ -504,3 +504,36 @@
     flex: 1 1 100%;
   }
 }
+
+// ---- Desktop scroll-driven mode (journey.js adds .journey--pin) ----
+// Pinned to one screen. The photo panel keeps its normal size (same as
+// before pinning) and only shrinks on short screens; the block is centred
+// vertically in the viewport.
+.journey--pin {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  height: 100svh;
+  padding-block: clamp(16px, 4vh, 64px);
+
+  .journey__head {
+    flex-shrink: 0;
+    margin-bottom: clamp(16px, 3vh, 48px);
+  }
+
+  .journey__frame {
+    flex: 0 1 auto;
+    min-height: 0;
+    width: 100%;
+  }
+
+  .journey-steps {
+    flex-shrink: 0;
+  }
+
+  .journey-panel {
+    flex: 0 1 clamp(380px, 32vw, 561px); // the normal height
+    min-height: 0;
+  }
+}

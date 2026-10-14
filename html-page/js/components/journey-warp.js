@@ -78,6 +78,288 @@ const FRAG = /* glsl */ `
   }
 `;
 
+// "Ripple" (default): a water-drop transition. Concentric waves spread
+// from the centre and refract the old photo; the new one is revealed inside
+// a growing, softly wobbling circle with a thin light caustic on its edge,
+// while the old photo sinks back. ?journey=pillow keeps the bulge warp.
+const FRAG_RIPPLE = /* glsl */ `
+  precision highp float;
+  uniform sampler2D uFrom;
+  uniform sampler2D uTo;
+  uniform vec4 uFromFit;
+  uniform vec4 uToFit;
+  uniform float uProgress;
+  uniform float uDir;
+  uniform vec3 uBg;
+  uniform vec3 uRim;
+  uniform float uAspect;
+  varying vec2 vUv;
+
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
+  }
+  vec4 sampleFit(sampler2D t, vec4 fit, vec2 uv) { return texture2D(t, uv * fit.xy + fit.zw); }
+
+  void main() {
+    float p = uProgress;
+    vec2 origin = vec2(0.5 + uDir * 0.08, 0.55);
+    vec2 d = (vUv - origin) * vec2(uAspect, 1.0);
+    float r = length(d);
+    vec2 dir = r > 0.0001 ? d / r : vec2(0.0);
+
+    // Reaches the farthest corner exactly at p = 1.
+    float maxR = length(vec2(uAspect * 0.58, 0.55)) + 0.08;
+    float radius = p * maxR;
+    float wave = sin(r * 42.0 - p * 26.0) * exp(-abs(r - radius) * 7.0);
+    float amp = sin(p * 3.14159265) * 0.028;
+    vec2 offset = dir * wave * amp / vec2(uAspect, 1.0);
+
+    float n = (noise(vUv * 6.0 + p * 2.0) - 0.5) * 0.06;
+    float mask = smoothstep(radius + 0.02, radius - 0.04, r + n);
+    float rim = smoothstep(0.035, 0.0, abs(r + n - radius + 0.01)) * sin(p * 3.14159265);
+
+    vec2 fromUv = (vUv - 0.5) * (1.0 + p * 0.06) + 0.5 + offset;
+    vec3 a = sampleFit(uFrom, uFromFit, fromUv).rgb * (1.0 - p * 0.35);
+    vec2 toUv = (vUv - 0.5) * (1.0 - (1.0 - p) * 0.08) + 0.5 + offset * 0.6;
+    vec3 b = sampleFit(uTo, uToFit, toUv).rgb;
+
+    vec3 col = mix(a, b, mask);
+    col += uRim * rim * 0.35 + vec3(1.0) * rim * 0.12;
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+const FRAG_INK = /* glsl */ `
+  precision highp float;
+  uniform sampler2D uFrom;
+  uniform sampler2D uTo;
+  uniform vec4 uFromFit;
+  uniform vec4 uToFit;
+  uniform float uProgress;
+  uniform float uDir;
+  uniform vec3 uBg;
+  uniform vec3 uRim;
+  uniform float uAspect;
+  varying vec2 vUv;
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
+  }
+  float fbm(vec2 p) { float v = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.0; a *= 0.5; } return v; }
+  vec3 A(vec2 uv) { return texture2D(uFrom, clamp(uv, 0.0, 1.0) * uFromFit.xy + uFromFit.zw).rgb; }
+  vec3 B(vec2 uv) { return texture2D(uTo, clamp(uv, 0.0, 1.0) * uToFit.xy + uToFit.zw).rgb; }
+
+  // Ink bleed: the new photo spreads through the old like ink in water.
+  void main() {
+    float p = uProgress;
+    vec2 q = vUv * vec2(uAspect, 1.0);
+    float n = fbm(q * 2.5 + vec2(p * 0.8, -p * 0.5));
+    float front = p * 1.35 - 0.2;
+    float side = (uDir > 0.0 ? 1.0 - vUv.x : vUv.x) * 0.35;
+    float m = 1.0 - smoothstep(front - 0.12, front + 0.02, n + side);
+    float edge = smoothstep(0.1, 0.0, abs(n + side - front + 0.05)) * sin(p * 3.14159);
+    vec3 col = mix(A(vUv + (n - 0.5) * 0.02 * p), B(vUv), m);
+    col = mix(col, col * 0.55, edge * 0.6);
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+const FRAG_SMOKE = /* glsl */ `
+  precision highp float;
+  uniform sampler2D uFrom;
+  uniform sampler2D uTo;
+  uniform vec4 uFromFit;
+  uniform vec4 uToFit;
+  uniform float uProgress;
+  uniform float uDir;
+  uniform vec3 uBg;
+  uniform vec3 uRim;
+  uniform float uAspect;
+  varying vec2 vUv;
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
+  }
+  float fbm(vec2 p) { float v = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.0; a *= 0.5; } return v; }
+  vec3 A(vec2 uv) { return texture2D(uFrom, clamp(uv, 0.0, 1.0) * uFromFit.xy + uFromFit.zw).rgb; }
+  vec3 B(vec2 uv) { return texture2D(uTo, clamp(uv, 0.0, 1.0) * uToFit.xy + uToFit.zw).rgb; }
+
+  // Smoke dissolve: the old photo breaks into drifting smoke.
+  void main() {
+    float p = uProgress;
+    vec2 q = vUv * vec2(uAspect, 1.0) * 3.0;
+    float n = fbm(q + vec2(0.0, -p * 1.5));
+    vec2 drift = vec2((n - 0.5) * 0.08, -p * 0.12) * p;
+    float t = smoothstep(n - 0.15, n + 0.15, p * 1.3 - 0.15);
+    vec3 a = A(vUv + drift);
+    a = mix(a, vec3(dot(a, vec3(0.33))) * 1.2, t * 0.5);
+    gl_FragColor = vec4(mix(a, B(vUv), t), 1.0);
+  }
+`;
+
+const FRAG_DOTS = /* glsl */ `
+  precision highp float;
+  uniform sampler2D uFrom;
+  uniform sampler2D uTo;
+  uniform vec4 uFromFit;
+  uniform vec4 uToFit;
+  uniform float uProgress;
+  uniform float uDir;
+  uniform vec3 uBg;
+  uniform vec3 uRim;
+  uniform float uAspect;
+  varying vec2 vUv;
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
+  }
+  float fbm(vec2 p) { float v = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.0; a *= 0.5; } return v; }
+  vec3 A(vec2 uv) { return texture2D(uFrom, clamp(uv, 0.0, 1.0) * uFromFit.xy + uFromFit.zw).rgb; }
+  vec3 B(vec2 uv) { return texture2D(uTo, clamp(uv, 0.0, 1.0) * uToFit.xy + uToFit.zw).rgb; }
+
+  // Dot mosaic: the photo breaks into round ARENA-style dots that wash
+  // across, then re-form as the new photo.
+  void main() {
+    float p = uProgress;
+    float cells = 46.0;
+    vec2 grid = vec2(cells * uAspect, cells);
+    vec2 cell = floor(vUv * grid);
+    vec2 cuv = (cell + 0.5) / grid;
+    vec2 f = fract(vUv * grid) - 0.5;
+    float order = (uDir > 0.0 ? cuv.x : 1.0 - cuv.x) * 0.7 + hash(cell) * 0.3;
+    float local = clamp((p * 1.6 - order * 0.6) / 0.6, 0.0, 1.0);
+    float pix = smoothstep(0.0, 0.35, local) * (1.0 - smoothstep(0.65, 1.0, local));
+    float dotR = 0.5 - 0.32 * sin(local * 3.14159);
+    float inDot = 1.0 - smoothstep(dotR - 0.08, dotR, length(f));
+    vec3 src = local < 0.5 ? mix(A(vUv), A(cuv), pix) : mix(B(vUv), B(cuv), pix);
+    gl_FragColor = vec4(mix(uBg, src, mix(1.0, inDot, pix)), 1.0);
+  }
+`;
+
+const FRAG_BLINDS = /* glsl */ `
+  precision highp float;
+  uniform sampler2D uFrom;
+  uniform sampler2D uTo;
+  uniform vec4 uFromFit;
+  uniform vec4 uToFit;
+  uniform float uProgress;
+  uniform float uDir;
+  uniform vec3 uBg;
+  uniform vec3 uRim;
+  uniform float uAspect;
+  varying vec2 vUv;
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
+  }
+  float fbm(vec2 p) { float v = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.0; a *= 0.5; } return v; }
+  vec3 A(vec2 uv) { return texture2D(uFrom, clamp(uv, 0.0, 1.0) * uFromFit.xy + uFromFit.zw).rgb; }
+  vec3 B(vec2 uv) { return texture2D(uTo, clamp(uv, 0.0, 1.0) * uToFit.xy + uToFit.zw).rgb; }
+
+  // 3D blinds: vertical strips flip one after another.
+  void main() {
+    float p = uProgress;
+    float strips = 12.0;
+    float x = uDir > 0.0 ? vUv.x : 1.0 - vUv.x;
+    float idx = floor(x * strips);
+    float local = clamp(p * 1.8 - idx / strips * 0.8, 0.0, 1.0);
+    float ang = local * 3.14159265;
+    float fx = fract(x * strips);
+    float w = abs(cos(ang));
+    float sx = (fx - 0.5) / max(w, 0.001) + 0.5;
+    float base = (idx + clamp(sx, 0.0, 1.0)) / strips;
+    vec2 uv = vec2(uDir > 0.0 ? base : 1.0 - base, vUv.y);
+    vec3 col = ang > 1.5707963 ? B(uv) : A(uv);
+    if (sx < 0.0 || sx > 1.0) col = uBg; else col *= 0.55 + 0.45 * w;
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+const FRAG_ZOOM = /* glsl */ `
+  precision highp float;
+  uniform sampler2D uFrom;
+  uniform sampler2D uTo;
+  uniform vec4 uFromFit;
+  uniform vec4 uToFit;
+  uniform float uProgress;
+  uniform float uDir;
+  uniform vec3 uBg;
+  uniform vec3 uRim;
+  uniform float uAspect;
+  varying vec2 vUv;
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
+  }
+  float fbm(vec2 p) { float v = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.0; a *= 0.5; } return v; }
+  vec3 A(vec2 uv) { return texture2D(uFrom, clamp(uv, 0.0, 1.0) * uFromFit.xy + uFromFit.zw).rgb; }
+  vec3 B(vec2 uv) { return texture2D(uTo, clamp(uv, 0.0, 1.0) * uToFit.xy + uToFit.zw).rgb; }
+
+  // Zoom tunnel: the old photo rushes toward you, the new one emerges.
+  void main() {
+    float p = uProgress;
+    vec2 c = vUv - 0.5;
+    vec3 a = vec3(0.0), b = vec3(0.0);
+    for (int i = 0; i < 8; i++) {
+      float k = float(i) / 7.0;
+      float blur = sin(p * 3.14159) * 0.06 * k;
+      a += A(0.5 + c * (1.0 - p * 0.55 - blur));
+      b += B(0.5 + c * (1.25 - p * 0.25 + blur));
+    }
+    vec3 col = mix(a / 8.0, b / 8.0, smoothstep(0.35, 0.75, p));
+    col += vec3(1.0) * sin(p * 3.14159) * 0.08 * (1.0 - length(c));
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+const FRAG_LIGHT = /* glsl */ `
+  precision highp float;
+  uniform sampler2D uFrom;
+  uniform sampler2D uTo;
+  uniform vec4 uFromFit;
+  uniform vec4 uToFit;
+  uniform float uProgress;
+  uniform float uDir;
+  uniform vec3 uBg;
+  uniform vec3 uRim;
+  uniform float uAspect;
+  varying vec2 vUv;
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
+  }
+  float fbm(vec2 p) { float v = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.0; a *= 0.5; } return v; }
+  vec3 A(vec2 uv) { return texture2D(uFrom, clamp(uv, 0.0, 1.0) * uFromFit.xy + uFromFit.zw).rgb; }
+  vec3 B(vec2 uv) { return texture2D(uTo, clamp(uv, 0.0, 1.0) * uToFit.xy + uToFit.zw).rgb; }
+
+  // Light sweep: a soft diagonal band of light crosses, the new photo behind.
+  void main() {
+    float p = uProgress;
+    float x = (uDir > 0.0 ? vUv.x : 1.0 - vUv.x) + (vUv.y - 0.5) * 0.35;
+    float front = p * 1.6 - 0.3;
+    float m = smoothstep(front + 0.05, front - 0.05, x);
+    float band = exp(-pow((x - front) * 9.0, 2.0)) * sin(p * 3.14159);
+    vec3 col = mix(A(vUv), B(vUv), m);
+    col += vec3(1.0, 0.98, 1.0) * band * 0.55 + uRim * band * 0.25;
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
 export async function createWarp(media) {
   const THREE = await import(THREE_URL);
   const canvas = document.createElement("canvas");
@@ -99,8 +381,15 @@ export async function createWarp(media) {
     uDir: { value: 1 },
     uBg: { value: new THREE.Color("#1b1d2b") },
     uRim: { value: new THREE.Color("#a98bff") },
+    uAspect: { value: 1 },
   };
-  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms }));
+  // ?journey=<name> picks the effect (default ripple).
+  const EFFECTS = { ripple: FRAG_RIPPLE, pillow: FRAG, ink: FRAG_INK, smoke: FRAG_SMOKE, dots: FRAG_DOTS, blinds: FRAG_BLINDS, zoom: FRAG_ZOOM, light: FRAG_LIGHT };
+  const pick = new URLSearchParams(window.location.search).get("journey");
+  const style = EFFECTS[pick] || FRAG_RIPPLE;
+  const pillow = style === FRAG;
+  // ?journey=pillow keeps the earlier bulge warp.
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: style, uniforms }));
   scene.add(mesh);
 
   const cache = new Map();
@@ -157,6 +446,7 @@ export async function createWarp(media) {
       uniforms.uTo.value = textureFor(toImg);
       fitFor(fromImg, w, h, uniforms.uFromFit.value);
       fitFor(toImg, w, h, uniforms.uToFit.value);
+      uniforms.uAspect.value = w / h;
       uniforms.uDir.value = dir;
       uniforms.uProgress.value = 0;
       renderer.render(scene, camera);
@@ -165,8 +455,8 @@ export async function createWarp(media) {
       return new Promise((resolve) => {
         tween = gsap.to(uniforms.uProgress, {
           value: 1,
-          duration: 1.35,
-          ease: "power2.inOut",
+          duration: pillow ? 1.35 : 1.6,
+          ease: pillow ? "power2.inOut" : "power1.inOut",
           onUpdate: () => renderer.render(scene, camera),
           onComplete: () => {
             canvas.classList.remove("is-on");
@@ -177,3 +467,6 @@ export async function createWarp(media) {
     },
   };
 }
+
+// Review picker: lists every effect when ?journey= is in the URL.
+export const JOURNEY_EFFECTS = ["ripple", "pillow", "ink", "smoke", "dots", "blinds", "zoom", "light"];

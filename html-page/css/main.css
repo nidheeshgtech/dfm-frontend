@@ -1657,6 +1657,16 @@ body {
   color: #0d0e1a;
 }
 
+.version-switch--journey {
+  left: auto;
+  right: 16px;
+  flex-wrap: wrap;
+  max-width: calc(100vw - 32px);
+}
+.version-switch--journey a {
+  text-transform: capitalize;
+}
+
 .video-modal {
   --vm-ease: cubic-bezier(0.22, 1, 0.36, 1);
   width: 100%;
@@ -3328,6 +3338,31 @@ body {
     flex: 1 1 100%;
   }
 }
+.journey--pin {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  height: 100svh;
+  padding-block: clamp(16px, 4vh, 64px);
+}
+.journey--pin .journey__head {
+  flex-shrink: 0;
+  margin-bottom: clamp(16px, 3vh, 48px);
+}
+.journey--pin .journey__frame {
+  flex: 0 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+.journey--pin .journey-steps {
+  flex-shrink: 0;
+}
+.journey--pin .journey-panel {
+  flex: 0 1 clamp(380px, 32vw, 561px);
+  min-height: 0;
+}
+
 .globe {
   position: relative;
   z-index: 2;
@@ -4821,7 +4856,7 @@ body {
 .person:hover .person__photo > img {
   transform: scale(1.06);
 }
-.person:hover .person__photo::before, .person:hover .person__photo::after {
+.person:hover .person__photo::before {
   opacity: 1;
 }
 .person__photo {
@@ -4957,6 +4992,20 @@ body {
 }
 .cta .btn-pill--glass-white .btn-pill__chip {
   background: #ffffff;
+}
+.cta--dark .cta__card {
+  background: #000;
+}
+.cta--dark .cta__bg {
+  background: #000;
+}
+.cta--dark .cta__bg img {
+  object-fit: fill;
+  opacity: 1;
+  animation: none;
+}
+.cta--dark .cta__bg::after {
+  display: none;
 }
 @media (max-width: 1023.98px) {
   .cta {

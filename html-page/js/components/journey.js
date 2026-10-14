@@ -1,4 +1,4 @@
-import { createWarp } from "./journey-warp.js";
+import { createWarp, JOURNEY_EFFECTS } from "./journey-warp.js";
 
 // "Your listing journey" tabs. Each [data-journey-tab] selects a step:
 // the lime progress line grows to its dot, earlier steps become
@@ -83,6 +83,25 @@ function setup(root) {
 
     swapPanel(from, index, animate && !reduceMotion && gsap);
   };
+
+  // Review picker for the image effects: shown only when ?journey= is in
+  // the URL (e.g. company.html?journey=ripple). Remove once one is chosen.
+  const params = new URLSearchParams(window.location.search);
+  if (params.has("journey") && !document.querySelector(".version-switch--journey")) {
+    const chosen = params.get("journey") || "ripple";
+    const nav = document.createElement("nav");
+    nav.className = "version-switch version-switch--journey";
+    nav.setAttribute("aria-label", "Image effect");
+    JOURNEY_EFFECTS.forEach((name) => {
+      const link = document.createElement("a");
+      params.set("journey", name);
+      link.href = `?${params.toString()}#journey`;
+      link.textContent = name;
+      if (name === chosen) link.setAttribute("aria-current", "true");
+      nav.append(link);
+    });
+    document.body.append(nav);
+  }
 
   // WebGL warp, loaded when the section gets close.
   let warp = null;
@@ -222,6 +241,55 @@ function setup(root) {
   document.fonts?.ready.then(placeLine);
 
   select(current, { animate: false });
+
+  // ---- Desktop: scroll-driven tabs ----
+  // The section pins to the viewport; scrolling steps through the five
+  // phases, then the page carries on. Clicking a
+  // tab scrolls to its position, so scroll and tabs never disagree.
+  const ScrollTrigger = window.ScrollTrigger;
+  if (gsap && ScrollTrigger && !reduceMotion) {
+    gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 1024px) and (min-height: 600px)", () => {
+      root.classList.add("journey--pin");
+      const n = tabs.length;
+      let scrollingToTab = 0;
+      const st = ScrollTrigger.create({
+        trigger: root,
+        start: "top top",
+        end: () => `+=${Math.round(window.innerHeight * 0.6 * n)}`,
+        pin: true,
+        invalidateOnRefresh: true,
+        // No snap (it auto-scrolled a whole step and felt like a jump):
+        // the scroll range is split into equal bands, one per phase.
+        onUpdate: (self) => {
+          if (Date.now() < scrollingToTab) return; // a click is driving the scroll
+          const i = Math.min(n - 1, Math.floor(self.progress * n));
+          if (i !== current) select(i);
+        },
+      });
+
+      const toTab = (i) => {
+        const y = st.start + ((i + 0.5) / n) * (st.end - st.start); // middle of its band
+        // The tab is already selected by the click; don't let the bands we
+        // scroll through on the way re-select others (that restarted the
+        // image effect several times = blinking).
+        scrollingToTab = Date.now() + 1100;
+        if (window.lenis) window.lenis.scrollTo(y, { duration: 0.9, onComplete: () => (scrollingToTab = 0) });
+        else window.scrollTo({ top: y, behavior: "smooth" });
+      };
+      const onClick = (event) => {
+        const i = tabs.indexOf(event.currentTarget);
+        if (i >= 0 && st.isActive) toTab(i);
+      };
+      tabs.forEach((tab) => tab.addEventListener("click", onClick));
+
+      return () => {
+        root.classList.remove("journey--pin");
+        tabs.forEach((tab) => tab.removeEventListener("click", onClick));
+      };
+    });
+  }
 
   // Once the section is close, fetch the other steps' photos in the
   // background so tab clicks are usually instant.
