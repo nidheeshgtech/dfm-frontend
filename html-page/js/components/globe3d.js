@@ -374,6 +374,7 @@ async function setup(root) {
     stageBox = { w: W, h: H, left: canvasBox.left, top: canvasBox.top };
     anchorLayer.style.setProperty("--w", `${W}px`);
 
+    anchors?.forEach?.((a) => (a.h = 0));
     const next = densityFor(window.innerWidth);
     if (next !== density) {
       density = next;
@@ -494,7 +495,12 @@ async function setup(root) {
   let running = false;
   let dirty = true;
   let last = performance.now();
-  const autoSpeed = (Math.PI * 2) / TURN_SECONDS;
+  // ?globe=orbit: the investor cards ride on the globe with their country
+  // (desktop / tablet). Turn a little faster so the motion reads.
+  const orbitMode = new URLSearchParams(window.location.search).get("globe") === "orbit";
+  if (orbitMode) root.classList.add("globe--orbit");
+  const orbitOn = () => orbitMode && window.innerWidth >= 768;
+  const autoSpeed = (Math.PI * 2) / (orbitMode ? 70 : TURN_SECONDS);
 
   const frame = (now) => {
     if (!running) return;
@@ -534,8 +540,17 @@ async function setup(root) {
 
   const tmp = new THREE.Vector3();
   const camDir = new THREE.Vector3();
+  let orbit = false;
+  let off = { x: 0, y: 0 };
   const placeAnchors = () => {
     const reveal = material.uniforms.uReveal.value;
+    orbit = orbitOn();
+    if (orbit) {
+      // canvas → map-box offset (both move together, so measure live)
+      const c = canvas.getBoundingClientRect();
+      const m = map.getBoundingClientRect();
+      off = { x: c.left - m.left, y: c.top - m.top };
+    }
     anchors.forEach((a) => {
       tmp.copy(a.local).applyMatrix4(globe.matrixWorld);
       const centre = new THREE.Vector3().setFromMatrixPosition(holder.matrixWorld);
@@ -548,8 +563,37 @@ async function setup(root) {
       const vis = Math.max(0, Math.min(1, (a.facing - 0.08) / 0.25)) * Math.min(1, Math.max(0, reveal * 1.6 - 0.8));
       a.el.style.transform = `translate3d(${a.x.toFixed(1)}px, ${a.y.toFixed(1)}px, 0)`;
       a.el.style.opacity = vis.toFixed(3);
+      if (orbit) placeCard(a, vis);
     });
-    drawLink();
+    if (!orbitOn()) drawLink();
+  };
+
+  // Orbit mode: card sits just above its anchor, follows it round, shrinks
+  // and fades as its country turns away, and stacks front-most on top.
+  const placeCard = (a, vis) => {
+    const item = a.pin.closest(".globe-pins__item");
+    if (!item) return;
+    a.h ||= a.pin.offsetHeight; // cached; re-read on resize
+    const cx = a.x + off.x;
+    const cy = a.y + off.y;
+    const k = Math.max(0, Math.min(1, (a.facing + 0.1) / 0.6)); // depth 0 back → 1 front
+    const below = a.pin.dataset.side === "below";
+    const x = cx - 34;
+    const y = below ? cy + 14 : cy - a.h - 14;
+    const sc = k > 0.92 ? 1 : 0.78 + 0.22 * k;
+    // One composited transform on the card (sub-pixel, no layout), so it
+    // glides with the globe instead of stepping pixel to pixel.
+    a.pin.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) scale(${sc.toFixed(3)})`;
+    item.classList.toggle("is-below", below);
+    item.style.zIndex = String(Math.round(k * 100));
+    const v = Math.min(1, vis / 0.8); // vis tops out at 0.8 (anchor strength)
+    a.pin.style.opacity = v > 0.97 ? "" : v.toFixed(3);
+    const blur = v < 0.6 ? Math.round((0.6 - v) * 10) : 0; // only on the far side
+    if (blur !== a.blur) {
+      a.blur = blur;
+      a.pin.style.filter = blur ? `blur(${blur}px)` : "";
+    }
+    item.style.pointerEvents = v > 0.5 ? "" : "none";
   };
 
   // Fine line from the active card's avatar to its anchor (desktop only:

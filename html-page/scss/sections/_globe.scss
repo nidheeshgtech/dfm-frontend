@@ -583,3 +583,41 @@
     display: none;
   }
 }
+
+// ?globe=orbit: cards ride with their country (globe3d.js sets translate /
+// scale each frame). Tablet and up; mobile keeps the swipe row.
+@include up("tablet") {
+  .globe--orbit .globe-pins__item {
+    top: 0;
+    left: 0;
+    width: max-content;
+  }
+
+  // The pointer stem from card to dot.
+  .globe--orbit .globe-pin::after {
+    content: "";
+    position: absolute;
+    left: 33px;
+    bottom: -14px;
+    width: 1px;
+    height: 14px;
+    background: linear-gradient(180deg, rgba(78, 23, 229, 0.5), rgba(78, 23, 229, 0));
+  }
+
+  .globe--orbit .globe-pin {
+    transform-origin: 34px 100%;
+    will-change: transform;
+  }
+
+  .globe--orbit .globe-pins__item.is-below {
+    .globe-pin {
+      transform-origin: 34px 0;
+    }
+
+    .globe-pin::after {
+      top: -14px;
+      bottom: auto;
+      transform: scaleY(-1);
+    }
+  }
+}
