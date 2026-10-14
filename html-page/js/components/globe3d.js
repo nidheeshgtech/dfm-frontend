@@ -438,8 +438,9 @@ async function setup(root) {
     pin.addEventListener("focus", () => setActive(i));
     pin.addEventListener("blur", () => active === i && setActive(-1));
     if (finePointer) {
-      pin.addEventListener("pointerenter", () => setActive(i));
-      pin.addEventListener("pointerleave", () => document.activeElement !== pin && active === i && setActive(-1));
+      // (Not in the mobile orbit carousel: cards move under a still pointer.)
+      pin.addEventListener("pointerenter", () => !bubblesOn() && setActive(i));
+      pin.addEventListener("pointerleave", () => !bubblesOn() && document.activeElement !== pin && active === i && setActive(-1));
     }
   });
 
@@ -506,6 +507,9 @@ async function setup(root) {
   // investor's full card shows under the globe. Tap a bubble to bring that
   // country round.
   let featured = -1;
+  let syncAuto = null;
+  let featuredOnce = false;
+  let swapTimer = 0;
   if (orbitMode) {
     anchors.forEach((a, i) => {
       const b = document.createElement("button");
@@ -526,7 +530,30 @@ async function setup(root) {
   const feature = (i) => {
     if (i === featured) return;
     featured = i;
-    items.forEach((it, j) => it.classList.toggle("is-featured", j === i));
+    if (i >= 0 && i === active) syncAuto?.(i); // taps continue from there
+    const n = items.length;
+    const apply = () =>
+      items.forEach((it, j) => {
+        it.classList.toggle("is-featured", j === i);
+        it.classList.toggle("is-prev", j === (i - 1 + n) % n);
+        it.classList.toggle("is-next", j === (i + 1) % n);
+      });
+    // Cross-fade, no sliding: fade the row out, swap slots, fade back in.
+    const row = items[0]?.parentElement;
+    if (!row || featuredOnce !== true || reduceMotion) {
+      featuredOnce = true;
+      apply();
+    } else {
+      clearTimeout(swapTimer);
+      row.classList.remove("is-enter"); // stop entrance animations so the exit can run
+      row.classList.add("is-swap");
+      swapTimer = setTimeout(() => {
+        apply();
+        row.classList.remove("is-swap");
+        void row.offsetWidth; // restart the entrance animations
+        row.classList.add("is-enter");
+      }, 280);
+    }
     anchors.forEach((a, j) => a.bubble?.classList.toggle("is-front", j === i));
   };
   const autoSpeed = (Math.PI * 2) / (orbitMode ? 70 : TURN_SECONDS);
@@ -722,12 +749,16 @@ async function setup(root) {
   const showCard = (i) => {
     autoIndex = i;
     const item = items[i];
-    const pad = parseFloat(getComputedStyle(list).scrollPaddingLeft) || 0;
-    list.scrollTo({ left: item.offsetLeft - list.offsetLeft - pad, behavior: reduceMotion ? "auto" : "smooth" });
+    // Orbit mode shows one card in fixed slots — no row to scroll.
+    if (!orbitMode) {
+      const pad = parseFloat(getComputedStyle(list).scrollPaddingLeft) || 0;
+      list.scrollTo({ left: item.offsetLeft - list.offsetLeft - pad, behavior: reduceMotion ? "auto" : "smooth" });
+    }
     setActive(i);
     focusOn(i);
   };
 
+  syncAuto = (i) => (autoIndex = i);
   const tick = () => {
     clearTimeout(autoTimer);
     autoTimer = setTimeout(() => {
@@ -735,7 +766,7 @@ async function setup(root) {
         showCard((autoIndex + 1) % items.length);
       }
       tick();
-    }, 3800);
+    }, orbitMode ? 6500 : 3800); // orbit: give each investor time to read
   };
 
   if (list && !reduceMotion) {
@@ -747,7 +778,7 @@ async function setup(root) {
     list.addEventListener(
       "scroll",
       () => {
-        if (!mobile.matches) return;
+        if (!mobile.matches || orbitMode) return;
         const left = list.scrollLeft;
         let best = 0;
         items.forEach((item, i) => {
@@ -768,7 +799,9 @@ async function setup(root) {
   } else {
     gsap.registerPlugin(ScrollTrigger);
     gsap.set(canvas, { opacity: 0 });
-    gsap.set(items, { opacity: 0, y: 24 });
+    // Orbit (mobile) cards are placed by CSS transforms — fade only.
+    const fadeOnly = orbitMode && window.innerWidth < 768;
+    gsap.set(items, fadeOnly ? { opacity: 0 } : { opacity: 0, y: 24 });
 
     const intro = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
     intro
@@ -776,7 +809,7 @@ async function setup(root) {
       .to(material.uniforms.uReveal, { value: 1, duration: 2.8, ease: "power2.out" }, 0)
       .to(state, { intro: 0, duration: 3.2, ease: "power3.out" }, 0)
       .add(() => root.classList.add("is-live"), 1.2)
-      .to(items, { opacity: 1, y: 0, duration: 0.9, stagger: 0.12, clearProps: "transform" }, 0.9);
+      .to(items, fadeOnly ? { opacity: 1, duration: 0.9, stagger: 0.12, clearProps: "opacity" } : { opacity: 1, y: 0, duration: 0.9, stagger: 0.12, clearProps: "transform,opacity" }, 0.9);
 
     ScrollTrigger.create({
       trigger: root,
