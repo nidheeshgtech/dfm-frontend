@@ -500,6 +500,35 @@ async function setup(root) {
   const orbitMode = new URLSearchParams(window.location.search).get("globe") === "orbit";
   if (orbitMode) root.classList.add("globe--orbit");
   const orbitOn = () => orbitMode && window.innerWidth >= 768;
+  const bubblesOn = () => orbitMode && window.innerWidth < 768;
+
+  // Mobile orbit: a small avatar bubble rides each country; the front-most
+  // investor's full card shows under the globe. Tap a bubble to bring that
+  // country round.
+  let featured = -1;
+  if (orbitMode) {
+    anchors.forEach((a, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "globe-bubble";
+      b.setAttribute("aria-label", a.pin.getAttribute("aria-label") || "Investor");
+      const imgs = a.pin.querySelectorAll(".globe-pin__avatar img");
+      imgs.forEach((img) => b.append(img.cloneNode()));
+      b.addEventListener("click", () => {
+        setActive(i);
+        focusOn(i);
+        feature(i);
+      });
+      anchorLayer.append(b);
+      a.bubble = b;
+    });
+  }
+  const feature = (i) => {
+    if (i === featured) return;
+    featured = i;
+    items.forEach((it, j) => it.classList.toggle("is-featured", j === i));
+    anchors.forEach((a, j) => a.bubble?.classList.toggle("is-front", j === i));
+  };
   const autoSpeed = (Math.PI * 2) / (orbitMode ? 70 : TURN_SECONDS);
 
   const frame = (now) => {
@@ -545,6 +574,7 @@ async function setup(root) {
   const placeAnchors = () => {
     const reveal = material.uniforms.uReveal.value;
     orbit = orbitOn();
+    const bubbles = bubblesOn();
     if (orbit) {
       // canvas → map-box offset (both move together, so measure live)
       const c = canvas.getBoundingClientRect();
@@ -564,7 +594,19 @@ async function setup(root) {
       a.el.style.transform = `translate3d(${a.x.toFixed(1)}px, ${a.y.toFixed(1)}px, 0)`;
       a.el.style.opacity = vis.toFixed(3);
       if (orbit) placeCard(a, vis);
+      if (bubbles) placeBubble(a, vis);
     });
+    if (bubbles) {
+      // Feature the investor most squarely facing us (with a little
+      // hysteresis so it doesn't flicker between two).
+      // The investor being shown (tap / auto-advance) wins; otherwise the
+      // one facing us.
+      let best = featured;
+      anchors.forEach((a, i) => {
+        if (best < 0 || a.facing > anchors[best].facing + 0.08) best = i;
+      });
+      feature(active >= 0 ? active : best);
+    }
     if (!orbitOn()) drawLink();
   };
 
@@ -594,6 +636,15 @@ async function setup(root) {
       a.pin.style.filter = blur ? `blur(${blur}px)` : "";
     }
     item.style.pointerEvents = v > 0.5 ? "" : "none";
+  };
+
+  const placeBubble = (a, vis) => {
+    const k = Math.max(0, Math.min(1, (a.facing + 0.1) / 0.6));
+    const v = Math.min(1, vis / 0.8);
+    a.bubble.style.transform = `translate3d(${a.x.toFixed(2)}px, ${a.y.toFixed(2)}px, 0) translate(-50%, -100%) scale(${(0.7 + 0.3 * k).toFixed(3)})`;
+    a.bubble.style.opacity = v.toFixed(3);
+    a.bubble.style.zIndex = String(Math.round(k * 100));
+    a.bubble.style.pointerEvents = v > 0.5 ? "auto" : "none";
   };
 
   // Fine line from the active card's avatar to its anchor (desktop only:

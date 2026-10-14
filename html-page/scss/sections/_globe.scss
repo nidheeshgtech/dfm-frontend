@@ -621,3 +621,88 @@
     }
   }
 }
+
+// Mobile orbit: avatar bubbles ride the globe (globe3d.js); the featured
+// investor's card shows alone under the globe.
+.globe-bubble {
+  display: none;
+}
+
+@include down("tablet") {
+  .globe--orbit {
+    .globe-bubble {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 40px;
+      height: 46px;
+      padding: 0;
+      transform-origin: 50% 100%;
+      will-change: transform;
+
+      > img:first-child {
+        width: 40px;
+        height: 40px;
+        border: 2px solid $color-white;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 4px 14px rgba(13, 14, 26, 0.18);
+        transition: border-color 0.4s $ease-out, box-shadow 0.4s $ease-out;
+      }
+
+      > img:last-child {
+        position: absolute;
+        top: 26px;
+        left: 27px;
+        width: 15px;
+        height: 15px;
+        border: 2px solid $color-white;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      // stem down to the dot
+      &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 1px;
+        height: 6px;
+        background: rgba(78, 23, 229, 0.5);
+      }
+
+      &.is-front > img:first-child {
+        border-color: $color-purple;
+        box-shadow: 0 0 0 3px rgba(78, 23, 229, 0.2), 0 6px 18px rgba(78, 23, 229, 0.35);
+      }
+    }
+
+    .globe-pins {
+      justify-content: center;
+      overflow: visible;
+      min-height: 84px;
+    }
+
+    .globe-pins__item {
+      display: none;
+
+      &.is-featured {
+        display: block;
+        animation: bubble-card-in 0.5s $ease-out;
+      }
+    }
+
+    .swipe-dots {
+      display: none;
+    }
+  }
+}
+
+@keyframes bubble-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
