@@ -13,7 +13,10 @@ $fester-faces: (
 @each $file, $weight, $format, $ext in $fester-faces {
   @font-face {
     font-family: "Fester";
-    src: url("#{$font-path}/#{$file}.#{$ext}") format("#{$format}");
+    // woff2 first (~45% the size); original as fallback.
+    src:
+      url("#{$font-path}/#{$file}.woff2") format("woff2"),
+      url("#{$font-path}/#{$file}.#{$ext}") format("#{$format}");
     font-weight: $weight;
     font-style: normal;
     font-display: swap;
