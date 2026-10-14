@@ -1,0 +1,784 @@
+@use "../abstracts" as *;
+
+// Page loader (js/components/loader.js). Dark stage with a soft purple
+// glow; the ARENA swirl "draws" itself round as loading progresses (conic
+// mask on --p), a lime hairline fills along the bottom and the counter
+// ticks to 100. On exit the panel lifts away with a curved bottom edge.
+// Only exists for JS (.js) so no-JS visitors never get stuck behind it.
+.loader {
+  --p: 0;
+
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #07080f;
+  color: $color-white;
+  will-change: transform;
+
+  .js & {
+    display: flex;
+  }
+
+  &.is-gone {
+    display: none;
+  }
+
+  &__glow {
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(40% 35% at 50% 45%, rgba(78, 23, 229, 0.35), rgba(78, 23, 229, 0) 70%),
+      radial-gradient(30% 30% at 70% 80%, rgba(163, 139, 242, 0.12), rgba(163, 139, 242, 0) 70%);
+    animation: loader-glow 6s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  &__center {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-24;
+  }
+
+  // Swirl revealed round the clock as --p goes 0 → 1, slowly turning.
+  &__mark {
+    position: relative;
+    display: block;
+    width: clamp(88px, 9vw, 128px);
+    aspect-ratio: 1;
+
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-mask-image: conic-gradient(from -90deg, #000 calc(var(--p) * 360deg), transparent calc(var(--p) * 360deg + 1deg));
+      mask-image: conic-gradient(from -90deg, #000 calc(var(--p) * 360deg), transparent calc(var(--p) * 360deg + 1deg));
+      animation: loader-spin 8s linear infinite;
+    }
+
+    // Faint full ghost of the mark behind the drawn part.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("../images/shared/mark-light.svg") center / contain no-repeat;
+      opacity: 0.08;
+      animation: loader-spin 8s linear infinite;
+    }
+  }
+
+  &__eyebrow {
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  &__foot {
+    position: absolute;
+    left: $container-gutter;
+    right: $container-gutter;
+    bottom: clamp(24px, 5vh, 48px);
+    display: flex;
+    align-items: flex-end;
+    gap: $space-24;
+  }
+
+  &__tag {
+    flex-shrink: 0;
+    font-size: clamp(18px, 1.6vw, 24px);
+    opacity: 0.6;
+  }
+
+  &__bar {
+    position: relative;
+    flex: 1;
+    height: 1px;
+    margin-bottom: 0.6em;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  &__fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(244, 255, 34, 0.3), $color-yellow-bright);
+    box-shadow: 0 0 12px rgba(244, 255, 34, 0.6);
+    transform: scaleX(var(--p));
+    transform-origin: 0 50%;
+  }
+
+  &__count {
+    flex-shrink: 0;
+    min-width: 3.2ch;
+    font-size: clamp(56px, 7vw, 112px);
+    font-weight: $font-weight-regular;
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+
+    sup {
+      margin-left: 0.05em;
+      color: $color-yellow-bright;
+      font-size: 0.3em;
+      vertical-align: top;
+    }
+  }
+
+  @include down("tablet") {
+    &__foot {
+      left: $container-gutter-mobile;
+      right: $container-gutter-mobile;
+      flex-wrap: wrap;
+      gap: $space-12;
+    }
+
+    &__tag {
+      display: none;
+    }
+
+    &__bar {
+      order: 2;
+      flex-basis: 100%;
+      margin: 0;
+    }
+
+    &__count {
+      margin-left: auto;
+    }
+  }
+}
+
+// Dark mark by default; the light theme swaps to the dark-ink mark.
+.loader__mark-dark {
+  display: none;
+}
+
+// ---- Light theme (?loader=light → html.loader-light, set in <head>) ----
+.loader-light .loader {
+  background: #f6f6f9;
+  color: $color-text-dark;
+
+  .loader__glow {
+    background:
+      radial-gradient(40% 35% at 50% 45%, rgba(163, 139, 242, 0.35), rgba(163, 139, 242, 0) 70%),
+      radial-gradient(30% 30% at 70% 80%, rgba(78, 23, 229, 0.1), rgba(78, 23, 229, 0) 70%);
+  }
+
+  // The investor hero's 3D swirl, large and soft behind the mark: slowly
+  // turning, and easing in a little closer as loading progresses.
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(120vmin, 1100px);
+    aspect-ratio: 1;
+    background: url("../images/shared/loader-swirl.webp") center / contain no-repeat;
+    opacity: calc(0.14 + var(--p) * 0.12);
+    transform: translate(-50%, -50%) scale(calc(0.9 + var(--p) * 0.12));
+    animation: loader-swirl 40s linear infinite;
+    pointer-events: none;
+  }
+
+  .loader__mark-light {
+    display: none;
+  }
+
+  .loader__mark-dark {
+    display: block;
+  }
+
+  .loader__mark::before {
+    background-image: url("../images/shared/favicon.svg");
+    opacity: 0.1;
+  }
+
+  .loader__eyebrow,
+  .loader__tag {
+    opacity: 0.65;
+  }
+
+  .loader__bar {
+    background: rgba(13, 14, 26, 0.12);
+  }
+
+  // Lime is weak on white, so the fill and % go brand purple.
+  .loader__fill {
+    background: linear-gradient(90deg, rgba(78, 23, 229, 0.3), $color-purple);
+    box-shadow: 0 0 12px rgba(78, 23, 229, 0.45);
+  }
+
+  .loader__count sup {
+    color: $color-purple;
+  }
+}
+
+
+// Variant layers, hidden unless their theme is on.
+.loader__type,
+.loader__ring,
+.loader__dots,
+.loader__cols,
+.loader__arch,
+.loader__split {
+  display: none;
+}
+
+// ---- "Type" (?loader=type): editorial wordmark ----------------------
+// A giant outlined ARENA fills the screen; white "liquid" rises through the
+// letters with a lime meniscus as the page loads. Letters lift out on exit.
+.loader-type .loader {
+  background: #0d0e1a;
+
+  .loader__glow {
+    opacity: 0.5;
+  }
+
+  .loader__center {
+    position: absolute;
+    top: clamp(24px, 6vh, 56px);
+  }
+
+  .loader__mark {
+    display: none;
+  }
+
+  .loader__type {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 0.02em;
+    font-size: clamp(96px, 24vw, 440px);
+    font-weight: $font-weight-semibold;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+
+    span {
+      display: inline-block;
+      padding-top: 0.06em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.28);
+      background: linear-gradient(
+        to top,
+        $color-white 0,
+        $color-white calc(var(--p) * 100% - 1.2%),
+        $color-yellow-bright calc(var(--p) * 100% - 1.2%),
+        $color-yellow-bright calc(var(--p) * 100%),
+        transparent calc(var(--p) * 100%)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+  }
+}
+
+// ---- "Aperture" (?loader=aperture): portal into the page ------------
+// The dark panel has a round window in the middle that widens as the page
+// loads, showing the real hero behind it; a lime ring traces its edge. At
+// 100% the window opens to the whole screen — the loader becomes the page.
+.loader-aperture .loader {
+  --open: 0;
+  --hole: calc(var(--p) * 16vmin + var(--open) * 150vmax);
+
+  background: #07080f;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px));
+  mask-image: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px));
+
+  .loader__center {
+    position: absolute;
+    top: calc(50% + 16vmin + 40px);
+  }
+
+  .loader__mark {
+    display: none;
+  }
+
+  .loader__ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: calc(var(--hole) * 2 + 18px);
+    height: calc(var(--hole) * 2 + 18px);
+    border: 1px solid rgba(244, 255, 34, 0.55);
+    border-radius: 50%;
+    box-shadow: 0 0 24px rgba(244, 255, 34, 0.25);
+    transform: translate(-50%, -50%);
+    animation: loader-ring 3s linear infinite;
+
+    // Orbiting dot on the ring.
+    &::after {
+      content: "";
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      margin-left: -4px;
+      border-radius: 50%;
+      background: $color-yellow-bright;
+      box-shadow: 0 0 12px $color-yellow-bright;
+    }
+  }
+}
+
+@keyframes loader-ring {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+
+// ---- "Dots" (?loader=dots): the globe's dot field --------------------
+// A full-screen grid of faint dots; a lime wave spreads out from the centre
+// lighting them up as the page loads, with the count big in the middle.
+.loader-dots .loader {
+  background: #07080f;
+
+  .loader__dots {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.14) 1.2px, transparent 1.6px);
+    background-size: 22px 22px;
+    background-position: center;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, $color-yellow-bright 1.6px, transparent 2px);
+      background-size: 22px 22px;
+      background-position: center;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 calc(var(--p) * 75vmax - 8vmax), transparent calc(var(--p) * 75vmax));
+      mask-image: radial-gradient(circle at 50% 50%, #000 calc(var(--p) * 75vmax - 8vmax), transparent calc(var(--p) * 75vmax));
+      opacity: 0.85;
+    }
+  }
+
+  .loader__glow {
+    opacity: 0.6;
+  }
+
+  .loader__mark {
+    display: none;
+  }
+
+  // Count moves to the centre, large.
+  .loader__center {
+    padding: 28px 40px 22px;
+    border-radius: 999px;
+    background: #07080f;
+    box-shadow: 0 0 60px 40px #07080f;
+  }
+
+  .loader__foot .loader__count {
+    position: absolute;
+    left: 50%;
+    bottom: calc(50vh - clamp(24px, 5vh, 48px) + 30px);
+    transform: translateX(-50%);
+    font-size: clamp(72px, 10vw, 160px);
+    text-align: center;
+  }
+}
+
+// ---- "Shutter" (?loader=shutter): five panels ------------------------
+// Five vertical panels (a nod to the five listing phases) stand behind the
+// swirl; each fills in turn as loading passes its fifth. On exit they lift
+// away one after another, left to right.
+.loader-shutter .loader {
+  background: transparent;
+
+  .loader__cols {
+    position: absolute;
+    inset: 0;
+    display: flex;
+
+    span {
+      position: relative;
+      flex: 1;
+      background: #07080f;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: $color-yellow-bright;
+        box-shadow: 0 0 10px $color-yellow-bright;
+        transform-origin: 0 50%;
+        transform: scaleX(clamp(0, calc(var(--p) * 5 - var(--i)), 1));
+      }
+    }
+
+    span:nth-child(1) { --i: 0; }
+    span:nth-child(2) { --i: 1; }
+    span:nth-child(3) { --i: 2; }
+    span:nth-child(4) { --i: 3; }
+    span:nth-child(5) { --i: 4; }
+  }
+
+  .loader__glow {
+    z-index: 0;
+  }
+
+  .loader__bar {
+    visibility: hidden;
+  }
+}
+
+// ---- "Glass" (?loader=glass): frosted window -------------------------
+// The real hero sits behind a heavy frosted-glass sheet that clears as the
+// page loads (blur → sharp); a liquid-glass card holds the swirl and count.
+.loader-glass .loader {
+  background: rgba(7, 8, 15, calc(0.55 - var(--p) * 0.35));
+  -webkit-backdrop-filter: blur(calc((1 - var(--p)) * 36px + 4px)) saturate(140%);
+  backdrop-filter: blur(calc((1 - var(--p)) * 36px + 4px)) saturate(140%);
+
+  .loader__glow {
+    opacity: 0.5;
+  }
+
+  .loader__center {
+    padding: clamp(28px, 4vw, 48px) clamp(32px, 5vw, 64px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 28px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      0 30px 80px rgba(0, 0, 0, 0.35);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+}
+
+
+// ---- "Arch" (?loader=arch): the hero's arch, drawn -------------------
+// A thin lime arc traces the dome of the hero artwork from left to right as
+// the page loads, the count sitting under it. On exit the arch swells past
+// the screen as the panel lifts.
+.loader-arch .loader {
+  background: #07080f;
+
+  .loader__arch {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: min(70vw, 760px);
+    aspect-ratio: 1;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    transform: translate(-50%, -38%);
+
+    // The drawn arc: top half only, revealed left → right.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border: 2px solid $color-yellow-bright;
+      border-radius: 50%;
+      filter: drop-shadow(0 0 8px rgba(244, 255, 34, 0.6));
+      -webkit-mask-image: conic-gradient(from 270deg, #000 calc(var(--p) * 180deg), transparent calc(var(--p) * 180deg + 0.5deg));
+      mask-image: conic-gradient(from 270deg, #000 calc(var(--p) * 180deg), transparent calc(var(--p) * 180deg + 0.5deg));
+    }
+  }
+
+  .loader__mark {
+    display: none;
+  }
+
+  .loader__center {
+    margin-top: 8vh;
+  }
+
+  .loader__foot .loader__count {
+    position: absolute;
+    left: 50%;
+    bottom: calc(50vh - clamp(24px, 5vh, 48px) - 10px);
+    transform: translateX(-50%);
+    font-size: clamp(64px, 8vw, 128px);
+    text-align: center;
+  }
+
+  .loader__bar {
+    visibility: hidden;
+  }
+}
+
+// ---- "Split" (?loader=split): curtain ---------------------------------
+// Two dark halves meet at a hairline that grows top → bottom as the page
+// loads; on exit the halves slide apart like a curtain.
+.loader-split .loader {
+  background: transparent;
+
+  .loader__split {
+    position: absolute;
+    inset: 0;
+    display: flex;
+
+    span {
+      flex: 1;
+      background: #07080f;
+    }
+
+    i {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1px;
+      height: calc(var(--p) * 100%);
+      background: linear-gradient(180deg, rgba(244, 255, 34, 0), $color-yellow-bright);
+      box-shadow: 0 0 12px $color-yellow-bright;
+    }
+  }
+
+  .loader__glow {
+    opacity: 0.7;
+  }
+
+  .loader__center {
+    gap: $space-16;
+  }
+
+  .loader__bar {
+    visibility: hidden;
+  }
+}
+
+// ---- "Counter" (?loader=counter): pure type ---------------------------
+// Minimal and editorial: a huge number rolls up in the corner, the line
+// and tagline above it; nothing else. The number exits up out of a mask.
+.loader-counter .loader {
+  align-items: flex-start;
+  justify-content: flex-end;
+  background: #f6f6f9;
+  color: $color-text-dark;
+
+  .loader__glow,
+  .loader__mark {
+    display: none;
+  }
+
+  .loader__center {
+    position: absolute;
+    top: clamp(24px, 6vh, 56px);
+    left: $container-gutter;
+    align-items: flex-start;
+  }
+
+  .loader__foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $space-16;
+  }
+
+  .loader__tag {
+    opacity: 0.55;
+  }
+
+  .loader__foot {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .loader__tag {
+    display: block;
+  }
+
+  .loader__bar {
+    order: -1;
+    flex: none;
+    width: 100%;
+    height: 1px;
+    margin: 0;
+    background: rgba(13, 14, 26, 0.12);
+  }
+
+  .loader__fill {
+    background: $color-text-dark;
+    box-shadow: none;
+  }
+
+  .loader__count {
+    margin-left: 0;
+    overflow: hidden;
+    font-size: clamp(120px, 26vw, 420px);
+    line-height: 0.82;
+    text-align: left;
+
+    sup {
+      color: $color-purple;
+    }
+  }
+}
+
+
+// ---- "Type light" (?loader=type-light): the wordmark on light ---------
+// Same rising-liquid ARENA, inverted: outlined ink letters on off-white,
+// filling with deep navy under a purple meniscus.
+.loader-type-light .loader {
+  background: #f6f6f9;
+  color: $color-text-dark;
+
+  .loader__glow {
+    opacity: 1;
+    background:
+      radial-gradient(45% 40% at 50% 50%, rgba(163, 139, 242, 0.28), rgba(163, 139, 242, 0) 70%),
+      radial-gradient(30% 30% at 80% 85%, rgba(78, 23, 229, 0.08), rgba(78, 23, 229, 0) 70%);
+  }
+
+  .loader__type span {
+    -webkit-text-stroke: 1px rgba(13, 14, 26, 0.22);
+    background: linear-gradient(
+      to top,
+      $color-text-dark 0,
+      $color-text-dark calc(var(--p) * 100% - 1.2%),
+      $color-purple calc(var(--p) * 100% - 1.2%),
+      $color-purple calc(var(--p) * 100%),
+      transparent calc(var(--p) * 100%)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .loader__eyebrow,
+  .loader__tag {
+    opacity: 0.6;
+  }
+
+  .loader__bar {
+    background: rgba(13, 14, 26, 0.12);
+  }
+
+  .loader__fill {
+    background: linear-gradient(90deg, rgba(78, 23, 229, 0.3), $color-purple);
+    box-shadow: 0 0 12px rgba(78, 23, 229, 0.4);
+  }
+
+  .loader__count sup {
+    color: $color-purple;
+  }
+}
+
+
+// ---- Default layout -----------------------------------------------------
+// Swirl + eyebrow in the centre. Along the bottom: the tagline on the left
+// and a big light counter on the right, both sitting on a full-width
+// progress hairline that runs edge to edge along the very bottom.
+.loader-default .loader {
+  // Plain dark stage — no purple glow, no tagline, no bar; just the swirl
+  // and the big counter.
+  .loader__glow,
+  .loader__tag,
+  .loader__bar {
+    display: none !important;
+  }
+
+  .loader__foot {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 0 $container-gutter clamp(20px, 4vh, 40px);
+  }
+
+  .loader__tag {
+    font-size: clamp(20px, 2vw, 32px);
+    letter-spacing: -0.01em;
+    opacity: 0.2;
+  }
+
+  // Bar = the screen's bottom edge.
+  .loader__bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  // The eyebrow fills with lime left → right as the page loads.
+  .loader__eyebrow {
+    opacity: 1;
+    color: transparent;
+    background: linear-gradient(
+      90deg,
+      $color-yellow-bright calc(var(--p) * 100%),
+      rgba(255, 255, 255, 0.35) calc(var(--p) * 100%)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .loader__count {
+    font-size: clamp(88px, 14vw, 240px);
+    font-weight: 300;
+    line-height: 0.78;
+    letter-spacing: -0.05em;
+  }
+
+  @include down("tablet") {
+    .loader__foot {
+      flex-wrap: nowrap;
+      padding-inline: $container-gutter-mobile;
+    }
+
+    .loader__tag {
+      display: block;
+      max-width: 9ch;
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .loader__bar {
+      order: 0;
+    }
+  }
+}
+
+// Page can't scroll behind the loader.
+.is-page-loading,
+.is-page-loading body {
+  overflow: hidden;
+}
+
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-swirl {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes loader-glow {
+  to {
+    transform: translate(3%, -2%) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader__glow,
+  .loader__mark img,
+  .loader__mark::before {
+    animation: none;
+  }
+}

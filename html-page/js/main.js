@@ -1,4 +1,5 @@
 import { initSmoothScroll } from "./components/smooth-scroll.js";
+import { initLoader } from "./components/loader.js";
 import { initScrollReveal } from "./components/gsap-reveal.js";
 import { initCountUp } from "./components/count-up.js";
 import { initGlass } from "./components/glass.js";
@@ -25,7 +26,7 @@ function init() {
     console.error("init: initSmoothScroll threw", e);
   }
 
-  [initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initGlobe, initFaq, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch].forEach((fn) => {
+  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initGlobe, initFaq, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch].forEach((fn) => {
     try {
       fn();
     } catch (e) {

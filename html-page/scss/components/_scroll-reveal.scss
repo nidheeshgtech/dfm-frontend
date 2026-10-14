@@ -23,8 +23,37 @@
   opacity: 0;
 }
 
+// Title is split into masked words by hero.js; hide it until then so the
+// unsplit text never flashes.
+.js .hero__title {
+  visibility: hidden;
+}
+
+.js .is-intro-ready .hero__title,
+.js .is-intro-done .hero__title {
+  visibility: visible;
+}
+
+.hero-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  // room for descenders / the tilt, without changing line spacing
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.hero-word {
+  display: inline-block;
+  will-change: transform;
+}
+
 @include m.reduced-motion {
   .js [data-hero-intro] {
     opacity: 1;
+  }
+
+  .js .hero__title {
+    visibility: visible;
   }
 }

@@ -121,8 +121,8 @@ const FRAGMENT = /* glsl */ `
     if (a <= 0.0) discard;
     vec3 color = mix(uLight, uDark, vShade);
     color = mix(color, uAccent, vFocus * 0.7);
-    // Grey dots softened to 55%; purple (focused) dots go to full opacity.
-    gl_FragColor = vec4(color, a * vAlpha * (0.55 + vFocus * 0.45));
+    // Grey dots softened to 18%; purple (focused) dots go to full opacity.
+    gl_FragColor = vec4(color, a * vAlpha * (0.18 + vFocus * 0.82));
   }
 `;
 
