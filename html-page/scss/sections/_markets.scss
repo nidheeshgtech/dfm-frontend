@@ -114,9 +114,11 @@
 
   // Background photo (+ optional flip / zoom crops from Figma).
   &__media {
+    --ring-cx: calc(98cqw - min(455px, 44cqh)); // ring centre, matches &__ring below
     position: absolute;
     inset: 0;
     overflow: hidden;
+    container-type: size;
   }
 
   &__photo {
@@ -130,6 +132,19 @@
 
     &--flip {
       transform: scaleX(-1);
+    }
+
+    // Subject on the ring: --sx is where the subject sits across the photo
+    // as shown (0–1). The photo widens so that point lands on the ring
+    // centre; object-position keeps it there when cover crops the sides.
+    &--ring {
+      right: auto;
+      width: max(100%, calc(var(--ring-cx) / var(--sx)));
+      object-position: calc(var(--sx) * 100%) var(--sy, 100%);
+    }
+
+    &--flip#{&}--ring {
+      object-position: calc((1 - var(--sx)) * 100%) var(--sy, 100%);
     }
 
     &--zoom {
@@ -368,6 +383,10 @@
 
   // ---- Tablet / small laptop ----
   @include down("laptop") {
+    &__media {
+      --ring-cx: calc(98cqw - min(320px, 35cqh));
+    }
+
     &__ring {
       height: min(640px, 70%);
       opacity: 0.6;
@@ -383,6 +402,10 @@
 
     &__content {
       padding: $space-32 $space-16 $space-16;
+    }
+
+    &__media {
+      --ring-cx: 75cqw;
     }
 
     &__ring {

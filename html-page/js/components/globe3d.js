@@ -496,9 +496,10 @@ async function setup(root) {
   let running = false;
   let dirty = true;
   let last = performance.now();
-  // ?globe=orbit: the investor cards ride on the globe with their country
-  // (desktop / tablet). Turn a little faster so the motion reads.
-  const orbitMode = new URLSearchParams(window.location.search).get("globe") === "orbit";
+  // Orbit (default): the investor cards ride on the globe with their
+  // country (desktop / tablet); mobile gets avatar bubbles + a carousel.
+  // ?globe=v1 keeps the old static card row.
+  const orbitMode = new URLSearchParams(window.location.search).get("globe") !== "v1";
   if (orbitMode) root.classList.add("globe--orbit");
   const orbitOn = () => orbitMode && window.innerWidth >= 768;
   const bubblesOn = () => orbitMode && window.innerWidth < 768;
