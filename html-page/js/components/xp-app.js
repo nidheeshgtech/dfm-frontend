@@ -1,8 +1,9 @@
 // Live HTML phone screens for "A familiar investor experience", laid over
 // the screen area of each phone image (the frame stays the photo). Each
 // screen animates when its step opens (investor-xp.js fires "xp:step"):
-//   0 Access    — index counts up, chart draws, range pill slides to Year,
-//                 opportunities card rises
+//   0 Access    — index counts up, chart rises from flat in a wave with a
+//                 glowing cursor on its front, then ticks live; range pill
+//                 slides to Year, opportunities card rises
 //   1 Subscribe — photo settles, logo pops, offer card rises, figures count,
 //                 allocation bar fills
 //   2 Trade     — quote ticks, Buy slides in, the amount types in digit by
@@ -28,6 +29,109 @@ export function initXpApp() {
     t.fromTo(o, { v: from }, { v: to, duration: dur, ease: "power2.out", onUpdate: () => (el.textContent = fmt(o.v, d)) }, at);
   };
 
+  // ---- Access chart: rising wave + live tick ----
+  // Points come from the markup once (the static paths stay the fallback).
+  const chartData = new WeakMap();
+  const pts = (d) => (d.match(/-?[\d.]+ -?[\d.]+/g) || []).map((p) => p.split(" ").map(Number));
+  const toD = (a) => a.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
+  const chart = (app) => {
+    if (chartData.has(app)) return chartData.get(app);
+    const svg = q(app, ".xp-app__chart");
+    const line = q(app, ".xp-app__line");
+    const line2 = q(app, ".xp-app__line2");
+    const area = q(app, ".xp-app__area");
+    if (!svg || !line || !line2 || !area) return null;
+    const cursor = document.createElement("div");
+    cursor.className = "xp-app__cursor";
+    cursor.innerHTML = "<i></i><b></b>";
+    svg.after(cursor);
+    const a = pts(line.getAttribute("d"));
+    const b = pts(line2.getAttribute("d"));
+    const data = { svg, line, line2, area, cursor, a, b, ta: trend(a), tb: trend(b) };
+    chartData.set(app, data);
+    return data;
+  };
+  // Soft trend of a line (wide moving average, two passes): the shape the
+  // chart grows out of.
+  const trend = (p, r = 16) => {
+    let ys = p.map(([, y]) => y);
+    for (let pass = 0; pass < 2; pass++) {
+      ys = ys.map((_, i) => {
+        let sum = 0;
+        let c = 0;
+        for (let j = Math.max(0, i - r); j <= Math.min(ys.length - 1, i + r); j++) (sum += ys[j]), c++;
+        return sum / c;
+      });
+    }
+    return ys;
+  };
+  const smooth = (k) => k * k * (3 - 2 * k); // smoothstep: no overshoot
+
+  // Both lines start as their soft trend; a wide wave runs left → right and
+  // the detail eases in as the front passes. The cursor (dot + scan line)
+  // rides the front, then rests on the last price, which keeps ticking.
+  const rise = (t, app, at) => {
+    const c = chart(app);
+    if (!c) return;
+    const { a, b, ta, tb, line, line2, area, cursor } = c;
+    const W = 0.4; // width of the wave front (share of the chart)
+    const n = a.length - 1;
+    const o = { t: 0 };
+    const place = (x, y) => {
+      cursor.style.setProperty("--x", `${x / 10}%`);
+      cursor.style.setProperty("--y", `${y / 3}%`);
+    };
+    const draw = () => {
+      const front = o.t * (1 + W);
+      const k = (x) => smooth(Math.min(1, Math.max(0, (front - x / 1000) / W)));
+      const na = a.map(([x, y], i) => [x, ta[i] + (y - ta[i]) * k(x)]);
+      const nb = b.map(([x, y], i) => [x, tb[i] + (y - tb[i]) * k(x)]);
+      line.setAttribute("d", toD(na));
+      line2.setAttribute("d", toD(nb));
+      area.setAttribute("d", `${toD(na)} L1000 300 L0 300 Z`);
+      // Cursor sits mid-front, interpolated between points so it glides.
+      const f = Math.min(1, Math.max(0, front - W * 0.5)) * n;
+      const i0 = Math.floor(f);
+      const i1 = Math.min(n, i0 + 1);
+      const u = f - i0;
+      place(na[i0][0] + (na[i1][0] - na[i0][0]) * u, na[i0][1] + (na[i1][1] - na[i0][1]) * u);
+    };
+    line.style.strokeDasharray = line2.style.strokeDasharray = "";
+    cursor.classList.remove("is-live");
+    t.set([line, line2], { strokeDasharray: "none", strokeDashoffset: 0 }, 0)
+      .fromTo([line, line2], { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power2.out" }, at)
+      .fromTo(cursor, { opacity: 0 }, { opacity: 1, duration: 0.6 }, at + 0.2)
+      .fromTo(area, { opacity: 0 }, { opacity: 1, duration: 2, ease: "power2.out" }, at + 0.2)
+      .fromTo(o, { t: 0 }, { t: 1, duration: 2.8, ease: "sine.inOut", onUpdate: draw, onStart: draw }, at)
+      .add(() => cursor.classList.add("is-live"), at + 2.8);
+
+    // Live tick: the last few points drift a little, the dot follows.
+    const tail = 10;
+    const live = gsap.timeline({ repeat: -1, repeatDelay: 0.2 });
+    const drift = { v: 0 };
+    let from = 0;
+    let to = 0;
+    live.to(drift, {
+      v: 1,
+      duration: 1.6,
+      ease: "sine.inOut",
+      onStart: () => {
+        from = to;
+        to = (Math.random() - 0.4) * 14;
+      },
+      onUpdate: () => {
+        const off = from + (to - from) * drift.v;
+        const na = a.map(([x, y], i) => [x, y - off * Math.max(0, 1 - (n - i) / tail)]);
+        const nb = b.map(([x, y], i) => [x, y - off * 0.8 * Math.max(0, 1 - (n - i) / tail)]);
+        line.setAttribute("d", toD(na));
+        line2.setAttribute("d", toD(nb));
+        area.setAttribute("d", `${toD(na)} L1000 300 L0 300 Z`);
+        place(na[n][0], na[n][1]);
+      },
+    });
+    t.add(live, at + 3);
+  };
+
   const scenes = {
     0(app) {
       const t = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -37,11 +141,10 @@ export function initXpApp() {
         .fromTo(q(app, ".xp-app__index"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6 }, 0.1);
       count(t, q(app, "[data-xp-app-index]"), 3180.42, 3273.19, 2, 1.6, 0.1);
       t.fromTo(q(app, ".xp-app__change"), { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.6 }, 0.5)
-        .fromTo([q(app, ".xp-app__line2"), q(app, ".xp-app__line")], { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.8, ease: "power2.inOut", stagger: 0.12 }, 0.35)
-        .fromTo(q(app, ".xp-app__area"), { opacity: 0, clipPath: "inset(0 100% 0 0)" }, { opacity: 1, clipPath: "inset(0 0% 0 0)", duration: 1.8, ease: "power2.inOut" }, 0.45)
         .fromTo(q(app, ".xp-app__tab-pill"), { xPercent: -200 }, { xPercent: 0, duration: 0.9, ease: "power3.inOut" }, 1.4)
         .add(() => tabs.forEach((s, i) => s.classList.toggle("is-on", i === 2)), 1.75)
         .fromTo(q(app, ".xp-app__card"), { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.9, ease: "expo.out" }, 1.1);
+      rise(t, app, 0.3);
       return t;
     },
 
