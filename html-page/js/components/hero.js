@@ -4,17 +4,19 @@
 //   3. title     — each word rises out of its own mask, slight tilt
 //   4. lead      — words drift up out of a soft blur, in a quick wave
 //   5. buttons   — simple reveal: rise up into place, one after another
+// Route pages hook in with [data-hero-eyebrow] (breadcrumb, played as the
+// eyebrow) and [data-hero-follow] (ticket + buttons, played as buttons).
 // Reduced motion / no GSAP: everything simply shows.
 export function initHero() {
   const hero = document.querySelector("[data-hero]");
   const gsap = window.gsap;
   if (!hero) return;
 
-  const eyebrow = hero.querySelector(".hero__intro .t-eyebrow");
+  const eyebrow = hero.querySelector(".hero__intro .t-eyebrow, [data-hero-eyebrow]");
   const sw = hero.querySelector(".switch");
   const title = hero.querySelector(".hero__title");
   const lead = hero.querySelector(".hero__lead");
-  const buttons = Array.from(hero.querySelectorAll(".hero__actions [data-hero-intro]"));
+  const buttons = Array.from(hero.querySelectorAll(".hero__actions [data-hero-intro], [data-hero-follow]"));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const showAll = () => {
@@ -38,8 +40,10 @@ export function initHero() {
   gsap.set(leadWords, { opacity: 0, y: 14, filter: "blur(6px)" });
   gsap.set(buttons, { opacity: 0, y: 24 });
 
-  // Waits for the page loader to lift (window.arenaLoaded, loader.js).
-  const tl = gsap.timeline({ paused: true, delay: 0.05, defaults: { ease: "expo.out" }, onComplete: () => hero.classList.add("is-intro-done") });
+  // Waits for the page loader (window.arenaLoaded, loader.js). That
+  // resolves mid-lift, so hold a beat more: the title words should rise
+  // once the curtain has cleared, not behind it.
+  const tl = gsap.timeline({ paused: true, delay: 0.45, defaults: { ease: "expo.out" }, onComplete: () => hero.classList.add("is-intro-done") });
   (window.arenaLoaded || Promise.resolve()).then(() => tl.play());
 
   if (eyebrow) tl.to(eyebrow, { opacity: 1, y: 0, letterSpacing: "", duration: 1.4, ease: "power3.out", clearProps: "letterSpacing" }, 0);

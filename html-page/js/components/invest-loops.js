@@ -228,7 +228,7 @@ const LOOPS = {
   // ---- Step 3: allocation lands, price line draws, Buy ↔ Sell ----
   trade(el, gsap) {
     const note = q(el, ".iv-screen__note");
-    const line = q(el, ".iv-screen__chart path");
+    const chart = q(el, ".iv-screen__chart");
     const pill = q(el, ".iv-screen__pill");
     const [buy, sell] = qa(el, ".iv-screen__side b");
     const side = (s) => {
@@ -236,14 +236,16 @@ const LOOPS = {
       toggle(buy, "is-on", !s);
       toggle(sell, "is-on", s);
     };
-    line.style.strokeDasharray = "1";
+    // Wipe the line in from the left. (A pathLength dash draw breaks
+    // here: the stroke is non-scaling, so the dash maths runs in screen
+    // units and leaves gaps.)
     return gsap
       .timeline({ repeat: -1 })
       .fromTo(note, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.8)" }, 0)
-      .fromTo(line, { strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, duration: 1.8, ease: "power2.inOut" }, 0.4)
+      .fromTo(chart, { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0% 0 0)", duration: 1.8, ease: "power2.inOut" }, 0.4)
       .call(() => side(true), null, 2.8)
       .call(() => side(false), null, 4.2)
-      .to([note, line], { opacity: 0, duration: 0.5 }, 5.6)
+      .to([note, chart], { opacity: 0, duration: 0.5 }, 5.6)
       .to({}, { duration: 0.3 }, 6.1);
   },
 };

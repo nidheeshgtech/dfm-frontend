@@ -8,7 +8,7 @@
   <script>document.documentElement.classList.add('js','is-page-loading');var lv=(location.search.match(/[?&]loader=([\w-]+)/)||[])[1];if(!lv)document.documentElement.classList.add('loader-default');if(lv)lv.split('-').forEach(function(_,i,a){document.documentElement.classList.add('loader-'+a.slice(0,i+1).join('-'));});setTimeout(function(){if(window.arenaLoaderRunning)return;document.documentElement.classList.remove('is-page-loading');var l=document.querySelector('[data-loader]');if(l)l.classList.add('is-gone');},6000);</script>
   <link rel="stylesheet" href="css/main.css">
 </head>
-<body class="theme-company">
+<body class="theme-company rt-page rt-page--growth">
   <!-- Page loader (js/components/loader.js); only shown with JS. -->
   <div class="loader" data-loader aria-hidden="true">
     <div class="loader__glow"></div>
@@ -64,28 +64,28 @@
 
   <main id="main">
     <!-- ============ Hero: full-bleed market photo ============ -->
-    <section class="rt-hero rt-hero--growth" data-header="light" aria-labelledby="hero-title">
+    <section class="rt-hero rt-hero--growth" data-hero data-header="light" aria-labelledby="hero-title">
       <img class="rt-hero__photo" src="images/markets/company-growth.webp" width="1920" height="1080" alt="">
       <span class="rt-hero__shade" aria-hidden="true"></span>
       <div class="container rt-hero__inner">
-        <nav class="rt-crumbs" aria-label="Breadcrumb">
+        <nav class="rt-crumbs" aria-label="Breadcrumb" data-hero-intro data-hero-eyebrow>
           <a href="company.html#markets">Raise Capital</a>
           <span>Route 01</span>
           <span aria-current="page">Open Offer</span>
         </nav>
-        <h1 class="rt-hero__title t-display" id="hero-title">Growth Market</h1>
-        <p class="rt-hero__lead">Bring in new investors, on your terms.</p>
-        <dl class="rt-ticket">
+        <h1 class="rt-hero__title hero__title t-display" id="hero-title">Growth Market</h1>
+        <p class="rt-hero__lead hero__lead">Bring in new investors, on your terms.</p>
+        <dl class="rt-ticket" data-hero-intro data-hero-follow>
             <div class="rt-ticket__item"><dt>Built for</dt><dd>SMEs · Growth companies</dd></div>
             <div class="rt-ticket__item"><dt>Timeline</dt><dd>12–16 weeks</dd></div>
             <div class="rt-ticket__item"><dt>Valuation</dt><dd>AED 300–500M</dd></div>
         </dl>
         <div class="rt-hero__actions">
-          <a class="btn-pill btn-pill--glass-purple" href="#contact">
+          <a class="btn-pill btn-pill--glass-purple" href="#contact" data-hero-intro data-hero-follow>
             <span class="btn-pill__label">Book a call</span>
             <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
           </a>
-          <a class="btn-pill btn-pill--glass-white" href="#how">
+          <a class="btn-pill btn-pill--glass-white" href="#how" data-hero-intro data-hero-follow>
             <span class="btn-pill__label">See how it works</span>
             <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward-dark.svg" width="24" height="24" alt=""></span>
           </a>
@@ -146,7 +146,7 @@
           </div>
           <div class="rt-steps" style="--n: 5" data-rt-steps>
             <span class="rt-steps__track" aria-hidden="true"><i data-rt-fill></i></span>
-            <ol class="rt-steps__list">
+            <ol class="rt-steps__list" data-scroll-reveal-group>
               <li class="rt-steps__item" data-rt-step>
                 <span class="rt-steps__dot" aria-hidden="true"></span>
                 <span class="rt-steps__time">2 weeks</span>

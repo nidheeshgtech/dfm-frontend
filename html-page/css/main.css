@@ -8853,6 +8853,53 @@ body {
   }
 }
 
+.rt-page--growth {
+  --rt-ink: #4e17e5;
+  --rt-bright: #a38bf2;
+  --rt-deep: 78, 23, 229;
+}
+
+.rt-page--private {
+  --rt-ink: #0d8a4b;
+  --rt-bright: #64fba0;
+  --rt-deep: 13, 138, 75;
+}
+
+.rt-page--closed {
+  --rt-ink: #8f7f00;
+  --rt-bright: #f4ff22;
+  --rt-deep: 143, 127, 0;
+}
+
+.rt-page .iv-hl,
+.rt-page .iv-head__eyebrow {
+  color: var(--rt-ink);
+}
+.rt-page .btn-pill {
+  border-color: var(--rt-ink);
+  background: linear-gradient(90deg, rgba(var(--rt-deep), 0.18), rgba(var(--rt-deep), 0.06));
+}
+.rt-page .btn-pill:hover, .rt-page .btn-pill:focus-visible {
+  background: rgba(var(--rt-deep), 0.16);
+  box-shadow: 0 0 24px rgba(var(--rt-deep), 0.25);
+}
+.rt-page .btn-pill__chip {
+  background: var(--rt-ink);
+}
+.rt-page .cta .btn-pill--glass-purple {
+  border-color: rgba(var(--rt-deep), 0.35);
+  background: linear-gradient(95deg, rgba(var(--rt-deep), 0.55) 1%, rgba(var(--rt-deep), 0.12) 84%);
+}
+.rt-page .cta .btn-pill--glass-white,
+.rt-page .cta .btn-pill--glass-white:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  box-shadow: none;
+}
+.rt-page .cta .btn-pill--glass-white .btn-pill__chip {
+  background: #ffffff;
+}
+
 .rt-hero {
   position: relative;
   isolation: isolate;
@@ -8871,14 +8918,17 @@ body {
   color: #ffffff;
 }
 .rt-hero .btn-pill--glass-purple {
-  border-color: rgba(163, 139, 242, 0.2);
-  background: linear-gradient(95deg, rgba(78, 23, 229, 0.55) 1%, rgba(78, 23, 229, 0.12) 84%);
+  border-color: rgba(var(--rt-deep), 0.35);
+  background: linear-gradient(95deg, rgba(var(--rt-deep), 0.6) 1%, rgba(var(--rt-deep), 0.14) 84%);
 }
-.rt-hero .btn-pill--glass-white {
+.rt-hero .btn-pill--glass-white,
+.rt-hero .btn-pill--glass-white:hover {
   border-color: rgba(255, 255, 255, 0.16);
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02));
+  box-shadow: none;
 }
-.rt-hero .btn-pill--glass-white .btn-pill__chip {
+.rt-hero .btn-pill--glass-white .btn-pill__chip,
+.rt-hero .btn-pill--glass-white:hover .btn-pill__chip {
   background: #ffffff;
 }
 .rt-hero__photo {
@@ -9023,7 +9073,7 @@ body {
 .rt-who__profile {
   margin-top: 24px;
   padding: 20px 24px;
-  border-left: 3px solid #4e17e5;
+  border-left: 3px solid var(--rt-ink);
   border-radius: 0 12px 12px 0;
   background: #f6f6f9;
   font-size: clamp(1rem, 0.19vw + 0.9544902913rem, 1.1875rem);
@@ -9083,7 +9133,7 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='m4 7.2 2 2 4-4.2' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat, #4e17e5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='m4 7.2 2 2 4-4.2' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat, var(--rt-ink);
 }
 @media (max-width: 767.98px) {
   .rt-checks {
@@ -9101,11 +9151,11 @@ body {
   padding: clamp(3.5rem, 3.5vw + 2.6808252427rem, 6.875rem) 0 clamp(3rem, 3.11vw + 2.2718446602rem, 6rem);
   overflow: hidden;
   border-radius: 30px;
-  background: radial-gradient(ellipse 50% 60% at 100% 0%, rgba(78, 23, 229, 0.4), transparent 70%), #01214a;
+  background: radial-gradient(ellipse 50% 60% at 100% 0%, rgba(var(--rt-deep), 0.45), transparent 70%), #01214a;
   color: #ffffff;
 }
 .rt-how .iv-hl {
-  color: #a38bf2;
+  color: var(--rt-bright);
 }
 .rt-how .iv-head__lead {
   color: rgba(255, 255, 255, 0.7);
@@ -9138,7 +9188,7 @@ body {
 .rt-steps__track i {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #4e17e5, #a38bf2);
+  background: linear-gradient(90deg, rgb(var(--rt-deep)), var(--rt-bright));
   transform: scaleX(var(--p, 1));
   transform-origin: 0 50%;
 }
@@ -9160,17 +9210,17 @@ body {
   left: 0;
   width: 22px;
   height: 22px;
-  border: 2px solid #a38bf2;
+  border: 2px solid var(--rt-bright);
   border-radius: 50%;
-  background: #a38bf2;
-  box-shadow: 0 0 0 6px rgba(163, 139, 242, 0.15);
+  background: var(--rt-bright);
+  box-shadow: 0 0 0 6px rgba(var(--rt-deep), 0.3);
   transition: background-color 0.4s, border-color 0.4s, box-shadow 0.4s;
 }
 .rt-steps__time {
   font-size: 13px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #a38bf2;
+  color: var(--rt-bright);
 }
 .rt-steps__title {
   margin: 8px 0;
@@ -9183,12 +9233,12 @@ body {
   color: rgba(255, 255, 255, 0.65);
 }
 .rt-steps__item.is-milestone .rt-steps__dot {
-  border-color: #64fba0;
-  background: #64fba0;
-  box-shadow: 0 0 0 6px rgba(100, 251, 160, 0.18);
+  border-color: var(--rt-bright);
+  background: #ffffff;
+  box-shadow: 0 0 0 6px rgba(var(--rt-deep), 0.35), 0 0 18px var(--rt-bright);
 }
 .rt-steps__item.is-milestone .rt-steps__time {
-  color: #64fba0;
+  color: #ffffff;
 }
 .rt-steps.is-live .rt-steps__item:not(.is-on) .rt-steps__dot {
   border-color: rgba(255, 255, 255, 0.3);
@@ -9224,10 +9274,10 @@ body {
     transition: background-color 0.4s;
   }
   .rt-steps__item.is-on::before {
-    background: #a38bf2;
+    background: var(--rt-bright);
   }
   .rt-steps:not(.is-live) .rt-steps__item::before {
-    background: #a38bf2;
+    background: var(--rt-bright);
   }
 }
 
@@ -9257,7 +9307,7 @@ body {
 .rt-why__num {
   font-size: 14px;
   letter-spacing: 0.12em;
-  color: #4e17e5;
+  color: var(--rt-ink);
 }
 .rt-why__title {
   margin-top: clamp(2rem, 1.55vw + 1.6359223301rem, 3.5rem);
@@ -9305,7 +9355,7 @@ body {
   padding: clamp(2.5rem, 3.11vw + 1.7718446602rem, 5.5rem) clamp(1.5rem, 3.62vw + 0.6504854369rem, 5rem);
   overflow: hidden;
   border-radius: 30px;
-  background: radial-gradient(ellipse 60% 80% at 100% 50%, rgba(78, 23, 229, 0.55), transparent 70%), #01214a;
+  background: radial-gradient(ellipse 60% 80% at 100% 50%, rgba(var(--rt-deep), 0.6), transparent 70%), #01214a;
   color: #ffffff;
 }
 .rt-side__card .btn-pill {
@@ -9314,14 +9364,17 @@ body {
   color: #ffffff;
 }
 .rt-side__card .btn-pill--glass-purple {
-  border-color: rgba(163, 139, 242, 0.2);
-  background: linear-gradient(95deg, rgba(78, 23, 229, 0.55) 1%, rgba(78, 23, 229, 0.12) 84%);
+  border-color: rgba(var(--rt-deep), 0.35);
+  background: linear-gradient(95deg, rgba(var(--rt-deep), 0.6) 1%, rgba(var(--rt-deep), 0.14) 84%);
 }
-.rt-side__card .btn-pill--glass-white {
+.rt-side__card .btn-pill--glass-white,
+.rt-side__card .btn-pill--glass-white:hover {
   border-color: rgba(255, 255, 255, 0.16);
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02));
+  box-shadow: none;
 }
-.rt-side__card .btn-pill--glass-white .btn-pill__chip {
+.rt-side__card .btn-pill--glass-white .btn-pill__chip,
+.rt-side__card .btn-pill--glass-white:hover .btn-pill__chip {
   background: #ffffff;
 }
 .rt-side__ring {
@@ -9337,7 +9390,7 @@ body {
   animation: rt-spin 90s linear infinite;
 }
 .rt-side__eyebrow {
-  color: #a38bf2;
+  color: var(--rt-bright);
 }
 .rt-side__title {
   margin-top: 16px;
@@ -9389,6 +9442,8 @@ body {
 }
 
 .rt-route {
+  --route-bright: #a38bf2;
+  --route-deep: 78, 23, 229;
   position: relative;
   isolation: isolate;
   display: flex;
@@ -9426,7 +9481,7 @@ body {
   font-size: 13px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #a38bf2;
+  color: var(--route-bright);
 }
 .rt-route__name {
   font-size: clamp(1.75rem, 0.78vw + 1.567961165rem, 2.5rem);
@@ -9458,14 +9513,23 @@ body {
   transform: scale(1.05);
 }
 .rt-route:hover .rt-route__btn, .rt-route:focus-visible .rt-route__btn {
-  background: #4e17e5;
+  border-color: var(--route-bright);
+  background: rgb(var(--route-deep));
 }
 .rt-route:hover .rt-route__btn i::before, .rt-route:focus-visible .rt-route__btn i::before {
   translate: 4px 0;
 }
 .rt-route:focus-visible {
-  outline: 2px solid #4e17e5;
+  outline: 2px solid var(--route-bright);
   outline-offset: 3px;
+}
+.rt-route--private {
+  --route-bright: #64fba0;
+  --route-deep: 13, 138, 75;
+}
+.rt-route--closed {
+  --route-bright: #f4ff22;
+  --route-deep: 143, 127, 0;
 }
 @media (max-width: 767.98px) {
   .rt-route {
