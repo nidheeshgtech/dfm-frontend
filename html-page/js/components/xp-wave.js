@@ -5,6 +5,9 @@
 // soft swell through the fabric. Sits where the static xp-dots.webp was;
 // the phone stays on top. Renders only while on screen.
 //
+// Any [data-dot-wave] box gets the same rippling dots as a backdrop
+// (e.g. the invest FAQ panel); there the canvas just fills the box.
+//
 // ?xpbg=v1 (or reduced motion / no canvas) keeps the static image.
 const DATA_URL = new URL("../data/xp-wave.json", import.meta.url);
 
@@ -12,14 +15,20 @@ export function initXpWave() {
   if (new URLSearchParams(window.location.search).get("xpbg") === "v1") return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   document.querySelectorAll("[data-xp] .xp__visual").forEach((visual) => {
-    setup(visual).catch((e) => console.warn("xp-wave: keeping static dots", e));
+    setup(visual, "xp__wave").catch((e) => console.warn("xp-wave: keeping static dots", e));
+  });
+  document.querySelectorAll("[data-dot-wave]").forEach((box) => {
+    setup(box, "dot-wave__canvas").catch((e) => console.warn("xp-wave: no dot wave", e));
   });
 }
 
-async function setup(visual) {
-  const { w: W, h: H, dots } = await (await fetch(DATA_URL)).json();
+let data = null;
+
+async function setup(visual, className) {
+  data ||= fetch(DATA_URL).then((r) => r.json());
+  const { w: W, h: H, dots } = await data;
   const canvas = document.createElement("canvas");
-  canvas.className = "xp__wave";
+  canvas.className = className;
   canvas.setAttribute("aria-hidden", "true");
   const ctx = canvas.getContext("2d");
   if (!ctx) return;

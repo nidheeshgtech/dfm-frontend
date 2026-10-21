@@ -1,0 +1,849 @@
+@use "../abstracts" as *;
+
+// Invest hero: dark, copy left, illustrative iVestor phone right with
+// floating activity chips (js/components/invest-phone.js), DFM market
+// figures along the bottom. Keeps the .hero__* hooks hero.js animates.
+.iv-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  // Bottom: room for the markets sheet's rounded top (-38px) to overlap.
+  padding: calc(var(--header-height) + #{fluid(24px, 56px)}) 0 calc(#{fluid(40px, 64px)} + 38px);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 55% 60% at 78% 42%, rgba($color-purple, 0.32), rgba($color-purple, 0) 70%),
+    radial-gradient(ellipse 40% 40% at 8% 100%, rgba($color-purple, 0.18), rgba($color-purple, 0) 70%),
+    $color-bg-dark;
+  color: $color-white;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  // ARENA swirl, half risen from the bottom centre and slowly turning (the
+  // dark take on the light hero's orbit swirl). Round mask so the soft
+  // outer edge stays put while it turns.
+  &__swirl {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: max(76vw, 560px);
+    max-width: none;
+    height: auto; // keep it round (the height attribute would stretch it)
+    opacity: 0.22;
+    translate: -50% 50%;
+    mask-image: radial-gradient(circle, #000 40%, transparent 71%);
+    animation: iv-spin 140s linear infinite;
+  }
+
+  &__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: fluid(32px, 96px);
+  }
+
+  // ---- Copy column ----
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: fluid(20px, 28px);
+    text-align: left;
+  }
+
+  .hero__intro {
+    align-items: flex-start;
+    gap: $space-20;
+  }
+
+  .t-eyebrow {
+    color: rgba($color-white, 0.7);
+  }
+
+  &__switch {
+    --switch-text: #{rgba($color-white, 0.75)};
+    --switch-active-text: #{$color-white};
+
+    border-color: rgba($color-white, 0.12);
+    background: rgba($color-white, 0.06);
+    box-shadow:
+      inset 0 1px 0 rgba($color-white, 0.12),
+      0 8px 32px rgba(0, 0, 0, 0.25);
+
+    .switch__active {
+      background: linear-gradient(90deg, rgba($color-white, 0.2), rgba($color-white, 0.05));
+    }
+
+    .switch__option:hover {
+      background: rgba($color-white, 0.1);
+    }
+  }
+
+  // Overrides the shared hero's centred, one-line title.
+  & &__title {
+    white-space: normal;
+  }
+
+  &__line {
+    display: block;
+  }
+
+  & &__lead {
+    max-width: 600px;
+    color: rgba($color-white, 0.72);
+
+    strong {
+      font-weight: $font-weight-regular;
+      color: $color-white;
+    }
+  }
+
+  & &__actions {
+    max-width: 620px;
+    margin: $space-8 0 0;
+    padding: 0;
+  }
+
+  &__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-12 $space-24;
+    font-size: fluid(14px, 17px);
+    color: rgba($color-white, 0.72);
+
+    li {
+      display: inline-flex;
+      align-items: center;
+      gap: $space-8;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+      padding: 2px;
+      border-radius: 50%;
+      background: rgba($color-jade, 0.14);
+      color: $color-jade;
+    }
+  }
+
+  // ---- Visual column ----
+  &__visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__stage {
+    --pw: #{fluid(260px, 340px)}; // phone width
+
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: min(100%, 600px);
+    padding-inline: 8%;
+  }
+
+  &__caption {
+    margin-top: $space-16;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: rgba($color-white, 0.5);
+  }
+
+  // ---- Responsive ----
+  @include down("laptop") {
+    min-height: 0;
+
+    &__inner {
+      grid-template-columns: 1fr;
+      gap: $space-48;
+    }
+
+    &__swirl {
+      width: max(130vw, 560px);
+    }
+  }
+
+  @include down("tablet") {
+    padding-bottom: calc(#{$space-40} + 24px);
+
+    .hero__actions {
+      width: 100%;
+    }
+
+    &__stage {
+      --pw: 248px;
+
+      padding-inline: 0;
+    }
+  }
+}
+
+// ---- iVestor phone ----
+.iv-phone {
+  position: relative;
+  z-index: 1;
+  width: var(--pw);
+  height: calc(var(--pw) * 1.78);
+  padding: 9px;
+  border-radius: calc(var(--pw) * 0.15);
+  background: linear-gradient(150deg, #34354a, #101120 45%, #1c1d2e);
+  box-shadow:
+    0 0 0 1px rgba($color-white, 0.14),
+    inset 0 0 0 1px rgba($color-white, 0.06),
+    0 40px 120px rgba($color-purple, 0.35),
+    0 24px 60px rgba(0, 0, 0, 0.55);
+  // Cropped: the phone fades out at the bottom.
+  mask-image: linear-gradient(180deg, #000 80%, transparent 99%);
+  font-size: calc(var(--pw) * 0.04);
+
+  &__screen {
+    position: relative;
+    height: 100%;
+    padding: 1.1em 1.35em;
+    overflow: hidden;
+    border-radius: calc(var(--pw) * 0.125);
+    background:
+      radial-gradient(ellipse 90% 40% at 50% 0%, rgba($color-purple, 0.45), transparent 70%),
+      #0d0e1a;
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1em;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__island {
+    width: 30%;
+    height: 1.9em;
+    border-radius: 2em;
+    background: #000;
+  }
+
+  &__sys {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+
+    b {
+      width: 3px;
+      border-radius: 1px;
+      background: currentColor;
+
+      @for $i from 1 through 4 {
+        &:nth-child(#{$i}) {
+          height: 3px + $i * 2px;
+        }
+      }
+    }
+
+    em {
+      width: 1.8em;
+      height: 0.9em;
+      margin-left: 5px;
+      border: 1.5px solid rgba($color-white, 0.7);
+      border-radius: 3px;
+      background: linear-gradient(90deg, $color-white 70%, transparent 70%) content-box;
+      padding: 1px;
+    }
+  }
+
+  // Notification pushed in by the chips.
+  &__toast {
+    position: absolute;
+    top: 0.6em;
+    right: 0.6em;
+    left: 0.6em;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    padding: 0.8em 0.9em;
+    border: 1px solid rgba($color-white, 0.1);
+    border-radius: 1.4em;
+    background: rgba(44, 42, 66, 0.9);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(-140%);
+
+    &.is-in {
+      animation: iv-toast 3.1s $ease-out both;
+    }
+
+    em {
+      align-self: flex-start;
+      margin-left: auto;
+      font-size: 0.8em;
+      font-style: normal;
+      color: rgba($color-white, 0.5);
+    }
+  }
+
+  &__toast-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 2.4em;
+    height: 2.4em;
+    border-radius: 0.7em;
+    background: $color-purple;
+
+    svg {
+      width: 60%;
+      height: 60%;
+    }
+  }
+
+  &__toast-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+    min-width: 0;
+
+    b {
+      font-size: 1em;
+      font-weight: $font-weight-semibold;
+    }
+
+    small {
+      font-size: 0.85em;
+      color: rgba($color-white, 0.65);
+    }
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.6em;
+  }
+
+  &__brand {
+    font-size: 1.45em;
+    font-weight: $font-weight-semibold;
+    letter-spacing: -0.01em;
+  }
+
+  &__icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8em;
+
+    svg {
+      width: 1.5em;
+      height: 1.5em;
+      color: rgba($color-white, 0.7);
+    }
+  }
+
+  &__avatar {
+    display: grid;
+    place-items: center;
+    width: 2.2em;
+    height: 2.2em;
+    border-radius: 50%;
+    background: $color-purple-tint;
+    color: $color-bg-dark;
+    font-size: 0.95em;
+    font-style: normal;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__label {
+    margin-top: 1.4em;
+    font-size: 0.9em;
+    color: rgba($color-white, 0.6);
+  }
+
+  &__value {
+    font-size: 2.5em;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+
+    small {
+      font-size: 0.45em;
+      color: rgba($color-white, 0.6);
+    }
+  }
+
+  &__chart {
+    position: relative;
+    margin-top: 0.4em;
+  }
+
+  &__spark {
+    display: block;
+    width: 100%;
+    height: 4.2em;
+    overflow: visible;
+  }
+
+  // invest-phone.js drives the line (wave from trend to detail), so the
+  // CSS draw-in steps aside and both paths wait for their fade-in.
+  &__spark.is-wave &__spark-line {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+
+  &__spark.is-wave &__spark-line,
+  &__spark.is-wave &__spark-area {
+    opacity: 0;
+  }
+
+  // Wave-front cursor: scan line + glowing dot, then a pulse ring once
+  // the chart is live. Positioned in % of the chart box (--x / --y).
+  &__cursor {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+
+    i {
+      position: absolute;
+      top: -0.4em;
+      bottom: 0;
+      left: var(--x, 0%);
+      width: 1px;
+      background: linear-gradient(180deg, rgba($color-white, 0), rgba($color-white, 0.55) 50%, rgba($color-white, 0));
+      transition: opacity 0.6s;
+    }
+
+    b {
+      position: absolute;
+      top: var(--y, 50%);
+      left: var(--x, 0%);
+      width: 0.6em;
+      height: 0.6em;
+      margin: -0.3em 0 0 -0.3em;
+      border-radius: 50%;
+      background: $color-white;
+      box-shadow:
+        0 0 0 0.2em rgba($color-purple-tint, 0.35),
+        0 0 0.8em rgba($color-white, 0.8);
+    }
+
+    b::after {
+      content: "";
+      position: absolute;
+      inset: -0.3em;
+      border: 1px solid rgba($color-white, 0.7);
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    &.is-live i {
+      opacity: 0;
+    }
+
+    &.is-live b::after {
+      animation: iv-pulse 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+  }
+
+  &__spark-line {
+    stroke: $color-purple-tint;
+    stroke-width: 2;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    vector-effect: non-scaling-stroke;
+    animation: iv-draw 2.4s 0.6s $ease-out forwards;
+  }
+
+  &__section {
+    margin-top: 1em;
+    font-size: 0.8em;
+    font-weight: $font-weight-semibold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba($color-white, 0.5);
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    margin-top: 0.7em;
+    padding: 0.9em 1em 1em;
+    border: 1px solid rgba($color-white, 0.08);
+    border-radius: 1.3em;
+    background: rgba($color-white, 0.06);
+
+    strong {
+      margin-top: 0.3em;
+      font-size: 1.1em;
+      font-weight: $font-weight-semibold;
+    }
+
+    small {
+      font-size: 0.9em;
+      color: rgba($color-white, 0.6);
+    }
+
+    &--private svg {
+      width: 1.3em;
+      height: 1.3em;
+      color: $color-jade;
+    }
+  }
+
+  &__card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.85em;
+    font-weight: $font-weight-semibold;
+    color: $color-jade;
+
+    i {
+      width: 0.5em;
+      height: 0.5em;
+      border-radius: 50%;
+      background: $color-jade;
+      animation: iv-ping 1.6s ease-out infinite;
+    }
+  }
+
+  &__meter {
+    height: 0.4em;
+    margin-top: 0.5em;
+    overflow: hidden;
+    border-radius: 1em;
+    background: rgba($color-white, 0.1);
+
+    i {
+      display: block;
+      width: 58%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, $color-purple, $color-purple-tint);
+      transition: width 0.9s $ease-out;
+    }
+  }
+
+  &__btn {
+    margin-top: 0.6em;
+    padding: 0.7em;
+    border-radius: 0.9em;
+    background: $color-purple;
+    font-size: 0.95em;
+    font-weight: $font-weight-semibold;
+    text-align: center;
+  }
+}
+
+// ---- Floating activity chips ----
+.iv-chip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 10px;
+  border: 1px solid rgba($color-white, 0.12);
+  border-radius: 16px;
+  background: rgba(22, 22, 38, 0.62);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  opacity: 0.7;
+  animation: iv-float 6s ease-in-out infinite;
+  transition:
+    opacity 0.5s $ease-out,
+    scale 0.5s $ease-out,
+    border-color 0.5s $ease-out,
+    box-shadow 0.5s $ease-out;
+
+  &.is-active {
+    opacity: 1;
+    scale: 1.05;
+    border-color: rgba($color-purple-tint, 0.6);
+    box-shadow:
+      0 0 0 4px rgba($color-purple, 0.18),
+      0 20px 50px rgba($color-purple, 0.4);
+  }
+
+  &--1 {
+    top: 30%;
+    left: -12%;
+  }
+
+  &--2 {
+    top: 4%;
+    right: -4%;
+    animation-delay: -1.5s;
+  }
+
+  &--3 {
+    top: 46%;
+    right: -8%;
+    animation-delay: -3s;
+  }
+
+  &--4 {
+    top: 68%;
+    left: -8%;
+    animation-delay: -4.5s;
+  }
+
+  &__icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &--purple {
+      background: $color-purple;
+    }
+
+    &--jade {
+      background: rgba($color-jade, 0.16);
+    }
+
+    &--yellow {
+      background: rgba($color-yellow-bright, 0.14);
+      color: $color-yellow-bright;
+    }
+
+    &--white {
+      background: rgba($color-white, 0.12);
+    }
+  }
+
+  &__pulse {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: $color-jade;
+    animation: iv-ping 1.6s ease-out infinite;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    b {
+      font-size: 15px;
+      font-weight: $font-weight-semibold;
+    }
+
+    small {
+      font-size: 13px;
+      color: rgba($color-white, 0.65);
+    }
+  }
+
+  @include down("tablet") {
+    gap: 8px;
+    padding: 7px 12px 7px 7px;
+    border-radius: 12px;
+
+    &__icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &__text {
+      b {
+        font-size: 13px;
+      }
+
+      small {
+        font-size: 11px;
+      }
+    }
+
+    &--1 {
+      left: -3%;
+    }
+
+    &--2 {
+      right: -3%;
+    }
+
+    &--3 {
+      right: -3%;
+    }
+
+    &--4 {
+      left: -3%;
+    }
+  }
+
+  @include reduced-motion {
+    animation: none;
+    transition: none;
+  }
+}
+
+// ---- Market figures ----
+.iv-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: fluid(48px, 88px);
+  border-top: 1px solid rgba($color-white, 0.14);
+
+  &__item {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: $space-12;
+    padding: $space-24 $space-24 0 0;
+
+    & + & {
+      padding-left: fluid(20px, 40px);
+      border-left: 1px solid rgba($color-white, 0.14);
+    }
+  }
+
+  dd {
+    font-size: fluid(40px, 72px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+
+    small {
+      margin-inline: 0.06em;
+      font-size: 0.42em;
+      letter-spacing: 0;
+      color: rgba($color-white, 0.6);
+    }
+
+    &.is-up {
+      color: $color-jade;
+    }
+  }
+
+  dt {
+    max-width: 300px;
+    font-size: fluid(14px, 17px);
+    line-height: 1.35;
+    color: rgba($color-white, 0.65);
+  }
+
+  &__src {
+    margin-top: $space-20;
+    font-size: 12px;
+    color: rgba($color-white, 0.4);
+  }
+
+  @include down("tablet") {
+    grid-template-columns: 1fr;
+
+    &__item {
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-between;
+      padding: $space-16 0;
+
+      & + & {
+        padding-left: 0;
+        border-top: 1px solid rgba($color-white, 0.1);
+        border-left: 0;
+      }
+    }
+
+    dd {
+      font-size: 34px;
+      white-space: nowrap;
+    }
+
+    dt {
+      max-width: 170px;
+      font-size: 13px;
+    }
+  }
+}
+
+@keyframes iv-toast {
+  0% {
+    opacity: 0;
+    transform: translateY(-140%);
+  }
+
+  12%,
+  82% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-140%);
+  }
+}
+
+@keyframes iv-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes iv-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes iv-pulse {
+  from {
+    opacity: 0.9;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@include reduced-motion {
+  .iv-hero__swirl {
+    animation: none;
+  }
+
+  .iv-phone__toast.is-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .iv-phone__spark-line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

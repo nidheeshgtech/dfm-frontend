@@ -1,0 +1,358 @@
+@use "../abstracts" as *;
+@use "iv-shared" as iv;
+
+// "Offerings, opening soon": the offerings board in its pre-launch empty
+// state. Placeholder offer cards sit behind a notify card; market tabs
+// filter them (js/components/invest-board.js).
+.iv-board {
+  position: relative;
+  z-index: 1;
+  padding: fluid(56px, 100px) 0 fluid(64px, 120px);
+  background: $color-white;
+  color: $color-text-dark;
+
+  &__frame {
+    padding: fluid(12px, 20px);
+    border: 1px solid rgba($color-text-dark, 0.06);
+    border-radius: 28px;
+    background: $color-bg-light;
+  }
+
+  &__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-12 $space-24;
+  }
+
+  &__tabs {
+    display: flex;
+    gap: 4px;
+    max-width: 100%;
+    padding: 4px;
+    overflow-x: auto;
+    border: 1px solid rgba($color-text-dark, 0.06);
+    border-radius: $radius-pill;
+    background: $color-white;
+    scrollbar-width: none;
+  }
+
+  &__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-8;
+    padding: 10px 18px;
+    border-radius: $radius-pill;
+    color: rgba($color-text-dark, 0.7);
+    font-size: fluid(14px, 17px);
+    white-space: nowrap;
+    transition:
+      background-color $duration $ease-out,
+      color $duration $ease-out;
+
+    &:hover {
+      background: $color-bg-light;
+    }
+
+    &.is-on {
+      background: $color-bg-dark;
+      color: $color-white;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-purple;
+      outline-offset: 2px;
+    }
+  }
+
+  &__count {
+    padding-right: $space-8;
+    font-size: fluid(14px, 16px);
+    color: rgba($color-text-dark, 0.6);
+  }
+
+  &__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: $color-text-dark;
+    font-weight: $font-weight-semibold;
+
+    i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: iv.$iv-closed;
+    }
+  }
+
+  &__body {
+    position: relative;
+    margin-top: fluid(12px, 20px);
+  }
+
+  &__ghosts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: fluid(12px, 16px);
+  }
+
+  &__empty {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(480px, calc(100% - 32px));
+    padding: fluid(24px, 40px);
+    border-radius: $radius-xl;
+    background: $color-white;
+    box-shadow:
+      0 0 0 1px rgba($color-text-dark, 0.04),
+      0 30px 80px rgba($color-text-dark, 0.14);
+    text-align: center;
+    transform: translate(-50%, -50%);
+
+    .btn-pill {
+      margin-top: $space-24;
+    }
+  }
+
+  &__bell {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba($color-purple, 0.1);
+    color: $color-purple;
+    animation: iv-bell-ring 4s ease-in-out infinite;
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  &__empty-title {
+    margin-top: $space-16;
+    font-size: fluid(24px, 32px);
+    line-height: 1.15;
+  }
+
+  &__empty-text {
+    max-width: 360px;
+    margin-top: $space-8;
+    font-size: fluid(16px, 18px);
+    line-height: 1.4;
+    color: rgba($color-text-dark, 0.7);
+
+    strong {
+      font-weight: $font-weight-regular;
+      color: $color-text-dark;
+    }
+  }
+
+  &__foot {
+    margin-top: $space-20;
+    font-size: fluid(14px, 16px);
+    text-align: center;
+    color: rgba($color-text-dark, 0.55);
+  }
+
+  // Tags on the light board.
+  .iv-tag--growth {
+    background: rgba($color-purple, 0.1);
+    color: $color-purple;
+  }
+
+  .iv-tag--private {
+    background: rgba(iv.$iv-private, 0.16);
+    color: #0f7a43;
+  }
+
+  .iv-tag--closed {
+    background: rgba(iv.$iv-closed, 0.22);
+    color: #6a6600;
+  }
+
+  @include down("laptop") {
+    &__ghosts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .iv-offer:nth-child(3) {
+      display: none;
+    }
+  }
+
+  @include down("tablet") {
+    &__frame {
+      border-radius: 20px;
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      gap: $space-12;
+    }
+
+    &__tab {
+      gap: 6px;
+      padding: 9px 12px;
+    }
+
+    &__empty {
+      order: -1;
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      transform: none;
+      box-shadow: 0 0 0 1px rgba($color-text-dark, 0.04);
+    }
+
+    &__ghosts {
+      grid-template-columns: 1fr;
+    }
+
+    .iv-offer:nth-child(n + 2) {
+      display: none;
+    }
+  }
+
+  @include reduced-motion {
+    &__bell {
+      animation: none;
+    }
+  }
+}
+
+// Placeholder offer card.
+.iv-offer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 300px;
+  padding: fluid(16px, 24px);
+  border-radius: 20px;
+  background: $color-white;
+  opacity: 0.6;
+  transition: opacity 0.4s $ease-out;
+
+  &.is-dim {
+    opacity: 0.18;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-8;
+  }
+
+  &__status {
+    padding: 4px 10px;
+    border-radius: $radius-pill;
+    background: $color-bg-light;
+    font-size: 12px;
+    color: rgba($color-text-dark, 0.6);
+  }
+
+  &__name,
+  &__line,
+  &__meter {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    background: rgba($color-text-dark, 0.08);
+
+    // Skeleton shimmer.
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba($color-white, 0.8), transparent);
+      transform: translateX(-100%);
+      animation: iv-shimmer 2.2s ease-in-out infinite;
+    }
+  }
+
+  &__name {
+    width: 62%;
+    height: 22px;
+    margin-top: $space-12;
+  }
+
+  &__line {
+    width: 86%;
+    height: 10px;
+    background: rgba($color-text-dark, 0.05);
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-12;
+    margin-top: auto;
+
+    > span {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 20px;
+    }
+
+    small {
+      font-size: 12px;
+      color: rgba($color-text-dark, 0.55);
+    }
+  }
+
+  &__meter {
+    height: 6px;
+    border-radius: $radius-pill;
+  }
+
+  @include reduced-motion {
+    &__name::after,
+    &__line::after,
+    &__meter::after {
+      animation: none;
+    }
+  }
+}
+
+@keyframes iv-shimmer {
+  60%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes iv-bell-ring {
+  0%,
+  70%,
+  100% {
+    transform: rotate(0);
+  }
+
+  74% {
+    transform: rotate(14deg);
+  }
+
+  80% {
+    transform: rotate(-12deg);
+  }
+
+  86% {
+    transform: rotate(8deg);
+  }
+
+  92% {
+    transform: rotate(-4deg);
+  }
+}

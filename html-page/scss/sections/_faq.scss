@@ -19,6 +19,33 @@
     color: $color-white;
   }
 
+  // ARENA swirl turning slowly in the bottom-right corner (same mark as
+  // the heroes), in place of the contour lines. Round mask keeps the soft
+  // edge still while it turns.
+  &__swirl {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    width: min(1000px, 70vw);
+    max-width: none;
+    height: auto; // keep it round (the height attribute would stretch it)
+    opacity: 0.14;
+    translate: 35% 40%;
+    mask-image: radial-gradient(circle, #000 40%, transparent 71%);
+    pointer-events: none;
+    animation: faq-spin 140s linear infinite;
+
+    @include down("tablet") {
+      width: 130vw;
+      translate: 40% 30%;
+    }
+
+    @include reduced-motion {
+      animation: none;
+    }
+  }
+
   &__contours {
     position: absolute;
     right: -18%;
@@ -105,6 +132,12 @@
     &__contours {
       animation: none;
     }
+  }
+}
+
+@keyframes faq-spin {
+  to {
+    rotate: 360deg;
   }
 }
 

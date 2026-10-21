@@ -1,7 +1,7 @@
 // "A familiar investor experience": accordion (one open at a time) that
 // auto-plays while in view — the top line fills over each step's
-// duration, then the next opens. Any click / key takes over and stops
-// autoplay. The phone spotlight moves to the screen area for the step.
+// duration, then the next opens. Clicking a step jumps there and autoplay
+// carries on from it. The phone spotlight moves to the screen area for the step.
 //
 // Tablet / mobile (single column): the phone visual moves INSIDE the open
 // step, under its text, and pans to that step's part of the screen — so
@@ -107,12 +107,10 @@ function setup(root) {
     clearTimeout(timer);
   };
 
+  // Clicking jumps to that step; autoplay (desktop) restarts from it.
   steps.forEach((step, i) => {
     const btn = step.querySelector("[aria-expanded]");
-    btn.addEventListener("click", () => {
-      takeOver();
-      open(i);
-    });
+    btn.addEventListener("click", () => open(i));
     btn.addEventListener("keydown", (event) => {
       const map = { ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: steps.length - 1 };
       if (!(event.key in map)) return;

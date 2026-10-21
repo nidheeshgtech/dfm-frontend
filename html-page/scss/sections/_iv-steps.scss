@@ -1,0 +1,431 @@
+@use "../abstracts" as *;
+
+// "When an offer goes live": Discover → Subscribe → Trade, each with a
+// small iVestor screen.
+.iv-steps {
+  position: relative;
+  z-index: 1;
+  padding: fluid(72px, 140px) 0 fluid(40px, 72px);
+  background: $color-white;
+  color: $color-text-dark;
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $space-20;
+    counter-reset: step;
+  }
+
+  &__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: $space-12 $space-12 fluid(24px, 32px);
+    border-radius: $radius-xl;
+    background: $color-bg-light;
+
+    // Arrow between steps.
+    &:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 132px;
+      right: -24px;
+      z-index: 2;
+      width: 28px;
+      height: 28px;
+      border: 4px solid $color-white;
+      border-radius: 50%;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10h10m-4-4 4 4-4 4' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+          center / 16px no-repeat,
+        $color-purple;
+      box-sizing: content-box;
+    }
+  }
+
+  &__num,
+  &__title,
+  &__text {
+    padding-inline: $space-12;
+  }
+
+  &__num {
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    color: $color-purple;
+  }
+
+  &__title {
+    margin-top: $space-8;
+    font-size: fluid(24px, 32px);
+    line-height: 1.15;
+  }
+
+  &__text {
+    margin-top: $space-12;
+    font-size: fluid(16px, 18px);
+    line-height: 1.4;
+    color: rgba($color-text-dark, 0.7);
+
+    strong {
+      font-weight: $font-weight-regular;
+      color: $color-text-dark;
+    }
+  }
+
+  @include down("laptop") {
+    &__list {
+      grid-template-columns: 1fr;
+      gap: $space-16;
+    }
+
+    &__item {
+      display: grid;
+      grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+      grid-template-rows: auto auto 1fr;
+      column-gap: $space-24;
+      align-items: start;
+
+      .iv-screen {
+        grid-row: 1 / span 3;
+        margin-bottom: 0;
+      }
+
+      .iv-steps__num {
+        margin-top: $space-16;
+      }
+
+      &:not(:last-child)::after {
+        display: none;
+      }
+    }
+  }
+
+  @include down("tablet") {
+    &__item {
+      display: flex;
+      align-items: stretch;
+
+      .iv-screen {
+        margin-bottom: $space-20;
+      }
+
+      .iv-steps__num {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+// Mini iVestor screen.
+.iv-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 240px;
+  margin-bottom: fluid(20px, 28px);
+  padding: $space-16;
+  overflow: hidden;
+  border-radius: $radius-lg;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba($color-purple, 0.35), transparent 70%),
+    $color-bg-dark-card;
+  color: $color-white;
+  font-size: 12px;
+
+  small {
+    font-size: 11px;
+    color: rgba($color-white, 0.55);
+  }
+
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: rgba($color-white, 0.07);
+    color: rgba($color-white, 0.55);
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .is-typed {
+      color: $color-white;
+    }
+  }
+
+  &__filters {
+    display: flex;
+    gap: 6px;
+
+    b {
+      padding: 4px 10px;
+      border-radius: $radius-pill;
+      background: rgba($color-white, 0.06);
+      font-size: 11px;
+      font-weight: $font-weight-semibold;
+      transition: background-color 0.35s;
+
+      &.is-on {
+        background: $color-purple;
+      }
+    }
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba($color-white, 0.05);
+    transition:
+      opacity 0.4s,
+      background-color 0.3s,
+      box-shadow 0.3s;
+
+    &.is-dim {
+      opacity: 0.35;
+    }
+
+    &.is-tap {
+      background: rgba($color-white, 0.1);
+      box-shadow: inset 0 0 0 1px rgba($color-purple-tint, 0.6);
+    }
+
+    > span {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    em {
+      display: block;
+      width: 62%;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba($color-white, 0.2);
+    }
+
+    > b {
+      color: rgba($color-white, 0.5);
+      font-size: 16px;
+    }
+  }
+
+  &__doc {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $color-purple-tint;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &.is-ping svg {
+      animation: iv-pop 0.6s $ease-out;
+    }
+  }
+
+  // Subscribe screen: five rows in the same 240px, so a little tighter
+  // to keep the button off the bottom edge.
+  &--form {
+    gap: 8px;
+  }
+
+  &--form &__amount {
+    font-size: 28px;
+
+    i {
+      height: 24px;
+    }
+  }
+
+  &--form &__field {
+    padding-block: 6px;
+  }
+
+  &__label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba($color-white, 0.55);
+  }
+
+  &__amount {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 32px;
+    line-height: 1;
+
+    small {
+      font-size: 14px;
+    }
+
+    b {
+      font-weight: inherit;
+    }
+
+    i {
+      width: 2px;
+      height: 28px;
+      background: $color-purple-tint;
+      animation: iv-caret 1s steps(1) infinite;
+    }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 7px 12px;
+    border-radius: 10px;
+    background: rgba($color-white, 0.06);
+    transition: box-shadow 0.3s;
+
+    &.is-focus {
+      box-shadow: inset 0 0 0 1px rgba($color-purple-tint, 0.7);
+    }
+  }
+
+  &__btn {
+    margin-top: auto;
+    padding: 10px;
+    border-radius: 12px;
+    background: $color-purple;
+    font-weight: $font-weight-semibold;
+    text-align: center;
+    transition:
+      background-color 0.35s,
+      color 0.35s,
+      transform 0.2s;
+
+    &.is-press {
+      transform: scale(0.96);
+    }
+
+    &.is-done {
+      background: $color-jade;
+      color: $color-bg-dark;
+    }
+  }
+
+  &__note {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba($color-jade, 0.25);
+    border-radius: 14px;
+    background: rgba($color-jade, 0.1);
+
+    i {
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: $color-jade;
+      color: $color-bg-dark;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    > span {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    b {
+      font-size: 13px;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__chart {
+    width: 100%;
+    height: 56px;
+
+    path {
+      stroke: $color-jade;
+      stroke-width: 2;
+      vector-effect: non-scaling-stroke;
+    }
+  }
+
+  &__side {
+    position: relative;
+    display: flex;
+    padding: 3px;
+    border-radius: 10px;
+    background: rgba($color-white, 0.06);
+
+    b {
+      position: relative;
+      flex: 1;
+      padding: 7px;
+      font-weight: $font-weight-semibold;
+      text-align: center;
+      color: rgba($color-white, 0.7);
+      transition: color 0.35s;
+
+      &.is-on {
+        color: $color-bg-dark;
+      }
+    }
+  }
+
+  // Buy / Sell highlight, slid by invest-loops.js.
+  &__pill {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    border-radius: 8px;
+    background: $color-jade;
+  }
+
+  &__tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: rgba($color-white, 0.55);
+
+    // Live dot.
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: $color-jade;
+      animation: iv-ping 1.6s $ease-out infinite;
+    }
+  }
+
+  @include reduced-motion {
+    &__amount i,
+    &__tag::before {
+      animation: none;
+    }
+  }
+}
+
+@keyframes iv-caret {
+  50% {
+    opacity: 0;
+  }
+}

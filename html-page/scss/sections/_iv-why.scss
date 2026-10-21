@@ -1,0 +1,380 @@
+@use "../abstracts" as *;
+@use "iv-shared" as iv;
+
+// "Why invest on ARENA": four tiles, each with a small product visual
+// on top (offer-stage timeline, demand bars, regulated chain, one
+// account) and the claim underneath.
+.iv-why {
+  position: relative;
+  z-index: 1;
+  padding: fluid(72px, 140px) 0 fluid(56px, 100px);
+  background: $color-white;
+  color: $color-text-dark;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: $space-20;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    padding: $space-12 $space-12 fluid(24px, 32px);
+    border: 1px solid rgba($color-text-dark, 0.05);
+    border-radius: $radius-xl;
+    background: $color-bg-light;
+    transition:
+      transform 0.5s $ease-out,
+      box-shadow 0.5s $ease-out;
+
+    &:hover {
+      box-shadow: 0 24px 60px rgba($color-text-dark, 0.08);
+      transform: translateY(-4px);
+    }
+  }
+
+  &__viz {
+    position: relative;
+    display: flex;
+    height: 168px;
+    margin-bottom: fluid(20px, 28px);
+    padding: $space-16;
+    overflow: hidden;
+    border-radius: $radius-lg;
+    background: $color-white;
+    font-size: 13px;
+  }
+
+  &__title,
+  &__text {
+    padding-inline: $space-12;
+  }
+
+  &__title {
+    font-size: fluid(22px, 28px);
+    line-height: 1.15;
+
+    strong {
+      font-weight: $font-weight-regular;
+      color: $color-purple;
+    }
+  }
+
+  &__text {
+    margin-top: $space-12;
+    font-size: fluid(16px, 18px);
+    line-height: 1.4;
+    color: rgba($color-text-dark, 0.7);
+  }
+
+  // ---- Viz 1: offer stage → listing day → IPO ----
+  &__viz--stage {
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 22px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: 36px;
+      left: 36px;
+      height: 2px;
+      margin-top: -1px;
+      background: rgba($color-text-dark, 0.12);
+    }
+  }
+
+  // ---- Viz 2: demand bars with the offer price line ----
+  &__viz--demand {
+    align-items: flex-end;
+    padding-bottom: 0;
+  }
+
+  // Looping (invest-loops.js): steps wait grey, then tick in one by one;
+  // a light sweeps the DFM bar once the chain is complete.
+  &__viz--chain.is-loop span {
+    transition: color 0.4s;
+
+    &:not(.is-on) {
+      color: rgba($color-text-dark, 0.4);
+
+      &::before {
+        background-color: rgba($color-text-dark, 0.14);
+      }
+    }
+
+    &.is-on::before {
+      animation: iv-pop 0.5s $ease-out;
+    }
+  }
+
+  // ---- Viz 3: regulated chain ----
+  &__viz--chain {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: center;
+    gap: $space-8;
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: $color-bg-light;
+      white-space: nowrap;
+
+      &::before {
+        content: "";
+        flex-shrink: 0;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='m4 7.2 2 2 4-4.2' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+            center / contain no-repeat,
+          iv.$iv-private;
+      }
+    }
+
+    b {
+      position: relative;
+      overflow: hidden;
+      grid-column: 1 / -1;
+      padding: 9px;
+      border-radius: 10px;
+      background: $color-bg-dark;
+      color: $color-white;
+      font-size: 11px;
+      font-weight: $font-weight-semibold;
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-transform: uppercase;
+
+      &.is-sweep::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(100deg, transparent 30%, rgba($color-white, 0.35) 50%, transparent 70%);
+        animation: iv-sweep 1.1s $ease-out forwards;
+      }
+    }
+  }
+
+  // ---- Viz 4: one account ----
+  &__viz--account {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  // Four across needs ~300px a tile for the visuals' labels.
+  @media (max-width: 1279.98px) {
+    &__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @include down("mobile") {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @include reduced-motion {
+    &__card {
+      transition: none;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}
+
+.iv-stage-step {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+
+  i {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba($color-text-dark, 0.2);
+    border-radius: 50%;
+    background: $color-white;
+  }
+
+  em {
+    position: absolute;
+    top: calc(100% + 10px);
+    font-style: normal;
+    white-space: nowrap;
+    color: rgba($color-text-dark, 0.6);
+  }
+
+  b {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    padding: 5px 10px;
+    border-radius: $radius-pill;
+    background: $color-purple;
+    color: $color-white;
+    font-size: 12px;
+    font-weight: $font-weight-semibold;
+    white-space: nowrap;
+    animation: iv-float 4s ease-in-out infinite;
+  }
+
+  // Lit by the progress fill as it passes (invest-loops.js).
+  i,
+  em {
+    transition:
+      border-color 0.4s,
+      background-color 0.4s,
+      color 0.4s;
+  }
+
+  &.is-hit {
+    i {
+      border-color: $color-purple;
+      background: rgba($color-purple, 0.15);
+    }
+
+    em {
+      color: $color-text-dark;
+    }
+  }
+
+  &.is-you {
+    // Ping ring round "you".
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      animation: iv-ring 2s $ease-out infinite;
+      pointer-events: none;
+    }
+
+    i {
+      width: 18px;
+      height: 18px;
+      border: 4px solid $color-white;
+      background: $color-purple;
+      box-shadow: 0 0 0 2px $color-purple;
+    }
+
+    em {
+      color: $color-text-dark;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &.is-you b,
+  &.is-you em {
+    left: -6px;
+  }
+}
+
+// Progress along the timeline (scaled by invest-loops.js).
+.iv-stage-fill {
+  position: absolute;
+  top: 50%;
+  right: 36px;
+  left: 36px;
+  height: 2px;
+  margin-top: -1px;
+  background: $color-purple;
+  transform: scaleX(0.22);
+  transform-origin: 0 50%;
+}
+
+.iv-demand {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  gap: 6px;
+  height: 100%;
+
+  i {
+    flex: 1;
+    height: var(--h);
+    border-radius: 6px 6px 2px 2px;
+    background: linear-gradient(180deg, rgba($color-purple, 0.75), rgba($color-purple, 0.12));
+  }
+
+  &__price {
+    position: absolute;
+    top: 30%;
+    right: $space-16;
+    left: $space-16;
+    padding-top: 4px;
+    border-top: 1.5px dashed $color-text-dark;
+    font-size: 12px;
+    font-weight: $font-weight-semibold;
+    text-align: right;
+  }
+}
+
+.iv-account {
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: $space-8;
+    padding: 7px 10px;
+    border-radius: 10px;
+    background: $color-bg-light;
+    transition: box-shadow 0.4s;
+
+    // Holding bar: --f fills it (invest-loops.js).
+    em {
+      width: 38px;
+      height: 6px;
+      margin-left: auto;
+      border-radius: 4px;
+      background: linear-gradient(90deg, $color-purple var(--f, 0%), rgba($color-text-dark, 0.1) 0);
+    }
+
+    &.is-on {
+      box-shadow: inset 0 0 0 1px rgba($color-purple, 0.3);
+    }
+  }
+
+  &__seg {
+    position: relative;
+    display: flex;
+    margin-top: auto;
+    padding: 3px;
+    border-radius: 10px;
+    background: $color-bg-dark;
+
+    b {
+      position: relative;
+      flex: 1;
+      padding: 6px;
+      color: rgba($color-white, 0.7);
+      font-size: 12px;
+      font-weight: $font-weight-semibold;
+      text-align: center;
+      transition: color 0.4s;
+
+      &.is-on {
+        color: $color-white;
+      }
+    }
+  }
+
+  // Active tab background, slid between tabs by invest-loops.js.
+  &__pill {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: calc((100% - 6px) / 3);
+    border-radius: 8px;
+    background: $color-purple;
+  }
+}

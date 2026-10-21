@@ -1,0 +1,186 @@
+@use "../abstracts" as *;
+
+// Invest page (index.html) shared bits: highlighted words, section
+// headings, market tags and dots. Everything on this page is prefixed
+// iv- so the Raise Capital page can't pick any of it up.
+
+// Market colours, readable on light (default) and dark backgrounds.
+$iv-growth: #6b3cff;
+$iv-private: #2fcf78;
+$iv-closed: #d6cf00;
+
+// Highlighted words in headings: brand purple on light, tint on dark.
+.iv-hl {
+  font-style: normal;
+  color: $color-purple;
+}
+
+.iv-hero .iv-hl,
+.iv-earn .iv-hl,
+.iv-faq .iv-hl {
+  color: $color-purple-tint;
+}
+
+// ---- Section heading ----
+.iv-head {
+  display: flex;
+  flex-direction: column;
+  gap: $space-16;
+  margin-bottom: fluid(32px, 64px);
+
+  &__eyebrow {
+    color: $color-purple;
+  }
+
+  &__title {
+    max-width: 900px;
+    font-size: fluid(36px, 64px);
+    line-height: 1.15;
+    letter-spacing: tracking(-1.28px, 64px);
+  }
+
+  &__lead {
+    max-width: 560px;
+    font-size: fluid(17px, 22px);
+    line-height: 1.4;
+
+    // Body copy at 70%, the highlighted phrase at full strength.
+    color: rgba($color-text-dark, 0.7);
+
+    strong {
+      font-weight: $font-weight-regular;
+      color: $color-text-dark;
+    }
+  }
+
+  &--split {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $space-48;
+  }
+
+  @include down("laptop") {
+    &--split {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $space-16;
+    }
+  }
+}
+
+// ---- Market tag (pill) and dot ----
+.iv-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px 4px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: $font-weight-semibold;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+
+  &--growth {
+    background: rgba($color-purple, 0.35);
+    color: #c9b8ff;
+  }
+
+  &--private {
+    background: rgba($color-jade, 0.15);
+    color: $color-jade;
+  }
+
+  &--closed {
+    background: rgba($color-yellow-bright, 0.14);
+    color: $color-yellow-bright;
+  }
+}
+
+.iv-dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  &--growth {
+    background: $iv-growth;
+  }
+
+  &--private {
+    background: $iv-private;
+  }
+
+  &--closed {
+    background: $iv-closed;
+  }
+}
+
+// Gentle bob for floating elements. Uses the individual `translate`
+// property so it can stack with a `scale` on the same element.
+@keyframes iv-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -8px;
+  }
+}
+
+// Card loops (invest-loops.js).
+@keyframes iv-pop {
+  0% {
+    scale: 0.4;
+  }
+
+  60% {
+    scale: 1.25;
+  }
+
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes iv-sweep {
+  from {
+    translate: -100% 0;
+  }
+
+  to {
+    translate: 100% 0;
+  }
+}
+
+@keyframes iv-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba($color-purple, 0.45);
+  }
+
+  100% {
+    box-shadow: 0 0 0 12px rgba($color-purple, 0);
+  }
+}
+
+@keyframes iv-flow {
+  from {
+    background-position: -40% 0;
+  }
+
+  to {
+    background-position: 140% 0;
+  }
+}
+
+@keyframes iv-ping {
+  0% {
+    box-shadow: 0 0 0 0 rgba($color-jade, 0.55);
+  }
+
+  100% {
+    box-shadow: 0 0 0 10px rgba($color-jade, 0);
+  }
+}

@@ -1,0 +1,51 @@
+@use "../abstracts" as *;
+
+// Invest page only (body.page-invest): the shared header and market cards
+// sit on the same container grid as every other section.
+
+.page-invest {
+  // ---- Header: logo and nav line up with the container edges ----
+  .site-header__inner {
+    max-width: $container-max + $container-gutter * 2;
+    margin-inline: auto;
+    padding-inline: $container-gutter;
+
+    @include down("tablet") {
+      padding-inline: $container-gutter-mobile;
+    }
+  }
+
+  .site-header__nav {
+    @include up("laptop") {
+      padding-inline: $space-24 0;
+    }
+  }
+
+  // ---- Markets: cards inside the container, not full bleed ----
+  // The list carries .container, so the section drops its own gutter.
+  .markets {
+    padding: 0 0 $space-24;
+  }
+
+  .market__card {
+    height: min(720px, calc(100svh - 40px));
+    min-height: 560px;
+    border-radius: $radius-xl;
+  }
+
+  @include down("tablet") {
+    .market__card {
+      height: auto;
+      min-height: 620px;
+    }
+  }
+
+  // Sticky cards (stack.js v1): each card pins a little lower than the
+  // last, so the three read as one stacked set while scrolling.
+  @media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+    .market__card {
+      height: min(720px, calc(100svh - var(--markets-stuck-h) - 2 * var(--market-gap) - #{$space-24}));
+      min-height: 0;
+    }
+  }
+}
