@@ -23,6 +23,7 @@ import { initInvestBoard } from "./components/invest-board.js";
 import { initInvestAsk } from "./components/invest-ask.js";
 import { initInvestLoops } from "./components/invest-loops.js";
 import { initRouteSteps } from "./components/route-steps.js";
+import { initRouteViz } from "./components/route-viz.js";
 
 function init() {
   // ORDER MATTERS: Lenis first (it hooks ScrollTrigger.update), then reveal.
@@ -32,7 +33,7 @@ function init() {
     console.error("init: initSmoothScroll threw", e);
   }
 
-  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initXpApp, initGlobe, initFaq, initInvestPhone, initInvestBoard, initInvestAsk, initInvestLoops, initRouteSteps, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch].forEach((fn) => {
+  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initXpApp, initGlobe, initFaq, initInvestPhone, initInvestBoard, initInvestAsk, initInvestLoops, initRouteSteps, initRouteViz, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch].forEach((fn) => {
     try {
       fn();
     } catch (e) {

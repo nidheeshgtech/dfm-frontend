@@ -1,0 +1,911 @@
+@use "../abstracts" as *;
+
+// Route pages, "Why companies choose it": a small live visual on top of
+// each reason card, in the page's market colour (--rt-ink / --rt-deep /
+// --rt-bright from _route.scss). js/components/route-viz.js loops them
+// while on screen; the static markup below is the resting frame.
+
+$rt-soft: rgba($color-text-dark, 0.08);
+
+.rt-why__viz {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  height: 168px;
+  margin-bottom: fluid(20px, 28px);
+  padding: $space-16 $space-20;
+  overflow: hidden;
+  border-radius: $radius-lg;
+  background: $color-white;
+  color: $color-text-dark;
+  font-size: 12px;
+
+  svg {
+    display: block;
+  }
+}
+
+// Shared pill tag (pops in at the end of a loop).
+@mixin rt-tag {
+  padding: 3px 9px;
+  border-radius: $radius-pill;
+  background: var(--rt-ink);
+  color: $color-white;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+}
+
+// ---- Race: traditional IPO vs ARENA ----
+.rt-race {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  b {
+    font-weight: $font-weight-semibold;
+    color: rgba($color-text-dark, 0.6);
+  }
+
+  &__bar {
+    height: 10px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: $rt-soft;
+
+    i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: rgba($color-text-dark, 0.25);
+      transform-origin: 0 50%;
+    }
+  }
+
+  &.is-arena b {
+    color: $color-text-dark;
+  }
+
+  &.is-arena &__bar i {
+    background: linear-gradient(90deg, rgba(var(--rt-deep), 0.6), var(--rt-ink));
+  }
+
+  em {
+    position: absolute;
+    top: -2px;
+    right: 0;
+
+    @include rt-tag;
+  }
+}
+
+// ---- Bars: demand with a price line ----
+.rt-viz-bars {
+  justify-content: flex-end;
+  padding-bottom: 0;
+}
+
+.rt-bars {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  gap: 6px;
+  height: 100%;
+
+  i {
+    flex: 1;
+    height: var(--h);
+    border-radius: 6px 6px 2px 2px;
+    background: linear-gradient(180deg, rgba(var(--rt-deep), 0.8), rgba(var(--rt-deep), 0.12));
+  }
+
+  &__line {
+    position: absolute;
+    top: 30%;
+    right: $space-20;
+    left: $space-20;
+    border-top: 1.5px dashed $color-text-dark;
+
+    em {
+      position: absolute;
+      top: 6px;
+      right: 0;
+      padding: 2px 8px;
+      border-radius: $radius-pill;
+      background: $color-white;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: $font-weight-semibold;
+      transition:
+        background-color 0.3s,
+        color 0.3s;
+    }
+
+    &.is-set em {
+      background: var(--rt-ink);
+      color: $color-white;
+    }
+  }
+}
+
+// ---- Pool: a grid of investors lighting up + the count ----
+.rt-viz-pool {
+  flex-direction: row;
+  align-items: center;
+  gap: $space-20;
+}
+
+.rt-pool {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+  max-width: 190px;
+
+  i {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--rt-ink);
+    transition:
+      background-color 0.35s,
+      transform 0.35s $ease-out;
+  }
+
+  &__count {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    b {
+      font-size: 24px;
+      font-weight: $font-weight-regular;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    small {
+      color: rgba($color-text-dark, 0.6);
+    }
+  }
+}
+
+.rt-viz-pool.is-loop .rt-pool i {
+  background: $rt-soft;
+
+  &.is-on {
+    background: var(--rt-ink);
+    transform: scale(1.15);
+  }
+}
+
+// ---- Trade: a live price line with Buy / Sell ----
+.rt-viz-trade {
+  justify-content: flex-end;
+  padding: 0;
+}
+
+.rt-trade {
+  &__chips {
+    position: absolute;
+    top: $space-16;
+    left: $space-20;
+    display: flex;
+    gap: 6px;
+
+    b {
+      padding: 3px 10px;
+      border-radius: $radius-pill;
+      background: $rt-soft;
+      font-weight: $font-weight-semibold;
+      transition:
+        background-color 0.3s,
+        color 0.3s;
+
+      &.is-on {
+        background: var(--rt-ink);
+        color: $color-white;
+      }
+    }
+  }
+
+  &__chart {
+    width: 100%;
+    height: 110px;
+  }
+
+  &__area {
+    fill: rgba(var(--rt-deep), 0.12);
+  }
+
+  &__line {
+    fill: none;
+    stroke: var(--rt-ink);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+// ---- Terms: two sliders you set ----
+.rt-slider {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+
+  b {
+    font-weight: $font-weight-semibold;
+    color: rgba($color-text-dark, 0.6);
+  }
+
+  em {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__track {
+    position: relative;
+    grid-column: 1 / -1;
+    height: 6px;
+    border-radius: 4px;
+    background: $rt-soft;
+
+    i {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--v);
+      border-radius: inherit;
+      background: var(--rt-ink);
+    }
+
+    s {
+      position: absolute;
+      top: 50%;
+      left: var(--v);
+      width: 18px;
+      height: 18px;
+      border: 3px solid var(--rt-ink);
+      border-radius: 50%;
+      background: $color-white;
+      box-shadow: 0 2px 8px rgba($color-text-dark, 0.15);
+      translate: -50% -50%;
+    }
+  }
+}
+
+// ---- Stairs: stepping up to the IPO ----
+.rt-viz-stairs {
+  justify-content: flex-end;
+  padding-bottom: 0;
+}
+
+.rt-stairs {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 100%;
+
+  i {
+    position: relative;
+    flex: 1;
+    border-radius: 8px 8px 2px 2px;
+    background: rgba(var(--rt-deep), 0.12);
+    transition: background-color 0.35s;
+
+    &:nth-child(1) { height: 22%; }
+    &:nth-child(2) { height: 42%; }
+    &:nth-child(3) { height: 62%; }
+    &:nth-child(4) { height: 82%; }
+
+    &.is-on {
+      background: rgba(var(--rt-deep), 0.35);
+    }
+
+    &.is-top.is-on {
+      background: var(--rt-ink);
+    }
+  }
+
+  // "IPO" sits inside the top step (the dot lands on its roof).
+  em {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    color: $color-white;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: $font-weight-semibold;
+    letter-spacing: 0.1em;
+    translate: -50% 0;
+  }
+
+  &__dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border-radius: 50%;
+    background: var(--rt-ink);
+    box-shadow: 0 0 0 5px rgba(var(--rt-deep), 0.18);
+    opacity: 0;
+  }
+}
+
+// ---- Donut: early backers sell part of their stake ----
+.rt-viz-donut {
+  flex-direction: row;
+  align-items: center;
+  gap: $space-20;
+}
+
+.rt-donut {
+  position: relative;
+  flex-shrink: 0;
+  width: 128px;
+  height: 128px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    rotate: -90deg;
+  }
+
+  circle {
+    fill: none;
+    stroke-width: 14;
+  }
+
+  &__track {
+    stroke: $rt-soft;
+  }
+
+  &__seg.is-a {
+    stroke: $color-text-dark;
+  }
+
+  &__seg.is-b {
+    stroke: rgba($color-text-dark, 0.3);
+  }
+
+  &__seg.is-c {
+    stroke: var(--rt-ink);
+  }
+
+  &__mid {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    b {
+      font-size: 20px;
+      font-weight: $font-weight-regular;
+      line-height: 1;
+    }
+
+    small {
+      max-width: 60px;
+      font-size: 10px;
+      line-height: 1.2;
+      color: rgba($color-text-dark, 0.6);
+    }
+  }
+
+  &__legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    i {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+
+      &.is-a {
+        background: $color-text-dark;
+      }
+
+      &.is-b {
+        background: rgba($color-text-dark, 0.3);
+      }
+
+      &.is-c {
+        background: var(--rt-ink);
+      }
+    }
+  }
+}
+
+// ---- Cap table: many small holders fold into one line ----
+.rt-cap {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 12px;
+
+    i {
+      flex-shrink: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba($color-text-dark, 0.3);
+    }
+
+    em {
+      width: var(--w);
+      height: 8px;
+      border-radius: 4px;
+      background: rgba($color-text-dark, 0.18);
+    }
+
+    b {
+      font-weight: $font-weight-semibold;
+      white-space: nowrap;
+    }
+
+    &.is-merged {
+      i,
+      em {
+        background: var(--rt-ink);
+      }
+    }
+  }
+}
+
+// Resting frame shows the result; the loop starts from the "before".
+.js .rt-viz-cap:not(.is-loop) .rt-cap__row.is-small {
+  display: none;
+}
+
+// ---- Network: the institutions that anchor IPOs ----
+.rt-net {
+  position: absolute;
+  inset: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+
+  &__link {
+    stroke: var(--rt-ink);
+    stroke-width: 1.5;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    opacity: 0.5;
+  }
+
+  &__node {
+    fill: var(--rt-ink);
+    stroke: $color-white;
+    stroke-width: 3;
+    transition: fill 0.35s;
+  }
+
+  &__core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 6px 12px;
+    border-radius: $radius-pill;
+    background: $color-text-dark;
+    color: $color-white;
+    font-weight: $font-weight-semibold;
+    white-space: nowrap;
+    translate: -50% -50%;
+  }
+}
+
+.rt-viz-known.is-loop .rt-net__node {
+  fill: rgba($color-text-dark, 0.18);
+
+  &.is-on {
+    fill: var(--rt-ink);
+  }
+}
+
+// ---- Ring: a closed circle of holders ----
+.rt-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  &__edge {
+    fill: rgba(var(--rt-deep), 0.06);
+    stroke: var(--rt-ink);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 6;
+    animation: rt-march 14s linear infinite;
+  }
+
+  &__in {
+    fill: rgba(var(--rt-deep), 0.45);
+    transition: fill 0.3s;
+
+    &.is-on {
+      fill: var(--rt-ink);
+    }
+  }
+
+  &__out {
+    fill: rgba($color-text-dark, 0.14);
+  }
+
+  &__token {
+    fill: $color-white;
+    stroke: var(--rt-ink);
+    stroke-width: 2;
+  }
+
+  &__tag {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    translate: -50% 0;
+
+    @include rt-tag;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+// ---- Reach: a ping from Dubai across the region ----
+.rt-reach {
+  &__ping {
+    position: absolute;
+    top: 48%;
+    left: 68%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 1.5px solid var(--rt-ink);
+    border-radius: 50%;
+    opacity: 0;
+  }
+
+  &__hub,
+  &__city {
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    translate: -5px -50%;
+    white-space: nowrap;
+
+    i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba($color-text-dark, 0.25);
+      transition:
+        background-color 0.3s,
+        box-shadow 0.3s;
+    }
+  }
+
+  &__city {
+    color: rgba($color-text-dark, 0.55);
+    transition: color 0.3s;
+
+    &.is-on {
+      color: $color-text-dark;
+
+      i {
+        background: var(--rt-ink);
+        box-shadow: 0 0 0 4px rgba(var(--rt-deep), 0.18);
+      }
+    }
+  }
+
+  &__hub {
+    font-weight: $font-weight-semibold;
+
+    i {
+      width: 12px;
+      height: 12px;
+      background: var(--rt-ink);
+      box-shadow: 0 0 0 5px rgba(var(--rt-deep), 0.2);
+    }
+  }
+}
+
+// Static frame: every city reached.
+.rt-viz-reach:not(.is-loop) .rt-reach__city i {
+  background: var(--rt-ink);
+}
+
+// ---- Gauge: an independent valuation settles ----
+.rt-viz-gauge {
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+.rt-gauge {
+  width: 190px;
+  height: auto;
+
+  &__track,
+  &__fill {
+    fill: none;
+    stroke-width: 14;
+    stroke-linecap: round;
+  }
+
+  &__track {
+    stroke: $rt-soft;
+  }
+
+  &__fill {
+    stroke: var(--rt-ink);
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0.4;
+  }
+
+  &__needle {
+    transform-box: view-box;
+    transform-origin: 100px 100px;
+    rotate: 18deg;
+
+    line {
+      stroke: $color-text-dark;
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+
+    circle {
+      fill: $color-text-dark;
+    }
+  }
+
+  &__tag {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    @include rt-tag;
+  }
+}
+
+// ---- Owners: an approved circle of holders ----
+.rt-viz-owners {
+  gap: $space-16;
+}
+
+.rt-owners {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__circle {
+    display: flex;
+    gap: 8px;
+    padding: 6px;
+    border: 1.5px dashed rgba(var(--rt-deep), 0.5);
+    border-radius: $radius-pill;
+  }
+
+  &__note {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    b {
+      font-weight: $font-weight-semibold;
+      color: rgba($color-text-dark, 0.6);
+    }
+  }
+
+  &__bar {
+    height: 8px;
+    border-radius: 4px;
+    background: $rt-soft;
+
+    i {
+      display: block;
+      width: 60%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--rt-ink);
+      transform-origin: 0 50%;
+    }
+  }
+}
+
+.rt-av {
+  position: relative;
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(var(--rt-deep), 0.14);
+  color: var(--rt-ink);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: $font-weight-semibold;
+
+  // Badge: tick (in) / cross (outsider) / coin (stake).
+  b {
+    position: absolute;
+    right: -3px;
+    bottom: -3px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid $color-white;
+    border-radius: 50%;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='m4 7.2 2 2 4-4.2' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+        center / contain no-repeat,
+      var(--rt-ink);
+    scale: 0;
+    transition: scale 0.35s $ease-out;
+  }
+
+  &.is-in b {
+    scale: 1;
+  }
+
+  &.is-outsider {
+    background: $rt-soft;
+    color: rgba($color-text-dark, 0.5);
+
+    b {
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='m4.5 4.5 5 5m0-5-5 5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E")
+          center / contain no-repeat,
+        #d4483b;
+    }
+  }
+}
+
+[data-variant="people"] .rt-av b {
+  background:
+    radial-gradient(circle, $color-white 0 2px, transparent 2.5px),
+    var(--rt-ink);
+}
+
+// Static frame: everyone in.
+.rt-viz-owners:not(.is-loop) .rt-av:not(.is-outsider) b {
+  scale: 1;
+}
+
+// ---- Generations: ownership moves to the next generation ----
+.rt-gen {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+
+  b {
+    font-weight: $font-weight-semibold;
+    color: rgba($color-text-dark, 0.6);
+  }
+
+  em {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__bar {
+    grid-column: 1 / -1;
+    height: 12px;
+    border-radius: 6px;
+    background: $rt-soft;
+
+    i {
+      display: block;
+      width: var(--v);
+      height: 100%;
+      border-radius: inherit;
+      background: rgba($color-text-dark, 0.35);
+    }
+  }
+
+  &.is-next &__bar i {
+    background: var(--rt-ink);
+  }
+
+  &__tag {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+
+    @include rt-tag;
+  }
+}
+
+// ---- Document: disclosure stays private ----
+.rt-doc {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 72%;
+  padding: 12px 14px;
+  border: 1px solid $rt-soft;
+  border-radius: 10px;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: $font-weight-semibold;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &__line {
+    position: relative;
+    width: var(--w);
+    height: 7px;
+    border-radius: 4px;
+    background: rgba($color-text-dark, 0.14);
+
+    i {
+      position: absolute;
+      inset: -2px;
+      border-radius: 3px;
+      background: $color-text-dark;
+      transform-origin: 0 50%;
+    }
+  }
+
+  &__stamp {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    padding: 4px 10px;
+    border: 2px solid var(--rt-ink);
+    border-radius: 6px;
+    color: var(--rt-ink);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: $font-weight-semibold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    translate: 0 -50%;
+    rotate: -10deg;
+  }
+}
+
+@keyframes rt-march {
+  to {
+    stroke-dashoffset: -110;
+  }
+}
+
+@include reduced-motion {
+  .rt-ring__edge {
+    animation: none;
+  }
+}

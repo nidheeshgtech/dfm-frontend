@@ -547,7 +547,7 @@ $rt-accents: (
   &__card {
     display: flex;
     flex-direction: column;
-    padding: fluid(24px, 32px);
+    padding: $space-12 $space-12 fluid(24px, 32px);
     border: 1px solid rgba($color-text-dark, 0.05);
     border-radius: $radius-xl;
     background: $color-bg-light;
@@ -561,6 +561,12 @@ $rt-accents: (
     }
   }
 
+  &__num,
+  &__title,
+  &__text {
+    padding-inline: $space-12;
+  }
+
   &__num {
     font-size: 14px;
     letter-spacing: 0.12em;
@@ -568,7 +574,7 @@ $rt-accents: (
   }
 
   &__title {
-    margin-top: fluid(32px, 56px);
+    margin-top: $space-8;
     font-size: fluid(22px, 28px);
     line-height: 1.15;
   }
@@ -589,10 +595,6 @@ $rt-accents: (
   @include down("tablet") {
     &__grid {
       grid-template-columns: 1fr;
-    }
-
-    &__title {
-      margin-top: $space-16;
     }
   }
 
