@@ -21,7 +21,8 @@ export function initStepsDeck() {
   //   ?steps=k          the light version of j
   //   ?steps=l          k with a masked photo behind each window
   //   ?steps=m          the dark version of l
-  const param = new URLSearchParams(window.location.search).get("steps");
+  // ?steps= wins; otherwise a page can pick its own (body data-steps-skin).
+  const param = new URLSearchParams(window.location.search).get("steps") || document.body.dataset.stepsSkin;
   const skin = [..."abcdefghijklm"].includes(param) ? param : "j";
   list.closest(".iv-steps")?.setAttribute("data-skin", skin);
 

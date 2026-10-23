@@ -890,3 +890,106 @@
     animation: none;
   }
 }
+
+// ---- Invest counter style B (?count=b): liquid fill ----
+// The number is an outline; ::after repeats it in the brand gradient and
+// is clipped from the top so the colour rises with --p, with a soft glow
+// riding the waterline.
+.page-invest .loader.loader--fill [data-loader-count] {
+  position: relative;
+  display: inline-block;
+  background: none;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.28);
+  filter: none;
+
+  &::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, $color-purple-tint 0%, #8fd0ff 40%, $color-jade 72%, $color-yellow-bright 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 0;
+    clip-path: inset(calc((1 - var(--p)) * 100%) 0 0 0);
+    filter: drop-shadow(0 -6px 18px rgba(143, 208, 255, 0.35));
+  }
+}
+
+// ---- Invest counter style C (?count=c): flip board ----
+.page-invest .loader.loader--flip [data-loader-count].is-flip {
+  display: inline-flex;
+  gap: 0.06em;
+  background: none;
+  color: inherit;
+  filter: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  perspective: 600px;
+}
+
+.loader__tile {
+  position: relative;
+  display: none;
+  width: 0.66em;
+  height: 1em;
+  border-radius: 0.07em;
+  background: linear-gradient(180deg, #1b1b28 0%, #141420 50%, #0f0f19 50%, #141420 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 0.06em 0.2em rgba(0, 0, 0, 0.5);
+  line-height: 1;
+  text-align: center;
+
+  &.is-on {
+    display: block;
+  }
+
+  // The hinge line across the middle.
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 0.02em;
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  b,
+  i {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-style: normal;
+    font-weight: inherit;
+  }
+
+  // The flap with the old digit (its top half) folding down.
+  i {
+    z-index: 1;
+    border-radius: inherit;
+    background: linear-gradient(180deg, #1b1b28, #141420);
+    clip-path: inset(0 0 50% 0);
+    transform-origin: 50% 50%;
+    opacity: 0;
+  }
+
+  &.is-flipping i {
+    animation: loader-flap 0.2s cubic-bezier(0.55, 0, 0.6, 1) both;
+  }
+}
+
+@keyframes loader-flap {
+  0% {
+    opacity: 1;
+    transform: rotateX(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotateX(-90deg);
+  }
+}

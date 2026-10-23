@@ -47,7 +47,12 @@ export function initLoader() {
   // ---- Smoothed progress ----
   let shown = 0;
   let finished = false;
-  const roller = document.body.classList.contains("page-invest") && !reduce && count ? rollingCount(count) : null;
+  // Invest page counter styles: a rolling odometer (default), ?count=b
+  // liquid fill, ?count=c flip board.
+  const style = new URLSearchParams(window.location.search).get("count");
+  const invest = document.body.classList.contains("page-invest") && !reduce && count;
+  if (invest && style === "b") el.classList.add("loader--fill");
+  const roller = !invest ? null : style === "b" ? fillCount(count) : style === "c" ? flipCount(count, el) : rollingCount(count);
   const render = (v) => {
     el.style.setProperty("--p", v.toFixed(4));
     if (roller) roller(v);
@@ -200,5 +205,54 @@ function rollingCount(count) {
       strip.style.setProperty("--d", Math.floor(n / unit));
       win.style.color = paletteAt(v + (1 - i) * 0.06);
     });
+  };
+}
+
+// ?count=b: the number as an outline that fills from the bottom with the
+// brand gradient as loading climbs (CSS reads --p; ::after repeats the
+// text from data-text).
+function fillCount(count) {
+  return (v) => {
+    const n = String(Math.round(v * 100));
+    if (count.textContent !== n) {
+      count.textContent = n;
+      count.dataset.text = n;
+    }
+  };
+}
+
+// ?count=c: a flip board. Three tiles (hundreds tile appears at 100); a
+// tile flips when its digit changes. Updates are paced so the flips read.
+function flipCount(count, el) {
+  el.classList.add("loader--flip");
+  count.textContent = "";
+  count.classList.add("is-flip");
+  const tiles = [0, 1, 2].map(() => {
+    const t = document.createElement("span");
+    t.className = "loader__tile";
+    t.innerHTML = "<b>0</b><i>0</i>";
+    count.append(t);
+    return t;
+  });
+  let last = "";
+  let lastAt = 0;
+  return (v) => {
+    const now = performance.now();
+    const str = String(Math.round(v * 100)).padStart(3, " ");
+    if (str === last || (now - lastAt < 240 && v < 1)) return;
+    lastAt = now;
+    [...str].forEach((d, i) => {
+      const t = tiles[i];
+      t.classList.toggle("is-on", d !== " ");
+      if (d === " " || last[i] === d) return;
+      // Old digit on the flap, new one underneath; flip the flap down.
+      t.querySelector("i").textContent = t.querySelector("b").textContent;
+      t.querySelector("b").textContent = d;
+      t.classList.remove("is-flipping");
+      void t.offsetWidth;
+      t.classList.add("is-flipping");
+      t.style.color = paletteAt(v + (1 - i) * 0.06);
+    });
+    last = str;
   };
 }

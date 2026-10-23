@@ -1,9 +1,11 @@
-// Invest hero v3 (index-v3.html, .iv-hero--flow): scrubbed scroll
+// Invest hero (index.html, .iv-hero--flow): scrubbed scroll
 // choreography that makes the three beats feel like one section. As the
 // first screen scrolls away, the centred intro drifts up and dims; the
 // iVestor phone rises out of a slight 3D tilt and settles flat while its
 // chips glide in from the sides. Runs both ways. Desktop only, and not
-// with reduced motion (the layout reads fine static).
+// with reduced motion (the layout reads fine static). On smaller screens
+// the phone simply reveals as it scrolls in; the buttons under it use the
+// shared scroll reveal, so they land after it.
 const QUERY = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
 
 export function initIvFlow() {
@@ -34,7 +36,7 @@ export function initIvFlow() {
     gsap.set(stage, { perspective: 1400 });
     gsap.fromTo(
       phone,
-      { y: 160, scale: 0.84, rotateX: 22, opacity: 0.35, transformOrigin: "50% 100%" },
+      { y: 40, scale: 0.9, rotateX: 16, opacity: 0.4, transformOrigin: "50% 100%" },
       {
         y: 0,
         scale: 1,
@@ -63,5 +65,17 @@ export function initIvFlow() {
     });
 
     return () => gsap.set([phone, ...chips], { clearProps: "all" });
+  });
+
+  // Tablet / phone (no scrub): the phone fades and rises in as it scrolls
+  // into view; the buttons below follow with their own reveal.
+  mm.add("(max-width: 1023.98px) and (prefers-reduced-motion: no-preference)", () => {
+    const fig = stage.querySelector(".iv-hero__visual");
+    gsap.fromTo(
+      fig,
+      { y: 60, opacity: 0, scale: 0.94 },
+      { y: 0, opacity: 1, scale: 1, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: fig, start: "top 85%", toggleActions: "play none none none" } },
+    );
+    return () => gsap.set(fig, { clearProps: "all" });
   });
 }

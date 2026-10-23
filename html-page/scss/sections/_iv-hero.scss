@@ -41,10 +41,10 @@
     position: absolute;
     left: 50%;
     bottom: 0;
-    width: max(76vw, 560px);
+    width: clamp(540px, 62vw, 1120px);
     max-width: none;
     height: auto; // keep it round (the height attribute would stretch it)
-    opacity: 0.22;
+    opacity: 0.14;
     translate: -50% 50%;
     mask-image: radial-gradient(circle, #000 40%, transparent 71%);
     animation: iv-spin 140s linear infinite;
@@ -221,7 +221,7 @@
     }
 
     &__swirl {
-      width: max(130vw, 560px);
+      width: max(100vw, 480px);
     }
   }
 

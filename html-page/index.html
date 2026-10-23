@@ -9,7 +9,7 @@
   <script>document.documentElement.classList.add('js','is-page-loading');var lv=(location.search.match(/[?&]loader=([\w-]+)/)||[])[1];if(!lv)document.documentElement.classList.add('loader-default');if(lv)lv.split('-').forEach(function(_,i,a){document.documentElement.classList.add('loader-'+a.slice(0,i+1).join('-'));});setTimeout(function(){if(window.arenaLoaderRunning)return;document.documentElement.classList.remove('is-page-loading');var l=document.querySelector('[data-loader]');if(l)l.classList.add('is-gone');},6000);</script>
   <link rel="stylesheet" href="css/main.css">
 </head>
-<body class="theme-investor page-invest">
+<body class="theme-investor page-invest" data-chat-variant="c" data-steps-skin="m">
   <!-- Previous version of this page: index-v1.html -->
   <!-- Page loader (js/components/loader.js); only shown with JS. -->
   <div class="loader" data-loader aria-hidden="true">
@@ -66,14 +66,16 @@
 
   <main id="main">
     <!-- ============ Hero: app-led, dark ============ -->
-    <section class="iv-hero" data-hero data-header="light" aria-labelledby="hero-title">
+    <section class="iv-hero iv-hero--flow" data-hero data-header="light" aria-labelledby="hero-title">
       <div class="iv-hero__bg" aria-hidden="true">
         <img class="iv-hero__swirl" src="images/investor/swirl.webp" width="1023" height="1024" alt="">
       </div>
 
-      <div class="container iv-hero__inner">
-        <!-- Centred like the Raise Capital hero; the phone column runs
-             alongside it on the right. -->
+      <!-- v3: one continuous dark section in three beats, one background:
+           1. centred intro (like the Raise Capital hero) filling the screen
+           2. the iVestor phone rising into focus as you scroll (iv-flow.js)
+           3. the DFM figures. -->
+      <div class="container iv-flow__intro">
         <div class="hero__intro iv-hero__intro iv-hero__top">
           <p class="t-eyebrow" data-hero-intro>Brought to you by Dubai Financial Market</p>
           <nav class="switch liquid-glass iv-hero__switch" aria-label="I am" data-hero-intro>
@@ -91,31 +93,12 @@
         <div class="iv-hero__copy">
           <h1 class="hero__title iv-hero__title t-display" id="hero-title"><span class="iv-hero__line">Invest in</span> <span class="iv-hero__line">what comes <span class="iv-hl">next.</span></span></h1>
           <p class="hero__lead iv-hero__lead t-lead" data-hero-intro>ARENA connects you with growing companies raising capital <strong>before a traditional IPO</strong>, so you can invest at the offer stage, on the same regulated platform where their shares will trade.</p>
-
-          <div class="hero__actions iv-hero__actions">
-            <a class="btn-cta liquid-glass btn-cta--purple" href="#notify" data-hero-intro>
-              <span class="liquid-glass__effect"></span>
-              <span class="liquid-glass__tint"></span>
-              <span class="liquid-glass__shine"></span>
-              <span class="btn-cta__label">
-                <span class="btn-cta__text">Get notified at launch</span>
-                <span class="btn-cta__text" aria-hidden="true">Get notified at launch</span>
-              </span>
-              <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
-            </a>
-            <a class="btn-cta liquid-glass btn-cta--white" href="#offerings" data-hero-intro>
-              <span class="liquid-glass__effect"></span>
-              <span class="liquid-glass__tint"></span>
-              <span class="liquid-glass__shine"></span>
-              <span class="btn-cta__label">
-                <span class="btn-cta__text">Preview the market</span>
-                <span class="btn-cta__text" aria-hidden="true">Preview the market</span>
-              </span>
-              <img class="btn-cta__icon" src="images/shared/icons/chevron-white.svg" width="20" height="20" alt="">
-            </a>
-          </div>
         </div>
 
+        <a class="iv-flow__cue" href="#iv-flow-phone" aria-label="Scroll to the app preview"><span>Scroll</span><i aria-hidden="true"></i></a>
+      </div>
+
+      <div class="container iv-flow__stage" id="iv-flow-phone">
         <!-- Illustrative iVestor preview (js/components/invest-phone.js):
              each floating chip in turn lights up and pushes its text into
              the phone as a notification. -->
@@ -185,6 +168,29 @@
           </div>
           <figcaption class="iv-hero__caption">Illustrative app preview</figcaption>
         </figure>
+
+        <div class="hero__actions iv-hero__actions" data-scroll-reveal-group>
+          <a class="btn-cta liquid-glass btn-cta--purple" href="#notify">
+            <span class="liquid-glass__effect"></span>
+            <span class="liquid-glass__tint"></span>
+            <span class="liquid-glass__shine"></span>
+            <span class="btn-cta__label">
+              <span class="btn-cta__text">Get notified at launch</span>
+              <span class="btn-cta__text" aria-hidden="true">Get notified at launch</span>
+            </span>
+            <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
+          </a>
+          <a class="btn-cta liquid-glass btn-cta--white" href="#offerings">
+            <span class="liquid-glass__effect"></span>
+            <span class="liquid-glass__tint"></span>
+            <span class="liquid-glass__shine"></span>
+            <span class="btn-cta__label">
+              <span class="btn-cta__text">Preview the market</span>
+              <span class="btn-cta__text" aria-hidden="true">Preview the market</span>
+            </span>
+            <img class="btn-cta__icon" src="images/shared/icons/chevron-white.svg" width="20" height="20" alt="">
+          </a>
+        </div>
       </div>
 
       <!-- Figures from DFM's published 2025 results; to be confirmed by DFM before launch. -->

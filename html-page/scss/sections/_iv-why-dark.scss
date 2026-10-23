@@ -159,3 +159,164 @@
     box-shadow: 0 0 0 12px rgba($color-purple-tint, 0);
   }
 }
+
+// ---- Calmer palette (client: too much purple) ----
+// Purple stays on the panel's top-right glow, the heading highlight and
+// the Growth Market dot (that market's colour). Everything else inside the
+// cards goes white / grey; the regulated ticks keep their green.
+.iv-why-dark {
+  .iv-head__eyebrow {
+    color: rgba($color-white, 0.55);
+  }
+
+  .iv-earn__num {
+    color: rgba($color-white, 0.4);
+  }
+
+  .iv-earn__title strong {
+    color: $color-white;
+    font-weight: $font-weight-semibold;
+  }
+
+  // Stage: white progress, white "You invest here" pill.
+  .iv-stage-fill {
+    background: linear-gradient(90deg, rgba($color-white, 0.35), $color-white);
+  }
+
+  .iv-stage-step {
+    b {
+      background: $color-white;
+      color: $color-bg-dark;
+    }
+
+    &.is-hit i {
+      border-color: $color-white;
+      background: rgba($color-white, 0.2);
+    }
+
+    &.is-you i {
+      background: $color-white;
+      box-shadow: 0 0 0 2px $color-white;
+    }
+
+    &.is-you::after {
+      animation-name: iv-ring-white;
+    }
+  }
+
+  // Demand: white-to-clear bars.
+  .iv-demand i {
+    background: linear-gradient(180deg, rgba($color-white, 0.55), rgba($color-white, 0.05));
+  }
+
+  // DFM bar sweep: white light, not violet.
+  .iv-why__viz--chain b.is-sweep::after {
+    background: linear-gradient(100deg, transparent 30%, rgba($color-bg-dark, 0.18) 50%, transparent 70%);
+  }
+
+  // Account: white tab, white holdings.
+  .iv-account {
+    &__pill {
+      background: $color-white;
+    }
+
+    &__seg b.is-on {
+      color: $color-bg-dark;
+    }
+
+    &__row {
+      em {
+        background: linear-gradient(90deg, rgba($color-white, 0.85) var(--f, 0%), rgba($color-white, 0.12) 0);
+      }
+
+      &.is-on {
+        box-shadow: inset 0 0 0 1px rgba($color-white, 0.3);
+      }
+    }
+  }
+}
+
+@keyframes iv-ring-white {
+  0% {
+    box-shadow: 0 0 0 0 rgba($color-white, 0.45);
+  }
+
+  100% {
+    box-shadow: 0 0 0 12px rgba($color-white, 0);
+  }
+}
+
+// ---- A touch of colour: one accent per card ----
+// 02 jade · 03 lime · 04 lavender (01 stays white, as before). Each
+// card's number, title highlight, key visual element and a faint glow atop
+// its visual box take its accent; everything else stays white / grey.
+.iv-why-dark .iv-earn__card:not(:first-child) {
+  &:nth-child(2) {
+    --acc: #{$color-jade};
+    --acc-rgb: 100, 251, 160;
+  }
+
+  &:nth-child(3) {
+    --acc: #{$color-yellow-bright};
+    --acc-rgb: 244, 255, 34;
+  }
+
+  &:nth-child(4) {
+    --acc: #{$color-purple-tint};
+    --acc-rgb: 163, 139, 242;
+  }
+
+  .iv-earn__num,
+  .iv-earn__title strong {
+    color: var(--acc);
+  }
+
+  .iv-why__viz {
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 0%, rgba(var(--acc-rgb), 0.12), transparent 70%),
+      rgba($color-white, 0.03);
+  }
+
+  // 01: sky progress and pill.
+  .iv-stage-fill {
+    background: linear-gradient(90deg, rgba(var(--acc-rgb), 0.35), var(--acc));
+  }
+
+  .iv-stage-step {
+    b {
+      background: var(--acc);
+    }
+
+    &.is-hit i {
+      border-color: var(--acc);
+      background: rgba(var(--acc-rgb), 0.25);
+    }
+
+    &.is-you i {
+      background: var(--acc);
+      box-shadow: 0 0 0 2px var(--acc);
+    }
+  }
+
+  // 02: jade bars.
+  .iv-demand i {
+    background: linear-gradient(180deg, rgba(var(--acc-rgb), 0.75), rgba(var(--acc-rgb), 0.06));
+  }
+
+  // 04: lavender tab and holdings.
+  .iv-account {
+    &__pill {
+      background: var(--acc);
+    }
+
+    &__row {
+      em {
+        background: linear-gradient(90deg, var(--acc) var(--f, 0%), rgba($color-white, 0.12) 0);
+      }
+
+      &.is-on {
+        box-shadow: inset 0 0 0 1px rgba(var(--acc-rgb), 0.45);
+      }
+    }
+  }
+}

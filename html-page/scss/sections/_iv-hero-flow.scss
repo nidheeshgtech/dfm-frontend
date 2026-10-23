@@ -1,6 +1,6 @@
 @use "../abstracts" as *;
 
-// Invest hero, v3 (index-v3.html, .iv-hero--flow): one continuous dark
+// Invest hero (index.html, .iv-hero--flow): one continuous dark
 // section in three beats on a single background —
 //   1. the intro centred on the first screen (like the Raise Capital hero)
 //   2. the iVestor phone, rising into focus as you scroll (iv-flow.js)
@@ -22,8 +22,8 @@
   .iv-hero__swirl {
     top: 46%;
     bottom: auto;
-    width: max(90vw, 760px);
-    opacity: 0.2;
+    width: clamp(580px, 70vw, 1160px);
+    opacity: 0.13;
     translate: -50% -50%;
   }
 
@@ -35,10 +35,10 @@
     align-items: center;
     justify-content: center;
     gap: clamp(20px, 3.5vh, 40px);
-    min-height: 100vh;
-    min-height: 100svh;
-    padding-top: calc(var(--header-height) + 16px);
-    padding-bottom: clamp(150px, 19vh, 190px);
+    // Sized to its content (no full-screen band), so the phone's top
+    // peeks in right under the scroll cue on the first screen.
+    padding-top: calc(var(--header-height) + clamp(40px, 9vh, 120px));
+    padding-bottom: clamp(12px, 2vh, 24px);
     text-align: center;
   }
 
@@ -66,17 +66,17 @@
     font-size: clamp(17px, min(1.6vw, 2.8vh), 24px);
   }
 
+  // Buttons sit under the phone (beat 2), centred.
   & .iv-hero__actions {
     width: min(100%, 640px);
-    margin: clamp(4px, 1vh, 12px) auto 0;
+    margin: clamp(24px, 4vh, 40px) auto 0;
   }
 
-  // Scroll cue: a thin line with a dot travelling down it. Sits above the
-  // bottom-centre chat dock (?chat=c, this page's default).
+  // Scroll cue: a thin line with a dot travelling down it, right under
+  // the copy.
   .iv-flow__cue {
-    position: absolute;
-    bottom: clamp(96px, 12vh, 116px);
-    left: 50%;
+    position: relative;
+    margin-top: clamp(4px, 2vh, 24px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -85,7 +85,6 @@
     font-size: 11px;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    translate: -50% 0;
     transition: color 0.3s;
 
     i {
@@ -113,23 +112,14 @@
     }
   }
 
-  // Short screens: no room for the cue between the buttons and the dock.
-  @media (max-height: 780px) {
-    .iv-flow__intro {
-      padding-bottom: 100px;
-    }
-
-    .iv-flow__cue {
-      display: none;
-    }
-  }
-
   // ---- 2. Phone stage ----
   .iv-flow__stage {
     position: relative;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    padding-block: clamp(24px, 6vh, 80px) clamp(16px, 4vh, 48px);
+    padding-block: 0 clamp(16px, 4vh, 48px);
   }
 
   // Wide enough for the chips either side of the phone.
@@ -145,6 +135,21 @@
 
     width: 100%;
     padding-inline: 0;
+  }
+
+  // Large desktops: a bigger phone (chips scale with it).
+  @media (min-width: 1600px) {
+    .iv-hero__stage {
+      --pw: clamp(360px, 22vw, 440px);
+    }
+
+    .iv-hero__visual {
+      width: min(100%, 1000px);
+    }
+
+    .iv-hero__stage .iv-chip {
+      zoom: 1.12;
+    }
   }
 
   // Chips have room on both sides here: undo the small-laptop tuck.
