@@ -24,7 +24,7 @@ export function initIvFlow() {
   const mm = gsap.matchMedia();
   mm.add(QUERY, () => {
     // 1 → 2: intro lifts away.
-    gsap.to(intro.querySelectorAll(".iv-hero__top, .iv-hero__copy, .iv-flow__cue"), {
+    gsap.to(intro.querySelectorAll(".iv-hero__top, .iv-hero__copy"), {
       y: -90,
       opacity: 0.15,
       ease: "none",

@@ -477,167 +477,373 @@ $rt-soft: rgba($color-text-dark, 0.08);
   display: none;
 }
 
-// ---- Network: the institutions that anchor IPOs ----
-.rt-net {
-  position: absolute;
-  inset: 8px;
-  width: calc(100% - 16px);
-  height: calc(100% - 16px);
+// ---- Orbit: institutions circling "Your company" in 3D ----
+// route-viz.js places each node on a tilted ring every frame (scale,
+// opacity, blur and stacking by depth); links and pulses live in the SVG.
+.rt-viz-orbit {
+  padding: 0;
+  background:
+    radial-gradient(ellipse 45% 55% at 50% 50%, rgba(var(--rt-deep), 0.1), transparent 70%),
+    $color-white;
+}
+
+.rt-orbit {
+  &__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__path {
+    fill: none;
+    stroke: rgba(var(--rt-deep), 0.22);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+    vector-effect: non-scaling-stroke;
+
+    &.is-inner {
+      stroke: rgba(var(--rt-deep), 0.12);
+    }
+  }
 
   &__link {
     stroke: var(--rt-ink);
-    stroke-width: 1.5;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 0;
-    opacity: 0.5;
+    stroke-width: 1.2;
+    vector-effect: non-scaling-stroke;
   }
 
-  &__node {
+  &__pulse {
     fill: var(--rt-ink);
-    stroke: $color-white;
-    stroke-width: 3;
-    transition: fill 0.35s;
   }
 
   &__core {
     position: absolute;
     top: 50%;
     left: 50%;
-    padding: 6px 12px;
+    z-index: 2;
+    padding: 7px 14px;
     border-radius: $radius-pill;
     background: $color-text-dark;
     color: $color-white;
+    font-size: 12px;
     font-weight: $font-weight-semibold;
     white-space: nowrap;
     translate: -50% -50%;
+    box-shadow:
+      0 0 0 6px rgba(var(--rt-deep), 0.12),
+      0 10px 24px rgba($color-text-dark, 0.25);
+    animation: rt-core 2.8s ease-in-out infinite;
+  }
+
+  &__node {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    will-change: transform, opacity, filter;
+
+    i {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: $color-white;
+      color: var(--rt-ink);
+      box-shadow:
+        0 0 0 1.5px rgba(var(--rt-deep), 0.35),
+        0 6px 14px rgba($color-text-dark, 0.12);
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    b {
+      font-size: 10px;
+      font-weight: $font-weight-semibold;
+      white-space: nowrap;
+      color: $color-text-dark;
+    }
   }
 }
 
-.rt-viz-known.is-loop .rt-net__node {
-  fill: rgba($color-text-dark, 0.18);
+// ---- Ring: a closed circle of holders, tilted in 3D ----
+.rt-viz-ring3d {
+  padding: 0;
+}
 
-  &.is-on {
-    fill: var(--rt-ink);
+.rt-ring3d {
+  &__svg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+
+    &.is-front {
+      z-index: 2;
+      pointer-events: none;
+    }
+  }
+
+  &__disc {
+    fill: rgba(var(--rt-deep), 0.07);
+    stroke: none;
+  }
+
+  &__back,
+  &__front {
+    fill: none;
+    stroke: var(--rt-ink);
+    vector-effect: non-scaling-stroke;
+  }
+
+  &__back {
+    stroke-width: 1.5;
+    stroke-dasharray: 4 6;
+    opacity: 0.4;
+  }
+
+  &__front {
+    stroke-width: 2;
+    stroke-dasharray: 5 6;
+    animation: rt-march 14s linear infinite;
+  }
+
+  &__holder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    border: 2.5px solid $color-white;
+    border-radius: 50%;
+    background: rgba(var(--rt-deep), 0.55);
+    box-shadow: 0 4px 10px rgba($color-text-dark, 0.18);
+    transition:
+      background-color 0.3s,
+      box-shadow 0.3s;
+
+    &.is-on {
+      background: var(--rt-ink);
+      box-shadow:
+        0 0 0 5px rgba(var(--rt-deep), 0.2),
+        0 4px 10px rgba($color-text-dark, 0.2);
+    }
+  }
+
+  &__token {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--rt-ink);
+    border-radius: 50%;
+    background: $color-white;
+    box-shadow: 0 0 12px rgba(var(--rt-deep), 0.55);
+  }
+
+  // Outsiders, blurred beyond the circle.
+  &__out {
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba($color-text-dark, 0.16);
+    filter: blur(1.5px);
+    translate: -50% -50%;
+    animation: rt-drift 6s ease-in-out infinite alternate;
+
+    &:nth-child(2n) {
+      animation-delay: -3s;
+    }
   }
 }
 
-// ---- Ring: a closed circle of holders ----
-.rt-ring {
+.rt-ring__tag {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  translate: -50% 0;
+
+  @include rt-tag;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+// ---- Map: Dubai's reach across the Gulf ----
+// Sea tinted in the page accent; land sits on top in white.
+.rt-viz-map {
+  padding: 0;
+  background:
+    radial-gradient(ellipse 50% 70% at 76% 62%, rgba(var(--rt-deep), 0.2), transparent 70%),
+    rgba(var(--rt-deep), 0.16);
+}
+
+.rt-map {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 
-  &__edge {
-    fill: rgba(var(--rt-deep), 0.06);
+  // Lat / long grid over the sea.
+  &__grid {
+    fill: none;
+    stroke: rgba(var(--rt-deep), 0.14);
+    stroke-width: 1;
+    stroke-dasharray: 2 4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  // Real coastlines: GCC land in white, neighbours a touch greyer.
+  &__land {
+    fill: $color-white;
+    stroke: rgba(var(--rt-deep), 0.35);
+    stroke-width: 0.8;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+
+    &.is-other {
+      fill: #eef0ef;
+      stroke: rgba(var(--rt-deep), 0.22);
+    }
+  }
+
+  // Labels get a white halo so they read over the dots.
+  &__sea,
+  &__city text,
+  &__hub text {
+    paint-order: stroke;
+    stroke: $color-white;
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+
+  &__sea {
+    font-size: 9px;
+    font-style: italic;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    fill: rgba(var(--rt-deep), 0.45);
+  }
+
+  &__ping,
+  &__pop {
+    fill: none;
     stroke: var(--rt-ink);
     stroke-width: 1.5;
-    stroke-dasharray: 5 6;
-    animation: rt-march 14s linear infinite;
+    vector-effect: non-scaling-stroke;
   }
 
-  &__in {
-    fill: rgba(var(--rt-deep), 0.45);
-    transition: fill 0.3s;
-
-    &.is-on {
-      fill: var(--rt-ink);
-    }
-  }
-
-  &__out {
-    fill: rgba($color-text-dark, 0.14);
-  }
-
-  &__token {
-    fill: $color-white;
-    stroke: var(--rt-ink);
-    stroke-width: 2;
-  }
-
-  &__tag {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    translate: -50% 0;
-
-    @include rt-tag;
-
-    svg {
-      width: 12px;
-      height: 12px;
-    }
-  }
-}
-
-// ---- Reach: a ping from Dubai across the region ----
-.rt-reach {
   &__ping {
-    position: absolute;
-    top: 48%;
-    left: 68%;
-    width: 40px;
-    height: 40px;
-    margin: -20px 0 0 -20px;
-    border: 1.5px solid var(--rt-ink);
-    border-radius: 50%;
-    opacity: 0;
+    fill: rgba(var(--rt-deep), 0.12);
   }
 
-  &__hub,
-  &__city {
-    position: absolute;
-    top: var(--y);
-    left: var(--x);
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    translate: -5px -50%;
-    white-space: nowrap;
+  &__arc {
+    fill: none;
+    stroke: var(--rt-ink);
+    stroke-width: 1.4;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
 
-    i {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba($color-text-dark, 0.25);
+  &__city {
+    circle {
+      fill: $color-white;
+      stroke: rgba(var(--rt-deep), 0.55);
+      stroke-width: 1.5;
       transition:
-        background-color 0.3s,
-        box-shadow 0.3s;
+        fill 0.3s,
+        stroke 0.3s;
     }
-  }
 
-  &__city {
-    color: rgba($color-text-dark, 0.55);
-    transition: color 0.3s;
+    text {
+      font-size: 10px;
+      font-weight: $font-weight-semibold;
+      fill: rgba($color-text-dark, 0.55);
+      transition: fill 0.3s;
+    }
 
     &.is-on {
-      color: $color-text-dark;
+      circle {
+        fill: var(--rt-ink);
+        stroke: var(--rt-ink);
+      }
 
-      i {
-        background: var(--rt-ink);
-        box-shadow: 0 0 0 4px rgba(var(--rt-deep), 0.18);
+      text {
+        fill: $color-text-dark;
       }
     }
   }
 
   &__hub {
-    font-weight: $font-weight-semibold;
+    circle {
+      fill: var(--rt-ink);
+    }
 
-    i {
-      width: 12px;
-      height: 12px;
-      background: var(--rt-ink);
-      box-shadow: 0 0 0 5px rgba(var(--rt-deep), 0.2);
+    .rt-map__hub-halo {
+      fill: rgba(var(--rt-deep), 0.2);
+      animation: rt-halo 2s ease-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    text {
+      font-size: 11px;
+      font-weight: $font-weight-bold;
+      fill: $color-text-dark;
     }
   }
 }
 
-// Static frame: every city reached.
-.rt-viz-reach:not(.is-loop) .rt-reach__city i {
-  background: var(--rt-ink);
+// Static frame (no JS / reduced motion): every city reached.
+.rt-viz-map:not(.is-loop) .rt-map__city circle {
+  fill: var(--rt-ink);
+}
+
+@keyframes rt-core {
+  50% {
+    box-shadow:
+      0 0 0 11px rgba(var(--rt-deep), 0.05),
+      0 10px 24px rgba($color-text-dark, 0.25);
+  }
+}
+
+@keyframes rt-drift {
+  to {
+    translate: -50% calc(-50% - 6px);
+  }
+}
+
+@keyframes rt-halo {
+  from {
+    opacity: 0.9;
+    scale: 0.8;
+  }
+
+  to {
+    opacity: 0;
+    scale: 2.2;
+  }
 }
 
 // ---- Gauge: an independent valuation settles ----
@@ -842,21 +1048,119 @@ $rt-soft: rgba($color-text-dark, 0.08);
   }
 }
 
-// ---- Document: disclosure stays private ----
-.rt-doc {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  width: 72%;
-  padding: 12px 14px;
-  border: 1px solid $rt-soft;
-  border-radius: 10px;
+// ---- Envelope: the family file is sealed ----
+// Static (no JS / reduced motion) = sealed. route-viz.js opens it, slides
+// the letter in, folds the flap shut in 3D and stamps the seal.
+.rt-viz-seal {
+  perspective: 700px;
+  background:
+    radial-gradient(ellipse 40% 50% at 50% 70%, rgba(var(--rt-deep), 0.12), transparent 70%),
+    $color-white;
+}
+
+.rt-env {
+  --paper: color-mix(in srgb, var(--rt-ink) 14%, #{$color-white});
+
+  position: absolute;
+  top: 58px;
+  left: 50%;
+  width: 176px;
+  height: 92px;
+  margin-left: -88px;
+
+  &__back,
+  &__front,
+  &__flap {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+  }
+
+  &__back {
+    background: color-mix(in srgb, var(--rt-ink) 24%, #{$color-white});
+    box-shadow: 0 14px 28px rgba($color-text-dark, 0.14);
+  }
+
+  // Pocket: the V-cut front of the envelope.
+  &__front {
+    z-index: 2;
+    background: linear-gradient(180deg, var(--paper), color-mix(in srgb, var(--rt-ink) 20%, #{$color-white}));
+    clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+  }
+
+  &__flap {
+    z-index: 0;
+    bottom: auto;
+    height: 63%;
+    border-radius: 6px 6px 0 0;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--rt-ink) 18%, #{$color-white}), color-mix(in srgb, var(--rt-ink) 30%, #{$color-white}));
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: 50% 0;
+  }
+
+  &.is-shut &__flap,
+  .rt-viz-seal:not(.is-loop) &__flap {
+    z-index: 3;
+  }
+
+  &__letter {
+    position: absolute;
+    top: 4px;
+    left: 12px;
+    right: 12px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    height: 82px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    background: $color-white;
+    box-shadow: 0 2px 8px rgba($color-text-dark, 0.1);
+
+    i {
+      width: var(--w);
+      height: 6px;
+      border-radius: 3px;
+      background: rgba($color-text-dark, 0.16);
+    }
+  }
 
   &__head {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
+    font-size: 11px;
     font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+
+    svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  // Wax seal at the tip of the flap.
+  &__seal,
+  &__burst {
+    position: absolute;
+    top: calc(63% - 16px);
+    left: 50%;
+    z-index: 4;
+    width: 32px;
+    height: 32px;
+    margin-left: -16px;
+    border-radius: 50%;
+  }
+
+  &__seal {
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--rt-ink) 70%, #{$color-white}), var(--rt-ink) 70%);
+    color: $color-white;
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--rt-ink) 35%, #{$color-white}),
+      0 6px 14px rgba($color-text-dark, 0.25);
 
     svg {
       width: 14px;
@@ -864,37 +1168,9 @@ $rt-soft: rgba($color-text-dark, 0.08);
     }
   }
 
-  &__line {
-    position: relative;
-    width: var(--w);
-    height: 7px;
-    border-radius: 4px;
-    background: rgba($color-text-dark, 0.14);
-
-    i {
-      position: absolute;
-      inset: -2px;
-      border-radius: 3px;
-      background: $color-text-dark;
-      transform-origin: 0 50%;
-    }
-  }
-
-  &__stamp {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    padding: 4px 10px;
+  &__burst {
     border: 2px solid var(--rt-ink);
-    border-radius: 6px;
-    color: var(--rt-ink);
-    font-size: 12px;
-    font-style: normal;
-    font-weight: $font-weight-semibold;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    translate: 0 -50%;
-    rotate: -10deg;
+    opacity: 0;
   }
 }
 
@@ -905,7 +1181,10 @@ $rt-soft: rgba($color-text-dark, 0.08);
 }
 
 @include reduced-motion {
-  .rt-ring__edge {
+  .rt-ring3d__front,
+  .rt-ring3d__out,
+  .rt-orbit__core,
+  .rt-map__hub-halo {
     animation: none;
   }
 }

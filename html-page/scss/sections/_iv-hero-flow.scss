@@ -36,9 +36,9 @@
     justify-content: center;
     gap: clamp(20px, 3.5vh, 40px);
     // Sized to its content (no full-screen band), so the phone's top
-    // peeks in right under the scroll cue on the first screen.
+    // peeks in right under the copy on the first screen.
     padding-top: calc(var(--header-height) + clamp(40px, 9vh, 120px));
-    padding-bottom: clamp(12px, 2vh, 24px);
+    padding-bottom: clamp(28px, 5vh, 56px);
     text-align: center;
   }
 
@@ -70,46 +70,6 @@
   & .iv-hero__actions {
     width: min(100%, 640px);
     margin: clamp(24px, 4vh, 40px) auto 0;
-  }
-
-  // Scroll cue: a thin line with a dot travelling down it, right under
-  // the copy.
-  .iv-flow__cue {
-    position: relative;
-    margin-top: clamp(4px, 2vh, 24px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    color: rgba($color-white, 0.55);
-    font-size: 11px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    transition: color 0.3s;
-
-    i {
-      position: relative;
-      width: 1px;
-      height: 44px;
-      overflow: hidden;
-      background: rgba($color-white, 0.18);
-
-      &::after {
-        content: "";
-        position: absolute;
-        left: -2px;
-        width: 5px;
-        height: 12px;
-        border-radius: 3px;
-        background: $color-purple-tint;
-        animation: iv-flow-cue 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-      }
-    }
-
-    &:hover,
-    &:focus-visible {
-      color: $color-white;
-    }
   }
 
   // ---- 2. Phone stage ----
@@ -187,10 +147,6 @@
       padding-bottom: $space-64;
     }
 
-    .iv-flow__cue {
-      display: none;
-    }
-
     .iv-hero__stage {
       --pw: 280px;
     }
@@ -200,21 +156,5 @@
     .iv-hero__stage {
       --pw: 248px;
     }
-  }
-
-  @include reduced-motion {
-    .iv-flow__cue i::after {
-      animation: none;
-    }
-  }
-}
-
-@keyframes iv-flow-cue {
-  from {
-    top: -12px;
-  }
-
-  to {
-    top: 100%;
   }
 }

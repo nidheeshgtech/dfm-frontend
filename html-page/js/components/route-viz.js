@@ -177,74 +177,133 @@ const VIZ = {
     return hold(tl, 5, 0.2);
   },
 
-  // Links reach out to the institutions one by one.
-  known(el, gsap) {
-    const links = qa(el, ".rt-net__link");
-    const nodes = qa(el, ".rt-net__node");
-    const tl = gsap.timeline({ repeat: -1, onRepeat: () => toggle(nodes, "is-on", false) });
-    tl.set(links, { strokeDashoffset: 1 }, 0);
-    links.forEach((l, i) => {
-      const at = 0.3 + i * 0.4;
-      tl.to(l, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, at).call(() => toggle(nodes[i], "is-on", true), null, at + 0.45);
+  // A slow 3D constellation: institutions orbit "Your company" on a tilted
+  // ring (nearer = bigger and brighter, farther = smaller, faded, soft),
+  // links follow them and light pulses travel in along each link.
+  orbit(el, gsap) {
+    const nodes = qa(el, ".rt-orbit__node");
+    const links = q(el, "[data-links]");
+    const pulses = q(el, "[data-pulses]");
+    const NS = "http://www.w3.org/2000/svg";
+    const [cx, cy, rx, ry] = [200, 84, 168, 54];
+    const lines = nodes.map(() => links.appendChild(document.createElementNS(NS, "line")));
+    const dots = nodes.map(() => pulses.appendChild(document.createElementNS(NS, "circle")));
+    lines.forEach((l) => {
+      l.setAttribute("class", "rt-orbit__link");
+      l.setAttribute("x1", cx);
+      l.setAttribute("y1", cy);
     });
-    tl.fromTo(nodes, { attr: { r: 9 } }, { attr: { r: 11 }, duration: 0.25, yoyo: true, repeat: 1, stagger: 0.05 }, 3)
-      .to(links, { strokeDashoffset: -1, duration: 0.6, ease: "power2.in" }, 4.6)
-      .call(() => toggle(nodes, "is-on", false), null, 4.9);
-    return hold(tl, 5.2, 0.2);
-  },
-
-  // A share passes between holders, never leaving the circle.
-  ring(el, gsap) {
-    const ins = qa(el, ".rt-ring__in");
-    const token = q(el, ".rt-ring__token");
-    const pos = ins.map((c) => ({ cx: +c.getAttribute("cx"), cy: +c.getAttribute("cy") }));
-    const path = [0, 2, 4, 1, 3, 0];
-    const tl = gsap.timeline({ repeat: -1 });
-    path.slice(1).forEach((to, k) => {
-      const at = k * 0.9;
-      tl.to(token, { attr: pos[to], duration: 0.7, ease: "power2.inOut" }, at)
-        .call(() => ins.forEach((c, i) => toggle(c, "is-on", i === to)), null, at + 0.65)
-        .fromTo(ins[to], { attr: { r: 7 } }, { attr: { r: 9 }, duration: 0.2, yoyo: true, repeat: 1 }, at + 0.65);
+    dots.forEach((d) => {
+      d.setAttribute("class", "rt-orbit__pulse");
+      d.setAttribute("r", 3);
     });
-    return hold(tl, 4.5, 0.3);
-  },
-
-  // A ping spreads from Dubai; cities light up as it passes.
-  reach(el, gsap) {
-    const ping = q(el, ".rt-reach__ping");
-    const hub = q(el, ".rt-reach__hub i");
-    const cities = qa(el, ".rt-reach__city");
-    const o = { r: 0 };
-    let dist = [];
-    let max = 1;
-    const measure = () => {
-      const h = hub.getBoundingClientRect();
-      dist = cities.map((c) => {
-        const r = c.querySelector("i").getBoundingClientRect();
-        return Math.hypot(r.left - h.left, r.top - h.top);
+    const n = nodes.length;
+    const render = (t) => {
+      nodes.forEach((node, i) => {
+        const a = t * 0.32 + (i / n) * Math.PI * 2;
+        const x = cx + rx * Math.cos(a);
+        const y = cy + ry * Math.sin(a);
+        const d = (Math.sin(a) + 1) / 2; // 0 back … 1 front
+        node.style.left = `${(x / 400) * 100}%`;
+        node.style.top = `${(y / 168) * 100}%`;
+        node.style.transform = `translate(-50%, -50%) scale(${0.62 + 0.46 * d})`;
+        node.style.opacity = (0.32 + 0.68 * d).toFixed(3);
+        node.style.filter = `blur(${((1 - d) * 1.4).toFixed(2)}px)`;
+        node.style.zIndex = d > 0.45 ? 3 : 1;
+        lines[i].setAttribute("x2", x.toFixed(1));
+        lines[i].setAttribute("y2", y.toFixed(1));
+        lines[i].style.opacity = (0.12 + 0.5 * d).toFixed(3);
+        const p = (t * 0.42 + i / n) % 1; // pulse travels node → core
+        dots[i].setAttribute("cx", (x + (cx - x) * p).toFixed(1));
+        dots[i].setAttribute("cy", (y + (cy - y) * p).toFixed(1));
+        dots[i].style.opacity = (Math.sin(p * Math.PI) * (0.35 + 0.65 * d)).toFixed(3);
       });
-      max = Math.max(...dist) + 20;
     };
+    const o = { t: 0 };
+    render(0);
+    return gsap.timeline({ repeat: -1 }).to(o, { t: 60, duration: 60, ease: "none", onUpdate: () => render(o.t) });
+  },
+
+  // A tilted 3D ring: holders ride round it in perspective while a share
+  // hops between them in an arc, never leaving the circle; outsiders stay
+  // blurred beyond it.
+  ring3d(el, gsap) {
+    const holders = qa(el, ".rt-ring3d__holder");
+    const token = q(el, ".rt-ring3d__token");
+    const [cx, cy, rx, ry] = [200, 88, 132, 42];
+    const n = holders.length;
+    const HOP = 1.15;
+    const pos = (i, t) => {
+      const a = t * 0.22 + (i / n) * Math.PI * 2;
+      return { x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a), d: (Math.sin(a) + 1) / 2 };
+    };
+    const place = (node, x, y, scale, z) => {
+      node.style.left = `${(x / 400) * 100}%`;
+      node.style.top = `${(y / 168) * 100}%`;
+      node.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      node.style.zIndex = z;
+    };
+    let lit = -1;
+    const render = (t) => {
+      const hop = Math.floor(t / HOP);
+      const from = (hop * 2) % n;
+      const to = (hop * 2 + 2) % n;
+      const k = Math.min(1, (t % HOP) / 0.75);
+      const e = k * k * (3 - 2 * k);
+      holders.forEach((h, i) => {
+        const p = pos(i, t);
+        place(h, p.x, p.y, 0.7 + 0.42 * p.d, p.d > 0.5 ? 4 : 1);
+        h.style.opacity = (0.45 + 0.55 * p.d).toFixed(3);
+      });
+      const a = pos(from, t);
+      const b = pos(to, t);
+      const x = a.x + (b.x - a.x) * e;
+      const y = a.y + (b.y - a.y) * e - Math.sin(e * Math.PI) * 30;
+      place(token, x, y, 0.85 + 0.3 * Math.max(a.d, b.d), 5);
+      const now = k >= 1 ? to : -1;
+      if (now !== lit) {
+        holders.forEach((h, i) => h.classList.toggle("is-on", i === now));
+        lit = now;
+      }
+    };
+    const o = { t: 0 };
+    render(0);
+    return gsap.timeline({ repeat: -1 }).to(o, { t: HOP * 30, duration: HOP * 30, ease: "none", onUpdate: () => render(o.t) });
+  },
+
+  // Gulf map: a small burst pops at Dubai; arcs draw out to each city
+  // (nearest first) and the city pops as its arc lands.
+  map(el, gsap) {
+    const NS = "http://www.w3.org/2000/svg";
+    const pings = qa(el, ".rt-map__ping");
+    const arcs = qa(el, ".rt-map__arc");
+    const cities = qa(el, ".rt-map__city");
+    const pops = cities.map((city) => {
+      const c = city.querySelector("circle");
+      const pop = document.createElementNS(NS, "circle");
+      pop.setAttribute("class", "rt-map__pop");
+      pop.setAttribute("cx", c.getAttribute("cx"));
+      pop.setAttribute("cy", c.getAttribute("cy"));
+      pop.setAttribute("r", 0);
+      return city.insertBefore(pop, c);
+    });
+    // Nearest first.
+    const order = arcs
+      .map((arc, i) => {
+        const c = cities[i].querySelector("circle");
+        return { i, d: Math.hypot(c.cx.baseVal.value - 305, c.cy.baseVal.value - 116) };
+      })
+      .sort((p, q2) => p.d - q2.d);
     const tl = gsap.timeline({ repeat: -1, onRepeat: () => toggle(cities, "is-on", false) });
-    tl.call(measure, null, 0)
-      .fromTo(
-        o,
-        { r: 0 },
-        {
-          r: 1,
-          duration: 2.6,
-          ease: "power1.out",
-          onUpdate: () => {
-            const px = o.r * max;
-            gsap.set(ping, { width: px * 2, height: px * 2, marginLeft: -px, marginTop: -px, opacity: 1 - o.r * 0.8 });
-            cities.forEach((c, i) => px >= dist[i] && toggle(c, "is-on", true));
-          },
-        },
-        0.2,
-      )
-      .to(ping, { opacity: 0, duration: 0.4 }, 2.8)
-      .call(() => toggle(cities, "is-on", false), null, 4.6);
-    return hold(tl, 4.8, 0.2);
+    tl.set(arcs, { strokeDashoffset: 1, opacity: 1 }, 0);
+    pings.forEach((p, i) => tl.fromTo(p, { attr: { r: 3 }, opacity: 0.8 }, { attr: { r: 24 }, opacity: 0, duration: 0.9, ease: "power2.out" }, i * 0.18));
+    order.forEach(({ i }, k) => {
+      const at = 0.4 + k * 0.32;
+      tl.to(arcs[i], { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, at)
+        .call(() => toggle(cities[i], "is-on", true), null, at + 0.6)
+        .fromTo(pops[i], { attr: { r: 3 }, opacity: 0.7 }, { attr: { r: 14 }, opacity: 0, duration: 0.7, ease: "power2.out" }, at + 0.6);
+    });
+    return tl.to(arcs, { opacity: 0, duration: 0.6 }, 5.2).call(() => toggle(cities, "is-on", false), null, 5.6).to({}, { duration: 0.3 }, 5.8);
   },
 
   // The needle swings, then settles on a fair price.
@@ -311,17 +370,34 @@ const VIZ = {
     return hold(tl, 5.4, 0.3);
   },
 
-  // Lines are redacted one by one, then the file is stamped.
-  redact(el, gsap) {
-    const bars = qa(el, ".rt-doc__line i");
-    const stamp = q(el, ".rt-doc__stamp");
+  // The family file slides into an envelope, the flap folds shut in 3D
+  // and a wax seal stamps on; then it opens again.
+  seal(el, gsap) {
+    const env = q(el, ".rt-env");
+    const letter = q(el, ".rt-env__letter");
+    const flap = q(el, ".rt-env__flap");
+    const seal = q(el, ".rt-env__seal");
+    const burst = q(el, ".rt-env__burst");
+    // The flap sits behind the letter while open, in front once past upright.
+    const shut = (on) => () => toggle(env, "is-shut", on);
     const tl = gsap.timeline({ repeat: -1 });
-    tl.set(bars, { scaleX: 0 }, 0)
-      .set(stamp, { opacity: 0, scale: 1.6 }, 0)
-      .to(bars, { scaleX: 1, duration: 0.45, ease: "power2.inOut", stagger: 0.35 }, 0.4)
-      .to(stamp, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 2.2)
-      .to([stamp, ...bars], { opacity: 0, duration: 0.4 }, 4.6)
-      .set(bars, { opacity: 1, scaleX: 0 }, 5);
-    return hold(tl, 5, 0.3);
+    tl.set(letter, { y: -54 }, 0)
+      .set(flap, { rotateX: 180, transformPerspective: 360 }, 0)
+      .set(seal, { scale: 0, opacity: 0 }, 0)
+      .set(burst, { scale: 0.4, opacity: 0 }, 0)
+      .set(env, { rotateY: -16, rotateX: 8 }, 0)
+      .call(shut(false), null, 0)
+      .to(letter, { y: 0, duration: 0.8, ease: "power2.inOut" }, 0.4)
+      .to(flap, { rotateX: 0, duration: 0.7, ease: "power2.inOut" }, 1.25)
+      .call(shut(true), null, 1.6)
+      .to(seal, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.6)" }, 2)
+      .fromTo(burst, { scale: 0.4, opacity: 0.8 }, { scale: 2.2, opacity: 0, duration: 0.7, ease: "power2.out" }, 2.1)
+      .to(env, { rotateY: 0, rotateX: 0, duration: 1.4, ease: "power2.inOut" }, 1.2)
+      .to(seal, { scale: 0, opacity: 0, duration: 0.3, ease: "power2.in" }, 4.4)
+      .to(env, { rotateY: -16, rotateX: 8, duration: 1.2, ease: "power2.inOut" }, 4.5)
+      .to(flap, { rotateX: 180, duration: 0.6, ease: "power2.inOut" }, 4.7)
+      .call(shut(false), null, 5)
+      .to(letter, { y: -54, duration: 0.7, ease: "power2.inOut" }, 5.2);
+    return hold(tl, 5.9, 0.3);
   },
 };
