@@ -1,0 +1,215 @@
+@use "../abstracts" as *;
+
+// Invest hero, v3 (index-v3.html, .iv-hero--flow): one continuous dark
+// section in three beats on a single background —
+//   1. the intro centred on the first screen (like the Raise Capital hero)
+//   2. the iVestor phone, rising into focus as you scroll (iv-flow.js)
+//   3. the DFM figures.
+// Glows run down the whole height so the beats read as one surface.
+.iv-hero--flow {
+  display: block;
+  min-height: 0;
+  padding: 0 0 calc(clamp(32px, 5vh, 64px) + 38px);
+  // Kept low: just a hint of violet so the section stays mostly black.
+  background:
+    radial-gradient(ellipse 60% 40vh at 50% 0%, rgba($color-purple, 0.1), transparent 70%),
+    radial-gradient(ellipse 55% 60vh at 50% 58%, rgba($color-purple, 0.12), transparent 70%),
+    radial-gradient(ellipse 40% 40vh at 10% 85%, rgba($color-purple, 0.06), transparent 70%),
+    radial-gradient(ellipse 40% 40vh at 92% 35%, rgba(#8fd0ff, 0.04), transparent 70%),
+    $color-bg-dark;
+
+  // The swirl turns behind the phone (mid-section) instead of the floor.
+  .iv-hero__swirl {
+    top: 46%;
+    bottom: auto;
+    width: max(90vw, 760px);
+    opacity: 0.2;
+    translate: -50% -50%;
+  }
+
+  // ---- 1. Intro, centred, one screen ----
+  .iv-flow__intro {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(20px, 3.5vh, 40px);
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-top: calc(var(--header-height) + 16px);
+    padding-bottom: clamp(150px, 19vh, 190px);
+    text-align: center;
+  }
+
+  .iv-hero__top.hero__intro {
+    align-self: center;
+    margin: 0;
+  }
+
+  .iv-hero__copy {
+    align-self: center; // the grid hero sets end, which pushes it right here
+    align-items: center;
+    text-align: center;
+  }
+
+  & .iv-hero__title {
+    font-size: clamp(48px, min(7.4vw, 12vh), 120px);
+  }
+
+  .iv-hero__line {
+    display: block;
+  }
+
+  & .iv-hero__lead {
+    max-width: 720px;
+    font-size: clamp(17px, min(1.6vw, 2.8vh), 24px);
+  }
+
+  & .iv-hero__actions {
+    width: min(100%, 640px);
+    margin: clamp(4px, 1vh, 12px) auto 0;
+  }
+
+  // Scroll cue: a thin line with a dot travelling down it. Sits above the
+  // bottom-centre chat dock (?chat=c, this page's default).
+  .iv-flow__cue {
+    position: absolute;
+    bottom: clamp(96px, 12vh, 116px);
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: rgba($color-white, 0.55);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    translate: -50% 0;
+    transition: color 0.3s;
+
+    i {
+      position: relative;
+      width: 1px;
+      height: 44px;
+      overflow: hidden;
+      background: rgba($color-white, 0.18);
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: -2px;
+        width: 5px;
+        height: 12px;
+        border-radius: 3px;
+        background: $color-purple-tint;
+        animation: iv-flow-cue 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+      }
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: $color-white;
+    }
+  }
+
+  // Short screens: no room for the cue between the buttons and the dock.
+  @media (max-height: 780px) {
+    .iv-flow__intro {
+      padding-bottom: 100px;
+    }
+
+    .iv-flow__cue {
+      display: none;
+    }
+  }
+
+  // ---- 2. Phone stage ----
+  .iv-flow__stage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-block: clamp(24px, 6vh, 80px) clamp(16px, 4vh, 48px);
+  }
+
+  // Wide enough for the chips either side of the phone.
+  .iv-hero__visual {
+    grid-column: auto;
+    grid-row: auto;
+    align-self: auto;
+    width: min(100%, 820px);
+  }
+
+  .iv-hero__stage {
+    --pw: clamp(260px, 24vw, 340px);
+
+    width: 100%;
+    padding-inline: 0;
+  }
+
+  // Chips have room on both sides here: undo the small-laptop tuck.
+  @media (min-width: 1024px) {
+    .iv-chip {
+      zoom: 1;
+    }
+
+    .iv-chip--1 {
+      left: 2%;
+    }
+
+    .iv-chip--2 {
+      right: 4%;
+    }
+
+    .iv-chip--3 {
+      right: 0;
+    }
+
+    .iv-chip--4 {
+      left: 6%;
+    }
+  }
+
+  // ---- 3. Stats ----
+  .iv-stats {
+    margin-top: clamp(24px, 5vh, 64px);
+  }
+
+  @include down("laptop") {
+    .iv-flow__intro {
+      min-height: 0;
+      padding-top: calc(var(--header-height) + #{$space-48});
+      padding-bottom: $space-64;
+    }
+
+    .iv-flow__cue {
+      display: none;
+    }
+
+    .iv-hero__stage {
+      --pw: 280px;
+    }
+  }
+
+  @include down("tablet") {
+    .iv-hero__stage {
+      --pw: 248px;
+    }
+  }
+
+  @include reduced-motion {
+    .iv-flow__cue i::after {
+      animation: none;
+    }
+  }
+}
+
+@keyframes iv-flow-cue {
+  from {
+    top: -12px;
+  }
+
+  to {
+    top: 100%;
+  }
+}

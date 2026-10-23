@@ -104,8 +104,57 @@
     }
 
     &:hover::after,
-    &:focus-visible::after {
+    &:focus-visible::after,
+    &[aria-current="page"]::after {
       transform: scaleX(1);
+    }
+  }
+
+  // Home: just the house icon in the bar (its label shows in the menu
+  // panel); a soft round chip on hover.
+  &__link--home {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin-inline: -8px;
+    border-radius: 50%;
+    transition: background-color $duration $ease-out;
+
+    .site-header__link-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    &::after {
+      display: none;
+    }
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(127, 127, 127, 0.16);
+    }
+  }
+
+  &__home-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  // Smaller laptops: four links, so a tighter gap and type.
+  @media (min-width: 1024px) and (max-width: 1279.98px) {
+    &__nav {
+      gap: $space-24;
+      padding-inline: $space-12;
+    }
+
+    &__link {
+      font-size: 14px;
+      letter-spacing: 0.08em;
     }
   }
 
@@ -380,6 +429,31 @@
 
     &__link-text {
       margin-right: auto;
+    }
+
+    &__link--home {
+      display: flex;
+      width: auto;
+      height: auto;
+      margin-inline: 0;
+      border-radius: 0;
+
+      .site-header__link-text {
+        position: static;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip-path: none;
+      }
+
+      &:hover,
+      &:focus-visible {
+        background: none;
+      }
+    }
+
+    &__home-icon {
+      display: none;
     }
 
     // Round arrow chip (same purple chip as the pill buttons).

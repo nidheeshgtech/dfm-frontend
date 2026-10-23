@@ -1,0 +1,161 @@
+@use "../abstracts" as *;
+@use "iv-shared" as iv;
+
+// "Why invest on ARENA" on the Invest page: the four cards and loops of
+// .iv-why, laid out in the "How you earn" style (dark panel, dark cards,
+// numbered). Markup reuses the .iv-earn panel + card classes and the
+// .iv-why visuals; this file recolours those visuals for dark. (The white
+// .iv-why and the "How you earn" section still live in index-v2.html.)
+.iv-why-dark {
+  .iv-head__eyebrow {
+    color: $color-purple-tint;
+  }
+
+  &__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .iv-earn__title {
+    font-size: fluid(22px, 28px);
+
+    strong {
+      font-weight: $font-weight-regular;
+      color: $color-purple-tint;
+    }
+  }
+
+  // ---- The visual box, dark ----
+  .iv-why__viz {
+    position: relative;
+    height: 180px;
+    margin-bottom: fluid(20px, 28px);
+    border: 1px solid rgba($color-white, 0.06);
+    background: rgba($color-white, 0.03);
+    color: $color-white;
+  }
+
+  // Stage: track, dots and labels on dark.
+  .iv-why__viz--stage::before {
+    background: rgba($color-white, 0.14);
+  }
+
+  .iv-stage-fill {
+    background: linear-gradient(90deg, $color-purple, $color-purple-tint);
+  }
+
+  .iv-stage-step {
+    i {
+      border-color: rgba($color-white, 0.25);
+      background: $color-bg-dark-card;
+    }
+
+    em {
+      color: rgba($color-white, 0.55);
+    }
+
+    &.is-hit i {
+      border-color: $color-purple-tint;
+      background: rgba($color-purple-tint, 0.25);
+    }
+
+    &.is-hit em,
+    &.is-you em {
+      color: $color-white;
+    }
+
+    &.is-you i {
+      border-color: $color-bg-dark-card;
+      background: $color-purple-tint;
+      box-shadow: 0 0 0 2px $color-purple-tint;
+    }
+
+    &.is-you::after {
+      animation-name: iv-ring-tint;
+    }
+  }
+
+  // Demand: tint bars, light price line.
+  .iv-demand {
+    i {
+      background: linear-gradient(180deg, rgba($color-purple-tint, 0.85), rgba($color-purple-tint, 0.1));
+    }
+
+    &__price {
+      border-top-color: rgba($color-white, 0.6);
+    }
+  }
+
+  // Chain: dark chips, light DFM bar.
+  .iv-why__viz--chain {
+    span {
+      background: rgba($color-white, 0.06);
+    }
+
+    &.is-loop span:not(.is-on) {
+      color: rgba($color-white, 0.4);
+
+      &::before {
+        background-color: rgba($color-white, 0.14);
+      }
+    }
+
+    b {
+      background: $color-white;
+      color: $color-bg-dark;
+
+      &.is-sweep::after {
+        background: linear-gradient(100deg, transparent 30%, rgba(iv.$iv-growth, 0.3) 50%, transparent 70%);
+      }
+    }
+  }
+
+  // Account: dark rows, tint holdings.
+  .iv-account {
+    &__row {
+      background: rgba($color-white, 0.05);
+
+      em {
+        background: linear-gradient(90deg, $color-purple-tint var(--f, 0%), rgba($color-white, 0.12) 0);
+      }
+
+      &.is-on {
+        box-shadow: inset 0 0 0 1px rgba($color-purple-tint, 0.45);
+      }
+    }
+
+    &__seg {
+      background: rgba($color-white, 0.08);
+    }
+  }
+
+  // Four across needs room; two by two on smaller desktops / tablets
+  // (overrides the earn panel's single column), one on phones.
+  @media (max-width: 1279.98px) {
+    &__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @include down("laptop") {
+    .iv-earn__grid.iv-why-dark__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: none;
+    }
+  }
+
+  @include down("tablet") {
+    .iv-earn__grid.iv-why-dark__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@keyframes iv-ring-tint {
+  0% {
+    box-shadow: 0 0 0 0 rgba($color-purple-tint, 0.5);
+  }
+
+  100% {
+    box-shadow: 0 0 0 12px rgba($color-purple-tint, 0);
+  }
+}

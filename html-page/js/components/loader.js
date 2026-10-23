@@ -1,11 +1,11 @@
 // Page loader. Progress is real: hero images + web fonts + window load,
 // shown through a smoothed counter (never jumps, never goes backwards).
-// First visit in a session shows it for at least 1.6s; moving between the
-// two pages after that keeps it brief. Exit: content lifts out, the panel
+// First visit in a session shows it for at least 2.8s; moving between
+// pages after that keeps it shorter (1.2s). Exit: content lifts out, the panel
 // sweeps up with a curved edge, and `window.arenaLoaded` resolves a moment
 // before it clears so the hero intro starts underneath.
-const MIN_FIRST = 1600;
-const MIN_REPEAT = 500;
+const MIN_FIRST = 2800;
+const MIN_REPEAT = 1200;
 const MAX_WAIT = 7000;
 
 let resolveDone;
@@ -47,9 +47,11 @@ export function initLoader() {
   // ---- Smoothed progress ----
   let shown = 0;
   let finished = false;
+  const roller = document.body.classList.contains("page-invest") && !reduce && count ? rollingCount(count) : null;
   const render = (v) => {
     el.style.setProperty("--p", v.toFixed(4));
-    if (count) count.textContent = Math.round(v * 100);
+    if (roller) roller(v);
+    else if (count) count.textContent = Math.round(v * 100);
   };
 
   const tick = (now) => {
@@ -145,4 +147,58 @@ export function initLoader() {
     tl.to(el, { yPercent: -100, borderBottomLeftRadius: "50% 18vh", borderBottomRightRadius: "50% 18vh", duration: 1.1, ease: "power4.inOut" }, variant === "type" ? 0.65 : 0.5)
       .add(() => resolveDone(), variant === "type" ? 1.1 : 0.95); // hero intro starts as the curtain lifts
   }
+}
+
+// Invest page: the counter as a rolling odometer. Three digit windows
+// (hundreds, tens, ones), each over a reel that only ever rolls up: the
+// ones reel holds 0…100 (as digits 0–9 over and over), tens 0…10,
+// hundreds 0…1, and each moves to floor(n / place), so 9 → 0 rolls on to
+// the next 0 instead of spinning back. A window slides open when its
+// place is needed (9 → 10, 99 → 100), so the number never jumps
+// sideways. Each digit's colour follows the load through the site's
+// palette, the left ones a touch ahead, so the number carries a blend.
+const PALETTE = [
+  [0, [163, 139, 242]], // purple tint
+  [0.18, [185, 166, 255]],
+  [0.4, [143, 208, 255]], // sky
+  [0.68, [100, 251, 160]], // jade
+  [1, [244, 255, 34]], // lime
+];
+
+function paletteAt(t) {
+  const x = Math.min(1, Math.max(0, t));
+  let i = 1;
+  while (i < PALETTE.length - 1 && PALETTE[i][0] < x) i++;
+  const [a, ca] = PALETTE[i - 1];
+  const [b, cb] = PALETTE[i];
+  const k = (x - a) / (b - a || 1);
+  return `rgb(${ca.map((c, j) => Math.round(c + (cb[j] - c) * k)).join(", ")})`;
+}
+
+function rollingCount(count) {
+  count.textContent = "";
+  count.classList.add("is-rolling");
+  // [place value, reel length]: hundreds, tens, ones.
+  const places = [
+    [100, 2],
+    [10, 11],
+    [1, 101],
+  ].map(([unit, rows]) => {
+    const win = document.createElement("span");
+    win.className = "loader__digit";
+    const strip = document.createElement("span");
+    strip.className = "loader__strip";
+    strip.innerHTML = Array.from({ length: rows }, (_, i) => `<i>${i % 10}</i>`).join("");
+    win.append(strip);
+    count.append(win);
+    return { unit, win, strip };
+  });
+  return (v) => {
+    const n = Math.round(v * 100);
+    places.forEach(({ unit, win, strip }, i) => {
+      win.classList.toggle("is-on", n >= unit || unit === 1);
+      strip.style.setProperty("--d", Math.floor(n / unit));
+      win.style.color = paletteAt(v + (1 - i) * 0.06);
+    });
+  };
 }

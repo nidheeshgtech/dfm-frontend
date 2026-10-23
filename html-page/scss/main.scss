@@ -30,6 +30,7 @@
 @use "components/version-switch";
 @use "components/video-modal";
 @use "components/loader";
+@use "components/chat";
 
 // Sections
 @use "sections/stage";
@@ -48,11 +49,14 @@
 // Invest page (index.html)
 @use "sections/iv-shared";
 @use "sections/iv-hero";
+@use "sections/iv-hero-flow";
 @use "sections/iv-why";
 @use "sections/iv-earn";
+@use "sections/iv-why-dark";
 @use "sections/iv-steps";
 @use "sections/iv-board";
 @use "sections/iv-faq";
 @use "sections/iv-layout";
+@use "sections/iv-markets";
 @use "sections/route";
 @use "sections/route-viz";

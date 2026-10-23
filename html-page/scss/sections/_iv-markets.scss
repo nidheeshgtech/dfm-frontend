@@ -1,0 +1,285 @@
+@use "../abstracts" as *;
+
+// "One platform, three markets" on the Invest page: three dark column
+// cards. Each has the market photo up top with its ring turning over it
+// and a big outlined number, then the name, one-liner, description and
+// the three facts. Each market keeps its colour (Growth purple, Private
+// jade, Closed yellow).
+.iv-markets {
+  position: relative;
+  z-index: 1;
+  padding: 0 0 fluid(56px, 100px);
+  background: $color-white;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $space-20;
+  }
+
+  // Tablet / mobile: a touch swipe row with scroll-snap; the next card
+  // peeks in so the swipe is obvious. Dots from js/components/swipe-dots.js.
+  @include down("laptop") {
+    &__grid {
+      display: flex;
+      gap: $space-16;
+      padding-block: $space-8;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: $container-gutter;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      > .iv-market {
+        flex: 0 0 min(62%, 440px);
+        scroll-snap-align: start;
+      }
+    }
+  }
+
+  @include down("tablet") {
+    &__grid {
+      scroll-padding-inline: $container-gutter-mobile;
+
+      > .iv-market {
+        flex-basis: 86%;
+      }
+    }
+  }
+}
+
+.iv-market {
+  --acc: #{$color-purple-tint};
+  --acc-rgb: 163, 139, 242;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba($color-white, 0.06);
+  border-radius: $radius-xl;
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(var(--acc-rgb), 0.16), transparent 70%),
+    $color-bg-dark-card;
+  color: $color-white;
+  transition:
+    transform 0.6s $ease-out,
+    box-shadow 0.6s $ease-out,
+    border-color 0.6s $ease-out;
+
+  &--private {
+    --acc: #{$color-jade};
+    --acc-rgb: 100, 251, 160;
+  }
+
+  &--closed {
+    --acc: #{$color-yellow-bright};
+    --acc-rgb: 244, 255, 34;
+  }
+
+  // Hover (not a link, just alive): the card lifts, its edge lights in
+  // the market colour and a soft glow follows the cursor (--mx / --my
+  // from spotlight.js; centred without a fine pointer).
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3; // over the photo's fade too, so the glow has no seam
+    background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 40%), rgba(var(--acc-rgb), 0.16), transparent 65%);
+    opacity: 0;
+    transition: opacity 0.5s $ease-out;
+    pointer-events: none;
+  }
+
+  &:hover {
+    border-color: rgba(var(--acc-rgb), 0.4);
+    box-shadow:
+      0 30px 70px rgba($color-text-dark, 0.22),
+      0 0 0 1px rgba(var(--acc-rgb), 0.15);
+    transform: translateY(-8px);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  // ---- Photo + ring ----
+  &__media {
+    position: relative;
+    height: fluid(240px, 300px);
+    overflow: hidden;
+
+    // Photo AND ring melt into the card below (over the ring too, so
+    // neither ends in a hard edge where the photo stops).
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(
+          180deg,
+          rgba($color-bg-dark-card, 0.15) 0%,
+          rgba($color-bg-dark-card, 0) 28%,
+          rgba($color-bg-dark-card, 0.55) 68%,
+          $color-bg-dark-card 100%
+        ),
+        rgba($color-bg-dark-card, 0.2);
+    }
+  }
+
+  &__photo {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    transition: transform 1s $ease-out;
+
+    &--flip {
+      scale: -1 1;
+    }
+  }
+
+  &__ring {
+    position: absolute;
+    top: 50%;
+    right: -18%;
+    z-index: 1;
+    width: 78%;
+    height: auto;
+    max-width: none;
+    opacity: 0.85;
+    translate: 0 -50%;
+    animation: iv-market-spin 80s linear infinite;
+    transition:
+      opacity 0.6s,
+      scale 0.9s $ease-out;
+  }
+
+  // Big outlined market number over the photo.
+  &__num {
+    position: absolute;
+    bottom: 0;
+    left: fluid(20px, 28px);
+    z-index: 4;
+    color: transparent;
+    transition: color 0.6s $ease-out;
+    font-size: fluid(96px, 140px);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    -webkit-text-stroke: 1.5px rgba(var(--acc-rgb), 0.7);
+  }
+
+  &:hover &__photo {
+    transform: scale(1.06);
+  }
+
+  &:hover &__ring {
+    opacity: 1;
+    scale: 1.08;
+  }
+
+  &:hover &__num {
+    color: rgba(var(--acc-rgb), 0.22);
+  }
+
+  // ---- Copy ----
+  &__body {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: $space-20 fluid(20px, 28px) fluid(24px, 32px);
+  }
+
+  &__title {
+    font-size: fluid(28px, 36px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  &__subtitle {
+    margin-top: $space-8;
+    font-size: fluid(18px, 21px);
+    color: var(--acc);
+  }
+
+  &__text {
+    margin-top: $space-12;
+    font-size: fluid(15px, 17px);
+    line-height: 1.45;
+    color: rgba($color-white, 0.65);
+  }
+
+  // The three facts, pinned to the bottom so all cards line up.
+  &__stats {
+    display: grid;
+    gap: 12px;
+    margin: auto 0 0;
+    padding-top: $space-24;
+
+    div {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: $space-16;
+      padding-top: 12px;
+      border-top: 1px solid rgba($color-white, 0.09);
+    }
+
+    dt {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba($color-white, 0.55);
+
+      &::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--acc);
+      }
+    }
+
+    dd {
+      margin: 0;
+      font-size: fluid(14px, 16px);
+      text-align: right;
+    }
+  }
+
+  @include reduced-motion {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &__ring {
+      animation: none;
+    }
+
+    &__photo {
+      transition: none;
+    }
+  }
+}
+
+@keyframes iv-market-spin {
+  to {
+    rotate: 360deg;
+  }
+}

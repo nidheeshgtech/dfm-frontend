@@ -7,6 +7,8 @@
 //
 // Any [data-dot-wave] box gets the same rippling dots as a backdrop
 // (e.g. the invest FAQ panel); there the canvas just fills the box.
+// initDotWave(box) does the same on demand; box.dataset.dotColor sets
+// the dot colour (white by default).
 //
 // ?xpbg=v1 (or reduced motion / no canvas) keeps the static image.
 const DATA_URL = new URL("../data/xp-wave.json", import.meta.url);
@@ -23,6 +25,11 @@ export function initXpWave() {
 }
 
 let data = null;
+
+export function initDotWave(box) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  setup(box, "dot-wave__canvas").catch((e) => console.warn("xp-wave: no dot wave", e));
+}
 
 async function setup(visual, className) {
   data ||= fetch(DATA_URL).then((r) => r.json());
@@ -76,7 +83,7 @@ async function setup(visual, className) {
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = visual.dataset.dotColor || "#fff";
 
     for (let i = 0; i < dots.length; i++) {
       const [x, y, r, o] = dots[i];

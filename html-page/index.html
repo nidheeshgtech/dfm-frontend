@@ -51,8 +51,10 @@
 
       <nav class="site-header__nav" id="site-menu" aria-label="Main" data-menu>
         <span class="site-header__menu-bg" aria-hidden="true"></span>
-        <a class="site-header__link t-nav" href="#how" style="--i: 0"><span class="site-header__link-text">How it works</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
-        <a class="site-header__link t-nav" href="#faq" style="--i: 1"><span class="site-header__link-text">FAQ</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
+        <a class="site-header__link site-header__link--home t-nav" href="index.html" style="--i: 0" aria-label="Home"><svg class="site-header__home-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1v-8.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="site-header__link-text">Home</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
+        <a class="site-header__link t-nav" href="growth-market.html" style="--i: 1"><span class="site-header__link-text">Growth Market</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
+        <a class="site-header__link t-nav" href="private-market.html" style="--i: 2"><span class="site-header__link-text">Private Market</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
+        <a class="site-header__link t-nav" href="closed-market.html" style="--i: 3"><span class="site-header__link-text">Closed Market</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
         <div class="site-header__menu-foot">
           <a class="site-header__menu-cta" href="#notify">Get notified at launch<span aria-hidden="true"></span></a>
           <a class="site-header__menu-mail" href="mailto:arena@dfm.ae">arena@dfm.ae</a>
@@ -70,21 +72,23 @@
       </div>
 
       <div class="container iv-hero__inner">
-        <div class="iv-hero__copy">
-          <div class="hero__intro iv-hero__intro">
-            <p class="t-eyebrow" data-hero-intro>Brought to you by Dubai Financial Market</p>
-            <nav class="switch liquid-glass iv-hero__switch" aria-label="I am" data-hero-intro>
-              <span class="liquid-glass__effect"></span>
-              <span class="liquid-glass__tint"></span>
-              <span class="liquid-glass__shine"></span>
-              <a class="switch__option" href="company.html"><span class="switch__label">Raise capital</span></a>
-              <span class="switch__active" aria-current="page">
-                <span class="switch__chip switch__chip--right"><img src="images/shared/icons/arrow.svg" width="24" height="24" alt=""></span>
-                <span class="switch__label">Invest</span>
-              </span>
-            </nav>
-          </div>
+        <!-- Centred like the Raise Capital hero; the phone column runs
+             alongside it on the right. -->
+        <div class="hero__intro iv-hero__intro iv-hero__top">
+          <p class="t-eyebrow" data-hero-intro>Brought to you by Dubai Financial Market</p>
+          <nav class="switch liquid-glass iv-hero__switch" aria-label="I am" data-hero-intro>
+            <span class="liquid-glass__effect"></span>
+            <span class="liquid-glass__tint"></span>
+            <span class="liquid-glass__shine"></span>
+            <a class="switch__option" href="company.html"><span class="switch__label">Raise capital</span></a>
+            <span class="switch__active" aria-current="page">
+              <span class="switch__chip switch__chip--right"><img src="images/shared/icons/arrow.svg" width="24" height="24" alt=""></span>
+              <span class="switch__label">Invest</span>
+            </span>
+          </nav>
+        </div>
 
+        <div class="iv-hero__copy">
           <h1 class="hero__title iv-hero__title t-display" id="hero-title"><span class="iv-hero__line">Invest in</span> <span class="iv-hero__line">what comes <span class="iv-hl">next.</span></span></h1>
           <p class="hero__lead iv-hero__lead t-lead" data-hero-intro>ARENA connects you with growing companies raising capital <strong>before a traditional IPO</strong>, so you can invest at the offer stage, on the same regulated platform where their shares will trade.</p>
 
@@ -110,12 +114,6 @@
               <img class="btn-cta__icon" src="images/shared/icons/chevron-white.svg" width="20" height="20" alt="">
             </a>
           </div>
-
-          <ul class="iv-hero__trust" data-hero-intro>
-            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10.5 3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Regulated end to end</li>
-            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10.5 3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Runs on DFM infrastructure</li>
-            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10.5 3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>All in the iVestor app</li>
-          </ul>
         </div>
 
         <!-- Illustrative iVestor preview (js/components/invest-phone.js):
@@ -209,7 +207,7 @@
       </div>
     </section>
 
-    <!-- ============ Three markets (same stacking cards as Raise Capital) ============ -->
+    <!-- ============ Three markets ============ -->
     <div class="markets-wrap" data-markets data-header="dark">
     <section class="markets-head" id="markets">
       <div class="container markets-head__inner">
@@ -224,279 +222,114 @@
       </div>
     </section>
 
-    <section class="markets" aria-labelledby="markets-title">
-      <div class="markets__list container" data-stack data-stack-variant="v1">
-        <article class="market market--growth" id="growth" data-stack-item>
-          <div class="market__card">
-            <div class="market__media" aria-hidden="true" data-skeleton>
-              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
-              <img data-skeleton-content class="market__photo market__photo--flip" src="images/markets/investor-growth.webp" width="1024" height="683" alt="" loading="lazy">
-            </div>
-              <div class="market__ring" aria-hidden="true">
-                <div class="market__ring-art">
-                  <img class="market__ring-img" src="images/markets/ring-investor-growth.svg" width="910" height="910" alt="" loading="lazy">
-                  <img class="market__ring-glow" src="images/markets/ring-investor-growth.svg" width="910" height="910" alt="" loading="lazy">
-                </div>
-              </div>
-            <div class="market__content">
-              <h3 class="market__title">Growth Market — 01</h3>
-              <div class="market__body">
-                <div class="market__copy">
-                  <p class="market__subtitle">Open to the market.</p>
-                  <p class="market__text">Growing companies raising capital from the wide market. Anyone with a DFM investor number can subscribe in the iVestor app.</p>
-                </div>
-                <div class="market__panel liquid-glass">
-                <span class="liquid-glass__effect"></span>
-                <span class="liquid-glass__tint"></span>
-                <span class="liquid-glass__shine"></span>
-                  <div class="market__stats liquid-glass__content">
-                  <div class="market__stat">
-                    <p class="market__label">Who can invest</p>
-                    <p class="market__value">Any DFM investor number</p>
-                  </div>
-                  <div class="market__stat">
-                    <p class="market__label">Where</p>
-                    <p class="market__value">iVestor app</p>
-                  </div>
-                  <div class="market__stat">
-                    <p class="market__label">After listing</p>
-                    <p class="market__value">Trades freely</p>
-                  </div>
-                  </div>
-                  <div class="liquid-glass__content">
-                    <a class="btn-cta liquid-glass btn-cta--purple market__cta" href="growth-market.html">
-                      <span class="liquid-glass__effect"></span>
-                      <span class="liquid-glass__tint"></span>
-                      <span class="liquid-glass__shine"></span>
-                      <span class="btn-cta__label">
-                        <span class="btn-cta__text">Explore Growth Market</span>
-                        <span class="btn-cta__text" aria-hidden="true">Explore Growth Market</span>
-                      </span>
-                      <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="market__shade" aria-hidden="true"></div>
+    <!-- Three markets as three columns (the stacking cards are kept in
+         index-v2.html). -->
+    <section class="iv-markets" aria-labelledby="markets-title">
+      <div class="container iv-markets__grid" data-swipe aria-label="Markets" data-scroll-reveal-group>
+        <article class="iv-market iv-market--growth" id="growth" data-spotlight>
+          <div class="iv-market__media" aria-hidden="true">
+            <img class="iv-market__photo iv-market__photo--flip" src="images/markets/investor-growth.webp" width="1024" height="683" alt="" loading="lazy">
+            <img class="iv-market__ring" src="images/markets/ring-investor-growth.svg" width="910" height="910" alt="" loading="lazy">
+            <span class="iv-market__num">01</span>
+          </div>
+          <div class="iv-market__body">
+            <h3 class="iv-market__title">Growth Market</h3>
+            <p class="iv-market__subtitle">Open to the market.</p>
+            <p class="iv-market__text">Growing companies raising capital from the wide market. Anyone with a DFM investor number can subscribe in the iVestor app.</p>
+            <dl class="iv-market__stats">
+              <div><dt>Who can invest</dt><dd>Any DFM investor number</dd></div>
+              <div><dt>Where</dt><dd>iVestor app</dd></div>
+              <div><dt>After listing</dt><dd>Trades freely</dd></div>
+            </dl>
           </div>
         </article>
-        <article class="market market--private" id="private" data-stack-item>
-          <div class="market__card">
-            <div class="market__media" aria-hidden="true" data-skeleton>
-              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
-              <img data-skeleton-content class="market__photo market__photo--flip market__photo--zoom" src="images/markets/investor-private.webp" width="2071" height="1381" alt="" loading="lazy">
-                <div class="market__overlay market__overlay--deep"></div>
-            </div>
-              <div class="market__ring" aria-hidden="true">
-                <div class="market__ring-art">
-                  <img class="market__ring-img" src="images/markets/ring-investor-private.svg" width="910" height="910" alt="" loading="lazy">
-                  <img class="market__ring-glow" src="images/markets/ring-investor-private.svg" width="910" height="910" alt="" loading="lazy">
-                </div>
-              </div>
-            <div class="market__content">
-              <h3 class="market__title">Private Market — 02</h3>
-              <div class="market__body">
-                <div class="market__copy">
-                  <p class="market__subtitle">By invitation.</p>
-                  <p class="market__text">Pre-IPO companies raising from a select circle of investors. Shares change hands in private trading windows.</p>
-                </div>
-                <div class="market__panel liquid-glass">
-                <span class="liquid-glass__effect"></span>
-                <span class="liquid-glass__tint"></span>
-                <span class="liquid-glass__shine"></span>
-                  <div class="market__stats liquid-glass__content">
-                  <div class="market__stat">
-                    <p class="market__label">Who can invest</p>
-                    <p class="market__value">Approved investors</p>
-                  </div>
-                  <div class="market__stat">
-                    <p class="market__label">Stage</p>
-                    <p class="market__value">Pre-IPO</p>
-                  </div>
-                  <div class="market__stat">
-                    <p class="market__label">After allocation</p>
-                    <p class="market__value">Private trading windows</p>
-                  </div>
-                  </div>
-                  <div class="liquid-glass__content">
-                    <a class="btn-cta liquid-glass btn-cta--jade market__cta" href="private-market.html">
-                      <span class="liquid-glass__effect"></span>
-                      <span class="liquid-glass__tint"></span>
-                      <span class="liquid-glass__shine"></span>
-                      <span class="btn-cta__label">
-                        <span class="btn-cta__text">Explore Private Market</span>
-                        <span class="btn-cta__text" aria-hidden="true">Explore Private Market</span>
-                      </span>
-                      <img class="btn-cta__icon" src="images/shared/icons/chevron-jade.svg" width="20" height="20" alt="">
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="market__shade" aria-hidden="true"></div>
+        <article class="iv-market iv-market--private" id="private" data-spotlight>
+          <div class="iv-market__media" aria-hidden="true">
+            <img class="iv-market__photo iv-market__photo--flip" src="images/markets/investor-private.webp" width="2071" height="1381" alt="" loading="lazy">
+            <img class="iv-market__ring" src="images/markets/ring-investor-private.svg" width="910" height="910" alt="" loading="lazy">
+            <span class="iv-market__num">02</span>
+          </div>
+          <div class="iv-market__body">
+            <h3 class="iv-market__title">Private Market</h3>
+            <p class="iv-market__subtitle">By invitation.</p>
+            <p class="iv-market__text">Pre-IPO companies raising from a select circle of investors. Shares change hands in private trading windows.</p>
+            <dl class="iv-market__stats">
+              <div><dt>Who can invest</dt><dd>Approved investors</dd></div>
+              <div><dt>Stage</dt><dd>Pre-IPO</dd></div>
+              <div><dt>After allocation</dt><dd>Private trading windows</dd></div>
+            </dl>
           </div>
         </article>
-        <article class="market market--closed" id="closed" data-stack-item>
-          <div class="market__card">
-            <div class="market__media" aria-hidden="true" data-skeleton>
-              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
-              <img data-skeleton-content class="market__photo" src="images/markets/investor-closed.webp" width="1024" height="768" alt="" loading="lazy">
-                <div class="market__overlay market__overlay--deep"></div>
-            </div>
-              <div class="market__ring" aria-hidden="true">
-                <div class="market__ring-art">
-                  <img class="market__ring-img" src="images/markets/ring-investor-closed.svg" width="910" height="910" alt="" loading="lazy">
-                  <img class="market__ring-glow" src="images/markets/ring-investor-closed.svg" width="910" height="910" alt="" loading="lazy">
-                </div>
-              </div>
-            <div class="market__content">
-              <h3 class="market__title">Closed Market — 03</h3>
-              <div class="market__body">
-                <div class="market__copy">
-                  <p class="market__subtitle">Admission only.</p>
-                  <p class="market__text">Family businesses opening ownership to family and employees. Trading stays private, inside the circle.</p>
-                </div>
-                <div class="market__panel liquid-glass">
-                <span class="liquid-glass__effect"></span>
-                <span class="liquid-glass__tint"></span>
-                <span class="liquid-glass__shine"></span>
-                  <div class="market__stats liquid-glass__content">
-                  <div class="market__stat">
-                    <p class="market__label">Who can invest</p>
-                    <p class="market__value">Family and employees</p>
-                  </div>
-                  <div class="market__stat">
-                    <p class="market__label">Price</p>
-                    <p class="market__value">Independent valuation</p>
-                  </div>
-                  <div class="market__stat">
-                    <p class="market__label">Trading</p>
-                    <p class="market__value">Inside the circle</p>
-                  </div>
-                  </div>
-                  <div class="liquid-glass__content">
-                    <a class="btn-cta liquid-glass btn-cta--yellow market__cta" href="closed-market.html">
-                      <span class="liquid-glass__effect"></span>
-                      <span class="liquid-glass__tint"></span>
-                      <span class="liquid-glass__shine"></span>
-                      <span class="btn-cta__label">
-                        <span class="btn-cta__text">Explore Closed Market</span>
-                        <span class="btn-cta__text" aria-hidden="true">Explore Closed Market</span>
-                      </span>
-                      <img class="btn-cta__icon" src="images/shared/icons/chevron-yellow.svg" width="20" height="20" alt="">
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="market__shade" aria-hidden="true"></div>
+        <article class="iv-market iv-market--closed" id="closed" data-spotlight>
+          <div class="iv-market__media" aria-hidden="true">
+            <img class="iv-market__photo" src="images/markets/investor-closed.webp" width="1024" height="768" alt="" loading="lazy">
+            <img class="iv-market__ring" src="images/markets/ring-investor-closed.svg" width="910" height="910" alt="" loading="lazy">
+            <span class="iv-market__num">03</span>
+          </div>
+          <div class="iv-market__body">
+            <h3 class="iv-market__title">Closed Market</h3>
+            <p class="iv-market__subtitle">Admission only.</p>
+            <p class="iv-market__text">Family businesses opening ownership to family and employees. Trading stays private, inside the circle.</p>
+            <dl class="iv-market__stats">
+              <div><dt>Who can invest</dt><dd>Family and employees</dd></div>
+              <div><dt>Price</dt><dd>Independent valuation</dd></div>
+              <div><dt>Trading</dt><dd>Inside the circle</dd></div>
+            </dl>
           </div>
         </article>
       </div>
     </section>
     </div>
 
-    <!-- ============ Why invest on ARENA ============ -->
-    <section class="iv-why" id="why" aria-labelledby="why-title" data-header="dark">
-      <div class="container">
-        <div class="iv-head">
-          <p class="iv-head__eyebrow t-eyebrow" data-scroll-reveal>Why ARENA</p>
-          <h2 class="iv-head__title" id="why-title" data-scroll-reveal>Why invest <em class="iv-hl">on ARENA.</em></h2>
-        </div>
-
-        <div class="iv-why__grid" data-scroll-reveal-group>
-          <article class="iv-why__card">
-            <div class="iv-why__viz iv-why__viz--stage" aria-hidden="true" data-iv-loop="stage">
-              <span class="iv-stage-fill"></span>
-              <span class="iv-stage-step is-you"><b>You invest here</b><i></i><em>Offer stage</em></span>
-              <span class="iv-stage-step"><i></i><em>Listing day</em></span>
-              <span class="iv-stage-step"><i></i><em>IPO</em></span>
-            </div>
-            <h3 class="iv-why__title">Invest <strong>before the IPO</strong></h3>
-            <p class="iv-why__text">Invest in growth companies at a stage that was previously open mainly to institutions.</p>
-          </article>
-
-          <article class="iv-why__card">
-            <div class="iv-why__viz iv-why__viz--demand" aria-hidden="true" data-iv-loop="demand">
-              <span class="iv-demand"><i style="--h: 28%"></i><i style="--h: 42%"></i><i style="--h: 58%"></i><i style="--h: 76%"></i><i style="--h: 92%"></i><i style="--h: 70%"></i><i style="--h: 50%"></i><i style="--h: 34%"></i><i style="--h: 22%"></i></span>
-              <span class="iv-demand__price">Offer price</span>
-            </div>
-            <h3 class="iv-why__title">Real prices, from <strong>real demand</strong></h3>
-            <p class="iv-why__text">Prices are set by real investor demand during the offer, not by private negotiation.</p>
-          </article>
-
-          <article class="iv-why__card">
-            <div class="iv-why__viz iv-why__viz--chain" aria-hidden="true" data-iv-loop="chain">
-              <span>Subscription</span><span>Allocation</span><span>Settlement</span><span>Trading</span>
-              <b>DFM infrastructure</b>
-            </div>
-            <h3 class="iv-why__title"><strong>Regulated</strong> end to end</h3>
-            <p class="iv-why__text">Subscription, allocation, settlement and trading all run on DFM infrastructure.</p>
-          </article>
-
-          <article class="iv-why__card">
-            <div class="iv-why__viz iv-why__viz--account" aria-hidden="true" data-iv-loop="account">
-              <span class="iv-account__row"><i class="iv-dot iv-dot--growth"></i>Growth Market<em></em></span>
-              <span class="iv-account__row"><i class="iv-dot iv-dot--private"></i>Private Market<em></em></span>
-              <span class="iv-account__row"><i class="iv-dot iv-dot--closed"></i>Closed Market<em></em></span>
-              <span class="iv-account__seg"><i class="iv-account__pill"></i><b class="is-on">Subscribe</b><b>Hold</b><b>Trade</b></span>
-            </div>
-            <h3 class="iv-why__title"><strong>One account</strong> for everything</h3>
-            <p class="iv-why__text">Subscribe, hold and trade in the same place, with your portfolio in one view.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ How you earn (dark panel) ============ -->
-    <section class="iv-earn" id="earn" aria-labelledby="earn-title">
+    <!-- ============ Why invest on ARENA (dark panel) ============ -->
+    <section class="iv-earn iv-why-dark" id="why" aria-labelledby="why-title">
       <div class="iv-earn__panel" data-header="light">
         <div class="container">
-          <div class="iv-head iv-head--split">
-            <h2 class="iv-head__title" id="earn-title" data-scroll-reveal>How you <em class="iv-hl">earn.</em></h2>
-            <p class="iv-head__lead" data-scroll-reveal>Three ways your investment can work. Every offer document sets them out <strong>in plain terms before you subscribe.</strong></p>
+          <div class="iv-head">
+            <p class="iv-head__eyebrow t-eyebrow" data-scroll-reveal>Why ARENA</p>
+            <h2 class="iv-head__title" id="why-title" data-scroll-reveal>Why invest <em class="iv-hl">on ARENA.</em></h2>
           </div>
 
-          <div class="iv-earn__grid" data-scroll-reveal-group>
+          <div class="iv-earn__grid iv-why-dark__grid" data-scroll-reveal-group>
             <article class="iv-earn__card">
-              <div class="iv-earn__viz" aria-hidden="true" data-iv-loop="growth">
-                <svg class="iv-earn__chart" viewBox="0 0 320 140" preserveAspectRatio="none">
-                  <defs><linearGradient id="iv-earn-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a38bf2" stop-opacity="0.35"/><stop offset="1" stop-color="#a38bf2" stop-opacity="0"/></linearGradient><clipPath id="iv-earn-clip"><rect x="0" y="0" width="320" height="140" data-iv-clip/></clipPath></defs>
-                  <line x1="0" y1="104" x2="320" y2="104" class="iv-earn__base"/>
-                  <g clip-path="url(#iv-earn-clip)" data-iv-reveal>
-                    <path d="M24 104 C70 100 90 92 120 86 S180 70 210 58 S270 30 300 20 L300 140 L24 140 Z" fill="url(#iv-earn-area)"/>
-                    <path class="iv-earn__line" d="M24 104 C70 100 90 92 120 86 S180 70 210 58 S270 30 300 20" pathLength="1"/>
-                  </g>
-                  <circle cx="24" cy="104" r="6" class="iv-earn__dot"/>
-                  <circle cx="300" cy="20" r="6" class="iv-earn__dot iv-earn__dot--end"/>
-                </svg>
-                <span class="iv-earn__mark iv-earn__mark--start">Offer price</span>
-                <span class="iv-earn__mark iv-earn__mark--end">Toward IPO</span>
+              <div class="iv-why__viz iv-why__viz--stage" aria-hidden="true" data-iv-loop="stage">
+                <span class="iv-stage-fill"></span>
+                <span class="iv-stage-step is-you"><b>You invest here</b><i></i><em>Offer stage</em></span>
+                <span class="iv-stage-step"><i></i><em>Listing day</em></span>
+                <span class="iv-stage-step"><i></i><em>IPO</em></span>
               </div>
               <span class="iv-earn__num">01</span>
-              <h3 class="iv-earn__title">Growth in value</h3>
-              <p class="iv-earn__text">You subscribe at the offer price, and the value of your shares <strong>follows the company</strong> as it moves toward its IPO.</p>
+              <h3 class="iv-earn__title">Invest <strong>before the IPO</strong></h3>
+              <p class="iv-earn__text">Invest in growth companies at a stage that was previously open mainly to institutions.</p>
             </article>
-
             <article class="iv-earn__card">
-              <div class="iv-earn__viz iv-earn__viz--dividend" aria-hidden="true" data-iv-loop="dividend">
-                <span class="iv-payouts"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></span>
-                <span class="iv-earn__mark iv-earn__mark--policy">Set by each company’s dividend policy</span>
+              <div class="iv-why__viz iv-why__viz--demand" aria-hidden="true" data-iv-loop="demand">
+                <span class="iv-demand"><i style="--h: 28%"></i><i style="--h: 42%"></i><i style="--h: 58%"></i><i style="--h: 76%"></i><i style="--h: 92%"></i><i style="--h: 70%"></i><i style="--h: 50%"></i><i style="--h: 34%"></i><i style="--h: 22%"></i></span>
+                <span class="iv-demand__price">Offer price</span>
               </div>
               <span class="iv-earn__num">02</span>
-              <h3 class="iv-earn__title">Dividends</h3>
-              <p class="iv-earn__text">Some companies <strong>distribute profits while you hold.</strong> Each offer document sets out the company’s dividend policy.</p>
+              <h3 class="iv-earn__title">Real prices, from <strong>real demand</strong></h3>
+              <p class="iv-earn__text">Prices are set by real investor demand during the offer, not by private negotiation.</p>
             </article>
-
             <article class="iv-earn__card">
-              <div class="iv-earn__viz iv-earn__viz--exit" aria-hidden="true" data-iv-loop="exit">
-                <span class="iv-exit"><b>Growth Market</b><span class="iv-exit__bar iv-exit__bar--open"><em></em></span><small>Trades freely from listing day</small></span>
-                <span class="iv-exit"><b>Private &amp; Closed</b><span class="iv-exit__bar iv-exit__bar--windows"><i></i><i></i><i></i><em></em></span><small>Private trading windows</small></span>
+              <div class="iv-why__viz iv-why__viz--chain" aria-hidden="true" data-iv-loop="chain">
+                <span>Subscription</span><span>Allocation</span><span>Settlement</span><span>Trading</span>
+                <b>DFM infrastructure</b>
               </div>
               <span class="iv-earn__num">03</span>
-              <h3 class="iv-earn__title">Selling your shares</h3>
-              <p class="iv-earn__text">Growth Market shares <strong>trade freely on DFM infrastructure</strong> from listing day. Private and Closed Market shares change hands in private trading windows.</p>
+              <h3 class="iv-earn__title"><strong>Regulated</strong> end to end</h3>
+              <p class="iv-earn__text">Subscription, allocation, settlement and trading all run on DFM infrastructure.</p>
+            </article>
+            <article class="iv-earn__card">
+              <div class="iv-why__viz iv-why__viz--account" aria-hidden="true" data-iv-loop="account">
+                <span class="iv-account__row"><i class="iv-dot iv-dot--growth"></i>Growth Market<em></em></span>
+                <span class="iv-account__row"><i class="iv-dot iv-dot--private"></i>Private Market<em></em></span>
+                <span class="iv-account__row"><i class="iv-dot iv-dot--closed"></i>Closed Market<em></em></span>
+                <span class="iv-account__seg"><i class="iv-account__pill"></i><b class="is-on">Subscribe</b><b>Hold</b><b>Trade</b></span>
+              </div>
+              <span class="iv-earn__num">04</span>
+              <h3 class="iv-earn__title"><strong>One account</strong> for everything</h3>
+              <p class="iv-earn__text">Subscribe, hold and trade in the same place, with your portfolio in one view.</p>
             </article>
           </div>
         </div>
@@ -504,15 +337,16 @@
     </section>
 
     <!-- ============ When an offer goes live: three steps ============ -->
-    <section class="iv-steps" id="how" aria-labelledby="how-title" data-header="dark">
+    <section class="iv-steps iv-steps--stack" id="how" aria-labelledby="how-title" data-header="dark">
       <div class="container">
         <div class="iv-head iv-head--split">
           <h2 class="iv-head__title" id="how-title" data-scroll-reveal>When an offer <em class="iv-hl">goes live.</em></h2>
           <p class="iv-head__lead" data-scroll-reveal>Three steps inside the iVestor app. <strong>One account and one investor number</strong> cover every offering on ARENA.</p>
         </div>
 
-        <ol class="iv-steps__list" data-scroll-reveal-group>
-          <li class="iv-steps__item">
+        <ol class="iv-steps__list" data-steps-deck>
+          <li class="iv-steps__item" data-steps-card>
+            <span class="iv-steps__bg" aria-hidden="true"></span>
             <div class="iv-screen" aria-hidden="true" data-iv-loop="discover">
               <span class="iv-screen__search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span data-iv-type>Search offerings</span></span>
               <span class="iv-screen__filters"><b class="is-on">All</b><b>Growth</b><b>Private</b><b>Closed</b></span>
@@ -524,7 +358,8 @@
             <h3 class="iv-steps__title">Discover</h3>
             <p class="iv-steps__text">Browse every open offering, read the offer document and pick the investor category that applies to you.</p>
           </li>
-          <li class="iv-steps__item">
+          <li class="iv-steps__item" data-steps-card>
+            <span class="iv-steps__bg" aria-hidden="true"></span>
             <div class="iv-screen iv-screen--form" aria-hidden="true" data-iv-loop="subscribe">
               <span class="iv-screen__label">Your amount</span>
               <span class="iv-screen__amount"><small>AED</small> <b data-iv-amount>10,000</b><i></i></span>
@@ -536,7 +371,8 @@
             <h3 class="iv-steps__title">Subscribe</h3>
             <p class="iv-steps__text">Enter your amount, review your subscription and <strong>pay from your linked account.</strong></p>
           </li>
-          <li class="iv-steps__item">
+          <li class="iv-steps__item" data-steps-card>
+            <span class="iv-steps__bg" aria-hidden="true"></span>
             <div class="iv-screen" aria-hidden="true" data-iv-loop="trade">
               <span class="iv-screen__note"><i><svg viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>Allocation confirmed</b><small>Shares in your name</small></span></span>
               <svg class="iv-screen__chart" viewBox="0 0 200 60" preserveAspectRatio="none"><path d="M0 48 L18 44 L36 46 L54 38 L72 40 L90 30 L108 33 L126 24 L144 27 L162 18 L180 20 L200 10" fill="none" pathLength="1"/></svg>

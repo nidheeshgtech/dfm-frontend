@@ -117,6 +117,1041 @@
   }
 }
 
+// ---- Stacked deck (index.html; the grid above stays for index-v2) ----
+// One big dark card per step: copy left over a giant outlined step
+// number, the live screen right in a glowing frame. Each step has its
+// own accent (1 purple, 2 violet, 3 jade, as on the Trade screen). On
+// desktop each card sticks under the header and the next slides over it;
+// the ones behind shrink, step up and dim (js/components/steps-deck.js
+// sets --depth). Below laptop it's a plain column of cards.
+.iv-steps--stack {
+  .iv-steps__list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-24;
+  }
+
+  .iv-steps__item {
+    --acc: #{$color-purple-tint};
+    --acc-rgb: 163, 139, 242;
+
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    // Copy centred against the screen: empty rows above and below.
+    grid-template-rows: 1fr auto auto auto 1fr;
+    column-gap: fluid(32px, 80px);
+    padding: fluid(16px, 28px);
+    overflow: hidden;
+    border: 1px solid rgba($color-white, 0.08);
+    background:
+      radial-gradient(ellipse 60% 70% at 92% 12%, rgba(var(--acc-rgb), 0.26), transparent 70%),
+      radial-gradient(ellipse 55% 65% at 0% 100%, rgba($color-purple, 0.22), transparent 70%),
+      #0d0e1a;
+    color: $color-white;
+    counter-increment: step;
+    transform-origin: 50% 0;
+
+    &:nth-child(2) {
+      --acc: #8a6dff;
+      --acc-rgb: 138, 109, 255;
+    }
+
+    &:nth-child(3) {
+      --acc: #{$color-jade};
+      --acc-rgb: 100, 251, 160;
+    }
+
+    // Dot texture fading out from the top-right corner.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(rgba($color-white, 0.14) 1px, transparent 1.6px) 0 0 / 18px 18px;
+      mask-image: radial-gradient(ellipse 55% 60% at 100% 0%, #000, transparent 75%);
+      pointer-events: none;
+    }
+
+    // Giant outlined step number behind the copy (was the row arrow).
+    &::after {
+      content: counter(step, decimal-leading-zero);
+      position: absolute;
+      display: block;
+      top: auto;
+      right: auto;
+      bottom: -0.2em;
+      left: fluid(8px, 24px);
+      z-index: -1;
+      width: auto;
+      height: auto;
+      border: 0;
+      background: none;
+      color: transparent;
+      font-size: clamp(160px, 20vw, 300px);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      -webkit-text-stroke: 1.5px rgba(var(--acc-rgb), 0.38);
+      pointer-events: none;
+    }
+
+    // The app screen, framed like a device and lit in the step colour.
+    .iv-screen {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      height: 300px;
+      margin: 0;
+      border: 1px solid rgba(var(--acc-rgb), 0.3);
+      box-shadow:
+        0 0 0 8px rgba($color-white, 0.035),
+        0 30px 80px rgba(0, 0, 0, 0.45),
+        0 0 90px rgba(var(--acc-rgb), 0.14);
+      font-size: 13px;
+    }
+  }
+
+  // "01" + a three-part progress line: which step of three this is.
+  .iv-steps__num {
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--acc);
+
+    &::after {
+      content: "";
+      width: 96px;
+      height: 4px;
+      background:
+        linear-gradient(var(--acc), var(--acc)) 0 0 / calc(var(--s, 1) * 33.333%) 100% no-repeat,
+        rgba($color-white, 0.16);
+      mask-image: repeating-linear-gradient(90deg, #000 0 calc(33.333% - 4px), transparent calc(33.333% - 4px) 33.333%);
+    }
+  }
+
+  .iv-steps__item:nth-child(2) .iv-steps__num {
+    --s: 2;
+  }
+
+  .iv-steps__item:nth-child(3) .iv-steps__num {
+    --s: 3;
+  }
+
+  .iv-steps__title {
+    grid-row: 3;
+    font-size: fluid(32px, 56px);
+  }
+
+  .iv-steps__text {
+    grid-row: 4;
+    max-width: 440px;
+    font-size: fluid(16px, 20px);
+    color: rgba($color-white, 0.68);
+
+    strong {
+      color: $color-white;
+    }
+  }
+
+  // Deck: every card sticks at the same slot below the header.
+  @media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+    .iv-steps__item {
+      position: sticky;
+      top: calc(var(--header-height) + #{$space-48});
+      box-shadow: 0 -24px 60px rgba($color-text-dark, 0.18);
+      filter: brightness(calc(1 - var(--depth, 0) * 0.3));
+      transform: translateY(calc(var(--depth, 0) * -18px)) scale(calc(1 - var(--depth, 0) * 0.05));
+    }
+  }
+
+  // Desktop: tall cards (as much of the screen as fits under the header),
+  // with the app screen zoomed up to fill them rather than left as a
+  // small box in a big card.
+  @include up("laptop") {
+    .iv-steps__item {
+      min-height: min(620px, calc(100vh - var(--header-height) - 96px));
+      padding: fluid(24px, 40px) fluid(24px, 48px);
+
+      .iv-screen {
+        align-self: center;
+        zoom: 1.45;
+      }
+    }
+
+    @media (max-height: 760px) {
+      .iv-steps__item .iv-screen {
+        zoom: 1.2;
+      }
+    }
+  }
+
+  @include down("laptop") {
+    .iv-steps__item {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: $space-48;
+
+      .iv-screen {
+        height: 260px;
+        margin-bottom: $space-24;
+        font-size: 12px;
+      }
+
+      &::after {
+        font-size: 140px;
+        right: $space-16;
+        left: auto;
+      }
+    }
+  }
+}
+
+// ---- Light screens on the dark step cards (approval options) ----
+// ?steps=a (default) clean white · ?steps=b frosted glass · ?steps=c light
+// stage. steps-deck.js copies the choice to [data-skin]. All three share
+// the light palette below; only the surface around it differs.
+// (d / e / f further down flip it: white cards, the dark screens.)
+$iv-light-field: #f3f3f7;
+
+.iv-steps--stack:is([data-skin="a"], [data-skin="b"], [data-skin="c"], [data-skin="k"], [data-skin="l"]) .iv-screen {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(var(--acc-rgb), 0.16), transparent 70%),
+    $color-white;
+  color: $color-text-dark;
+
+  small {
+    color: rgba($color-text-dark, 0.55);
+  }
+
+  .iv-screen__search {
+    background: $iv-light-field;
+    color: rgba($color-text-dark, 0.5);
+
+    .is-typed {
+      color: $color-text-dark;
+    }
+  }
+
+  .iv-screen__filters b {
+    background: $iv-light-field;
+
+    &.is-on {
+      background: $color-purple;
+      color: $color-white;
+    }
+  }
+
+  .iv-screen__row {
+    background: #f7f7fa;
+
+    em {
+      background: rgba($color-text-dark, 0.14);
+    }
+
+    > b {
+      color: rgba($color-text-dark, 0.4);
+    }
+
+    &.is-tap {
+      background: #f1ecff;
+      box-shadow: inset 0 0 0 1px rgba($color-purple, 0.5);
+    }
+  }
+
+  .iv-screen__doc {
+    color: $color-purple;
+  }
+
+  .iv-screen__label {
+    color: rgba($color-text-dark, 0.5);
+  }
+
+  .iv-screen__amount i {
+    background: $color-purple;
+  }
+
+  .iv-screen__field {
+    background: $iv-light-field;
+
+    &.is-focus {
+      box-shadow: inset 0 0 0 1px rgba($color-purple, 0.6);
+    }
+  }
+
+  .iv-screen__btn {
+    color: $color-white;
+
+    &.is-done {
+      color: $color-text-dark;
+    }
+  }
+
+  .iv-screen__note {
+    border-color: rgba(18, 160, 90, 0.25);
+    background: rgba($color-jade, 0.16);
+  }
+
+  .iv-screen__chart path {
+    stroke: #12a05a;
+  }
+
+  .iv-screen__side {
+    background: $iv-light-field;
+
+    b {
+      color: rgba($color-text-dark, 0.6);
+
+      &.is-on {
+        color: $color-text-dark;
+      }
+    }
+  }
+
+  .iv-screen__tag {
+    color: rgba($color-text-dark, 0.55);
+  }
+}
+
+// A — clean white: crisp edge, soft drop shadow.
+.iv-steps--stack[data-skin="a"] .iv-steps__item .iv-screen {
+  border: 1px solid rgba($color-white, 0.7);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.45),
+    0 0 90px rgba(var(--acc-rgb), 0.18);
+}
+
+// B — frosted glass: see-through white over the card's glow.
+.iv-steps--stack[data-skin="b"] .iv-steps__item .iv-screen {
+  border: 1px solid rgba($color-white, 0.55);
+  background:
+    linear-gradient(160deg, rgba($color-white, 0.55), rgba($color-white, 0) 40%),
+    linear-gradient(180deg, rgba(var(--acc-rgb), 0.28), rgba(var(--acc-rgb), 0.06) 55%),
+    rgba(250, 249, 255, 0.93);
+  box-shadow:
+    inset 0 1px 0 rgba($color-white, 0.9),
+    0 30px 70px rgba(0, 0, 0, 0.35),
+    0 0 120px rgba(var(--acc-rgb), 0.35);
+  backdrop-filter: blur(18px) saturate(1.3);
+}
+
+// C — light stage: a soft lavender panel framing the white screen.
+.iv-steps--stack[data-skin="c"] .iv-steps__item .iv-screen {
+  border: 1px solid rgba($color-text-dark, 0.08);
+  box-shadow:
+    0 18px 40px rgba($color-text-dark, 0.12),
+    0 0 0 22px #eceaf6,
+    0 0 0 23px rgba($color-white, 0.5),
+    0 40px 90px 22px rgba(0, 0, 0, 0.4);
+}
+
+// ---- White cards, dark screens (approval options d / e / f) ----
+// The card goes white, the screen keeps its original dark iVestor look.
+// Accents switch to their deeper inks so they read on white.
+.iv-steps--stack:is([data-skin="d"], [data-skin="e"], [data-skin="f"], [data-skin="g"], [data-skin="h"], [data-skin="i"]) {
+  .iv-steps__item {
+    --acc: #{$color-purple};
+    --acc-rgb: 78, 23, 229;
+
+    border-color: rgba($color-text-dark, 0.07);
+    background: $color-white;
+    color: $color-text-dark;
+    box-shadow: 0 24px 60px rgba($color-text-dark, 0.08);
+
+    &:nth-child(2) {
+      --acc: #6a4cf0;
+      --acc-rgb: 106, 76, 240;
+    }
+
+    &:nth-child(3) {
+      --acc: #0d8a4b;
+      --acc-rgb: 13, 138, 75;
+    }
+
+    &::before {
+      background: radial-gradient(rgba($color-text-dark, 0.12) 1px, transparent 1.6px) 0 0 / 18px 18px;
+    }
+
+    .iv-screen {
+      border: 1px solid rgba(var(--acc-rgb), 0.25);
+      box-shadow:
+        0 30px 60px rgba($color-text-dark, 0.25),
+        0 0 80px rgba(var(--acc-rgb), 0.18);
+    }
+  }
+
+  .iv-steps__num::after {
+    background:
+      linear-gradient(var(--acc), var(--acc)) 0 0 / calc(var(--s, 1) * 33.333%) 100% no-repeat,
+      rgba($color-text-dark, 0.12);
+  }
+
+  .iv-steps__text {
+    color: rgba($color-text-dark, 0.65);
+
+    strong {
+      color: $color-text-dark;
+    }
+  }
+}
+
+// White cards behind barely dim (a dark dim turns them muddy grey).
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .iv-steps--stack:is([data-skin="d"], [data-skin="e"], [data-skin="f"], [data-skin="g"], [data-skin="h"], [data-skin="i"]) .iv-steps__item {
+    filter: brightness(calc(1 - var(--depth, 0) * 0.05));
+  }
+}
+
+// D — pure white: a whisper of the step colour in the corner.
+// (G / H / I build on it.)
+.iv-steps--stack:is([data-skin="d"], [data-skin="g"], [data-skin="h"], [data-skin="i"]) .iv-steps__item {
+  background:
+    radial-gradient(ellipse 55% 65% at 95% 8%, rgba(var(--acc-rgb), 0.1), transparent 70%),
+    $color-white;
+
+  &::after {
+    -webkit-text-stroke: 1.5px rgba(var(--acc-rgb), 0.22);
+  }
+}
+
+// E — tinted stage: a soft wash of the step colour behind the screen,
+// and a solid ghost numeral instead of the outline.
+.iv-steps--stack[data-skin="e"] .iv-steps__item {
+  background:
+    radial-gradient(ellipse 45% 75% at 76% 50%, rgba(var(--acc-rgb), 0.16), transparent 72%),
+    linear-gradient(90deg, $color-white 40%, rgba(var(--acc-rgb), 0.05)),
+    $color-white;
+
+  &::before {
+    display: none;
+  }
+
+  &::after {
+    color: rgba(var(--acc-rgb), 0.07);
+    -webkit-text-stroke: 0;
+  }
+}
+
+// F — device: a coloured top edge on the card, the screen set in a dark
+// phone-like bezel, and the numeral as a gradient that fades out.
+.iv-steps--stack[data-skin="f"] .iv-steps__item {
+  border-top: 4px solid var(--acc);
+
+  &::after {
+    background: linear-gradient(180deg, rgba(var(--acc-rgb), 0.3), rgba(var(--acc-rgb), 0) 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+  }
+
+  .iv-screen {
+    border: 0;
+    box-shadow:
+      0 0 0 10px #1d1e2c,
+      0 0 0 11px rgba($color-text-dark, 0.3),
+      0 34px 70px 10px rgba($color-text-dark, 0.28);
+  }
+}
+
+// ---- Left-side backgrounds on D (options g / h / i) ----
+// .iv-steps__bg is an empty layer in each card, only used by these.
+.iv-steps__bg {
+  display: none;
+}
+
+.iv-steps--stack:is([data-skin="g"], [data-skin="h"], [data-skin="i"]) .iv-steps__bg {
+  position: absolute;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+}
+
+// G — the ARENA swirl, large and faint, turning from the left edge.
+.iv-steps--stack[data-skin="g"] {
+  .iv-steps__bg {
+    top: 50%;
+    left: 0;
+    width: min(720px, 60%);
+    aspect-ratio: 1;
+    background: url("../images/investor/swirl.webp") center / contain no-repeat;
+    opacity: 0.13;
+    translate: -38% -50%;
+    animation: iv-steps-spin 120s linear infinite;
+  }
+
+  .iv-steps__item::after {
+    display: none;
+  }
+}
+
+// H — ripple rings in the step colour, spreading from the bottom-left
+// round the big number.
+@property --iv-ring {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.iv-steps--stack[data-skin="h"] .iv-steps__bg {
+  inset: 0 45% 0 0;
+  background: repeating-radial-gradient(
+    circle at 12% 100%,
+    rgba(var(--acc-rgb), 0.16) var(--iv-ring) calc(var(--iv-ring) + 1.5px),
+    transparent calc(var(--iv-ring) + 1.5px) calc(var(--iv-ring) + 34px)
+  );
+  mask-image: radial-gradient(circle at 12% 100%, #000 20%, transparent 75%);
+  animation: iv-steps-ripple 6s linear infinite;
+}
+
+// I — the dot wave (xp-wave.js) in the step colour, fading to the right.
+.iv-steps--stack[data-skin="i"] {
+  .iv-steps__bg {
+    inset: 0 40% 0 0;
+    opacity: 0.1;
+    // Mirrored so the artwork's dense curve sits on the left; the mask is
+    // flipped with it, so it still fades out towards the screen.
+    transform: scaleX(-1);
+    mask-image: linear-gradient(270deg, #000 30%, transparent 95%);
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .iv-steps__item::after {
+    display: none;
+  }
+}
+
+@keyframes iv-steps-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+// Rings drift outward: the pattern slides one ring spacing, then loops.
+@keyframes iv-steps-ripple {
+  to {
+    --iv-ring: 34px;
+  }
+}
+
+@include reduced-motion {
+  .iv-steps__bg {
+    animation: none !important;
+  }
+}
+
+// ---- J (default): aurora cards, app-window screens ----
+// Deep gradient card with a slowly drifting aurora in the step colour,
+// film grain and a gradient-lit edge; the screen sits in an app window
+// (title bar, tilt that straightens on hover) over faint orbit rings; a
+// step tracker (steps-deck.js builds it from the titles) bottom-left.
+.iv-steps--stack:is([data-skin="j"], [data-skin="k"], [data-skin="l"], [data-skin="m"]) {
+  .iv-steps__item {
+    border: 1px solid transparent;
+    background:
+      // Orbit rings round the screen.
+      radial-gradient(circle at 74% 50%, transparent 0 31%, rgba(var(--acc-rgb), 0.16) 31.1% 31.35%, transparent 31.5%) padding-box,
+      radial-gradient(circle at 74% 50%, transparent 0 43%, rgba($color-white, 0.06) 43.1% 43.3%, transparent 43.5%) padding-box,
+      linear-gradient(135deg, #0a0b16 0%, #13133a 55%, #0a0b16 100%) padding-box,
+      // Gradient edge.
+      linear-gradient(135deg, rgba(var(--acc-rgb), 0.7), rgba($color-white, 0.08) 35%, rgba($color-white, 0.04) 65%, rgba(var(--acc-rgb), 0.4)) border-box;
+
+    // Film grain instead of the dot texture.
+    &::before {
+      z-index: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      mask-image: none;
+      opacity: 0.07;
+      mix-blend-mode: overlay;
+    }
+
+    // The tracker below the copy does the numbering here.
+    &::after {
+      display: none;
+    }
+
+    > :not(.iv-steps__bg) {
+      position: relative;
+      z-index: 1;
+    }
+
+    // App window.
+    .iv-screen {
+      height: 336px;
+      padding-top: 48px;
+      border: 1px solid rgba($color-white, 0.12);
+      box-shadow:
+        0 0 0 6px rgba($color-white, 0.035),
+        0 40px 90px rgba(0, 0, 0, 0.55),
+        0 0 140px rgba(var(--acc-rgb), 0.28);
+      // Flat at rest; steps-deck.js moves --rx / --ry with the pointer
+      // while the front card is hovered (and the glare with --gx / --gy).
+      transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transition: transform 0.9s $ease-out;
+      transform-style: preserve-3d;
+      will-change: transform;
+
+      // Glare that slides across the glass.
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        border-radius: inherit;
+        background: radial-gradient(420px circle at var(--gx, 30%) var(--gy, 0%), rgba($color-white, 0.22), transparent 55%);
+        opacity: 0;
+        transition: opacity 0.5s $ease-out;
+        pointer-events: none;
+      }
+
+      &::before {
+        content: "iVestor";
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 32px;
+        border-bottom: 1px solid rgba($color-white, 0.06);
+        background:
+          radial-gradient(circle at 16px 50%, #ff5f57 0 4px, transparent 4.5px),
+          radial-gradient(circle at 30px 50%, #febc2e 0 4px, transparent 4.5px),
+          radial-gradient(circle at 44px 50%, #28c840 0 4px, transparent 4.5px),
+          rgba($color-white, 0.04);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba($color-white, 0.45);
+      }
+    }
+
+    // Following the pointer: quick, so it tracks without lag.
+    &.is-tilting .iv-screen {
+      transition: transform 0.18s ease-out;
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Aurora: two soft blobs drifting behind everything.
+  .iv-steps__bg {
+    position: absolute;
+    inset: -25%;
+    z-index: 0;
+    display: block;
+    background:
+      radial-gradient(28% 32% at 30% 35%, rgba(var(--acc-rgb), 0.38), transparent 70%),
+      radial-gradient(26% 30% at 72% 70%, rgba($color-purple, 0.4), transparent 70%);
+    filter: blur(24px);
+    animation: iv-steps-aurora 16s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  // 01 Discover · 02 Subscribe · 03 Trade — this card's step lit.
+  .iv-steps__track {
+    grid-column: 1;
+    grid-row: 5;
+    align-self: end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: $space-32 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: rgba($color-white, 0.45);
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      &.is-done {
+        color: rgba($color-white, 0.7);
+      }
+
+      &.is-on {
+        color: $color-white;
+
+        &::before {
+          background: var(--acc);
+          box-shadow: 0 0 0 4px rgba(var(--acc-rgb), 0.25);
+        }
+      }
+    }
+  }
+
+  // Desktop: a narrower window, centred in its column (not edge to edge).
+  @include up("laptop") {
+    .iv-steps__item .iv-screen {
+      justify-self: center;
+      width: min(100%, 360px);
+      height: 290px;
+    }
+  }
+
+  @include down("laptop") {
+    .iv-steps__item .iv-screen,
+    .iv-steps__item:hover .iv-screen {
+      transform: none;
+    }
+
+    .iv-steps__track {
+      align-self: flex-start;
+      margin-top: $space-24;
+    }
+  }
+}
+
+.iv-steps__track {
+  display: none;
+}
+
+@keyframes iv-steps-aurora {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(6%, -4%) scale(1.08);
+  }
+
+  100% {
+    transform: translate(-5%, 5%) scale(0.96);
+  }
+}
+
+@include reduced-motion {
+  .iv-steps--stack:is([data-skin="j"], [data-skin="k"], [data-skin="l"], [data-skin="m"]) .iv-steps__bg {
+    animation: none;
+  }
+}
+
+// ---- K: the light take on J ----
+// Same stack, window, tilt and tracker; a clean neutral-white card with a
+// fine grid fading in behind the window (no rings), a faint wash of the
+// step colour, light app windows (the a/b/c screen palette), dark copy
+// and deeper accent inks.
+.iv-steps--stack:is([data-skin="k"], [data-skin="l"]) {
+  .iv-steps__item {
+    --acc: #{$color-purple};
+    --acc-rgb: 78, 23, 229;
+
+    color: $color-text-dark;
+    background:
+      linear-gradient(180deg, $color-white 0%, #f7f8fa 100%) padding-box,
+      linear-gradient(135deg, rgba(var(--acc-rgb), 0.35), rgba($color-text-dark, 0.07) 30%, rgba($color-text-dark, 0.07) 70%, rgba(var(--acc-rgb), 0.2)) border-box;
+    box-shadow: 0 24px 60px rgba($color-text-dark, 0.08);
+
+    &:nth-child(2) {
+      --acc: #6a4cf0;
+      --acc-rgb: 106, 76, 240;
+    }
+
+    &:nth-child(3) {
+      --acc: #0d8a4b;
+      --acc-rgb: 13, 138, 75;
+    }
+
+    // Fine grid (instead of the grain), fading in towards the window.
+    &::before {
+      background:
+        linear-gradient(rgba($color-text-dark, 0.07) 1px, transparent 1px) 0 0 / 40px 40px,
+        linear-gradient(90deg, rgba($color-text-dark, 0.07) 1px, transparent 1px) 0 0 / 40px 40px;
+      mask-image: radial-gradient(ellipse 55% 80% at 75% 50%, #000 20%, transparent 75%);
+      opacity: 1;
+      mix-blend-mode: normal;
+    }
+
+    .iv-screen {
+      border-color: rgba($color-text-dark, 0.08);
+      box-shadow:
+        0 0 0 6px rgba($color-white, 0.7),
+        0 0 0 7px rgba($color-text-dark, 0.05),
+        0 36px 70px rgba($color-text-dark, 0.14),
+        0 0 60px rgba(var(--acc-rgb), 0.08);
+
+      &::before {
+        border-bottom-color: rgba($color-text-dark, 0.06);
+        background:
+          radial-gradient(circle at 16px 50%, #ff5f57 0 4px, transparent 4.5px),
+          radial-gradient(circle at 30px 50%, #febc2e 0 4px, transparent 4.5px),
+          radial-gradient(circle at 44px 50%, #28c840 0 4px, transparent 4.5px),
+          #f6f5fa;
+        color: rgba($color-text-dark, 0.45);
+      }
+    }
+  }
+
+  // Just a faint wash of the step colour behind the window.
+  .iv-steps__bg {
+    background: radial-gradient(26% 34% at 70% 52%, rgba(var(--acc-rgb), 0.06), transparent 70%);
+  }
+
+  .iv-steps__num::after {
+    background:
+      linear-gradient(var(--acc), var(--acc)) 0 0 / calc(var(--s, 1) * 33.333%) 100% no-repeat,
+      rgba($color-text-dark, 0.12);
+  }
+
+  .iv-steps__text {
+    color: rgba($color-text-dark, 0.65);
+
+    strong {
+      color: $color-text-dark;
+    }
+  }
+
+  .iv-steps__track {
+    color: rgba($color-text-dark, 0.4);
+
+    li.is-done {
+      color: rgba($color-text-dark, 0.65);
+    }
+
+    li.is-on {
+      color: $color-text-dark;
+    }
+  }
+}
+
+// Light cards behind barely dim.
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .iv-steps--stack:is([data-skin="k"], [data-skin="l"]) .iv-steps__item {
+    filter: brightness(calc(1 - var(--depth, 0) * 0.05));
+  }
+}
+
+// ---- L: K plus a photo on the left ----
+// Each step has its own photo filling the left of the card behind the
+// copy, under a navy-to-clear overlay (copy turns white), melting into the
+// white card where the window sits.
+.iv-steps--stack:is([data-skin="l"], [data-skin="m"]) {
+  .iv-steps__bg {
+    inset: 0 30% 0 0;
+    background: url("../images/journey/step-1.webp") 30% 50% / cover no-repeat;
+    filter: saturate(0.75) brightness(0.92);
+    mask-image: linear-gradient(90deg, #000 55%, transparent 100%);
+    animation: iv-steps-drift 24s ease-in-out infinite alternate;
+
+    // Brand grade: the photo takes on the site's blue-violet.
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #2a0f6e 0%, $color-purple 55%, #6a2bd9 100%);
+      mix-blend-mode: color;
+      opacity: 0.5;
+    }
+
+    // Light bloom where the photo meets the white, behind the window.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse 30% 55% at 78% 45%, rgba($color-purple-tint, 0.5), transparent 70%),
+        radial-gradient(ellipse 22% 30% at 60% 15%, rgba(#b78bff, 0.3), transparent 70%);
+      mix-blend-mode: screen;
+      animation: iv-steps-bloom 7s ease-in-out infinite alternate;
+    }
+  }
+
+  .iv-steps__item:nth-child(2) .iv-steps__bg {
+    background-image: url("../images/journey/step-2.webp");
+  }
+
+  .iv-steps__item:nth-child(3) .iv-steps__bg {
+    background-image: url("../images/journey/step-5.webp");
+    background-position: 50% 60%;
+  }
+
+  // Overlay over the photo (under the copy): deep navy on the left for the
+  // white copy, a hint of the step colour low down, clear by the window.
+  .iv-steps__item::before {
+    z-index: 1;
+    display: block;
+    background:
+      radial-gradient(ellipse 50% 60% at 0% 100%, rgba(var(--acc-rgb), 0.35), transparent 70%),
+      radial-gradient(ellipse 40% 45% at 8% 0%, rgba(#7a2bff, 0.32), transparent 70%),
+      linear-gradient(90deg, rgba(6, 4, 12, 0.9) 0%, rgba(14, 6, 32, 0.7) 28%, rgba(52, 18, 120, 0.32) 48%, rgba(78, 23, 229, 0.06) 60%, rgba(78, 23, 229, 0) 66%);
+    mask-image: none;
+    opacity: 1;
+    mix-blend-mode: normal;
+  }
+
+  .iv-steps__item > :not(.iv-steps__bg) {
+    z-index: 2;
+  }
+
+  // White copy on the photo.
+  .iv-steps__item {
+    --acc: #{$color-purple-tint};
+    --acc-rgb: 163, 139, 242;
+
+    &:nth-child(2) {
+      --acc: #b9a6ff;
+      --acc-rgb: 185, 166, 255;
+    }
+
+    &:nth-child(3) {
+      --acc: #{$color-jade};
+      --acc-rgb: 100, 251, 160;
+    }
+  }
+
+  .iv-steps__title {
+    color: $color-white;
+  }
+
+  .iv-steps__text {
+    color: rgba($color-white, 0.78);
+
+    strong {
+      color: $color-white;
+    }
+  }
+
+  .iv-steps__num::after {
+    background:
+      linear-gradient(var(--acc), var(--acc)) 0 0 / calc(var(--s, 1) * 33.333%) 100% no-repeat,
+      rgba($color-white, 0.25);
+  }
+
+  .iv-steps__track {
+    color: rgba($color-white, 0.55);
+
+    li.is-done {
+      color: rgba($color-white, 0.8);
+    }
+
+    li.is-on {
+      color: $color-white;
+    }
+  }
+
+  // The window sits on white: a clean lift.
+  .iv-steps__item .iv-screen {
+    box-shadow:
+      0 0 0 6px rgba($color-white, 0.75),
+      0 0 0 7px rgba($color-text-dark, 0.05),
+      0 40px 80px rgba($color-text-dark, 0.2);
+  }
+
+  // Stacked layout: the photo fills the whole card, overlay darkest at
+  // the bottom where the copy sits.
+  @include down("laptop") {
+    .iv-steps__bg {
+      inset: 0;
+      mask-image: none;
+    }
+
+    .iv-steps__item::before {
+      background:
+        radial-gradient(ellipse 70% 40% at 0% 100%, rgba(var(--acc-rgb), 0.3), transparent 70%),
+        linear-gradient(180deg, rgba(52, 18, 120, 0.3) 0%, rgba(14, 6, 32, 0.6) 45%, rgba(6, 4, 12, 0.92) 100%);
+    }
+  }
+}
+
+// ---- M: the dark version of L ----
+// Same photo on the left, but no violet: the photo keeps its own colours
+// under a plain black gradient, on a black card; the window keeps the
+// original dark iVestor screens.
+.iv-steps--stack[data-skin="m"] {
+  .iv-steps__item {
+    background:
+      linear-gradient(135deg, #0a0a0c 0%, #111114 100%) padding-box,
+      linear-gradient(135deg, rgba($color-white, 0.16), rgba($color-white, 0.05) 40%, rgba($color-white, 0.05) 60%, rgba($color-white, 0.12)) border-box;
+
+    // Black gradient only: solid behind the copy, clearing towards the
+    // window.
+    &::before {
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.2) 55%, rgba(0, 0, 0, 0) 70%);
+    }
+
+    .iv-screen {
+      border-color: rgba($color-white, 0.12);
+      box-shadow:
+        0 0 0 6px rgba($color-white, 0.04),
+        0 40px 90px rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  // Natural photo: no colour grade, no bloom.
+  .iv-steps__bg {
+    filter: saturate(0.9);
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  // Longer, softer fade into the black card.
+  @include up("laptop") {
+    .iv-steps__bg {
+      inset: 0 12% 0 0;
+      mask-image: linear-gradient(90deg, #000 35%, rgba(0, 0, 0, 0.5) 65%, transparent 100%);
+    }
+  }
+
+  @include down("laptop") {
+    .iv-steps__item::before {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 45%, rgba(0, 0, 0, 0.92) 100%);
+    }
+  }
+}
+
+// L's light bloom breathing.
+@keyframes iv-steps-bloom {
+  from {
+    opacity: 0.7;
+    transform: translateX(-2%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(2%);
+  }
+}
+
+// Slow Ken Burns on the photos.
+@keyframes iv-steps-drift {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.08) translateX(-2%);
+  }
+}
+
+@include reduced-motion {
+  .iv-steps--stack:is([data-skin="l"], [data-skin="m"]) .iv-steps__bg,
+  .iv-steps--stack:is([data-skin="l"], [data-skin="m"]) .iv-steps__bg::before {
+    animation: none;
+  }
+}
+
 // Mini iVestor screen.
 .iv-screen {
   display: flex;

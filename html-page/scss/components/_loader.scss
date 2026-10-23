@@ -755,6 +755,110 @@
   }
 }
 
+// Invest page (body.page-invest): the same default loader on black.
+// Raise Capital keeps the navy one. The eyebrow fills white instead of
+// lime; the % is white and the number shifts colour as it loads (below).
+.loader-default .page-invest .loader {
+  background:
+    radial-gradient(70% 55% at 50% 0%, rgba(163, 139, 242, 0.14), rgba(163, 139, 242, 0) 70%),
+    #050507;
+  color: $color-white;
+
+  .loader__eyebrow {
+    background: linear-gradient(
+      90deg,
+      $color-white calc(var(--p) * 100%),
+      rgba(255, 255, 255, 0.3) calc(var(--p) * 100%)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .loader__count sup {
+    color: $color-white;
+  }
+
+  // The number flows through the site's colours as it climbs 0 → 100:
+  // purple tint → sky → jade → lime. A long gradient slides with --p
+  // (set every frame by loader.js), so each digit carries a soft blend
+  // and the colour moves on smoothly as loading goes.
+  [data-loader-count] {
+    background: linear-gradient(
+        90deg,
+        $color-purple-tint 0%,
+        #b9a6ff 18%,
+        #8fd0ff 40%,
+        $color-jade 68%,
+        $color-yellow-bright 100%
+      )
+      calc(var(--p) * 100%) 50% / 400% 100% no-repeat;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0 0 28px rgba(143, 208, 255, 0.18));
+  }
+
+  // Rolling odometer (loader.js builds it; the gradient above is the
+  // no-JS / reduced-motion fallback). Each window shows one digit of its
+  // 0–9 strip, faded at the top and bottom so the roll reads as motion.
+  [data-loader-count].is-rolling {
+    display: inline-flex;
+    background: none;
+    color: inherit;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+  }
+
+  .loader__digit {
+    display: inline-block;
+    width: 0;
+    height: 1em;
+    overflow: hidden;
+    line-height: 1;
+    mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%);
+    transition:
+      width 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.3s linear;
+
+    &.is-on {
+      width: 0.56em;
+    }
+  }
+
+  .loader__strip {
+    display: flex;
+    flex-direction: column;
+    translate: 0 calc(var(--d, 0) * -1em);
+    transition: translate 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+    i {
+      display: block;
+      height: 1em;
+      font-style: normal;
+      text-align: center;
+    }
+  }
+}
+
+// Default loader, every page: the big counter sits centred under the
+// name instead of in the corner; the foot joins the centred column so
+// swirl, name and number are centred as one group.
+.loader-default .loader {
+  .loader__foot {
+    position: relative;
+    inset: auto;
+    justify-content: center;
+    margin-top: clamp(20px, 3.5vh, 40px);
+    padding: 0;
+  }
+
+  .loader__count {
+    min-width: 0;
+    margin-left: 0; // the mobile rules push it right (corner layout)
+    text-align: center;
+  }
+}
+
 // Page can't scroll behind the loader.
 .is-page-loading,
 .is-page-loading body {

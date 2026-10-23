@@ -1,18 +1,25 @@
 @use "../abstracts" as *;
 
-// Invest hero: dark, copy left, illustrative iVestor phone right with
-// floating activity chips (js/components/invest-phone.js), DFM market
-// figures along the bottom. Keeps the .hero__* hooks hero.js animates.
+// Invest hero: dark. Eyebrow + Raise capital / Invest switch centred at the
+// top (as on the Raise Capital hero), copy left, the illustrative iVestor
+// phone right with floating activity chips (js/components/invest-phone.js)
+// running alongside the centred row, DFM market figures along the bottom.
+// Everything sizes off the screen height too, so the whole hero fits one
+// screen down to small laptops (1280×720). Keeps the .hero__* hooks
+// hero.js animates.
 .iv-hero {
   position: relative;
   isolation: isolate;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
-  min-height: 100svh;
+  // A full screen of hero PLUS the strip the next section's rounded top
+  // overlaps (-38px; -24px on mobile), so that curve sits just below the
+  // fold instead of peeking into the first screen.
+  min-height: calc(100vh + 38px);
+  min-height: calc(100svh + 38px);
   // Bottom: room for the markets sheet's rounded top (-38px) to overlap.
-  padding: calc(var(--header-height) + #{fluid(24px, 56px)}) 0 calc(#{fluid(40px, 64px)} + 38px);
+  padding: calc(var(--header-height) + clamp(4px, 1.5vh, 24px)) 0 calc(clamp(20px, 3vh, 44px) + 38px);
   overflow: hidden;
   background:
     radial-gradient(ellipse 55% 60% at 78% 42%, rgba($color-purple, 0.32), rgba($color-purple, 0) 70%),
@@ -43,25 +50,51 @@
     animation: iv-spin 140s linear infinite;
   }
 
+  // Row 1: the centred intro across both columns. Row 2: copy left. The
+  // phone spans both rows on the right (its chips start below the switch,
+  // so the two never meet).
+  // Takes all the height the stats leave. The switch row stays at the top
+  // (under the header); row 2 takes the rest and the copy and phone sit at
+  // its bottom, just above the stats. Spare height on tall screens opens
+  // between the switch and the copy, never under the stats.
   &__inner {
+    flex: 1;
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-rows: auto 1fr;
+    align-content: stretch;
     align-items: center;
-    gap: fluid(32px, 96px);
+    gap: clamp(16px, 3.2vh, 40px) fluid(32px, 96px);
+  }
+
+  // ---- Centred intro ----
+  &__top.hero__intro {
+    position: relative;
+    z-index: 3;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    align-self: start;
+    justify-self: center;
+
+    // Big screens: a little lower, more as the screen gets taller.
+    @media (min-width: 1920px) {
+      margin-top: clamp(24px, calc((100svh - 900px) * 0.35), 120px);
+    }
+    align-items: center;
+    gap: clamp(10px, 1.6vh, 20px);
+    text-align: center;
   }
 
   // ---- Copy column ----
   &__copy {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: fluid(20px, 28px);
+    gap: clamp(14px, 2.6vh, 28px);
     text-align: left;
-  }
-
-  .hero__intro {
-    align-items: flex-start;
-    gap: $space-20;
   }
 
   .t-eyebrow {
@@ -87,8 +120,10 @@
     }
   }
 
-  // Overrides the shared hero's centred, one-line title.
+  // Overrides the shared hero's centred, one-line title; sized by the
+  // screen's height as well as its width.
   & &__title {
+    font-size: clamp(44px, min(6.2vw, 10vh), 96px);
     white-space: normal;
   }
 
@@ -98,6 +133,7 @@
 
   & &__lead {
     max-width: 600px;
+    font-size: clamp(16px, min(1.5vw, 2.7vh), 22px);
     color: rgba($color-white, 0.72);
 
     strong {
@@ -108,42 +144,24 @@
 
   & &__actions {
     max-width: 620px;
-    margin: $space-8 0 0;
+    margin: clamp(0px, 0.6vh, 8px) 0 0;
     padding: 0;
   }
 
-  &__trust {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $space-12 $space-24;
-    font-size: fluid(14px, 17px);
-    color: rgba($color-white, 0.72);
-
-    li {
-      display: inline-flex;
-      align-items: center;
-      gap: $space-8;
-    }
-
-    svg {
-      width: 18px;
-      height: 18px;
-      padding: 2px;
-      border-radius: 50%;
-      background: rgba($color-jade, 0.14);
-      color: $color-jade;
-    }
-  }
-
-  // ---- Visual column ----
+  // ---- Visual column (both rows) ----
   &__visual {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: end;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
   &__stage {
-    --pw: #{fluid(260px, 340px)}; // phone width
+    // Phone width: from the column width and the space the screen's
+    // height leaves (header, stats and paddings take ~350px).
+    --pw: clamp(200px, min(26vw, calc((100svh - 350px) / 1.78)), 340px);
 
     position: relative;
     display: flex;
@@ -153,19 +171,53 @@
   }
 
   &__caption {
-    margin-top: $space-16;
+    margin-top: clamp(8px, 1.5vh, 16px);
     font-size: 13px;
     letter-spacing: 0.04em;
     color: rgba($color-white, 0.5);
   }
 
   // ---- Responsive ----
+  // Smaller laptops (1024–1679px): a slightly smaller phone and chips, and
+  // the right-hand chips pulled inside the column so none run off screen.
+  @media (min-width: 1024px) and (max-width: 1679.98px) {
+    &__stage {
+      --pw: clamp(200px, min(20vw, calc((100svh - 380px) / 1.78)), 300px);
+    }
+
+    .iv-chip {
+      zoom: 0.88;
+    }
+
+    .iv-chip--2 {
+      right: 0;
+    }
+
+    .iv-chip--3 {
+      right: 0;
+    }
+  }
+
   @include down("laptop") {
     min-height: 0;
 
     &__inner {
       grid-template-columns: 1fr;
-      gap: $space-48;
+      grid-template-rows: auto;
+      gap: $space-32;
+    }
+
+    &__copy,
+    &__visual {
+      grid-column: 1;
+    }
+
+    &__visual {
+      grid-row: 3;
+    }
+
+    &__stage {
+      --pw: 300px;
     }
 
     &__swirl {
@@ -715,15 +767,15 @@
 .iv-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: fluid(48px, 88px);
+  margin-top: clamp(16px, 3.5vh, 56px);
   border-top: 1px solid rgba($color-white, 0.14);
 
   &__item {
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-end;
-    gap: $space-12;
-    padding: $space-24 $space-24 0 0;
+    gap: clamp(4px, 1vh, 12px);
+    padding: clamp(12px, 2vh, 24px) $space-24 0 0;
 
     & + & {
       padding-left: fluid(20px, 40px);
@@ -732,7 +784,7 @@
   }
 
   dd {
-    font-size: fluid(40px, 72px);
+    font-size: clamp(32px, min(4.2vw, 6.5vh), 64px);
     line-height: 1;
     letter-spacing: -0.02em;
 
@@ -749,14 +801,14 @@
   }
 
   dt {
-    max-width: 300px;
-    font-size: fluid(14px, 17px);
+    max-width: 380px;
+    font-size: clamp(13px, min(1.1vw, 2vh), 16px);
     line-height: 1.35;
     color: rgba($color-white, 0.65);
   }
 
   &__src {
-    margin-top: $space-20;
+    margin-top: clamp(8px, 1.4vh, 20px);
     font-size: 12px;
     color: rgba($color-white, 0.4);
   }

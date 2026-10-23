@@ -48,6 +48,22 @@
     flex: none;
   }
 
+  // Smaller, tighter questions than the Raise Capital FAQ: eight of them.
+  .faq-item__btn {
+    padding: fluid(18px, 24px) fluid(18px, 26px);
+  }
+
+  .faq-item__q {
+    font-size: fluid(18px, 24px);
+  }
+
+  .faq-item__a {
+    margin: 0 fluid(18px, 26px) fluid(20px, 26px);
+    padding-top: $space-16;
+    font-size: fluid(15px, 18px);
+    line-height: 1.5;
+  }
+
   // Opened from the ask bar: brief purple glow so the eye finds it.
   .faq-item.is-flash {
     animation: iv-flash 1.4s $ease-out;

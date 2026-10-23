@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" href="images/shared/favicon.svg" type="image/svg+xml">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ARENA — Invest (v2 backup, steps grid)</title>
+  <meta name="description" content="Invest in growing companies at the offer stage, before a traditional IPO, on the regulated Dubai Financial Market platform where their shares will trade.">
+  <script>document.documentElement.classList.add('js','is-page-loading');var lv=(location.search.match(/[?&]loader=([\w-]+)/)||[])[1];if(!lv)document.documentElement.classList.add('loader-default');if(lv)lv.split('-').forEach(function(_,i,a){document.documentElement.classList.add('loader-'+a.slice(0,i+1).join('-'));});setTimeout(function(){if(window.arenaLoaderRunning)return;document.documentElement.classList.remove('is-page-loading');var l=document.querySelector('[data-loader]');if(l)l.classList.add('is-gone');},6000);</script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="theme-investor page-invest">
+  <!-- Previous version of this page: index-v1.html -->
+  <!-- Page loader (js/components/loader.js); only shown with JS. -->
+  <div class="loader" data-loader aria-hidden="true">
+    <div class="loader__glow"></div>
+    <div class="loader__type" aria-hidden="true"><span>A</span><span>R</span><span>E</span><span>N</span><span>A</span></div>
+    <div class="loader__ring" aria-hidden="true"></div>
+    <div class="loader__dots" aria-hidden="true"></div>
+    <div class="loader__cols" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="loader__arch" aria-hidden="true"></div>
+    <div class="loader__split" aria-hidden="true"><span></span><span></span><i></i></div>
+    <div class="loader__center">
+      <span class="loader__mark"><img class="loader__mark-light" src="images/shared/mark-light.svg" width="64" height="64" alt=""><img class="loader__mark-dark" src="images/shared/favicon.svg" width="64" height="64" alt=""></span>
+      <p class="loader__eyebrow">ARENA by Dubai Financial Market</p>
+    </div>
+    <div class="loader__foot">
+      <span class="loader__tag">Capital, made simple.</span>
+      <span class="loader__bar"><span class="loader__fill" data-loader-fill></span></span>
+      <span class="loader__count"><span data-loader-count>0</span><sup>%</sup></span>
+    </div>
+  </div>
+
+  <header class="site-header" data-site-header data-menu-theme="light" data-menu-bg="dots">
+    <div class="site-header__inner">
+      <div class="site-header__brand">
+        <a class="site-header__logo" href="index.html" aria-label="ARENA by Dubai Financial Market — home">
+          <img class="logo--dark" src="images/shared/logo-dark.svg" width="180" height="64" alt="ARENA">
+          <img class="logo--light" src="images/shared/logo-light.svg" width="180" height="64" alt="ARENA">
+        </a>
+        <nav class="toggle liquid-glass" aria-label="Audience">
+          <span class="liquid-glass__effect"></span>
+          <span class="liquid-glass__tint"></span>
+          <span class="liquid-glass__shine"></span>
+          <a class="toggle__option" href="company.html">Raise Capital</a>
+          <a class="toggle__option" href="index.html" aria-current="page">Invest</a>
+        </nav>
+      </div>
+
+      <button class="site-header__menu-btn" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu" data-menu-button><span></span></button>
+
+      <nav class="site-header__nav" id="site-menu" aria-label="Main" data-menu>
+        <span class="site-header__menu-bg" aria-hidden="true"></span>
+        <a class="site-header__link t-nav" href="#how" style="--i: 0"><span class="site-header__link-text">How it works</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
+        <a class="site-header__link t-nav" href="#faq" style="--i: 1"><span class="site-header__link-text">FAQ</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
+        <div class="site-header__menu-foot">
+          <a class="site-header__menu-cta" href="#notify">Get notified at launch<span aria-hidden="true"></span></a>
+          <a class="site-header__menu-mail" href="mailto:arena@dfm.ae">arena@dfm.ae</a>
+          <p class="site-header__menu-tag">Capital, made simple.</p>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ Hero: app-led, dark ============ -->
+    <section class="iv-hero" data-hero data-header="light" aria-labelledby="hero-title">
+      <div class="iv-hero__bg" aria-hidden="true">
+        <img class="iv-hero__swirl" src="images/investor/swirl.webp" width="1023" height="1024" alt="">
+      </div>
+
+      <div class="container iv-hero__inner">
+        <div class="iv-hero__copy">
+          <div class="hero__intro iv-hero__intro">
+            <p class="t-eyebrow" data-hero-intro>Brought to you by Dubai Financial Market</p>
+            <nav class="switch liquid-glass iv-hero__switch" aria-label="I am" data-hero-intro>
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <a class="switch__option" href="company.html"><span class="switch__label">Raise capital</span></a>
+              <span class="switch__active" aria-current="page">
+                <span class="switch__chip switch__chip--right"><img src="images/shared/icons/arrow.svg" width="24" height="24" alt=""></span>
+                <span class="switch__label">Invest</span>
+              </span>
+            </nav>
+          </div>
+
+          <h1 class="hero__title iv-hero__title t-display" id="hero-title"><span class="iv-hero__line">Invest in</span> <span class="iv-hero__line">what comes <span class="iv-hl">next.</span></span></h1>
+          <p class="hero__lead iv-hero__lead t-lead" data-hero-intro>ARENA connects you with growing companies raising capital <strong>before a traditional IPO</strong>, so you can invest at the offer stage, on the same regulated platform where their shares will trade.</p>
+
+          <div class="hero__actions iv-hero__actions">
+            <a class="btn-cta liquid-glass btn-cta--purple" href="#notify" data-hero-intro>
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <span class="btn-cta__label">
+                <span class="btn-cta__text">Get notified at launch</span>
+                <span class="btn-cta__text" aria-hidden="true">Get notified at launch</span>
+              </span>
+              <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
+            </a>
+            <a class="btn-cta liquid-glass btn-cta--white" href="#offerings" data-hero-intro>
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <span class="btn-cta__label">
+                <span class="btn-cta__text">Preview the market</span>
+                <span class="btn-cta__text" aria-hidden="true">Preview the market</span>
+              </span>
+              <img class="btn-cta__icon" src="images/shared/icons/chevron-white.svg" width="20" height="20" alt="">
+            </a>
+          </div>
+
+          <ul class="iv-hero__trust" data-hero-intro>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10.5 3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Regulated end to end</li>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10.5 3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Runs on DFM infrastructure</li>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10.5 3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>All in the iVestor app</li>
+          </ul>
+        </div>
+
+        <!-- Illustrative iVestor preview (js/components/invest-phone.js):
+             each floating chip in turn lights up and pushes its text into
+             the phone as a notification. -->
+        <figure class="iv-hero__visual" data-iv-phone>
+          <div class="iv-hero__stage" aria-hidden="true">
+            <div class="iv-phone">
+              <div class="iv-phone__screen">
+                <div class="iv-phone__status"><span>9:41</span><i class="iv-phone__island"></i><span class="iv-phone__sys"><b></b><b></b><b></b><b></b><em></em></span></div>
+
+                <div class="iv-phone__toast" data-iv-toast>
+                  <span class="iv-phone__toast-icon"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16Zm4 4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="iv-phone__toast-text"><b data-iv-toast-title>Offer is live</b><small data-iv-toast-text>Subscriptions are open</small></span>
+                  <em>now</em>
+                </div>
+
+                <div class="iv-phone__top">
+                  <span class="iv-phone__brand">iVestor</span>
+                  <span class="iv-phone__icons">
+                    <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    <i class="iv-phone__avatar">A</i>
+                  </span>
+                </div>
+
+                <p class="iv-phone__label">Portfolio value</p>
+                <p class="iv-phone__value"><small>AED</small> <span data-iv-value>48,250</span></p>
+                <div class="iv-phone__chart">
+                  <svg class="iv-phone__spark" viewBox="0 0 300 70" preserveAspectRatio="none" data-iv-spark>
+                    <defs><linearGradient id="iv-spark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a38bf2" stop-opacity="0.45"/><stop offset="1" stop-color="#a38bf2" stop-opacity="0"/></linearGradient></defs>
+                    <path class="iv-phone__spark-area" d="M0 52 L20 50 L40 54 L60 46 L80 48 L100 40 L120 43 L140 34 L160 37 L180 30 L200 32 L220 22 L240 25 L260 16 L280 18 L300 8 L300 70 L0 70 Z" fill="url(#iv-spark)"/>
+                    <path class="iv-phone__spark-line" d="M0 52 L20 50 L40 54 L60 46 L80 48 L100 40 L120 43 L140 34 L160 37 L180 30 L200 32 L220 22 L240 25 L260 16 L280 18 L300 8" fill="none" pathLength="1"/>
+                  </svg>
+                  <span class="iv-phone__cursor" data-iv-cursor><i></i><b></b></span>
+                </div>
+
+                <p class="iv-phone__section">Live on ARENA</p>
+                <div class="iv-phone__card iv-phone__card--growth">
+                  <div class="iv-phone__card-head"><span class="iv-tag iv-tag--growth">Growth Market</span><span class="iv-phone__live"><i></i>Live</span></div>
+                  <strong>Growth Market offer</strong>
+                  <small>Subscription closes in 3 days</small>
+                  <span class="iv-phone__meter"><i data-iv-meter></i></span>
+                  <span class="iv-phone__btn">Subscribe</span>
+                </div>
+                <div class="iv-phone__card iv-phone__card--private">
+                  <div class="iv-phone__card-head"><span class="iv-tag iv-tag--private">Private Market</span><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></div>
+                  <strong>Private Market invitation</strong>
+                  <small>Tap to view <span aria-hidden="true">›</span></small>
+                </div>
+              </div>
+            </div>
+
+            <div class="iv-chip iv-chip--1" data-iv-chip>
+              <span class="iv-chip__icon iv-chip__icon--purple"><svg viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="iv-chip__text"><b>Ahmed subscribed</b><small>Growth Market offer</small></span>
+            </div>
+            <div class="iv-chip iv-chip--2" data-iv-chip>
+              <span class="iv-chip__icon iv-chip__icon--jade"><i class="iv-chip__pulse"></i></span>
+              <span class="iv-chip__text"><b>Offer is live</b><small>Subscriptions are open</small></span>
+            </div>
+            <div class="iv-chip iv-chip--3" data-iv-chip>
+              <span class="iv-chip__icon iv-chip__icon--yellow"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 3.5v4m8-4v4M4 10h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+              <span class="iv-chip__text"><b>Noor registered</b><small>Roadshow · 10:00 GST</small></span>
+            </div>
+            <div class="iv-chip iv-chip--4" data-iv-chip>
+              <span class="iv-chip__icon iv-chip__icon--white"><svg viewBox="0 0 24 24"><path d="M12 3.5 19 7v5c0 4.2-3 7.4-7 8.5-4-1.1-7-4.3-7-8.5V7l7-3.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m9 12 2.2 2.2L15.5 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="iv-chip__text"><b>Allocation confirmed</b><small>Shares in your name</small></span>
+            </div>
+          </div>
+          <figcaption class="iv-hero__caption">Illustrative app preview</figcaption>
+        </figure>
+      </div>
+
+      <!-- Figures from DFM's published 2025 results; to be confirmed by DFM before launch. -->
+      <div class="container">
+        <dl class="iv-stats" data-scroll-reveal-group>
+          <div class="iv-stats__item">
+            <dt>Market value of DFM-listed companies, end of 2025</dt>
+            <dd><small>AED</small> <span data-count-to="992">992</span><small>bn</small></dd>
+          </div>
+          <div class="iv-stats__item">
+            <dt>Traded on DFM in 2025</dt>
+            <dd><small>AED</small> <span data-count-to="174">174</span><small>bn</small></dd>
+          </div>
+          <div class="iv-stats__item">
+            <dt>DFM General Index gain in 2025</dt>
+            <dd class="is-up">+<span data-count-to="17.2" data-count-decimals="1">17.2</span><small>%</small></dd>
+          </div>
+        </dl>
+        <p class="iv-stats__src">Source: Dubai Financial Market, 2025 results.</p>
+      </div>
+    </section>
+
+    <!-- ============ Three markets (same stacking cards as Raise Capital) ============ -->
+    <div class="markets-wrap" data-markets data-header="dark">
+    <section class="markets-head" id="markets">
+      <div class="container markets-head__inner">
+        <div class="markets-head__text">
+          <h2 class="markets-head__title" id="markets-title" data-scroll-reveal>One platform, <em class="iv-hl">three markets.</em></h2>
+          <p class="markets-head__lead" data-scroll-reveal>Every offering on ARENA comes from one of three markets. <strong>Who can take part depends on the market.</strong></p>
+        </div>
+        <a class="btn-pill" href="#offerings" data-scroll-reveal>
+          <span class="btn-pill__label">See the offerings board</span>
+          <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="markets" aria-labelledby="markets-title">
+      <div class="markets__list container" data-stack data-stack-variant="v1">
+        <article class="market market--growth" id="growth" data-stack-item>
+          <div class="market__card">
+            <div class="market__media" aria-hidden="true" data-skeleton>
+              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img data-skeleton-content class="market__photo market__photo--flip" src="images/markets/investor-growth.webp" width="1024" height="683" alt="" loading="lazy">
+            </div>
+              <div class="market__ring" aria-hidden="true">
+                <div class="market__ring-art">
+                  <img class="market__ring-img" src="images/markets/ring-investor-growth.svg" width="910" height="910" alt="" loading="lazy">
+                  <img class="market__ring-glow" src="images/markets/ring-investor-growth.svg" width="910" height="910" alt="" loading="lazy">
+                </div>
+              </div>
+            <div class="market__content">
+              <h3 class="market__title">Growth Market — 01</h3>
+              <div class="market__body">
+                <div class="market__copy">
+                  <p class="market__subtitle">Open to the market.</p>
+                  <p class="market__text">Growing companies raising capital from the wide market. Anyone with a DFM investor number can subscribe in the iVestor app.</p>
+                </div>
+                <div class="market__panel liquid-glass">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                  <div class="market__stats liquid-glass__content">
+                  <div class="market__stat">
+                    <p class="market__label">Who can invest</p>
+                    <p class="market__value">Any DFM investor number</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">Where</p>
+                    <p class="market__value">iVestor app</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">After listing</p>
+                    <p class="market__value">Trades freely</p>
+                  </div>
+                  </div>
+                  <div class="liquid-glass__content">
+                    <a class="btn-cta liquid-glass btn-cta--purple market__cta" href="growth-market.html">
+                      <span class="liquid-glass__effect"></span>
+                      <span class="liquid-glass__tint"></span>
+                      <span class="liquid-glass__shine"></span>
+                      <span class="btn-cta__label">
+                        <span class="btn-cta__text">Explore Growth Market</span>
+                        <span class="btn-cta__text" aria-hidden="true">Explore Growth Market</span>
+                      </span>
+                      <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="market__shade" aria-hidden="true"></div>
+          </div>
+        </article>
+        <article class="market market--private" id="private" data-stack-item>
+          <div class="market__card">
+            <div class="market__media" aria-hidden="true" data-skeleton>
+              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img data-skeleton-content class="market__photo market__photo--flip market__photo--zoom" src="images/markets/investor-private.webp" width="2071" height="1381" alt="" loading="lazy">
+                <div class="market__overlay market__overlay--deep"></div>
+            </div>
+              <div class="market__ring" aria-hidden="true">
+                <div class="market__ring-art">
+                  <img class="market__ring-img" src="images/markets/ring-investor-private.svg" width="910" height="910" alt="" loading="lazy">
+                  <img class="market__ring-glow" src="images/markets/ring-investor-private.svg" width="910" height="910" alt="" loading="lazy">
+                </div>
+              </div>
+            <div class="market__content">
+              <h3 class="market__title">Private Market — 02</h3>
+              <div class="market__body">
+                <div class="market__copy">
+                  <p class="market__subtitle">By invitation.</p>
+                  <p class="market__text">Pre-IPO companies raising from a select circle of investors. Shares change hands in private trading windows.</p>
+                </div>
+                <div class="market__panel liquid-glass">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                  <div class="market__stats liquid-glass__content">
+                  <div class="market__stat">
+                    <p class="market__label">Who can invest</p>
+                    <p class="market__value">Approved investors</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">Stage</p>
+                    <p class="market__value">Pre-IPO</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">After allocation</p>
+                    <p class="market__value">Private trading windows</p>
+                  </div>
+                  </div>
+                  <div class="liquid-glass__content">
+                    <a class="btn-cta liquid-glass btn-cta--jade market__cta" href="private-market.html">
+                      <span class="liquid-glass__effect"></span>
+                      <span class="liquid-glass__tint"></span>
+                      <span class="liquid-glass__shine"></span>
+                      <span class="btn-cta__label">
+                        <span class="btn-cta__text">Explore Private Market</span>
+                        <span class="btn-cta__text" aria-hidden="true">Explore Private Market</span>
+                      </span>
+                      <img class="btn-cta__icon" src="images/shared/icons/chevron-jade.svg" width="20" height="20" alt="">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="market__shade" aria-hidden="true"></div>
+          </div>
+        </article>
+        <article class="market market--closed" id="closed" data-stack-item>
+          <div class="market__card">
+            <div class="market__media" aria-hidden="true" data-skeleton>
+              <div class="skeleton skeleton--fill skeleton--dark"><span class="skeleton__shimmer" aria-hidden="true"></span></div>
+              <img data-skeleton-content class="market__photo" src="images/markets/investor-closed.webp" width="1024" height="768" alt="" loading="lazy">
+                <div class="market__overlay market__overlay--deep"></div>
+            </div>
+              <div class="market__ring" aria-hidden="true">
+                <div class="market__ring-art">
+                  <img class="market__ring-img" src="images/markets/ring-investor-closed.svg" width="910" height="910" alt="" loading="lazy">
+                  <img class="market__ring-glow" src="images/markets/ring-investor-closed.svg" width="910" height="910" alt="" loading="lazy">
+                </div>
+              </div>
+            <div class="market__content">
+              <h3 class="market__title">Closed Market — 03</h3>
+              <div class="market__body">
+                <div class="market__copy">
+                  <p class="market__subtitle">Admission only.</p>
+                  <p class="market__text">Family businesses opening ownership to family and employees. Trading stays private, inside the circle.</p>
+                </div>
+                <div class="market__panel liquid-glass">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                  <div class="market__stats liquid-glass__content">
+                  <div class="market__stat">
+                    <p class="market__label">Who can invest</p>
+                    <p class="market__value">Family and employees</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">Price</p>
+                    <p class="market__value">Independent valuation</p>
+                  </div>
+                  <div class="market__stat">
+                    <p class="market__label">Trading</p>
+                    <p class="market__value">Inside the circle</p>
+                  </div>
+                  </div>
+                  <div class="liquid-glass__content">
+                    <a class="btn-cta liquid-glass btn-cta--yellow market__cta" href="closed-market.html">
+                      <span class="liquid-glass__effect"></span>
+                      <span class="liquid-glass__tint"></span>
+                      <span class="liquid-glass__shine"></span>
+                      <span class="btn-cta__label">
+                        <span class="btn-cta__text">Explore Closed Market</span>
+                        <span class="btn-cta__text" aria-hidden="true">Explore Closed Market</span>
+                      </span>
+                      <img class="btn-cta__icon" src="images/shared/icons/chevron-yellow.svg" width="20" height="20" alt="">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="market__shade" aria-hidden="true"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+    </div>
+
+    <!-- ============ Why invest on ARENA ============ -->
+    <section class="iv-why" id="why" aria-labelledby="why-title" data-header="dark">
+      <div class="container">
+        <div class="iv-head">
+          <p class="iv-head__eyebrow t-eyebrow" data-scroll-reveal>Why ARENA</p>
+          <h2 class="iv-head__title" id="why-title" data-scroll-reveal>Why invest <em class="iv-hl">on ARENA.</em></h2>
+        </div>
+
+        <div class="iv-why__grid" data-scroll-reveal-group>
+          <article class="iv-why__card">
+            <div class="iv-why__viz iv-why__viz--stage" aria-hidden="true" data-iv-loop="stage">
+              <span class="iv-stage-fill"></span>
+              <span class="iv-stage-step is-you"><b>You invest here</b><i></i><em>Offer stage</em></span>
+              <span class="iv-stage-step"><i></i><em>Listing day</em></span>
+              <span class="iv-stage-step"><i></i><em>IPO</em></span>
+            </div>
+            <h3 class="iv-why__title">Invest <strong>before the IPO</strong></h3>
+            <p class="iv-why__text">Invest in growth companies at a stage that was previously open mainly to institutions.</p>
+          </article>
+
+          <article class="iv-why__card">
+            <div class="iv-why__viz iv-why__viz--demand" aria-hidden="true" data-iv-loop="demand">
+              <span class="iv-demand"><i style="--h: 28%"></i><i style="--h: 42%"></i><i style="--h: 58%"></i><i style="--h: 76%"></i><i style="--h: 92%"></i><i style="--h: 70%"></i><i style="--h: 50%"></i><i style="--h: 34%"></i><i style="--h: 22%"></i></span>
+              <span class="iv-demand__price">Offer price</span>
+            </div>
+            <h3 class="iv-why__title">Real prices, from <strong>real demand</strong></h3>
+            <p class="iv-why__text">Prices are set by real investor demand during the offer, not by private negotiation.</p>
+          </article>
+
+          <article class="iv-why__card">
+            <div class="iv-why__viz iv-why__viz--chain" aria-hidden="true" data-iv-loop="chain">
+              <span>Subscription</span><span>Allocation</span><span>Settlement</span><span>Trading</span>
+              <b>DFM infrastructure</b>
+            </div>
+            <h3 class="iv-why__title"><strong>Regulated</strong> end to end</h3>
+            <p class="iv-why__text">Subscription, allocation, settlement and trading all run on DFM infrastructure.</p>
+          </article>
+
+          <article class="iv-why__card">
+            <div class="iv-why__viz iv-why__viz--account" aria-hidden="true" data-iv-loop="account">
+              <span class="iv-account__row"><i class="iv-dot iv-dot--growth"></i>Growth Market<em></em></span>
+              <span class="iv-account__row"><i class="iv-dot iv-dot--private"></i>Private Market<em></em></span>
+              <span class="iv-account__row"><i class="iv-dot iv-dot--closed"></i>Closed Market<em></em></span>
+              <span class="iv-account__seg"><i class="iv-account__pill"></i><b class="is-on">Subscribe</b><b>Hold</b><b>Trade</b></span>
+            </div>
+            <h3 class="iv-why__title"><strong>One account</strong> for everything</h3>
+            <p class="iv-why__text">Subscribe, hold and trade in the same place, with your portfolio in one view.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ How you earn (dark panel) ============ -->
+    <section class="iv-earn" id="earn" aria-labelledby="earn-title">
+      <div class="iv-earn__panel" data-header="light">
+        <div class="container">
+          <div class="iv-head iv-head--split">
+            <h2 class="iv-head__title" id="earn-title" data-scroll-reveal>How you <em class="iv-hl">earn.</em></h2>
+            <p class="iv-head__lead" data-scroll-reveal>Three ways your investment can work. Every offer document sets them out <strong>in plain terms before you subscribe.</strong></p>
+          </div>
+
+          <div class="iv-earn__grid" data-scroll-reveal-group>
+            <article class="iv-earn__card">
+              <div class="iv-earn__viz" aria-hidden="true" data-iv-loop="growth">
+                <svg class="iv-earn__chart" viewBox="0 0 320 140" preserveAspectRatio="none">
+                  <defs><linearGradient id="iv-earn-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a38bf2" stop-opacity="0.35"/><stop offset="1" stop-color="#a38bf2" stop-opacity="0"/></linearGradient><clipPath id="iv-earn-clip"><rect x="0" y="0" width="320" height="140" data-iv-clip/></clipPath></defs>
+                  <line x1="0" y1="104" x2="320" y2="104" class="iv-earn__base"/>
+                  <g clip-path="url(#iv-earn-clip)" data-iv-reveal>
+                    <path d="M24 104 C70 100 90 92 120 86 S180 70 210 58 S270 30 300 20 L300 140 L24 140 Z" fill="url(#iv-earn-area)"/>
+                    <path class="iv-earn__line" d="M24 104 C70 100 90 92 120 86 S180 70 210 58 S270 30 300 20" pathLength="1"/>
+                  </g>
+                  <circle cx="24" cy="104" r="6" class="iv-earn__dot"/>
+                  <circle cx="300" cy="20" r="6" class="iv-earn__dot iv-earn__dot--end"/>
+                </svg>
+                <span class="iv-earn__mark iv-earn__mark--start">Offer price</span>
+                <span class="iv-earn__mark iv-earn__mark--end">Toward IPO</span>
+              </div>
+              <span class="iv-earn__num">01</span>
+              <h3 class="iv-earn__title">Growth in value</h3>
+              <p class="iv-earn__text">You subscribe at the offer price, and the value of your shares <strong>follows the company</strong> as it moves toward its IPO.</p>
+            </article>
+
+            <article class="iv-earn__card">
+              <div class="iv-earn__viz iv-earn__viz--dividend" aria-hidden="true" data-iv-loop="dividend">
+                <span class="iv-payouts"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></span>
+                <span class="iv-earn__mark iv-earn__mark--policy">Set by each company’s dividend policy</span>
+              </div>
+              <span class="iv-earn__num">02</span>
+              <h3 class="iv-earn__title">Dividends</h3>
+              <p class="iv-earn__text">Some companies <strong>distribute profits while you hold.</strong> Each offer document sets out the company’s dividend policy.</p>
+            </article>
+
+            <article class="iv-earn__card">
+              <div class="iv-earn__viz iv-earn__viz--exit" aria-hidden="true" data-iv-loop="exit">
+                <span class="iv-exit"><b>Growth Market</b><span class="iv-exit__bar iv-exit__bar--open"><em></em></span><small>Trades freely from listing day</small></span>
+                <span class="iv-exit"><b>Private &amp; Closed</b><span class="iv-exit__bar iv-exit__bar--windows"><i></i><i></i><i></i><em></em></span><small>Private trading windows</small></span>
+              </div>
+              <span class="iv-earn__num">03</span>
+              <h3 class="iv-earn__title">Selling your shares</h3>
+              <p class="iv-earn__text">Growth Market shares <strong>trade freely on DFM infrastructure</strong> from listing day. Private and Closed Market shares change hands in private trading windows.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ When an offer goes live: three steps ============ -->
+    <section class="iv-steps" id="how" aria-labelledby="how-title" data-header="dark">
+      <div class="container">
+        <div class="iv-head iv-head--split">
+          <h2 class="iv-head__title" id="how-title" data-scroll-reveal>When an offer <em class="iv-hl">goes live.</em></h2>
+          <p class="iv-head__lead" data-scroll-reveal>Three steps inside the iVestor app. <strong>One account and one investor number</strong> cover every offering on ARENA.</p>
+        </div>
+
+        <ol class="iv-steps__list" data-scroll-reveal-group>
+          <li class="iv-steps__item">
+            <div class="iv-screen" aria-hidden="true" data-iv-loop="discover">
+              <span class="iv-screen__search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span data-iv-type>Search offerings</span></span>
+              <span class="iv-screen__filters"><b class="is-on">All</b><b>Growth</b><b>Private</b><b>Closed</b></span>
+              <span class="iv-screen__row"><i class="iv-dot iv-dot--growth"></i><span><em></em><small>Growth Market · Open</small></span><b>›</b></span>
+              <span class="iv-screen__row"><i class="iv-dot iv-dot--private"></i><span><em></em><small>Private Market · Invitation</small></span><b>›</b></span>
+              <span class="iv-screen__doc"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7V3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4M10 12h5M10 16h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Offer document</span>
+            </div>
+            <span class="iv-steps__num">01</span>
+            <h3 class="iv-steps__title">Discover</h3>
+            <p class="iv-steps__text">Browse every open offering, read the offer document and pick the investor category that applies to you.</p>
+          </li>
+          <li class="iv-steps__item">
+            <div class="iv-screen iv-screen--form" aria-hidden="true" data-iv-loop="subscribe">
+              <span class="iv-screen__label">Your amount</span>
+              <span class="iv-screen__amount"><small>AED</small> <b data-iv-amount>10,000</b><i></i></span>
+              <span class="iv-screen__field"><small>Investor category</small>Individual investor</span>
+              <span class="iv-screen__field"><small>Pay from</small>Linked account •••• 2040</span>
+              <span class="iv-screen__btn">Review subscription</span>
+            </div>
+            <span class="iv-steps__num">02</span>
+            <h3 class="iv-steps__title">Subscribe</h3>
+            <p class="iv-steps__text">Enter your amount, review your subscription and <strong>pay from your linked account.</strong></p>
+          </li>
+          <li class="iv-steps__item">
+            <div class="iv-screen" aria-hidden="true" data-iv-loop="trade">
+              <span class="iv-screen__note"><i><svg viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>Allocation confirmed</b><small>Shares in your name</small></span></span>
+              <svg class="iv-screen__chart" viewBox="0 0 200 60" preserveAspectRatio="none"><path d="M0 48 L18 44 L36 46 L54 38 L72 40 L90 30 L108 33 L126 24 L144 27 L162 18 L180 20 L200 10" fill="none" pathLength="1"/></svg>
+              <span class="iv-screen__side"><i class="iv-screen__pill"></i><b class="is-on">Buy</b><b>Sell</b></span>
+              <span class="iv-screen__tag">Listing day · Live trading</span>
+            </div>
+            <span class="iv-steps__num">03</span>
+            <h3 class="iv-steps__title">Trade</h3>
+            <p class="iv-steps__text">When the offer closes you are notified of your allocation, and your shares <strong>trade on DFM infrastructure from listing day.</strong></p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ Offerings board (empty state until launch) ============ -->
+    <section class="iv-board" id="offerings" aria-labelledby="offerings-title" data-header="dark" data-iv-board>
+      <div class="container">
+        <div class="iv-head iv-head--split">
+          <h2 class="iv-head__title" id="offerings-title" data-scroll-reveal>Offerings, <em class="iv-hl">opening soon.</em></h2>
+          <p class="iv-head__lead" data-scroll-reveal>The first offerings are being prepared now. <strong>This board fills the moment subscriptions open.</strong></p>
+        </div>
+
+        <div class="iv-board__frame" data-scroll-reveal>
+          <div class="iv-board__bar">
+            <div class="iv-board__tabs" role="tablist" aria-label="Filter by market">
+              <button class="iv-board__tab is-on" type="button" role="tab" aria-selected="true" data-iv-filter="all">All</button>
+              <button class="iv-board__tab" type="button" role="tab" aria-selected="false" data-iv-filter="growth"><i class="iv-dot iv-dot--growth"></i>Growth</button>
+              <button class="iv-board__tab" type="button" role="tab" aria-selected="false" data-iv-filter="private"><i class="iv-dot iv-dot--private"></i>Private</button>
+              <button class="iv-board__tab" type="button" role="tab" aria-selected="false" data-iv-filter="closed"><i class="iv-dot iv-dot--closed"></i>Closed</button>
+            </div>
+            <p class="iv-board__count"><span class="iv-board__live"><i></i>0 open</span> today</p>
+          </div>
+
+          <div class="iv-board__body">
+            <div class="iv-board__ghosts" aria-hidden="true">
+              <div class="iv-offer" data-market="growth">
+                <span class="iv-offer__head"><span class="iv-tag iv-tag--growth">Growth Market</span><span class="iv-offer__status">Opening soon</span></span>
+                <span class="iv-offer__name"></span>
+                <span class="iv-offer__line"></span>
+                <span class="iv-offer__stats"><span><small>Min. subscription</small>—</span><span><small>Closes</small>—</span></span>
+                <span class="iv-offer__meter"></span>
+              </div>
+              <div class="iv-offer" data-market="private">
+                <span class="iv-offer__head"><span class="iv-tag iv-tag--private">Private Market</span><span class="iv-offer__status">By invitation</span></span>
+                <span class="iv-offer__name"></span>
+                <span class="iv-offer__line"></span>
+                <span class="iv-offer__stats"><span><small>Min. subscription</small>—</span><span><small>Closes</small>—</span></span>
+                <span class="iv-offer__meter"></span>
+              </div>
+              <div class="iv-offer" data-market="closed">
+                <span class="iv-offer__head"><span class="iv-tag iv-tag--closed">Closed Market</span><span class="iv-offer__status">Admission only</span></span>
+                <span class="iv-offer__name"></span>
+                <span class="iv-offer__line"></span>
+                <span class="iv-offer__stats"><span><small>Min. subscription</small>—</span><span><small>Closes</small>—</span></span>
+                <span class="iv-offer__meter"></span>
+              </div>
+            </div>
+
+            <div class="iv-board__empty">
+              <span class="iv-board__bell" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16Zm4 4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <p class="iv-board__empty-title">No offerings open today.</p>
+              <p class="iv-board__empty-text">Register your interest and get a notification <strong>the moment the first offer goes live.</strong></p>
+              <a class="btn-pill" href="#notify">
+                <span class="btn-pill__label">Get notified</span>
+                <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <p class="iv-board__foot" data-scroll-reveal>Live offerings will appear here the moment the market opens.</p>
+      </div>
+    </section>
+
+    <!-- ============ FAQ + Ask ARENA ============ -->
+    <section class="faq iv-faq" id="faq" aria-labelledby="faq-title">
+      <div class="faq__panel" data-header="light">
+        <div class="iv-faq__wave" aria-hidden="true" data-dot-wave></div>
+        <div class="container">
+          <h2 class="faq__title" id="faq-title" data-scroll-reveal>Most asked <em class="iv-hl">questions.</em></h2>
+          <p class="iv-faq__lead" data-scroll-reveal>Read the quick answers below, or ask the ARENA assistant directly.</p>
+
+          <div class="faq__grid">
+            <div class="faq__list" data-faq data-scroll-reveal-group>
+            <div class="faq-item liquid-glass is-open">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-1" aria-expanded="true" aria-controls="faq-a-1">
+                  <span class="faq-item__q">Who can invest on ARENA?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-1" role="region" aria-labelledby="faq-q-1">
+                <div class="faq-item__inner"><p class="faq-item__a">Open offerings are available to investors with a DFM investor number, including qualified individuals and institutions. Private and Closed Market offerings are limited to approved investor circles.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-2" aria-expanded="false" aria-controls="faq-a-2">
+                  <span class="faq-item__q">How do I take part in an offering?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-2" role="region" aria-labelledby="faq-q-2">
+                <div class="faq-item__inner"><p class="faq-item__a">Create an ARENA account, choose an open offering, pick your investor category, enter your amount and pay from your linked account. When the offer closes you are notified of your allocation.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-3" aria-expanded="false" aria-controls="faq-a-3">
+                  <span class="faq-item__q">What happens if I am not allocated shares?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-3" role="region" aria-labelledby="faq-q-3">
+                <div class="faq-item__inner"><p class="faq-item__a">If an offer is oversubscribed you may receive a partial allocation or none. Any unallocated amount is refunded to your account automatically.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-4" aria-expanded="false" aria-controls="faq-a-4">
+                  <span class="faq-item__q">How much do I need to start?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-4" role="region" aria-labelledby="faq-q-4">
+                <div class="faq-item__inner"><p class="faq-item__a">Each offering sets its own minimum subscription. You see it on the offer page in iVestor before you commit to anything.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-5" aria-expanded="false" aria-controls="faq-a-5">
+                  <span class="faq-item__q">What does it cost to invest?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-5" role="region" aria-labelledby="faq-q-5">
+                <div class="faq-item__inner"><p class="faq-item__a">Any fees that apply to an offering are set out in its offer document, so you see the full picture before you subscribe.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-6" aria-expanded="false" aria-controls="faq-a-6">
+                  <span class="faq-item__q">Can I invest from outside the UAE?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-6" role="region" aria-labelledby="faq-q-6">
+                <div class="faq-item__inner"><p class="faq-item__a">DFM serves investors of more than 200 nationalities, and ARENA is built on the same infrastructure. Onboarding details for international investors will be confirmed at launch.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-7" aria-expanded="false" aria-controls="faq-a-7">
+                  <span class="faq-item__q">I do not have a DFM investor number. Can I get one?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-7" role="region" aria-labelledby="faq-q-7">
+                <div class="faq-item__inner"><p class="faq-item__a">Yes. Applying for your investor number is part of creating your iVestor account, and the app walks you through it step by step.</p></div>
+              </div>
+            </div>
+            <div class="faq-item liquid-glass">
+              <span class="liquid-glass__effect"></span>
+              <span class="liquid-glass__tint"></span>
+              <span class="liquid-glass__shine"></span>
+              <h3>
+                <button class="faq-item__btn" type="button" id="faq-q-8" aria-expanded="false" aria-controls="faq-a-8">
+                  <span class="faq-item__q">When do the first offerings open?</span>
+                  <span class="faq-item__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-item__panel" id="faq-a-8" role="region" aria-labelledby="faq-q-8">
+                <div class="faq-item__inner"><p class="faq-item__a">The first offerings are being prepared now. Register your interest and we will notify you the moment the market opens.</p></div>
+              </div>
+            </div>
+            </div>
+
+            <div class="faq__aside" id="contact" data-scroll-reveal-group>
+              <div class="assist-card">
+                <div>
+                  <p class="assist-card__title">Ask the assistant</p>
+                  <p class="assist-card__text">Ask the Arena assistant about the markets, eligibility or how subscription works, and get an answer in seconds.</p>
+                </div>
+                <a class="assist-card__btn" href="#assistant">
+                  <span class="assist-card__orb" aria-hidden="true">
+                    <svg class="orb" viewBox="0 0 64 64">
+                      <defs>
+                        <radialGradient id="orb-body" cx="50%" cy="50%" r="50%">
+                          <stop offset="0" stop-color="#8f6bff" stop-opacity="0.08" />
+                          <stop offset="0.72" stop-color="#a98bff" stop-opacity="0.22" />
+                          <stop offset="0.93" stop-color="#d9ccff" stop-opacity="0.5" />
+                          <stop offset="1" stop-color="#efe9ff" stop-opacity="0.15" />
+                        </radialGradient>
+                        <radialGradient id="orb-gloss" cx="38%" cy="28%" r="40%">
+                          <stop offset="0" stop-color="#ffffff" stop-opacity="0.32" />
+                          <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+                        </radialGradient>
+                        <filter id="orb-glow" x="-30%" y="-30%" width="160%" height="160%">
+                          <feGaussianBlur stdDeviation="0.9" result="b" />
+                          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+                        </filter>
+                      </defs>
+                      <circle cx="32" cy="32" r="25.5" fill="url(#orb-body)" />
+                      <circle class="orb__gloss" cx="32" cy="32" r="25" fill="url(#orb-gloss)" />
+                      <g class="orb__rings" filter="url(#orb-glow)" fill="none" stroke="#efe9ff">
+                        <path class="orb__ring orb__ring--1" d="M58.62 32.00C58.79 33.15 58.87 34.36 58.81 35.53C58.75 36.70 58.57 37.90 58.28 39.04C57.99 40.18 57.56 41.31 57.06 42.38C56.55 43.44 55.93 44.47 55.27 45.44C54.61 46.40 53.86 47.31 53.09 48.18C52.31 49.05 51.48 49.86 50.63 50.63C49.78 51.40 48.89 52.13 47.96 52.80C47.04 53.48 46.08 54.11 45.09 54.67C44.10 55.23 43.06 55.74 42.00 56.15C40.95 56.56 39.84 56.91 38.74 57.15C37.63 57.40 36.50 57.55 35.37 57.62C34.25 57.69 33.11 57.65 32.00 57.57C30.89 57.49 29.78 57.31 28.69 57.11C27.61 56.91 26.54 56.65 25.47 56.37C24.40 56.09 23.35 55.78 22.29 55.43C21.24 55.09 20.18 54.73 19.12 54.31C18.07 53.88 17.00 53.43 15.97 52.89C14.94 52.35 13.90 51.75 12.95 51.05C12.00 50.35 11.06 49.56 10.25 48.69C9.44 47.81 8.70 46.83 8.10 45.80C7.50 44.77 7.01 43.64 6.65 42.50C6.29 41.37 6.06 40.16 5.93 38.99C5.80 37.81 5.80 36.61 5.85 35.44C5.90 34.28 6.05 33.13 6.22 32.00C6.39 30.87 6.62 29.78 6.86 28.69C7.10 27.60 7.37 26.54 7.66 25.48C7.96 24.42 8.27 23.37 8.64 22.33C9.02 21.29 9.41 20.24 9.89 19.24C10.37 18.23 10.90 17.22 11.51 16.28C12.13 15.34 12.82 14.42 13.58 13.58C14.34 12.74 15.18 11.95 16.06 11.23C16.95 10.52 17.91 9.87 18.89 9.29C19.87 8.71 20.90 8.20 21.95 7.74C23.00 7.28 24.08 6.88 25.18 6.54C26.27 6.19 27.40 5.89 28.53 5.67C29.67 5.44 30.83 5.25 32.00 5.17C33.17 5.09 34.36 5.06 35.53 5.16C36.71 5.26 37.90 5.44 39.03 5.75C40.17 6.06 41.30 6.49 42.35 7.02C43.39 7.55 44.40 8.21 45.32 8.93C46.24 9.64 47.09 10.47 47.87 11.32C48.65 12.16 49.34 13.09 50.00 14.00C50.66 14.91 51.24 15.86 51.82 16.79C52.40 17.72 52.94 18.66 53.48 19.60C54.02 20.54 54.55 21.48 55.06 22.45C55.57 23.42 56.09 24.40 56.55 25.42C57.00 26.45 57.46 27.51 57.80 28.60C58.15 29.70 58.45 30.85 58.62 32.00Z" stroke-width="0.9" stroke-opacity="0.7" />
+                        <path class="orb__ring orb__ring--2" d="M58.07 32.00C58.04 33.14 57.95 34.27 57.80 35.40C57.65 36.52 57.44 37.64 57.16 38.74C56.89 39.84 56.55 40.94 56.13 42.00C55.71 43.05 55.22 44.10 54.65 45.08C54.09 46.06 53.44 47.02 52.71 47.90C51.99 48.77 51.19 49.60 50.33 50.33C49.48 51.07 48.54 51.73 47.59 52.31C46.63 52.89 45.61 53.38 44.58 53.80C43.56 54.21 42.50 54.54 41.45 54.82C40.40 55.09 39.34 55.29 38.28 55.45C37.23 55.62 36.18 55.72 35.13 55.80C34.09 55.88 33.05 55.92 32.00 55.94C30.95 55.95 29.91 55.94 28.85 55.89C27.80 55.85 26.74 55.78 25.67 55.64C24.60 55.51 23.51 55.34 22.43 55.09C21.36 54.84 20.27 54.54 19.22 54.14C18.17 53.74 17.11 53.26 16.12 52.69C15.13 52.12 14.16 51.46 13.28 50.72C12.40 49.97 11.57 49.13 10.83 48.24C10.10 47.35 9.44 46.36 8.87 45.35C8.31 44.34 7.83 43.26 7.43 42.18C7.04 41.09 6.74 39.96 6.50 38.83C6.27 37.71 6.12 36.56 6.02 35.42C5.93 34.28 5.90 33.14 5.93 32.00C5.96 30.86 6.05 29.73 6.20 28.60C6.35 27.48 6.56 26.36 6.84 25.26C7.11 24.16 7.45 23.06 7.87 22.00C8.29 20.95 8.78 19.90 9.35 18.92C9.91 17.94 10.56 16.98 11.29 16.10C12.01 15.23 12.81 14.40 13.67 13.67C14.52 12.93 15.46 12.27 16.41 11.69C17.37 11.11 18.39 10.62 19.42 10.20C20.44 9.79 21.50 9.46 22.55 9.18C23.60 8.91 24.66 8.71 25.72 8.55C26.77 8.38 27.82 8.28 28.87 8.20C29.91 8.12 30.95 8.08 32.00 8.06C33.05 8.05 34.09 8.06 35.15 8.11C36.20 8.15 37.26 8.22 38.33 8.36C39.40 8.49 40.49 8.66 41.57 8.91C42.64 9.16 43.73 9.46 44.78 9.86C45.83 10.26 46.89 10.74 47.88 11.31C48.87 11.88 49.84 12.54 50.72 13.28C51.60 14.03 52.43 14.87 53.17 15.76C53.90 16.65 54.56 17.64 55.13 18.65C55.69 19.66 56.17 20.74 56.57 21.82C56.96 22.91 57.26 24.04 57.50 25.17C57.73 26.29 57.88 27.44 57.98 28.58C58.07 29.72 58.10 30.86 58.07 32.00Z" stroke-width="0.7" stroke-opacity="0.55" />
+                        <path class="orb__ring orb__ring--3" d="M57.78 32.00C57.67 33.13 57.49 34.23 57.31 35.33C57.14 36.44 56.95 37.53 56.74 38.63C56.52 39.73 56.31 40.84 56.02 41.95C55.73 43.06 55.42 44.19 54.99 45.27C54.56 46.36 54.06 47.45 53.45 48.46C52.83 49.46 52.11 50.43 51.30 51.30C50.49 52.17 49.57 52.95 48.61 53.65C47.66 54.35 46.61 54.94 45.56 55.48C44.51 56.02 43.41 56.47 42.30 56.88C41.20 57.29 40.08 57.64 38.95 57.94C37.82 58.23 36.67 58.49 35.51 58.67C34.35 58.84 33.17 58.96 32.00 58.96C30.83 58.96 29.64 58.88 28.49 58.68C27.34 58.47 26.19 58.15 25.10 57.74C24.02 57.33 22.97 56.79 21.97 56.22C20.97 55.65 20.03 54.98 19.11 54.32C18.19 53.66 17.33 52.96 16.46 52.26C15.59 51.55 14.74 50.85 13.89 50.11C13.04 49.37 12.19 48.63 11.37 47.83C10.56 47.02 9.74 46.19 9.01 45.27C8.29 44.36 7.59 43.38 7.02 42.35C6.46 41.31 5.98 40.19 5.64 39.06C5.29 37.93 5.07 36.74 4.94 35.56C4.82 34.38 4.83 33.18 4.89 32.00C4.95 30.82 5.11 29.64 5.30 28.49C5.50 27.33 5.76 26.18 6.06 25.05C6.37 23.92 6.72 22.80 7.15 21.71C7.58 20.62 8.07 19.53 8.65 18.52C9.23 17.50 9.90 16.51 10.65 15.62C11.41 14.73 12.26 13.90 13.16 13.16C14.06 12.42 15.05 11.78 16.04 11.20C17.03 10.62 18.08 10.14 19.11 9.68C20.14 9.21 21.19 8.81 22.23 8.41C23.27 8.01 24.31 7.63 25.37 7.26C26.43 6.90 27.50 6.52 28.61 6.22C29.71 5.92 30.85 5.63 32.00 5.45C33.15 5.28 34.35 5.17 35.53 5.20C36.71 5.23 37.91 5.37 39.06 5.64C40.22 5.90 41.36 6.31 42.44 6.79C43.53 7.27 44.57 7.88 45.56 8.52C46.55 9.16 47.49 9.89 48.39 10.64C49.30 11.39 50.16 12.18 50.99 13.01C51.81 13.85 52.61 14.71 53.34 15.63C54.07 16.54 54.76 17.51 55.35 18.52C55.94 19.53 56.46 20.61 56.86 21.70C57.26 22.80 57.55 23.96 57.74 25.10C57.92 26.25 57.98 27.43 57.99 28.58C58.00 29.73 57.89 30.87 57.78 32.00Z" stroke-width="0.6" stroke-opacity="0.45" />
+                        <path class="orb__ring orb__ring--4" d="M56.86 32.00C56.73 33.08 56.51 34.15 56.28 35.20C56.05 36.24 55.76 37.27 55.46 38.29C55.16 39.31 54.84 40.31 54.48 41.31C54.13 42.32 53.76 43.32 53.34 44.32C52.91 45.32 52.47 46.32 51.94 47.30C51.42 48.28 50.85 49.27 50.19 50.19C49.53 51.11 48.80 52.03 47.99 52.84C47.17 53.64 46.27 54.41 45.30 55.04C44.34 55.68 43.29 56.23 42.21 56.65C41.13 57.06 39.98 57.36 38.85 57.55C37.71 57.73 36.53 57.78 35.39 57.75C34.25 57.71 33.10 57.56 32.00 57.35C30.90 57.15 29.82 56.85 28.77 56.54C27.72 56.22 26.71 55.84 25.71 55.46C24.72 55.08 23.75 54.67 22.79 54.24C21.82 53.82 20.88 53.38 19.93 52.90C18.99 52.43 18.05 51.94 17.13 51.38C16.21 50.83 15.29 50.24 14.42 49.58C13.55 48.92 12.70 48.20 11.93 47.40C11.16 46.60 10.44 45.73 9.82 44.80C9.21 43.88 8.67 42.87 8.24 41.84C7.82 40.81 7.51 39.71 7.29 38.62C7.07 37.53 6.98 36.40 6.95 35.30C6.93 34.19 7.02 33.08 7.14 32.00C7.27 30.92 7.49 29.85 7.72 28.80C7.95 27.76 8.24 26.73 8.54 25.71C8.84 24.69 9.16 23.69 9.52 22.69C9.87 21.68 10.24 20.68 10.66 19.68C11.09 18.68 11.53 17.68 12.06 16.70C12.58 15.72 13.15 14.73 13.81 13.81C14.47 12.89 15.20 11.97 16.01 11.16C16.83 10.36 17.73 9.59 18.70 8.96C19.66 8.32 20.71 7.77 21.79 7.35C22.87 6.94 24.02 6.64 25.15 6.45C26.29 6.27 27.47 6.22 28.61 6.25C29.75 6.29 30.90 6.44 32.00 6.65C33.10 6.85 34.18 7.15 35.23 7.46C36.28 7.78 37.29 8.16 38.29 8.54C39.28 8.92 40.25 9.33 41.21 9.76C42.18 10.18 43.12 10.62 44.07 11.10C45.01 11.57 45.95 12.06 46.87 12.62C47.79 13.17 48.71 13.76 49.58 14.42C50.45 15.08 51.30 15.80 52.07 16.60C52.84 17.40 53.56 18.27 54.18 19.20C54.79 20.12 55.33 21.13 55.76 22.16C56.18 23.19 56.49 24.29 56.71 25.38C56.93 26.47 57.02 27.60 57.05 28.70C57.07 29.81 56.98 30.92 56.86 32.00Z" stroke-width="0.6" stroke-opacity="0.5" />
+                        <path class="orb__ring orb__ring--5" d="M57.13 32.00C56.95 33.10 56.71 34.16 56.50 35.23C56.28 36.29 56.05 37.32 55.83 38.38C55.60 39.44 55.39 40.50 55.13 41.58C54.87 42.66 54.61 43.76 54.25 44.85C53.90 45.93 53.50 47.05 52.97 48.09C52.44 49.13 51.83 50.17 51.09 51.09C50.36 52.01 49.50 52.87 48.57 53.60C47.64 54.32 46.59 54.93 45.53 55.43C44.46 55.93 43.31 56.29 42.18 56.57C41.05 56.86 39.88 57.03 38.74 57.17C37.60 57.30 36.47 57.36 35.34 57.41C34.22 57.46 33.11 57.47 32.00 57.46C30.89 57.45 29.78 57.43 28.66 57.35C27.55 57.26 26.42 57.17 25.31 56.96C24.20 56.76 23.08 56.50 22.01 56.13C20.93 55.75 19.87 55.28 18.89 54.71C17.91 54.14 16.97 53.45 16.11 52.70C15.26 51.95 14.49 51.09 13.78 50.22C13.07 49.35 12.45 48.40 11.85 47.46C11.26 46.52 10.73 45.55 10.20 44.58C9.68 43.62 9.18 42.65 8.69 41.66C8.19 40.66 7.70 39.67 7.25 38.63C6.80 37.59 6.34 36.53 5.98 35.43C5.63 34.32 5.30 33.16 5.13 32.00C4.95 30.84 4.86 29.62 4.94 28.44C5.02 27.26 5.24 26.05 5.60 24.93C5.96 23.80 6.48 22.69 7.09 21.68C7.69 20.67 8.45 19.72 9.22 18.85C9.99 17.97 10.87 17.19 11.72 16.44C12.57 15.68 13.46 15.00 14.32 14.32C15.19 13.64 16.05 13.00 16.92 12.34C17.78 11.69 18.63 11.03 19.53 10.40C20.42 9.76 21.32 9.11 22.28 8.53C23.24 7.96 24.24 7.38 25.28 6.94C26.33 6.49 27.44 6.10 28.56 5.85C29.68 5.61 30.85 5.47 32.00 5.46C33.15 5.45 34.32 5.58 35.45 5.79C36.58 6.00 37.69 6.35 38.77 6.73C39.85 7.12 40.89 7.60 41.90 8.09C42.92 8.58 43.91 9.12 44.89 9.68C45.86 10.24 46.83 10.82 47.77 11.45C48.71 12.08 49.66 12.72 50.55 13.45C51.44 14.18 52.33 14.95 53.11 15.80C53.89 16.66 54.63 17.59 55.24 18.58C55.84 19.58 56.36 20.66 56.73 21.76C57.10 22.86 57.34 24.03 57.48 25.17C57.61 26.32 57.60 27.50 57.54 28.64C57.48 29.78 57.30 30.90 57.13 32.00Z" stroke-width="0.5" stroke-opacity="0.4" />
+                        <path class="orb__ring orb__ring--6" d="M58.69 32.00C58.62 33.16 58.42 34.32 58.20 35.45C57.98 36.58 57.68 37.69 57.35 38.79C57.03 39.89 56.67 40.98 56.25 42.04C55.83 43.11 55.38 44.18 54.83 45.18C54.28 46.18 53.66 47.18 52.94 48.07C52.22 48.96 51.40 49.79 50.52 50.52C49.65 51.25 48.67 51.88 47.69 52.45C46.71 53.01 45.67 53.48 44.66 53.92C43.64 54.37 42.61 54.75 41.58 55.12C40.55 55.50 39.52 55.85 38.47 56.16C37.42 56.46 36.36 56.76 35.28 56.95C34.21 57.14 33.10 57.28 32.00 57.29C30.90 57.31 29.79 57.22 28.70 57.04C27.62 56.86 26.55 56.55 25.51 56.22C24.47 55.88 23.46 55.46 22.46 55.03C21.46 54.60 20.48 54.14 19.50 53.65C18.52 53.17 17.53 52.67 16.57 52.11C15.61 51.54 14.64 50.95 13.75 50.25C12.86 49.56 11.99 48.79 11.23 47.94C10.47 47.09 9.79 46.14 9.21 45.16C8.63 44.18 8.16 43.11 7.75 42.05C7.33 40.98 7.01 39.88 6.72 38.77C6.42 37.67 6.18 36.56 5.98 35.43C5.77 34.30 5.59 33.15 5.51 32.00C5.42 30.85 5.37 29.66 5.47 28.51C5.56 27.35 5.75 26.17 6.07 25.05C6.39 23.93 6.85 22.83 7.39 21.80C7.92 20.78 8.59 19.80 9.27 18.88C9.96 17.96 10.72 17.10 11.49 16.26C12.25 15.42 13.04 14.63 13.86 13.86C14.68 13.09 15.50 12.33 16.38 11.65C17.26 10.96 18.18 10.29 19.15 9.73C20.11 9.18 21.14 8.69 22.19 8.32C23.24 7.95 24.35 7.70 25.44 7.52C26.53 7.34 27.65 7.28 28.74 7.24C29.83 7.20 30.92 7.24 32.00 7.27C33.08 7.31 34.15 7.37 35.23 7.46C36.31 7.55 37.40 7.64 38.48 7.82C39.56 8.00 40.66 8.22 41.71 8.55C42.77 8.89 43.82 9.31 44.80 9.84C45.78 10.36 46.71 11.00 47.59 11.68C48.47 12.37 49.28 13.15 50.06 13.94C50.85 14.73 51.58 15.57 52.30 16.42C53.03 17.28 53.73 18.15 54.40 19.07C55.06 19.99 55.73 20.93 56.29 21.94C56.85 22.94 57.38 24.00 57.76 25.10C58.15 26.19 58.43 27.35 58.59 28.50C58.74 29.65 58.75 30.84 58.69 32.00Z" stroke-width="0.5" stroke-opacity="0.35" />
+                      </g>
+                      <g class="orb__stars" transform="translate(7.3 14.2) scale(1.3)">
+                        <path class="orb__star orb__star--big" d="M15.3576 8.5776C15.7507 6.76587 18.3026 6.73761 18.7631 8.49278L18.7834 8.5776L19.3438 11.1613C19.7595 13.0773 21.2571 14.5739 23.1744 14.9893L25.7598 15.5494C27.6014 15.9485 27.6014 18.5739 25.7598 18.9729L23.1744 19.533C21.2571 19.9485 19.7595 21.4451 19.3438 23.3611L18.7834 25.9448C18.384 27.7852 15.757 27.7852 15.3576 25.9448L14.7972 23.3611C14.3815 21.4451 12.8838 19.9485 10.9666 19.533L8.38123 18.9729C6.53958 18.5739 6.5396 15.9485 8.38123 15.5494L10.9666 14.9893C12.8838 14.5739 14.3815 13.0773 14.7972 11.1613L15.3576 8.5776ZM17.0704 11.6711C16.4573 14.4658 14.2732 16.6484 11.4768 17.2611C14.2732 17.8737 16.4573 20.0565 17.0704 22.851C17.6835 20.0565 19.8676 17.8738 22.664 17.2611C19.8676 16.6483 17.6834 14.4657 17.0704 11.6711Z" fill="#DFD6F9" />
+                        <path class="orb__star orb__star--small" d="M26.0057 0.738076C26.2639 -0.246038 27.6761 -0.246012 27.9343 0.738076L27.9458 0.786449L28.155 1.75011C28.2814 2.33281 28.7368 2.78807 29.3199 2.91441L30.2843 3.12327C31.3335 3.35066 31.3335 4.84632 30.2843 5.07372L29.3199 5.28273C28.7368 5.40907 28.2814 5.86419 28.155 6.44688L27.9458 7.41069C27.7183 8.45917 26.2217 8.45918 25.9941 7.41069L25.7851 6.44688C25.6587 5.86418 25.2032 5.40907 24.6201 5.28273L23.6558 5.07372C22.6066 4.84636 22.6066 3.35063 23.6558 3.12327L24.6201 2.91441C25.2032 2.78807 25.6587 2.33281 25.7851 1.75011L25.9941 0.786449L26.0057 0.738076ZM26.97 2.95868C26.6979 3.43288 26.3039 3.8266 25.8294 4.09849C26.3039 4.37038 26.6979 4.76412 26.97 5.23831C27.242 4.76412 27.636 4.37038 28.1105 4.09849C27.636 3.8266 27.242 3.43288 26.97 2.95868Z" fill="#DFD6F9" />
+                      </g>
+                    </svg>
+                  </span>
+                  Ask the assistant
+                </a>
+              </div>
+              <div class="contact-card">
+                <p class="contact-card__title">Talk to the ARENA team</p>
+                <div class="contact-card__rows">
+                  <a class="contact-card__link" href="tel:+97140000000"><span class="contact-card__icon" aria-hidden="true"><img src="images/shared/icons/call.svg" width="28" height="28" alt=""></span>+971 4 000 0000</a>
+                  <a class="contact-card__link" href="mailto:arena@dfm.ae"><span class="contact-card__icon" aria-hidden="true"><img src="images/shared/icons/mail.svg" width="28" height="28" alt=""></span>arena@dfm.ae</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Closing strip ============ -->
+    <section class="cta cta--dark" id="notify" aria-labelledby="cta-title">
+      <div class="cta__card" data-header="light">
+        <div class="cta__bg" aria-hidden="true"><img class="cta__wave" src="images/investor/footer-bg001.webp" width="3506" height="824" alt="" loading="lazy"></div>
+        <div>
+          <h2 class="cta__title" id="cta-title" data-scroll-reveal>The arena opens soon.</h2>
+          <p class="cta__lead" data-scroll-reveal>Leave your details and we will notify you<br>when the first offerings open.</p>
+        </div>
+        <div class="cta__actions" data-scroll-reveal-group>
+          <!-- TODO: point at the booking form once it exists. -->
+          <a class="btn-pill btn-pill--glass-purple" href="mailto:arena@dfm.ae?subject=Notify%20me%20when%20ARENA%20opens">
+            <span class="btn-pill__label">Get notified</span>
+            <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
+          </a>
+          <a class="btn-pill btn-pill--glass-white" href="company.html">
+            <span class="btn-pill__label">For companies</span>
+            <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward-dark.svg" width="24" height="24" alt=""></span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-header="dark">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <p class="site-footer__tagline">Capital, made simple.</p>
+        <a class="site-footer__mail" href="mailto:arena@dfm.ae">arena@dfm.ae</a>
+      </div>
+      <div class="site-footer__side">
+        <nav class="site-footer__links" aria-label="Footer">
+          <a href="#markets">Markets</a>
+          <a href="#faq">FAQ</a>
+          <a href="#legal">Legal</a>
+          <a href="#risk">Risk warnings</a>
+        </nav>
+        <p class="site-footer__copy">© 2026 Dubai Financial Market — Accelerating Tomorrow</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
