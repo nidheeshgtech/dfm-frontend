@@ -1845,3 +1845,583 @@ $chat-ring: conic-gradient(from var(--chat-a), $color-purple-tint, #8fd0ff, $col
     scale: 1.15;
   }
 }
+
+// =====================================================================
+// Option E (?chat=e): a bot orb at the right centre (eyes blink, the
+// antenna glows); "Ask ARENA" slides out on hover and the chat card wipes
+// open beside it.
+// =====================================================================
+.chat--e,
+.chat--f {
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+
+  .chat__launcher::before {
+    display: none;
+  }
+}
+
+.chat--e {
+  right: 14px;
+
+  .chat__launcher {
+    width: 60px;
+    height: 60px;
+    margin: 0;
+    translate: none;
+  }
+
+  // Neutral orb (no purple glow).
+  .chat__orb {
+    width: 60px;
+    height: 60px;
+    background:
+      radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.2), transparent 55%),
+      #0b0b14;
+    color: $color-white;
+    box-shadow:
+      inset 0 0 0 2px #0b0b14,
+      0 18px 40px rgba(0, 0, 0, 0.45);
+  }
+
+  .chat__bot {
+    width: 32px;
+    height: 32px;
+    transition:
+      opacity 0.2s,
+      scale 0.3s;
+  }
+
+  .chat__bot-tip {
+    fill: $color-jade;
+    animation: chat-glow 2.4s ease-in-out infinite;
+  }
+
+  .chat__bot-eyes {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: chat-blink 4s ease-in-out infinite;
+  }
+
+  .chat__launcher:hover .chat__bot {
+    animation: chat-hop 0.6s $ease-out;
+  }
+
+  &.is-open .chat__bot {
+    opacity: 0;
+    scale: 0.5;
+  }
+
+  .chat__close-icon {
+    left: 30px;
+  }
+
+  // "Ask ARENA" pill, sliding out to the left of the orb.
+  .chat__tip {
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 14px);
+    z-index: 2;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: $color-white;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    color: $color-text-dark;
+    font-size: 14px;
+    font-weight: $font-weight-semibold;
+    white-space: nowrap;
+    opacity: 0;
+    translate: 10px -50%;
+    pointer-events: none;
+    transition:
+      opacity 0.25s,
+      translate 0.4s $ease-out;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -4px;
+      width: 8px;
+      height: 8px;
+      background: inherit;
+      translate: 0 -50%;
+      rotate: 45deg;
+    }
+  }
+
+  .chat__launcher:hover .chat__tip,
+  .chat__launcher:focus-visible .chat__tip {
+    opacity: 1;
+    translate: 0 -50%;
+  }
+
+  &.is-open .chat__launcher .chat__tip,
+  &.is-open .chat__launcher:hover .chat__tip {
+    opacity: 0;
+  }
+
+  .chat__greet {
+    top: auto;
+    right: 0;
+    bottom: calc(50% + 46px);
+  }
+
+  // The chat card sits left of the orb and wipes open from it.
+  .chat__panel {
+    top: 50%;
+    right: calc(100% + 14px);
+    bottom: auto;
+    translate: 0 -50%;
+    height: min(600px, calc(100svh - 48px));
+    clip-path: inset(0 0 0 100% round 26px);
+    opacity: 0;
+    transition:
+      clip-path 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 0.3s;
+  }
+
+  &.is-shown .chat__panel {
+    clip-path: inset(0 round 26px);
+    opacity: 1;
+  }
+
+  // Card in black and white: a faint blue / jade glow, white user
+  // bubbles and send button.
+  .chat__panel {
+    background:
+      radial-gradient(ellipse 90% 40% at 50% 0%, rgba(#8fd0ff, 0.12), transparent 70%),
+      rgba(10, 10, 18, 0.95);
+  }
+
+  .chat__head::before {
+    background:
+      radial-gradient(30% 60% at 20% 30%, rgba($color-jade, 0.18), transparent 70%),
+      radial-gradient(30% 60% at 80% 20%, rgba(#8fd0ff, 0.2), transparent 70%);
+  }
+
+  .chat__msg--me .chat__bubble {
+    background: $color-white;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+    color: $color-text-dark;
+  }
+
+  .chat__chip:hover,
+  .chat__chip:focus-visible {
+    border-color: rgba($color-white, 0.6);
+    background: rgba($color-white, 0.08);
+  }
+
+  .chat__field:focus-within {
+    border-color: rgba($color-white, 0.5);
+    box-shadow: 0 0 0 4px rgba($color-white, 0.08);
+  }
+
+  .chat__send {
+    background: $color-white;
+    color: $color-text-dark;
+  }
+
+  @include down("tablet") {
+    right: 10px;
+
+    .chat__launcher,
+    .chat__orb {
+      width: 52px;
+      height: 52px;
+    }
+
+    .chat__bot {
+      width: 28px;
+      height: 28px;
+    }
+
+    .chat__close-icon {
+      left: 26px;
+    }
+
+    .chat__tip {
+      display: none;
+    }
+
+    .chat__panel {
+      position: fixed;
+      top: auto;
+      right: 8px;
+      bottom: 8px;
+      left: 8px;
+      translate: none;
+      height: min(620px, calc(100svh - 16px));
+      clip-path: inset(100% 0 0 0 round 24px);
+    }
+
+    &.is-shown .chat__panel {
+      clip-path: inset(0 round 24px);
+    }
+  }
+
+  @include reduced-motion {
+    .chat__bot-tip,
+    .chat__bot-eyes {
+      animation: none;
+    }
+
+    .chat__panel {
+      transition: none;
+    }
+  }
+}
+
+// =====================================================================
+// Option F (?chat=f): an "Ask ARENA" tab on the right edge, only the AI
+// icon showing; hover slides it out with its label. It opens a
+// full-height dark sheet from the same edge over a dimmed page.
+// =====================================================================
+.chat--f {
+  right: 0;
+
+  .chat__tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 18px 0 6px;
+    border: 1px solid rgba($color-text-dark, 0.08);
+    border-right: 0;
+    border-radius: 999px 0 0 999px;
+    background: $color-white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+    color: $color-text-dark;
+    font-size: 14px;
+    font-weight: $font-weight-semibold;
+    text-decoration: none;
+    white-space: nowrap;
+    // Only the icon peeks out until hover.
+    translate: calc(100% - 52px) 0;
+    transition:
+      translate 0.5s $ease-out,
+      box-shadow 0.4s;
+
+    &:hover,
+    &:focus-visible {
+      translate: 0 0;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-text-dark;
+      outline-offset: 2px;
+    }
+  }
+
+  .chat__tab-icon {
+    position: relative;
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba($color-text-dark, 0.06);
+    color: $color-text-dark;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .chat__tab-label {
+    transition: opacity 0.3s;
+  }
+
+  // Ask ARENA: a dark glass tab (like the site's dark sections) with the
+  // AI icon in a ringed disc, nudging out every few seconds.
+  .chat__tab--main {
+    height: 58px;
+    margin: 0 0 4px;
+    padding-left: 7px;
+    border-color: rgba($color-white, 0.14);
+    background: rgba(14, 14, 26, 0.82);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+    box-shadow:
+      inset 0 1px 0 rgba($color-white, 0.1),
+      0 16px 40px rgba(0, 0, 0, 0.4);
+    color: $color-white;
+    font-size: 15px;
+    translate: calc(100% - 60px) 0;
+    animation: chat-nudge 7s $ease-out 3s infinite;
+
+    .chat__tab-icon {
+      width: 44px;
+      height: 44px;
+      background: #0b0b14;
+      color: $color-white;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        z-index: -1;
+        border-radius: 50%;
+        background: $chat-ring;
+        animation: chat-turn 6s linear infinite;
+      }
+    }
+
+    .chat__ai {
+      width: 26px;
+      height: 26px;
+    }
+
+    // Sparkles twinkle in turn.
+    .chat__ai-big,
+    .chat__ai-small {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: chat-twinkle 2.4s ease-in-out infinite;
+    }
+
+    .chat__ai-big {
+      color: $color-yellow-bright;
+    }
+
+    .chat__ai-small {
+      color: $color-jade;
+      animation-delay: 1.2s;
+    }
+
+    &:hover,
+    &:focus-visible {
+      translate: 0 0;
+      animation: none;
+      border-color: rgba($color-white, 0.24);
+      box-shadow:
+        inset 0 1px 0 rgba($color-white, 0.12),
+        0 18px 44px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .chat__greet {
+    top: auto;
+    right: 16px;
+    bottom: calc(50% + 124px);
+    border: 0;
+    background: $color-white;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+    color: $color-text-dark;
+
+    .chat__greet-close {
+      color: rgba($color-text-dark, 0.5);
+
+      &:hover {
+        background: rgba($color-text-dark, 0.06);
+        color: $color-text-dark;
+      }
+    }
+  }
+
+  .chat__scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 10, 0.45);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s $ease-out;
+  }
+
+  &.is-shown .chat__scrim {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  // ---- Dark sheet ----
+  .chat__panel {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: min(420px, calc(100vw - 24px));
+    height: auto;
+    border: 1px solid rgba($color-white, 0.1);
+    border-radius: 28px;
+    background:
+      radial-gradient(ellipse 80% 30% at 100% 0%, rgba(#8fd0ff, 0.12), transparent 70%),
+      radial-gradient(ellipse 70% 25% at 0% 100%, rgba($color-jade, 0.08), transparent 70%),
+      #0b0b14;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.55);
+    clip-path: none;
+    translate: calc(100% + 24px) 0;
+    transition: translate 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  &.is-shown .chat__panel {
+    translate: 0 0;
+  }
+
+  .chat__head {
+    padding: 22px 14px 18px 20px;
+    border-bottom-color: rgba($color-white, 0.08);
+
+    &::before {
+      background:
+        radial-gradient(30% 60% at 20% 30%, rgba($color-jade, 0.16), transparent 70%),
+        radial-gradient(30% 60% at 80% 20%, rgba(#8fd0ff, 0.18), transparent 70%);
+    }
+  }
+
+  .chat__avatar {
+    color: $color-white;
+
+    .chat__ai {
+      width: 24px;
+      height: 24px;
+    }
+
+    .chat__ai-big {
+      color: $color-yellow-bright;
+    }
+
+    .chat__ai-small {
+      color: $color-jade;
+    }
+  }
+
+  // White user bubbles and send button; no purple.
+  .chat__msg--me .chat__bubble {
+    background: $color-white;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+    color: $color-text-dark;
+  }
+
+  .chat__chip:hover,
+  .chat__chip:focus-visible {
+    border-color: rgba($color-white, 0.6);
+    background: rgba($color-white, 0.08);
+  }
+
+  .chat__field:focus-within {
+    border-color: rgba($color-white, 0.5);
+    box-shadow: 0 0 0 4px rgba($color-white, 0.08);
+  }
+
+  .chat__send {
+    background: $color-white;
+    color: $color-text-dark;
+  }
+
+  .chat__person {
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: center;
+    color: rgba($color-white, 0.5);
+
+    a {
+      color: $color-white;
+      font-weight: $font-weight-semibold;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+
+  @include down("tablet") {
+    .chat__tab--main {
+      height: 50px;
+      translate: calc(100% - 52px) 0;
+
+      .chat__tab-icon {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    .chat__panel {
+      top: 8px;
+      right: 8px;
+      bottom: 8px;
+      left: 8px;
+      width: auto;
+      border-radius: 24px;
+      translate: calc(100% + 16px) 0;
+    }
+  }
+
+  @include reduced-motion {
+    .chat__tab--main,
+    .chat__tab-icon::before,
+    .chat__ai-big,
+    .chat__ai-small {
+      animation: none;
+    }
+
+    .chat__panel {
+      transition: none;
+    }
+  }
+}
+
+@keyframes chat-nudge {
+  0%,
+  80%,
+  100% {
+    margin-right: 0;
+  }
+
+  86% {
+    margin-right: 16px;
+  }
+
+  92% {
+    margin-right: 4px;
+  }
+}
+
+@keyframes chat-blink {
+  0%,
+  44%,
+  50%,
+  100% {
+    scale: 1 1;
+  }
+
+  47% {
+    scale: 1 0.1;
+  }
+}
+
+@keyframes chat-glow {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes chat-hop {
+  40% {
+    translate: 0 -4px;
+    rotate: -8deg;
+  }
+}
+
+@keyframes chat-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+    scale: 0.7;
+  }
+}

@@ -13,6 +13,10 @@
 // ⌘K / Ctrl+K opens a big centred command prompt over a dimmed page.
 // ?chat=d: an iVestor phone peeking up from the bottom-left corner; click
 // and the whole phone slides up with the chat running inside it.
+// ?chat=e: a bot orb at the right centre; the chat card wipes open
+// beside it.
+// ?chat=f: an "Ask ARENA" tab on the right edge that slides out on hover;
+// it opens a full-height dark sheet from the edge.
 //
 // No live AI yet: replies come from the page's own FAQ (when it has one)
 // plus the markets / contact facts below, matched with the same word
@@ -72,12 +76,17 @@ export function initChat() {
 
   // ?chat= wins; otherwise a page can pick its own (body data-chat-variant).
   const param = new URLSearchParams(window.location.search).get("chat") || document.body.dataset.chatVariant;
-  const variant = ["b", "c", "d"].includes(param) ? param : "a";
+  const variant = ["b", "c", "d", "e", "f"].includes(param) ? param : "a";
   const root = document.createElement("div");
   root.className = `chat chat--${variant}`;
   root.dataset.chat = "";
   root.innerHTML =
-    variant === "b" ? ticketMarkup(SUGGESTIONS[audience]) : variant === "c" ? paletteMarkup() : variant === "d" ? phoneMarkup() : `
+    variant === "b" ? ticketMarkup(SUGGESTIONS[audience])
+    : variant === "c" ? paletteMarkup()
+    : variant === "d" ? phoneMarkup()
+    : variant === "e" ? railMarkup()
+    : variant === "f" ? tabsMarkup()
+    : `
     <div class="chat__greet" role="status" hidden>
       <button class="chat__greet-close" type="button" aria-label="Dismiss">×</button>
       <p><b>Hi there</b> Questions about ARENA? Ask me anything.</p>
@@ -88,26 +97,7 @@ export function initChat() {
       <span class="chat__label">Ask ARENA</span>
       <span class="chat__close-icon" aria-hidden="true"></span>
     </button>
-    <section class="chat__panel" id="chat-panel" role="dialog" aria-modal="false" aria-label="ARENA assistant" hidden>
-      <header class="chat__head">
-        <span class="chat__avatar" aria-hidden="true"><img src="images/shared/mark-light.svg" width="64" height="64" alt=""></span>
-        <span class="chat__who">
-          <b>ARENA Assistant</b>
-          <small><i></i>Instant answers from ARENA</small>
-        </span>
-        <button class="chat__icon-btn" type="button" data-chat-reset aria-label="New chat"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <button class="chat__icon-btn" type="button" data-chat-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-      </header>
-      <div class="chat__log" data-chat-log aria-live="polite"></div>
-      <form class="chat__form" data-chat-form>
-        <label class="chat__field">
-          <span class="chat__sr">Your question</span>
-          <input type="text" name="q" placeholder="Ask about investing, markets, fees…" autocomplete="off" data-chat-input>
-          <button class="chat__send" type="submit" aria-label="Send" disabled><svg viewBox="0 0 24 24"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        </label>
-        <p class="chat__note">Information only, not investment advice.</p>
-      </form>
-    </section>`;
+    ${orbPanel()}`;
   document.body.append(root);
 
   const launcher = root.querySelector(".chat__launcher");
@@ -235,11 +225,15 @@ export function initChat() {
     chips(SUGGESTIONS[audience].filter((s) => s !== hit?.q).slice(0, 2));
   }
 
+  // Busy while the greeting writes out, so an early question can't race
+  // the opening chips.
   const start = async () => {
+    busy = true;
     log.innerHTML = "";
     ticket = 0;
     await reply(GREETING[audience]);
     chips(SUGGESTIONS[audience]);
+    busy = false;
   };
 
   // ---- Open / close ----
@@ -316,9 +310,10 @@ export function initChat() {
     hideGreet();
   });
   greet.addEventListener("click", () => setOpen(true));
-  let greeted = variant !== "a"; // only the orb gets a bubble
+  // Only the orb, the rail and the tabs get a bubble.
+  let greeted = !["a", "e", "f"].includes(variant);
   try {
-    greeted = sessionStorage.getItem("arena-chat-greet") === "1";
+    greeted ||= sessionStorage.getItem("arena-chat-greet") === "1";
   } catch {}
   if (!greeted) {
     (window.arenaLoaded || Promise.resolve()).then(() =>
@@ -350,6 +345,83 @@ export function initChat() {
 
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
+// The orb's chat card (A), reused by the rail (E).
+function orbPanel() {
+  return `
+    <section class="chat__panel" id="chat-panel" role="dialog" aria-modal="false" aria-label="ARENA assistant" hidden>
+      <header class="chat__head">
+        <span class="chat__avatar" aria-hidden="true"><img src="images/shared/mark-light.svg" width="64" height="64" alt=""></span>
+        <span class="chat__who">
+          <b>ARENA Assistant</b>
+          <small><i></i>Instant answers from ARENA</small>
+        </span>
+        <button class="chat__icon-btn" type="button" data-chat-reset aria-label="New chat"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="chat__icon-btn" type="button" data-chat-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </header>
+      <div class="chat__log" data-chat-log aria-live="polite"></div>
+      <form class="chat__form" data-chat-form>
+        <label class="chat__field">
+          <span class="chat__sr">Your question</span>
+          <input type="text" name="q" placeholder="Ask about investing, markets, fees…" autocomplete="off" data-chat-input>
+          <button class="chat__send" type="submit" aria-label="Send" disabled><svg viewBox="0 0 24 24"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </label>
+        <p class="chat__note">Information only, not investment advice.</p>
+      </form>
+    </section>`;
+}
+
+// AI assistant icons: a bot face (E; eyes blink, antenna glows) and a chat
+// bubble with sparkles (F; sparkles twinkle).
+const BOT = '<svg class="chat__bot" viewBox="0 0 32 32"><path d="M16 4.5v3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle class="chat__bot-tip" cx="16" cy="4" r="2.2"/><rect x="5.5" y="8.5" width="21" height="17" rx="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 15v4.5M29 15v4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><g class="chat__bot-eyes"><circle cx="12" cy="16" r="2.1" fill="currentColor"/><circle cx="20" cy="16" r="2.1" fill="currentColor"/></g><path d="M13 21h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const AI_BUBBLE = '<svg class="chat__ai" viewBox="0 0 32 32"><path d="M7 6h18a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4h-8.5L10 29v-5H7a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path class="chat__ai-big" d="M14 9.5c.5 3 2.2 4.7 5.2 5.2-3 .5-4.7 2.2-5.2 5.2-.5-3-2.2-4.7-5.2-5.2 3-.5 4.7-2.2 5.2-5.2Z" fill="currentColor"/><path class="chat__ai-small" d="M22 9c.25 1.3.95 2 2.25 2.25-1.3.25-2 .95-2.25 2.25-.25-1.3-.95-2-2.25-2.25C21.05 11 21.75 10.3 22 9Z" fill="currentColor"/></svg>';
+const GREET = '<div class="chat__greet" role="status" hidden><button class="chat__greet-close" type="button" aria-label="Dismiss">×</button><p><b>Hi there</b> Questions about ARENA? Ask me anything.</p></div>';
+
+// Option E markup: a bot orb at the right centre; the orb's chat card
+// opens beside it.
+function railMarkup() {
+  return `
+    ${GREET}
+    <button class="chat__launcher" type="button" aria-expanded="false" aria-controls="chat-panel" aria-label="Ask ARENA">
+      <span class="chat__ring" aria-hidden="true"></span>
+      <span class="chat__orb" aria-hidden="true">${BOT}</span>
+      <span class="chat__close-icon" aria-hidden="true"></span>
+      <span class="chat__tip">Ask ARENA</span>
+    </button>
+    ${orbPanel()}`;
+}
+
+// Option F markup: an Ask ARENA tab on the right edge and a full-height
+// sheet.
+function tabsMarkup() {
+  return `
+    ${GREET}
+    <button class="chat__launcher chat__tab chat__tab--main" type="button" aria-expanded="false" aria-controls="chat-panel" aria-label="Ask ARENA">
+      <span class="chat__tab-icon" aria-hidden="true">${AI_BUBBLE}</span>
+      <span class="chat__tab-label">Ask ARENA</span>
+    </button>
+    <div class="chat__scrim" data-chat-scrim aria-hidden="true"></div>
+    <section class="chat__panel" id="chat-panel" role="dialog" aria-modal="false" aria-label="ARENA assistant" hidden>
+      <header class="chat__head">
+        <span class="chat__avatar" aria-hidden="true">${AI_BUBBLE}</span>
+        <span class="chat__who">
+          <b>ARENA Assistant</b>
+          <small><i></i>Instant answers from ARENA</small>
+        </span>
+        <button class="chat__icon-btn" type="button" data-chat-reset aria-label="New chat"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="chat__icon-btn" type="button" data-chat-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </header>
+      <div class="chat__log" data-chat-log aria-live="polite"></div>
+      <form class="chat__form" data-chat-form>
+        <label class="chat__field">
+          <span class="chat__sr">Your question</span>
+          <input type="text" name="q" placeholder="Ask about investing, markets, fees…" autocomplete="off" data-chat-input>
+          <button class="chat__send" type="submit" aria-label="Send" disabled><svg viewBox="0 0 24 24"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </label>
+        <p class="chat__person">Prefer a person? <a href="#contact" data-book-call>Book a call</a></p>
+      </form>
+    </section>`;
 }
 
 // Option B markup: edge coin, scrim, drawer with ticker, tickets, prompt.
