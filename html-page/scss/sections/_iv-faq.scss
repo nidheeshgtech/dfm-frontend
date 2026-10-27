@@ -36,7 +36,7 @@
     color: rgba($color-white, 0.7);
   }
 
-  // Eight questions make the list tall: the aside rides along instead of
+  // Six questions make the list tall: the aside rides along instead of
   // stretching the contact card to match.
   .faq__aside {
     position: sticky;
@@ -48,7 +48,7 @@
     flex: none;
   }
 
-  // Smaller, tighter questions than the Raise Capital FAQ: eight of them.
+  // Smaller, tighter questions than the Raise Capital FAQ.
   .faq-item__btn {
     padding: fluid(18px, 24px) fluid(18px, 26px);
   }

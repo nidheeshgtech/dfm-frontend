@@ -8411,6 +8411,12 @@ body {
   gap: 20px;
   height: 100%;
 }
+.faq__note {
+  margin-top: clamp(1.5rem, 0.78vw + 1.317961165rem, 2.25rem);
+  font-size: clamp(0.8125rem, 0.06vw + 0.7973300971rem, 0.875rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+}
 @media (max-width: 1023.98px) {
   .faq {
     padding: 20px 40px;
@@ -8547,6 +8553,25 @@ body {
   font-size: clamp(1.0625rem, 0.45vw + 0.9563106796rem, 1.5rem);
   line-height: 1.25;
   letter-spacing: -0.01em;
+}
+.faq-item__a > * {
+  margin: 0;
+}
+.faq-item__a > * + * {
+  margin-top: 0.75em;
+}
+.faq-item__a ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  padding-left: 1.1em;
+  list-style: disc;
+}
+.faq-item__a li::marker {
+  color: rgba(255, 255, 255, 0.5);
+}
+.faq-item__a strong {
+  font-weight: 500;
 }
 .faq-item.is-open {
   border-color: rgba(169, 139, 255, 0.35);

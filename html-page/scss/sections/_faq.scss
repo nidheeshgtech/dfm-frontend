@@ -93,6 +93,14 @@
     height: 100%;
   }
 
+  // Regulatory line every FAQ block carries (FAQ handoff).
+  &__note {
+    margin-top: fluid(24px, 36px);
+    font-size: fluid(13px, 14px);
+    line-height: 1.5;
+    color: rgba($color-white, 0.5);
+  }
+
   // Panel edge on the site gutter (like the CTA card); content gets a
   // fixed inner inset instead of the container gutter on top of it.
   @include down("laptop") {
@@ -264,6 +272,31 @@
     font-size: fluid(17px, 24px);
     line-height: 1.25;
     letter-spacing: tracking(-0.24px, 24px);
+  }
+
+  // Answers are blocks (paragraphs, and a list where the copy has one).
+  &__a > * {
+    margin: 0;
+  }
+
+  &__a > * + * {
+    margin-top: 0.75em;
+  }
+
+  &__a ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    padding-left: 1.1em;
+    list-style: disc;
+  }
+
+  &__a li::marker {
+    color: rgba($color-white, 0.5);
+  }
+
+  &__a strong {
+    font-weight: 500;
   }
 
   &.is-open {
