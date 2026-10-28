@@ -816,13 +816,14 @@
   }
 }
 
-// The hand-held photo only belongs to version B.
-.ars-handshot {
+// The hand-held photos only belong to the deck version.
+.ars-handshot,
+.ars-photo {
   display: none;
 }
 
 // =====================================================================
-// Version B (?how=b, .ars--deck): the steps as a stacking card deck, in
+// Deck version (default, .ars--deck; ?how=a shows the pinned one): the steps as a stacking card deck, in
 // the look of the PRYPCO step cards: a light card with the copy, and a
 // flush colour panel per step (ARENA blue / jade / lemon) with the black
 // phone in it; white pop-up chips fly in each time a card comes to the
@@ -830,26 +831,41 @@
 // --depth (next card sliding over) and the active (front) card.
 // =====================================================================
 .ars--deck {
+  // Each step's panel: a pale tint of its accent with the site's rippling
+  // dot wave (xp-wave.js, as in the FAQ) rising from the bottom, drawn in
+  // the accent (arena-steps.js adds .ars-dots and sets the colour).
   .ars__step--discover {
-    --scene:
-      radial-gradient(70% 55% at 72% 18%, rgba(255, 255, 255, 0.6), transparent 70%),
-      linear-gradient(165deg, #d9efff 0%, #8fd0ff 100%);
+    --scene: #eaf4fc;
   }
 
   .ars__step--subscribe {
-    --scene:
-      radial-gradient(70% 55% at 72% 18%, rgba(255, 255, 255, 0.6), transparent 70%),
-      linear-gradient(165deg, #dcfbe9 0%, #7fe9b0 100%);
+    --scene: #eaf8f0;
   }
 
   .ars__step--trade {
-    --scene:
-      radial-gradient(70% 55% at 72% 18%, rgba(255, 255, 255, 0.65), transparent 70%),
-      linear-gradient(165deg, #f8fbd2 0%, #e4ee86 100%);
+    --scene: #f6f8e3;
   }
 
   .ars__scene {
-    background: var(--scene);
+    background:
+      radial-gradient(70% 55% at 50% 0%, rgba(255, 255, 255, 0.9), transparent 70%),
+      var(--scene);
+  }
+
+  .ars-dots {
+    position: absolute;
+    inset: auto 0 0;
+    height: 80%;
+    opacity: 0.6;
+    transform: scaleY(-1); // the artwork is densest at the top: flip it to the floor
+    mask-image: linear-gradient(to top, transparent 0%, #000 45%);
+    pointer-events: none;
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   // Phones rest in their final pose; the cards do the moving.
@@ -873,28 +889,82 @@
 
   // Discover: a real hand holding the phone (photo with the background
   // and screen cut out, images/investor/hand-phone.webp, 1000 × 1380). The
-  // live Discover screen sits in the photo's screen box (x 25.83%, y 3.73%,
-  // 51.59% × 81.34% of the photo) under the photo, so the notch and fingers
+  // live Discover screen sits in the photo's screen box (x 37.75%, y 3.73%,
+  // 49.35% × 81.34% of the photo) under the photo, so the notch and fingers
   // frame it; --u comes from the box width (360 native px across).
   .ars-handshot {
     position: absolute;
-    bottom: -4%;
+    bottom: 0;
     left: 50%;
     display: block;
-    height: 104%;
-    aspect-ratio: 1000 / 1380;
-    translate: -50% 0;
+    height: 90%;
+    aspect-ratio: 1000 / 1320;
+    translate: -62% 0; // centres the phone (the arm runs off to the left)
   }
 
-  .ars__step--discover .ars-phone-wrap {
+  .ars__step--discover .ars-phone-wrap,
+  .ars__step--subscribe .ars-phone-wrap {
     display: none;
+  }
+
+  // Subscribe: a hand holding the phone at an angle, the photo covering the
+  // panel (arena-steps.js sets the scale / shift). The live screen is a
+  // 360 × 780 box mapped onto the photo's screen with a perspective
+  // matrix (fitted to its four corners), under the photo.
+  .ars-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: block;
+    width: 1200px;
+    height: 1021px;
+    transform-origin: 0 0;
+  }
+
+  .ars-photo__screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 360px;
+    height: 780px;
+    overflow: hidden;
+    background: #f5f5f7;
+    transform: matrix3d(0.708488, -0.141397, 0, 3.04414e-5, 0.109457, 0.542423, 0, -0.000125796, 0, 0, 1, 0, 220.503, 173.74, 0, 1);
+    transform-origin: 0 0;
+
+    .ars-phone__screen {
+      --u: 1px;
+
+      height: 100%;
+      border-radius: 0;
+    }
+
+    .ars-phone__island {
+      display: none;
+    }
+  }
+
+  .ars-photo__img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+  }
+
+  // Pop-ups stay above the photo.
+  .ars__step--subscribe .ars-pops {
+    z-index: 3;
   }
 
   .ars-handshot__screen {
     position: absolute;
     top: 3.73%;
-    left: 25.83%;
-    width: 51.59%;
+    left: 37.75%;
+    width: 49.35%;
     height: 81.34%;
     overflow: hidden;
     border-radius: 10.5% / 4.8%;
@@ -927,9 +997,15 @@
 
   @media (max-width: 959px) {
     .ars-handshot {
-      top: 5%;
+      top: 9%;
       bottom: auto;
-      height: 118%;
+      height: 100%;
+    }
+
+    // Smaller phones on the stacked (mobile) cards.
+    .ars-phone,
+    .ars-pop {
+      --ars-mpw: min(40vw, 220px);
     }
   }
 
@@ -1062,7 +1138,7 @@
     }
 
     .ars-phone {
-      --pw: min(23vw, 300px, calc((var(--deck-h) - 90px) / 2.08));
+      --pw: min(20vw, 260px, calc((var(--deck-h) - 170px) / 2.08));
     }
   }
 }

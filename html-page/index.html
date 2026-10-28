@@ -387,7 +387,7 @@
          From the "arena-steps" handoff (js/components/arena-steps.js,
          scss/sections/_ars.scss). Desktop pins and swaps the three steps on
          scroll; below 960px they stack. Phone screens are illustrative. -->
-    <section class="ars ars--site" id="how" aria-labelledby="how-title" data-header="dark" data-ars>
+    <section class="ars ars--site ars--deck" id="how" aria-labelledby="how-title" data-header="dark" data-ars>
       <div class="container">
         <div class="iv-head iv-head--split">
           <h2 class="iv-head__title" id="how-title" data-scroll-reveal>When an offer <em class="iv-hl">goes live.</em></h2>
@@ -468,6 +468,14 @@
 
                 <div class="ars__scene" aria-hidden="true">
                   <div class="ars__scene-in">
+                <!-- A hand holding the phone at an angle (photo, screen cut out).
+                     arena-steps.js moves the live Subscribe screen into
+                     .ars-photo__screen (mapped onto the photo's screen) and
+                     scales the photo to cover the panel. -->
+                <div class="ars-photo" data-ars-photo>
+                  <div class="ars-photo__screen"></div>
+                  <img class="ars-photo__img" src="images/investor/hand-phone-tilt.webp" width="1200" height="1021" alt="" loading="lazy" decoding="async">
+                </div>
                     <div class="ars-phone-wrap">
                       <div class="ars-phone"><div class="ars-phone__bezel"><div class="ars-phone__screen">
                         <span class="ars-phone__island"></span>

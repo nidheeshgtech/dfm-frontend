@@ -8,14 +8,55 @@
 // (--depth, scrubbed both ways). The front card is the active one, so its
 // pop-ups fly in each time it comes to the front. Below 960px they simply
 // stack and play once.
+import { initDotWave } from "./xp-wave.js";
+
+// Version B: dot colour per step panel.
+const DOTS = { discover: "#4a9fe0", trade: "#a9b52a" };
+// The angled hand photo (1200 × 1021) and where its phone sits in it.
+const PHOTO = { w: 1200, h: 1021, fx: 411, fy: 389 };
+
 export function initArenaSteps(root = document) {
   root.querySelectorAll("[data-ars]").forEach((section) => {
-    if (new URLSearchParams(window.location.search).get("how") === "b") section.classList.add("ars--deck");
+    // The stacking deck is the default; ?how=a shows the pinned version.
+    if (new URLSearchParams(window.location.search).get("how") === "a") section.classList.remove("ars--deck");
     const deck = section.classList.contains("ars--deck");
     // B: the Discover screen goes into the hand-held photo's screen box.
     const handScreen = deck && section.querySelector(".ars-handshot__screen");
     const discoverScreen = section.querySelector(".ars__step--discover .ars-phone__screen");
     if (handScreen && discoverScreen) handScreen.append(discoverScreen);
+    // B: the Subscribe screen goes onto the angled hand photo, which covers
+    // its panel (scaled and shifted to keep the phone centred).
+    const photo = deck && section.querySelector("[data-ars-photo]");
+    const subscribeScreen = section.querySelector(".ars__step--subscribe .ars-phone__screen");
+    if (photo && subscribeScreen) {
+      photo.querySelector(".ars-photo__screen").append(subscribeScreen);
+      const scene = photo.closest(".ars__scene");
+      const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+      const fit = () => {
+        const sw = scene.clientWidth;
+        const sh = scene.clientHeight;
+        const k = Math.max(sw / PHOTO.w, sh / PHOTO.h);
+        const tx = clamp(sw / 2 - PHOTO.fx * k, sw - PHOTO.w * k, 0);
+        const ty = clamp(sh / 2 - PHOTO.fy * k, sh - PHOTO.h * k, 0);
+        photo.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
+      };
+      fit();
+      new ResizeObserver(fit).observe(scene);
+    }
+    // B: a rippling dot wave (the FAQ one) behind each phone.
+    if (deck) {
+      section.querySelectorAll("[data-ars-step]").forEach((step) => {
+        const scene = step.querySelector(".ars__scene");
+        const key = Object.keys(DOTS).find((k) => step.classList.contains(`ars__step--${k}`));
+        if (!scene || !key) return;
+        const dots = document.createElement("div");
+        dots.className = "ars-dots";
+        dots.setAttribute("aria-hidden", "true");
+        dots.dataset.dotColor = DOTS[key];
+        scene.prepend(dots);
+        initDotWave(dots);
+      });
+    }
     const scroller = section.querySelector("[data-ars-scroller]");
     const steps = [...section.querySelectorAll("[data-ars-step]")];
     const rail = [...section.querySelectorAll("[data-ars-go]")];
