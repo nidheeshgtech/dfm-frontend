@@ -1313,6 +1313,112 @@
     color: rgba($color-white, 0.65);
   }
 
+  // ---- Odometer (js/components/stat-roll.js) ----
+  // Each digit: a hidden copy sets the width, the 0–9 strip rolls to it.
+  .roll {
+    position: relative;
+    display: inline-block;
+    height: 1em;
+    vertical-align: top;
+    clip-path: inset(0 -0.2em);
+  }
+
+  .roll__ghost {
+    visibility: hidden;
+  }
+
+  .roll__strip {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    translate: -50% 0;
+    transition: transform 1.9s cubic-bezier(0.16, 1, 0.3, 1);
+
+    span {
+      height: 1em;
+    }
+  }
+
+  &.is-in .roll__strip {
+    transform: translateY(calc(var(--to) * -1em));
+  }
+
+  // Units, labels and dividers come in with the figures.
+  &.is-roll {
+    dd small,
+    dt {
+      opacity: 0;
+      translate: 0 10px;
+      transition:
+        opacity 0.8s $ease-out,
+        translate 0.8s $ease-out;
+    }
+
+    .iv-stats__item:nth-child(2) :is(dd small, dt) {
+      transition-delay: 0.18s;
+    }
+
+    .iv-stats__item:nth-child(3) :is(dd small, dt) {
+      transition-delay: 0.36s;
+    }
+  }
+
+  &.is-roll.is-in {
+    dd small,
+    dt {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @include up("tablet") {
+    &.is-roll {
+      position: relative;
+      border-top-color: transparent;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        right: 0;
+        left: 0;
+        height: 1px;
+        background: rgba($color-white, 0.14);
+        transform: scaleX(0);
+        transform-origin: 0 50%;
+        transition: transform 1.4s $ease-out;
+      }
+
+      .iv-stats__item + .iv-stats__item {
+        position: relative;
+        border-left-color: transparent;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 1px;
+          background: rgba($color-white, 0.14);
+          transform: scaleY(0);
+          transform-origin: 50% 0;
+          transition: transform 1s $ease-out 0.4s;
+        }
+      }
+    }
+
+    &.is-roll.is-in {
+      &::before,
+      .iv-stats__item + .iv-stats__item::before {
+        transform: none;
+      }
+    }
+  }
+
   &__src {
     margin-top: clamp(8px, 1.4vh, 20px);
     font-size: 12px;
