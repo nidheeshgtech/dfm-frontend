@@ -11,9 +11,7 @@
 import { initDotWave } from "./xp-wave.js";
 
 // Version B: dot colour per step panel.
-const DOTS = { discover: "#4a9fe0", trade: "#a9b52a" };
-// The angled hand photo (1200 × 1021) and where its phone sits in it.
-const PHOTO = { w: 1200, h: 1021, fx: 411, fy: 389 };
+const DOTS = { discover: "#4a9fe0" };
 
 export function initArenaSteps(root = document) {
   root.querySelectorAll("[data-ars]").forEach((section) => {
@@ -24,24 +22,32 @@ export function initArenaSteps(root = document) {
     const handScreen = deck && section.querySelector(".ars-handshot__screen");
     const discoverScreen = section.querySelector(".ars__step--discover .ars-phone__screen");
     if (handScreen && discoverScreen) handScreen.append(discoverScreen);
-    // B: the Subscribe screen goes onto the angled hand photo, which covers
-    // its panel (scaled and shifted to keep the phone centred).
-    const photo = deck && section.querySelector("[data-ars-photo]");
-    const subscribeScreen = section.querySelector(".ars__step--subscribe .ars-phone__screen");
-    if (photo && subscribeScreen) {
-      photo.querySelector(".ars-photo__screen").append(subscribeScreen);
-      const scene = photo.closest(".ars__scene");
+    // B: Subscribe and Trade screens go onto hand photos ([data-ars-photo],
+    // natural size data-w × data-h, phone at data-fx / data-fy). Each photo
+    // covers its panel, zoomed by data-zoom and shifted to keep the phone
+    // centred; the screen box is mapped onto the photo's phone in CSS.
+    if (deck) {
       const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
-      const fit = () => {
-        const sw = scene.clientWidth;
-        const sh = scene.clientHeight;
-        const k = Math.max(sw / PHOTO.w, sh / PHOTO.h);
-        const tx = clamp(sw / 2 - PHOTO.fx * k, sw - PHOTO.w * k, 0);
-        const ty = clamp(sh / 2 - PHOTO.fy * k, sh - PHOTO.h * k, 0);
-        photo.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
-      };
-      fit();
-      new ResizeObserver(fit).observe(scene);
+      section.querySelectorAll("[data-ars-photo]").forEach((photo) => {
+        const step = photo.closest("[data-ars-step]");
+        const screen = step?.querySelector(".ars-phone-wrap .ars-phone__screen");
+        if (!screen) return;
+        photo.querySelector(".ars-photo__screen").append(screen);
+        const { w, h, fx, fy, zoom = 1 } = Object.fromEntries(Object.entries(photo.dataset).map(([k, v]) => [k, Number(v)]));
+        photo.style.width = `${w}px`;
+        photo.style.height = `${h}px`;
+        const scene = photo.closest(".ars__scene");
+        const fit = () => {
+          const sw = scene.clientWidth;
+          const sh = scene.clientHeight;
+          const k = Math.max(sw / w, sh / h) * zoom;
+          const tx = clamp(sw / 2 - fx * k, sw - w * k, 0);
+          const ty = clamp(sh / 2 - fy * k, sh - h * k, 0);
+          photo.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
+        };
+        fit();
+        new ResizeObserver(fit).observe(scene);
+      });
     }
     // B: a rippling dot wave (the FAQ one) behind each phone.
     if (deck) {
