@@ -49,6 +49,35 @@ export function initArenaSteps(root = document) {
         new ResizeObserver(fit).observe(scene);
       });
     }
+    // Deck: each card gets its step number with a three-part progress bar
+    // ("03 ▬▬▬") above the title and "01 Discover · 02 Subscribe · 03 Trade"
+    // at the foot of the copy, this card's step lit (built from the titles).
+    if (deck) {
+      const cards = [...section.querySelectorAll("[data-ars-step]")];
+      const titles = cards.map((c) => c.querySelector(".ars__name")?.textContent.trim() || "");
+      cards.forEach((card, i) => {
+        const copy = card.querySelector(".ars__copy");
+        if (!copy) return;
+        const num = document.createElement("span");
+        num.className = "ars__num";
+        num.setAttribute("aria-hidden", "true");
+        num.style.setProperty("--s", i + 1);
+        num.textContent = String(i + 1).padStart(2, "0");
+        copy.querySelector(".ars__name")?.before(num);
+        const track = document.createElement("ol");
+        track.className = "ars__track";
+        track.setAttribute("aria-hidden", "true");
+        titles.forEach((t, j) => {
+          const li = document.createElement("li");
+          li.textContent = `${String(j + 1).padStart(2, "0")} ${t}`;
+          if (j < i) li.className = "is-done";
+          if (j === i) li.className = "is-on";
+          track.append(li);
+        });
+        copy.append(track);
+      });
+    }
+
     // B: a rippling dot wave (the FAQ one) behind each phone.
     if (deck) {
       section.querySelectorAll("[data-ars-step]").forEach((step) => {

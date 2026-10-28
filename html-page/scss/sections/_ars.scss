@@ -954,6 +954,13 @@
     height: 100%;
   }
 
+  // Trade: "Order filled" top right, level with "Allocation confirmed".
+  .ars__step--trade .ars-pop:nth-child(2) {
+    top: 20%;
+    right: 5%;
+    bottom: auto;
+  }
+
   // Pop-ups stay above the photos.
   .ars__step--subscribe .ars-pops,
   .ars__step--trade .ars-pops {
@@ -1006,6 +1013,89 @@
     .ars-phone,
     .ars-pop {
       --ars-mpw: min(40vw, 220px);
+    }
+  }
+
+  // Step number + three-part progress bar (this card's share lit), and the
+  // step track at the foot of the copy (built by arena-steps.js).
+  --ars-step: #12a866;
+
+  .ars__pill {
+    display: none;
+  }
+
+  .ars__num {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--ars-step);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+
+    &::after {
+      content: "";
+      width: 92px;
+      height: 4px;
+      border-radius: 2px;
+      background:
+        linear-gradient(var(--ars-step), var(--ars-step)) 0 0 / calc(var(--s, 1) * 33.34%) 100% no-repeat,
+        rgba(13, 14, 26, 0.12);
+      // Three segments with small gaps.
+      mask-image: linear-gradient(90deg, #000 0 30%, transparent 30% 35%, #000 35% 65%, transparent 65% 70%, #000 70%);
+    }
+  }
+
+  .ars__num + .ars__name {
+    margin-top: 20px;
+  }
+
+  .ars__track {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    margin: 32px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: rgba($color-text-dark, 0.4);
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      &.is-done {
+        color: rgba($color-text-dark, 0.6);
+      }
+
+      &.is-on {
+        color: $color-text-dark;
+
+        &::before {
+          background: var(--ars-step);
+          box-shadow: 0 0 0 4px rgba(18, 168, 102, 0.2);
+        }
+      }
+    }
+  }
+
+  @media (min-width: 960px) {
+    .ars__num {
+      margin-top: auto;
+    }
+
+    .ars__track {
+      margin-top: auto;
+      padding-top: 32px;
     }
   }
 
@@ -1119,10 +1209,12 @@
       }
     }
 
-    // Copy stays put on every card (the pinned version fades it).
+    // Copy stays put on every card (the pinned version fades it); it fills
+    // the card height so the step track sits at the foot.
     .ars__copy {
-      align-self: center;
-      padding: 0 clamp(24px, 3vw, 48px) 0 clamp(32px, 4.5vw, 80px);
+      align-self: stretch;
+      justify-content: center;
+      padding: clamp(32px, 4vh, 48px) clamp(24px, 3vw, 48px) clamp(28px, 4vh, 44px) clamp(32px, 4.5vw, 80px);
       opacity: 1;
       visibility: visible;
       transform: none;
