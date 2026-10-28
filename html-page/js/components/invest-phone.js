@@ -1,11 +1,12 @@
 // Invest hero: the illustrative iVestor phone. Every few seconds the next
-// floating activity chip lights up and "pushes" its text into the phone
-// as a notification; the offer's subscription meter creeps up when
-// someone subscribes. The portfolio chart grows out of a soft trend in a
-// wave with a glowing cursor on its front, then ticks live (same feel as
-// the Access screen in xp-app.js); the portfolio value counts up with the
-// wave and follows the live tick. Runs only while the hero is on screen.
-// Reduced motion: first chip stays lit, static chart, nothing cycles.
+// floating activity chip beside the phone lights up. The portfolio chart
+// grows out of a soft trend in a wave with a glowing cursor on its front,
+// then ticks live (same feel as the Access screen in xp-app.js); the
+// portfolio value counts up with the wave and follows the live tick. The
+// wallet screen ([data-iv-wallet]) gets .is-live so its CSS animations
+// (holding chart draw-in, scroll) start with it. Runs only while the hero
+// is on screen. Reduced motion: first chip stays lit, static chart,
+// nothing cycles.
 const INTERVAL = 3200;
 
 export function initInvestPhone() {
@@ -13,35 +14,17 @@ export function initInvestPhone() {
   if (!root) return;
 
   const chips = Array.from(root.querySelectorAll("[data-iv-chip]"));
-  const toast = root.querySelector("[data-iv-toast]");
-  const toastTitle = root.querySelector("[data-iv-toast-title]");
-  const toastText = root.querySelector("[data-iv-toast-text]");
-  const meter = root.querySelector("[data-iv-meter]");
-  if (!chips.length || !toast) return;
+  const wallet = root.querySelector("[data-iv-wallet]");
+  if (!chips.length) return;
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let index = -1;
-  let fill = 58;
   let timer = null;
 
   const show = (i) => {
     index = i % chips.length;
-    const chip = chips[index];
-    chips.forEach((c) => c.classList.toggle("is-active", c === chip));
-
-    toastTitle.textContent = chip.querySelector("b").textContent;
-    toastText.textContent = chip.querySelector("small").textContent;
-    toast.classList.remove("is-in");
-    void toast.offsetWidth; // restart the slide-in
-    toast.classList.add("is-in");
-
-    if (meter && /subscribed/i.test(toastTitle.textContent)) {
-      fill = fill >= 88 ? 58 : fill + 6;
-      meter.style.width = `${fill}%`;
-    }
+    chips.forEach((c, j) => c.classList.toggle("is-active", j === index));
   };
-
-  if (meter) meter.style.width = `${fill}%`;
 
   if (reduceMotion) {
     show(0);
@@ -52,12 +35,15 @@ export function initInvestPhone() {
 
   const start = () => {
     chart?.play();
+    wallet?.classList.add("is-live");
+    wallet?.classList.remove("is-paused");
     if (timer) return;
     show(index + 1);
     timer = setInterval(() => show(index + 1), INTERVAL);
   };
   const stop = () => {
     chart?.pause();
+    wallet?.classList.add("is-paused");
     clearInterval(timer);
     timer = null;
   };

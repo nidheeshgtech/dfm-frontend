@@ -10187,6 +10187,413 @@ body {
   text-align: center;
 }
 
+.iv-phone--real {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.iv-phone--real .iv-phone__frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+.iv-phone--real .iv-phone__screen {
+  position: absolute;
+  top: calc(var(--pw) * 0.0511);
+  left: 5.33%;
+  width: 89.34%;
+  height: calc(var(--pw) * 1.9422);
+  padding: 0;
+  border-radius: calc(var(--pw) * 0.165);
+  background: #ffffff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .iv-phone--real .iv-wallet__scroll,
+  .iv-phone--real .iv-wallet__mini-line,
+  .iv-phone--real .iv-wallet__mini-area {
+    animation: none;
+  }
+  .iv-phone--real .iv-wallet__mini-line {
+    stroke-dashoffset: 0;
+  }
+  .iv-phone--real .iv-wallet__mini-area {
+    opacity: 1;
+  }
+}
+
+.iv-wallet {
+  --pt: calc(var(--pw) * 0.0023824);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #ffffff;
+  color: #111218;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 0;
+}
+.iv-wallet svg {
+  display: block;
+}
+.iv-wallet__status {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--pt) * 60);
+  padding: 0 calc(var(--pt) * 30) 0 calc(var(--pt) * 46);
+  background: linear-gradient(180deg, #5320ee 60%, rgba(83, 32, 238, 0));
+  color: #ffffff;
+  font-size: calc(var(--pt) * 17);
+  font-weight: 600;
+}
+.iv-wallet__sys {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--pt) * 6);
+  fill: currentColor;
+}
+.iv-wallet__sys svg:nth-child(1) {
+  width: calc(var(--pt) * 18);
+}
+.iv-wallet__sys svg:nth-child(2) {
+  width: calc(var(--pt) * 16);
+}
+.iv-wallet__sys svg:nth-child(3) {
+  width: calc(var(--pt) * 27);
+}
+.iv-wallet__scroll {
+  animation: iv-wallet-scroll 16s cubic-bezier(0.65, 0, 0.35, 1) 2.5s infinite;
+  animation-play-state: paused;
+}
+.iv-wallet.is-live .iv-wallet__scroll {
+  animation-play-state: running;
+}
+.iv-wallet.is-paused .iv-wallet__scroll {
+  animation-play-state: paused;
+}
+.iv-wallet__hero {
+  padding: calc(var(--pt) * 52) calc(var(--pt) * 16) calc(var(--pt) * 22);
+  background: linear-gradient(180deg, #5320ee 0, #3a15b4 24%, #1b1040 52%, #110e1b 78%);
+  color: #ffffff;
+  text-align: center;
+}
+.iv-wallet__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(var(--pt) * 8);
+}
+.iv-wallet__icon {
+  width: calc(var(--pt) * 26);
+  height: calc(var(--pt) * 26);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.iv-wallet__title {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--pt) * 6);
+  margin: 0;
+  font-size: calc(var(--pt) * 17);
+  font-weight: 600;
+}
+.iv-wallet__title svg {
+  width: calc(var(--pt) * 18);
+  height: calc(var(--pt) * 18);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+.iv-wallet__value {
+  margin: calc(var(--pt) * 10) 0 0;
+  font-size: calc(var(--pt) * 46);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.iv-wallet__value small {
+  font-size: calc(var(--pt) * 18);
+  letter-spacing: 0;
+}
+.iv-wallet__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--pt) * 8);
+  margin: calc(var(--pt) * 8) 0 0;
+  font-size: calc(var(--pt) * 13);
+}
+.iv-wallet__toggle span {
+  display: grid;
+  place-items: center;
+  width: calc(var(--pt) * 24);
+  height: calc(var(--pt) * 24);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+}
+.iv-wallet__toggle svg {
+  width: calc(var(--pt) * 14);
+  height: calc(var(--pt) * 14);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.iv-wallet__change, .iv-wallet__legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--pt) * 6);
+  margin: calc(var(--pt) * 8) 0 0;
+  font-size: calc(var(--pt) * 11.5);
+  color: rgba(255, 255, 255, 0.85);
+}
+.iv-wallet__change i, .iv-wallet__legend i {
+  width: calc(var(--pt) * 7);
+  height: calc(var(--pt) * 7);
+}
+.iv-wallet__change i {
+  border-left: calc(var(--pt) * 4.5) solid transparent;
+  border-right: calc(var(--pt) * 4.5) solid transparent;
+  border-bottom: calc(var(--pt) * 7) solid #2bd4a0;
+  width: 0;
+  height: 0;
+}
+.iv-wallet__legend {
+  margin-top: calc(var(--pt) * 3);
+}
+.iv-wallet__legend i {
+  border-radius: 50%;
+  background: #ffffff;
+}
+.iv-wallet__chart {
+  position: relative;
+  height: calc(var(--pt) * 92);
+  margin: calc(var(--pt) * 10) calc(var(--pt) * -2) 0 calc(var(--pt) * -16);
+}
+.iv-wallet__chart .iv-phone__spark {
+  height: 100%;
+}
+.iv-wallet__chart .iv-phone__spark-line {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+.iv-wallet__chart .iv-phone__cursor b {
+  box-shadow: 0 0 0 0.2em rgba(255, 255, 255, 0.25), 0 0 0.8em rgba(255, 255, 255, 0.8);
+}
+.iv-wallet__range {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(var(--pt) * 6);
+  margin-top: calc(var(--pt) * 18);
+  font-size: calc(var(--pt) * 13);
+  font-weight: 600;
+}
+.iv-wallet__range span {
+  display: grid;
+  place-items: center;
+  height: calc(var(--pt) * 30);
+  border-radius: calc(var(--pt) * 9);
+}
+.iv-wallet__range .is-on {
+  background: rgba(255, 255, 255, 0.12);
+}
+.iv-wallet__sheet {
+  position: relative;
+  margin-top: calc(var(--pt) * -10);
+  border-radius: calc(var(--pt) * 16) calc(var(--pt) * 16) 0 0;
+  background: #ffffff;
+}
+.iv-wallet__seg {
+  display: flex;
+  gap: calc(var(--pt) * 10);
+  padding: calc(var(--pt) * 14) calc(var(--pt) * 14);
+  overflow: hidden;
+  border-bottom: 1px solid #eceef1;
+  white-space: nowrap;
+}
+.iv-wallet__seg span {
+  flex-shrink: 0;
+  padding: calc(var(--pt) * 6) calc(var(--pt) * 14);
+  border-radius: calc(var(--pt) * 7);
+  background: #f1f2f4;
+  font-size: calc(var(--pt) * 12.5);
+  font-weight: 600;
+}
+.iv-wallet__seg .is-on {
+  background: #4f1fe8;
+  color: #ffffff;
+}
+.iv-wallet__holding {
+  padding: calc(var(--pt) * 14) calc(var(--pt) * 14) calc(var(--pt) * 16);
+}
+.iv-wallet__row, .iv-wallet__list li {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--pt) * 12);
+}
+.iv-wallet__row b, .iv-wallet__list li b {
+  font-size: calc(var(--pt) * 15);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.iv-wallet__logo {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: calc(var(--pt) * 34);
+  height: calc(var(--pt) * 34);
+  border-radius: 50%;
+  background: #eef0f5;
+}
+.iv-wallet__logo svg {
+  width: calc(var(--pt) * 22);
+  height: calc(var(--pt) * 22);
+}
+.iv-wallet__logo--orange {
+  background: #ff5a00;
+}
+.iv-wallet__amt {
+  margin-left: auto;
+  font-size: calc(var(--pt) * 15);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.iv-wallet__amt small {
+  font-size: calc(var(--pt) * 10.5);
+  font-weight: 400;
+}
+.iv-wallet__mini {
+  position: relative;
+  height: calc(var(--pt) * 68);
+  margin-top: calc(var(--pt) * 14);
+}
+.iv-wallet__mini svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.iv-wallet__tag {
+  position: absolute;
+  top: calc(var(--pt) * 4);
+  left: 0;
+  z-index: 1;
+  padding: calc(var(--pt) * 2) calc(var(--pt) * 6);
+  border-radius: calc(var(--pt) * 4);
+  background: #e3f7ee;
+  color: #13a172;
+  font-size: calc(var(--pt) * 11);
+}
+.iv-wallet__mini-ref {
+  fill: none;
+  stroke: #8fcfb6;
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  vector-effect: non-scaling-stroke;
+}
+.iv-wallet__mini-line {
+  fill: none;
+  stroke: #1fbf8f;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+}
+.iv-wallet__mini-area {
+  opacity: 0;
+}
+.iv-wallet.is-live .iv-wallet__mini-line {
+  animation: iv-draw 2.2s 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.iv-wallet.is-live .iv-wallet__mini-area {
+  animation: iv-fade 1.2s 2s ease forwards;
+}
+.iv-wallet__facts {
+  display: grid;
+  gap: calc(var(--pt) * 9);
+  margin: calc(var(--pt) * 20) 0 0;
+  font-size: calc(var(--pt) * 11.5);
+}
+.iv-wallet__facts div {
+  display: flex;
+  justify-content: space-between;
+}
+.iv-wallet__facts dt {
+  color: #5d6068;
+}
+.iv-wallet__facts dd {
+  margin: 0;
+  color: #7d8089;
+}
+.iv-wallet__facts div:first-child dt,
+.iv-wallet__facts div:first-child dd {
+  color: #111218;
+  font-weight: 600;
+}
+.iv-wallet__facts .is-up {
+  color: #13b384;
+}
+.iv-wallet__actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(var(--pt) * 10);
+  margin-top: calc(var(--pt) * 16);
+}
+.iv-wallet__actions span {
+  display: grid;
+  place-items: center;
+  height: calc(var(--pt) * 30);
+  border-radius: calc(var(--pt) * 8);
+  background: #f2f3f5;
+}
+.iv-wallet__actions svg {
+  width: calc(var(--pt) * 16);
+  height: calc(var(--pt) * 16);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.iv-wallet__list {
+  margin: 0 calc(var(--pt) * 14);
+  padding: 0;
+  list-style: none;
+}
+.iv-wallet__list li {
+  height: calc(var(--pt) * 58);
+  border-top: 1px solid #eceef1;
+}
+
+@keyframes iv-wallet-scroll {
+  0%, 20% {
+    translate: 0 0;
+  }
+  48%, 72% {
+    translate: 0 calc(var(--pt) * -250);
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+@keyframes iv-fade {
+  to {
+    opacity: 1;
+  }
+}
 .iv-chip {
   position: absolute;
   z-index: 2;
@@ -13036,18 +13443,18 @@ body {
   padding: 20px clamp(1.25rem, 0.52vw + 1.1286407767rem, 1.75rem) clamp(1.5rem, 0.52vw + 1.3786407767rem, 2rem);
 }
 .iv-market__title {
-  font-size: clamp(1.75rem, 0.52vw + 1.6286407767rem, 2.25rem);
+  font-size: clamp(1.875rem, 0.65vw + 1.7233009709rem, 2.5rem);
   line-height: 1.1;
   letter-spacing: -0.01em;
 }
 .iv-market__subtitle {
   margin-top: 8px;
-  font-size: clamp(1.125rem, 0.19vw + 1.0794902913rem, 1.3125rem);
+  font-size: clamp(1.1875rem, 0.26vw + 1.1268203883rem, 1.4375rem);
   color: var(--acc);
 }
 .iv-market__text {
   margin-top: 12px;
-  font-size: clamp(0.9375rem, 0.13vw + 0.9071601942rem, 1.0625rem);
+  font-size: clamp(1rem, 0.19vw + 0.9544902913rem, 1.1875rem);
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.65);
 }
@@ -13070,7 +13477,7 @@ body {
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.55);
@@ -13084,7 +13491,7 @@ body {
 }
 .iv-market__stats dd {
   margin: 0;
-  font-size: clamp(0.875rem, 0.13vw + 0.8446601942rem, 1rem);
+  font-size: clamp(0.9375rem, 0.19vw + 0.8919902913rem, 1.125rem);
   text-align: right;
 }
 @media (prefers-reduced-motion: reduce) {
