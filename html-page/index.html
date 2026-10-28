@@ -641,110 +641,290 @@
           <p class="iv-faq__lead" data-scroll-reveal>Read the quick answers below, or ask the ARENA assistant directly.</p>
 
           <div class="faq__grid">
-            <div class="faq__list" data-faq data-scroll-reveal-group>
-            <div class="faq-item liquid-glass is-open" data-faq-id="G1">
-              <span class="liquid-glass__effect"></span>
-              <span class="liquid-glass__tint"></span>
-              <span class="liquid-glass__shine"></span>
-              <h3>
-                <button class="faq-item__btn" type="button" id="faq-q-g1" aria-expanded="true" aria-controls="faq-a-g1">
-                  <span class="faq-item__q">What is ARENA?</span>
-                  <span class="faq-item__icon" aria-hidden="true"></span>
-                </button>
-              </h3>
-              <div class="faq-item__panel" id="faq-a-g1" role="region" aria-labelledby="faq-q-g1">
-                <div class="faq-item__inner"><div class="faq-item__a">
+            <div class="faq__list" data-faq data-faq-tabs data-scroll-reveal-group>
+            <div class="faq__tabs" role="tablist" aria-label="Question topics">
+              <button class="faq__tab is-on" type="button" role="tab" id="faq-tab-general" aria-controls="faq-group-general" aria-selected="true">General <span>6</span></button>
+              <button class="faq__tab" type="button" role="tab" id="faq-tab-start" aria-controls="faq-group-start" aria-selected="false" tabindex="-1">Getting started <span>5</span></button>
+              <button class="faq__tab" type="button" role="tab" id="faq-tab-trading" aria-controls="faq-group-trading" aria-selected="false" tabindex="-1">Information and trading <span>5</span></button>
+            </div>
+            <div class="faq__group" id="faq-group-general" role="tabpanel" aria-labelledby="faq-tab-general" data-faq-group>
+              <div class="faq-item liquid-glass is-open" data-faq-id="G1">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-g1" aria-expanded="true" aria-controls="faq-a-g1">
+                    <span class="faq-item__q">What is ARENA?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-g1" role="region" aria-labelledby="faq-q-g1">
+                  <div class="faq-item__inner"><div class="faq-item__a">
                   <p>ARENA is DFM’s planned private markets platform for growth capital and private shareholder liquidity. It serves operating growth businesses, pre-IPO companies and family businesses through three routes: Growth Market, Private Market and Closed Listing. ARENA is subject to approval by the Capital Market Authority (CMA).</p>
-                </div></div>
+                  </div></div>
+                </div>
               </div>
-            </div>
-            <div class="faq-item liquid-glass" data-faq-id="G2">
-              <span class="liquid-glass__effect"></span>
-              <span class="liquid-glass__tint"></span>
-              <span class="liquid-glass__shine"></span>
-              <h3>
-                <button class="faq-item__btn" type="button" id="faq-q-g2" aria-expanded="false" aria-controls="faq-a-g2">
-                  <span class="faq-item__q">How is ARENA different from the DFM Main Market?</span>
-                  <span class="faq-item__icon" aria-hidden="true"></span>
-                </button>
-              </h3>
-              <div class="faq-item__panel" id="faq-a-g2" role="region" aria-labelledby="faq-q-g2">
-                <div class="faq-item__inner"><div class="faq-item__a">
+              <div class="faq-item liquid-glass" data-faq-id="G2">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-g2" aria-expanded="false" aria-controls="faq-a-g2">
+                    <span class="faq-item__q">How is ARENA different from the DFM Main Market?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-g2" role="region" aria-labelledby="faq-q-g2">
+                  <div class="faq-item__inner"><div class="faq-item__a">
                   <p>The Main Market suits established, scaled businesses ready for public ownership — typically US$1bn+ equity value. ARENA is built for earlier-stage and private companies, with illustrative valuations of around US$95mn to US$820mn. It offers a faster, lower-cost route to market under a lighter-weight yet robust framework, with control over your cap table and privacy rails for financial disclosures.</p>
-                </div></div>
+                  </div></div>
+                </div>
               </div>
-            </div>
-            <div class="faq-item liquid-glass" data-faq-id="G3">
-              <span class="liquid-glass__effect"></span>
-              <span class="liquid-glass__tint"></span>
-              <span class="liquid-glass__shine"></span>
-              <h3>
-                <button class="faq-item__btn" type="button" id="faq-q-g3" aria-expanded="false" aria-controls="faq-a-g3">
-                  <span class="faq-item__q">Is ARENA a separate exchange?</span>
-                  <span class="faq-item__icon" aria-hidden="true"></span>
-                </button>
-              </h3>
-              <div class="faq-item__panel" id="faq-a-g3" role="region" aria-labelledby="faq-q-g3">
-                <div class="faq-item__inner"><div class="faq-item__a">
+              <div class="faq-item liquid-glass" data-faq-id="G3">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-g3" aria-expanded="false" aria-controls="faq-a-g3">
+                    <span class="faq-item__q">Is ARENA a separate exchange?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-g3" role="region" aria-labelledby="faq-q-g3">
+                  <div class="faq-item__inner"><div class="faq-item__a">
                   <p>No. ARENA is DFM’s planned regulated private market platform, designed to complement the Main Market by giving companies an alternative route to access capital and secondary liquidity. ARENA will operate within DFM’s existing market infrastructure, under the regulatory oversight of the UAE Capital Market Authority (CMA).</p>
-                </div></div>
+                  </div></div>
+                </div>
               </div>
-            </div>
-            <div class="faq-item liquid-glass" data-faq-id="G4">
-              <span class="liquid-glass__effect"></span>
-              <span class="liquid-glass__tint"></span>
-              <span class="liquid-glass__shine"></span>
-              <h3>
-                <button class="faq-item__btn" type="button" id="faq-q-g4" aria-expanded="false" aria-controls="faq-a-g4">
-                  <span class="faq-item__q">How does ARENA relate to Nasdaq Dubai?</span>
-                  <span class="faq-item__icon" aria-hidden="true"></span>
-                </button>
-              </h3>
-              <div class="faq-item__panel" id="faq-a-g4" role="region" aria-labelledby="faq-q-g4">
-                <div class="faq-item__inner"><div class="faq-item__a">
+              <div class="faq-item liquid-glass" data-faq-id="G4">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-g4" aria-expanded="false" aria-controls="faq-a-g4">
+                    <span class="faq-item__q">How does ARENA relate to Nasdaq Dubai?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-g4" role="region" aria-labelledby="faq-q-g4">
+                  <div class="faq-item__inner"><div class="faq-item__a">
                   <p>ARENA and Nasdaq Dubai are complementary platforms within DFM’s broader capital markets offering. ARENA is DFM’s planned regulated private market platform. Nasdaq Dubai is Dubai’s international exchange in the DIFC, offering equities, bonds, sukuk and other securities. Nasdaq Dubai is regulated by the Dubai Financial Services Authority (DFSA); ARENA will operate under the oversight of the UAE Capital Market Authority (CMA). Together, they give companies and investors access to a broader range of capital raising and investment opportunities.</p>
-                </div></div>
+                  </div></div>
+                </div>
               </div>
-            </div>
-            <div class="faq-item liquid-glass" data-faq-id="G5">
-              <span class="liquid-glass__effect"></span>
-              <span class="liquid-glass__tint"></span>
-              <span class="liquid-glass__shine"></span>
-              <h3>
-                <button class="faq-item__btn" type="button" id="faq-q-g5" aria-expanded="false" aria-controls="faq-a-g5">
-                  <span class="faq-item__q">Who regulates ARENA?</span>
-                  <span class="faq-item__icon" aria-hidden="true"></span>
-                </button>
-              </h3>
-              <div class="faq-item__panel" id="faq-a-g5" role="region" aria-labelledby="faq-q-g5">
-                <div class="faq-item__inner"><div class="faq-item__a">
+              <div class="faq-item liquid-glass" data-faq-id="G5">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-g5" aria-expanded="false" aria-controls="faq-a-g5">
+                    <span class="faq-item__q">Who regulates ARENA?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-g5" role="region" aria-labelledby="faq-q-g5">
+                  <div class="faq-item__inner"><div class="faq-item__a">
                   <p>Three authorities, one streamlined framework:</p>
                   <ul>
                     <li><strong>Capital Market Authority (CMA)</strong> — the UAE federal securities regulator (formerly SCA). Sets the offering rules, approves prospectuses, sets disclosure standards and licenses brokers and advisers.</li>
                     <li><strong>Dubai Financial Market (DFM)</strong> — sets the ARENA listing rules and supervises the market.</li>
                     <li><strong>Ministry of Economy and Free Zones</strong> — the company registrar. Sets the corporate governance code.</li>
                   </ul>
-                </div></div>
+                  </div></div>
+                </div>
               </div>
-            </div>
-            <div class="faq-item liquid-glass" data-faq-id="G6">
-              <span class="liquid-glass__effect"></span>
-              <span class="liquid-glass__tint"></span>
-              <span class="liquid-glass__shine"></span>
-              <h3>
-                <button class="faq-item__btn" type="button" id="faq-q-g6" aria-expanded="false" aria-controls="faq-a-g6">
-                  <span class="faq-item__q">When does ARENA launch?</span>
-                  <span class="faq-item__icon" aria-hidden="true"></span>
-                </button>
-              </h3>
-              <div class="faq-item__panel" id="faq-a-g6" role="region" aria-labelledby="faq-q-g6">
-                <div class="faq-item__inner"><div class="faq-item__a">
+              <div class="faq-item liquid-glass" data-faq-id="G6">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-g6" aria-expanded="false" aria-controls="faq-a-g6">
+                    <span class="faq-item__q">When does ARENA launch?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-g6" role="region" aria-labelledby="faq-q-g6">
+                  <div class="faq-item__inner"><div class="faq-item__a">
                   <p>ARENA is expected to launch soon, subject to final regulatory approvals. The CMA has completed its public consultation on ARENA’s offering rules, and preparations are progressing towards launch. Register your interest to receive updates and be among the first to know when ARENA opens.</p>
-                </div></div>
+                  </div></div>
+                </div>
               </div>
             </div>
+            <div class="faq__group" id="faq-group-start" role="tabpanel" aria-labelledby="faq-tab-start" data-faq-group hidden>
+              <div class="faq-item liquid-glass" data-faq-id="I1">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i1" aria-expanded="false" aria-controls="faq-a-i1">
+                    <span class="faq-item__q">Who can invest through ARENA?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i1" role="region" aria-labelledby="faq-q-i1">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <p>ARENA brings investment opportunities to global investors. DFM has 1.25 million+ registered investors from 200+ nationalities, both institutional and retail. Which companies you can invest in depends on the route each company uses (see I3).</p>
+                  </div></div>
+                </div>
+              </div>
+              <div class="faq-item liquid-glass" data-faq-id="I2">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i2" aria-expanded="false" aria-controls="faq-a-i2">
+                    <span class="faq-item__q">How do I invest?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i2" role="region" aria-labelledby="faq-q-i2">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <p>Register on the ARENA platform. You can subscribe to offers via the platform and through brokers, and trade after listing through existing brokers.</p>
+                  </div></div>
+                </div>
+              </div>
+              <div class="faq-item liquid-glass" data-faq-id="I3">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i3" aria-expanded="false" aria-controls="faq-a-i3">
+                    <span class="faq-item__q">Can I invest in every company on ARENA?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i3" role="region" aria-labelledby="faq-q-i3">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <p>It depends on the route:</p>
+                  <ul>
+                    <li><strong>Growth Market</strong>: open to institutional and registered retail investors.</li>
+                    <li><strong>Private Market</strong>: open to institutional investors, professionals and HNWI who are whitelisted by the company.</li>
+                    <li><strong>Closed Listing</strong>: limited to family members, employees and other permissioned investors. Not open to outside investors.</li>
+                  </ul>
+                  </div></div>
+                </div>
+              </div>
+              <div class="faq-item liquid-glass" data-faq-id="I4">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i4" aria-expanded="false" aria-controls="faq-a-i4">
+                    <span class="faq-item__q">How do I get access to a Private Market offer?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i4" role="region" aria-labelledby="faq-q-i4">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <p>Private Market offers are available to permissioned, whitelisted investors only. Request access through the platform; the company decides whether to approve you.</p>
+                  </div></div>
+                </div>
+              </div>
+              <div class="faq-item liquid-glass" data-faq-id="I5">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i5" aria-expanded="false" aria-controls="faq-a-i5">
+                    <span class="faq-item__q">Can international investors take part?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i5" role="region" aria-labelledby="faq-q-i5">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <p>Yes. ARENA is designed for global institutional and retail investors registered on the platform. On the Private Market route, the company can whitelist international investors.</p>
+                  </div></div>
+                </div>
+              </div>
             </div>
-
+            <div class="faq__group" id="faq-group-trading" role="tabpanel" aria-labelledby="faq-tab-trading" data-faq-group hidden>
+              <div class="faq-item liquid-glass" data-faq-id="I6">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i6" aria-expanded="false" aria-controls="faq-a-i6">
+                    <span class="faq-item__q">What information will I receive?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i6" role="region" aria-labelledby="faq-q-i6">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <p>ARENA companies have annual and semi-annual financial reporting and material disclosure duties. Growth Market companies report to ARENA investors through real-time market announcements. Private Market and Closed Listing companies report to whitelisted investors only. Investors can engage directly with company management and track company performance.</p>
+                  </div></div>
+                </div>
+              </div>
+              <div class="faq-item liquid-glass" data-faq-id="I7">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i7" aria-expanded="false" aria-controls="faq-a-i7">
+                    <span class="faq-item__q">How do I buy and sell shares after listing?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i7" role="region" aria-labelledby="faq-q-i7">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <ul>
+                    <li><strong>Growth Market</strong>: an open, continuous market, through existing brokers.</li>
+                    <li><strong>Private Market</strong>: closed RFQ (request for quote) trading and ad-hoc private auctions, for whitelisted investors only.</li>
+                    <li><strong>Closed Listing</strong>: closed RFQ and internal auctions, for family members and employees.</li>
+                  </ul>
+                  </div></div>
+                </div>
+              </div>
+              <div class="faq-item liquid-glass" data-faq-id="I8">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i8" aria-expanded="false" aria-controls="faq-a-i8">
+                    <span class="faq-item__q">How easy will it be to sell?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i8" role="region" aria-labelledby="faq-q-i8">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <p>Growth Market shares trade daily. On the Private Market and Closed Listing routes, trading happens through RFQ and ad-hoc auctions, so it is less frequent and you may not be able to sell when you want.</p>
+                  </div></div>
+                </div>
+              </div>
+              <div class="faq-item liquid-glass" data-faq-id="I9">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i9" aria-expanded="false" aria-controls="faq-a-i9">
+                    <span class="faq-item__q">Is there a lock-up period?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i9" role="region" aria-labelledby="faq-q-i9">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <p>Yes. A 180-day lock-up period applies to relevant shareholders, including founders and insiders, after an offering on ARENA. During this period, restricted shareholders cannot sell their shares, subject to applicable regulatory requirements and any permitted exemptions.</p>
+                  </div></div>
+                </div>
+              </div>
+              <div class="faq-item liquid-glass" data-faq-id="I10">
+                <span class="liquid-glass__effect"></span>
+                <span class="liquid-glass__tint"></span>
+                <span class="liquid-glass__shine"></span>
+                <h3>
+                  <button class="faq-item__btn" type="button" id="faq-q-i10" aria-expanded="false" aria-controls="faq-a-i10">
+                    <span class="faq-item__q">What are the main risks?</span>
+                    <span class="faq-item__icon" aria-hidden="true"></span>
+                  </button>
+                </h3>
+                <div class="faq-item__panel" id="faq-a-i10" role="region" aria-labelledby="faq-q-i10">
+                  <div class="faq-item__inner"><div class="faq-item__a">
+                  <p>ARENA companies are growth-stage and private businesses, so their shares can carry higher risk than established listed companies. Trading on the Private Market and Closed Listing routes is less frequent. ARENA is subject to regulatory approval and its rules may change. Read each company’s prospectus or offer documents before investing.</p>
+                  </div></div>
+                </div>
+              </div>
+            </div>
+            <button class="faq__more" type="button" data-faq-more hidden>Show all questions</button>
+            </div>
             <div class="faq__aside" id="contact" data-scroll-reveal-group>
               <div class="assist-card">
                 <div>
