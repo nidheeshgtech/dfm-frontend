@@ -1234,3 +1234,83 @@
     }
   }
 }
+
+// ---- Dark cards: the section stays white; the cards (desktop) and the
+// phone panels go dark, with jade step accents. ----
+.ars--deck {
+  // Dark phone panels (Discover's deep blue under the blue dot wave).
+  .ars__step--discover {
+    --scene: #0e1b2b;
+  }
+
+  .ars__step--subscribe {
+    --scene: #0d1d16;
+  }
+
+  .ars__step--trade {
+    --scene: #1a1c10;
+  }
+
+  .ars__scene {
+    background:
+      radial-gradient(70% 55% at 50% 0%, rgba(143, 208, 255, 0.14), transparent 70%),
+      var(--scene);
+  }
+
+  .ars-dots {
+    opacity: 0.75;
+  }
+
+  .ars-handshot__img {
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.45));
+  }
+
+  .ars-pop,
+  .ars-pop--dark {
+    box-shadow: 0 1.2em 3em rgba(0, 0, 0, 0.35);
+  }
+
+  @media (min-width: 960px) {
+    --ars-step: #{$color-jade};
+
+    .ars__step {
+      border-color: transparent;
+      background: $color-bg-dark-card;
+
+      &::after {
+        background: #000;
+      }
+    }
+
+    .ars__name,
+    .ars__text strong {
+      color: $color-white;
+    }
+
+    .ars__text {
+      color: rgba($color-white, 0.6);
+    }
+
+    .ars__num::after {
+      background:
+        linear-gradient(var(--ars-step), var(--ars-step)) 0 0 / calc(var(--s, 1) * 33.34%) 100% no-repeat,
+        rgba(255, 255, 255, 0.14);
+    }
+
+    .ars__track {
+      color: rgba($color-white, 0.4);
+
+      li.is-done {
+        color: rgba($color-white, 0.65);
+      }
+
+      li.is-on {
+        color: $color-white;
+
+        &::before {
+          box-shadow: 0 0 0 4px rgba(100, 251, 160, 0.2);
+        }
+      }
+    }
+  }
+}
