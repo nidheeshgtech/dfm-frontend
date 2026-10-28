@@ -28,6 +28,7 @@ import { initStepsDeck } from "./components/steps-deck.js";
 import { initChat } from "./components/chat.js";
 import { initIvFlow } from "./components/iv-flow.js";
 import { initBookCall } from "./components/book-call.js";
+import { initArenaSteps } from "./components/arena-steps.js";
 
 function init() {
   // ORDER MATTERS: Lenis first (it hooks ScrollTrigger.update), then reveal.
@@ -37,7 +38,7 @@ function init() {
     console.error("init: initSmoothScroll threw", e);
   }
 
-  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initXpApp, initGlobe, initFaq, initInvestPhone, initInvestBoard, initInvestAsk, initInvestLoops, initStepsDeck, initRouteSteps, initRouteViz, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch, initChat, initIvFlow, initBookCall].forEach((fn) => {
+  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initXpApp, initGlobe, initFaq, initInvestPhone, initInvestBoard, initInvestAsk, initInvestLoops, initStepsDeck, initRouteSteps, initRouteViz, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch, initChat, initIvFlow, initBookCall, initArenaSteps].forEach((fn) => {
     try {
       fn();
     } catch (e) {

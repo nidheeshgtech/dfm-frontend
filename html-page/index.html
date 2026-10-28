@@ -383,58 +383,191 @@
       </div>
     </section>
 
-    <!-- ============ When an offer goes live: three steps ============ -->
-    <section class="iv-steps iv-steps--stack" id="how" aria-labelledby="how-title" data-header="dark">
+    <!-- ============ When an offer goes live: Discover / Subscribe / Trade ============
+         From the "arena-steps" handoff (js/components/arena-steps.js,
+         scss/sections/_ars.scss). Desktop pins and swaps the three steps on
+         scroll; below 960px they stack. Phone screens are illustrative. -->
+    <section class="ars ars--site" id="how" aria-labelledby="how-title" data-header="dark" data-ars>
       <div class="container">
         <div class="iv-head iv-head--split">
           <h2 class="iv-head__title" id="how-title" data-scroll-reveal>When an offer <em class="iv-hl">goes live.</em></h2>
           <p class="iv-head__lead" data-scroll-reveal>Three steps inside the iVestor app. <strong>One account and one investor number</strong> cover every offering on ARENA.</p>
         </div>
-
-        <ol class="iv-steps__list" data-steps-deck>
-          <li class="iv-steps__item" data-steps-card>
-            <span class="iv-steps__bg" aria-hidden="true"></span>
-            <div class="iv-screen" aria-hidden="true" data-iv-loop="discover">
-              <span class="iv-screen__search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span data-iv-type>Search offerings</span></span>
-              <span class="iv-screen__filters"><b class="is-on">All</b><b>Growth</b><b>Private</b><b>Closed</b></span>
-              <span class="iv-screen__row"><i class="iv-dot iv-dot--growth"></i><span><em></em><small>Growth Market · Open</small></span><b>›</b></span>
-              <span class="iv-screen__row"><i class="iv-dot iv-dot--private"></i><span><em></em><small>Private Market · Invitation</small></span><b>›</b></span>
-              <span class="iv-screen__doc"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7V3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4M10 12h5M10 16h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Offer document</span>
-            </div>
-            <span class="iv-steps__num">01</span>
-            <h3 class="iv-steps__title">Discover</h3>
-            <p class="iv-steps__text">Browse every open offering, read the offer document and pick the investor category that applies to you.</p>
-          </li>
-          <li class="iv-steps__item" data-steps-card>
-            <span class="iv-steps__bg" aria-hidden="true"></span>
-            <div class="iv-screen iv-screen--form" aria-hidden="true" data-iv-loop="subscribe">
-              <span class="iv-screen__label">Your amount</span>
-              <span class="iv-screen__amount"><small>AED</small> <b data-iv-amount>10,000</b><i></i></span>
-              <span class="iv-screen__field"><small>Investor category</small>Individual investor</span>
-              <span class="iv-screen__field"><small>Pay from</small>Linked account •••• 2040</span>
-              <span class="iv-screen__btn">Review subscription</span>
-            </div>
-            <span class="iv-steps__num">02</span>
-            <h3 class="iv-steps__title">Subscribe</h3>
-            <p class="iv-steps__text">Enter your amount, review your subscription and <strong>pay from your linked account.</strong></p>
-          </li>
-          <li class="iv-steps__item" data-steps-card>
-            <span class="iv-steps__bg" aria-hidden="true"></span>
-            <div class="iv-screen" aria-hidden="true" data-iv-loop="trade">
-              <span class="iv-screen__note"><i><svg viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>Allocation confirmed</b><small>Shares in your name</small></span></span>
-              <svg class="iv-screen__chart" viewBox="0 0 200 60" preserveAspectRatio="none"><path d="M0 48 L18 44 L36 46 L54 38 L72 40 L90 30 L108 33 L126 24 L144 27 L162 18 L180 20 L200 10" fill="none" pathLength="1"/></svg>
-              <span class="iv-screen__side"><i class="iv-screen__pill"></i><b class="is-on">Buy</b><b>Sell</b></span>
-              <span class="iv-screen__tag">Listing day · Live trading</span>
-            </div>
-            <span class="iv-steps__num">03</span>
-            <h3 class="iv-steps__title">Trade</h3>
-            <p class="iv-steps__text">When the offer closes you are notified of your allocation, and your shares <strong>trade on DFM infrastructure from listing day.</strong></p>
-          </li>
-        </ol>
       </div>
+
+      <div class="ars__scroller" data-ars-scroller>
+        <div class="ars__sticky">
+          <div class="container">
+            <div class="ars__stage">
+              <div class="ars__panel" aria-hidden="true"></div>
+
+              <!-- ============ 01 DISCOVER ============ -->
+              <article class="ars__step ars__step--discover is-active" data-ars-step>
+                <div class="ars__copy">
+                  <span class="ars__pill">Step 01</span>
+                  <h3 class="ars__name">Discover</h3>
+                  <p class="ars__text">Browse every open offering, read the offer document and <strong>pick the investor category that applies to you.</strong></p>
+                </div>
+
+                <div class="ars__scene" aria-hidden="true">
+                  <div class="ars__scene-in">
+                <!-- Version B: a real hand holding the phone (photo, background
+                     and screen cut out). arena-steps.js moves the live Discover
+                     screen into .ars-handshot__screen, under the photo. -->
+                <div class="ars-handshot">
+                  <div class="ars-handshot__screen"></div>
+                  <img class="ars-handshot__img" src="images/investor/hand-phone.webp" width="1000" height="1380" alt="" loading="lazy" decoding="async">
+                </div>
+                    <div class="ars-phone-wrap">
+                      <div class="ars-phone"><div class="ars-phone__bezel"><div class="ars-phone__screen">
+                        <span class="ars-phone__island"></span>
+    <div class="ars-v6" style="display:flex;flex-direction:column;height:100%;background:#fff;overflow:hidden;">
+    <div style="position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;height:calc(56 * var(--u));padding:calc(6 * var(--u)) calc(26 * var(--u)) 0 calc(34 * var(--u));font-weight:600;color:#15151A;"><span style="font-size:calc(16 * var(--u));letter-spacing:-0.01em;font-variant-numeric:tabular-nums;">9:41</span><span style="display:flex;align-items:center;gap:calc(5 * var(--u));"><svg style="height:calc(12 * var(--u));width:calc(18 * var(--u));display:block;" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg><svg style="height:calc(12 * var(--u));width:calc(16 * var(--u));display:block;" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0L8 11.5ZM3.3 6.6a6.6 6.6 0 0 1 9.4 0l-1.5 1.5a4.5 4.5 0 0 0-6.4 0L3.3 6.6ZM1 4.3a9.9 9.9 0 0 1 14 0l-1.5 1.5a7.8 7.8 0 0 0-11 0L1 4.3Z" fill="currentColor"/></svg><svg style="height:calc(12 * var(--u));width:calc(27 * var(--u));display:block;" viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3.2" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="8" rx="2" fill="currentColor"/><path d="M25 4v4a2 2 0 0 0 0-4Z" fill="currentColor" opacity=".4"/></svg></span></div>
+    <div style="position:relative;display:flex;align-items:center;justify-content:center;height:calc(44 * var(--u));margin-top:calc(4 * var(--u));padding:0 calc(20 * var(--u));"><svg style="position:absolute;left:calc(18 * var(--u));top:50%;width:calc(24 * var(--u));height:calc(24 * var(--u));margin-top:calc(-12 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#5B2EF5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span style="font-size:calc(17 * var(--u));font-weight:600;color:#15151A;">Choose security</span></div>
+    <div style="padding:calc(10 * var(--u)) calc(16 * var(--u)) 0;"><div class="ars-search" style="display:flex;align-items:center;gap:calc(10 * var(--u));height:calc(40 * var(--u));padding:0 calc(12 * var(--u));border-radius:calc(10 * var(--u));background:#F2F2F5;font-size:calc(15 * var(--u));color:#9A9AA2;"><svg style="width:calc(18 * var(--u));height:calc(18 * var(--u));flex:none;" viewBox="0 0 24 24" fill="none" stroke="#5B2EF5" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 4.5 4.5"/></svg><span class="ars-type" data-ars-type data-words="DFM|Dubai Financial" style="position:relative;display:flex;align-items:center;min-width:0;flex:1;"><span class="ars-type__ph">Search by name, symbol</span><span class="ars-type__txt" style="color:#15151A;"></span><i class="ars-type__caret" style="width:calc(1.5 * var(--u));height:calc(18 * var(--u));margin-left:calc(1 * var(--u));"></i></span></div></div>
+    <div style="display:flex;gap:calc(22 * var(--u));padding:calc(22 * var(--u)) calc(16 * var(--u)) 0;border-bottom:calc(1 * var(--u)) solid #EFEFF2;"><span style="position:relative;padding-bottom:calc(12 * var(--u));font-size:calc(15 * var(--u));font-weight:600;color:#5B2EF5;">All<span style="position:absolute;left:50%;bottom:calc(-1 * var(--u));width:calc(12 * var(--u));height:calc(2 * var(--u));margin-left:calc(-6 * var(--u));border-radius:calc(2 * var(--u));background:#5B2EF5;"></span></span><span style="padding-bottom:calc(12 * var(--u));font-size:calc(15 * var(--u));color:#6E6E78;">Growth</span><span style="padding-bottom:calc(12 * var(--u));font-size:calc(15 * var(--u));color:#6E6E78;">Private</span><span style="padding-bottom:calc(12 * var(--u));font-size:calc(15 * var(--u));color:#6E6E78;">Closed</span></div>
+    <div style="display:flex;flex-direction:column;padding-left:calc(16 * var(--u));">
+    <div style="padding:calc(20 * var(--u)) 0 calc(6 * var(--u));font-size:calc(14 * var(--u));color:#6E6E78;">Equities (1)</div>
+    <div style="display:flex;align-items:stretch;gap:calc(13 * var(--u));"><div style="flex:none;width:calc(40 * var(--u));height:calc(40 * var(--u));margin-top:calc(13 * var(--u));border-radius:50%;background:#EEF1F8;display:flex;align-items:center;justify-content:center;font-size:calc(10 * var(--u));font-weight:700;letter-spacing:0.02em;color:#15151A;"><img src="images/investor/dfm-emblem.png" alt="" style="width:66%;height:66%;display:block;"></div><div style="flex:1;min-width:0;display:flex;align-items:flex-start;justify-content:space-between;gap:calc(10 * var(--u));padding:calc(12 * var(--u)) 0 calc(13 * var(--u));"><div style="display:flex;flex-direction:column;gap:calc(3 * var(--u));min-width:0;"><div style="font-size:calc(16 * var(--u));color:#15151A;letter-spacing:0.01em;">DFM</div><div style="font-size:calc(12 * var(--u));color:#6E6E78;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Dubai Financial Market</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:calc(4 * var(--u));padding-right:calc(16 * var(--u));"><div style="font-size:calc(16 * var(--u));color:#15151A;white-space:nowrap;font-variant-numeric:tabular-nums;">AED 1.74</div><div style="display:flex;align-items:center;gap:calc(3 * var(--u));padding:calc(2 * var(--u)) calc(5 * var(--u));border-radius:calc(4 * var(--u));background:#E3F6EF;font-size:calc(12 * var(--u));color:#0FA982;font-variant-numeric:tabular-nums;"><svg style="width:calc(9 * var(--u));height:calc(9 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#0FA982" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>0.57%</div></div></div></div>
+    </div>
+    <span style="position:absolute;z-index:13;left:50%;bottom:calc(9 * var(--u));width:calc(134 * var(--u));height:calc(5 * var(--u));margin-left:calc(-67 * var(--u));border-radius:calc(3 * var(--u));background:#15151A;"></span>
+    </div>
+                      </div></div></div>
+                    </div>
+                  </div>
+
+                  <div class="ars-pops">
+                    <div class="ars-pop ars-pop--iv ars-pop--row">
+                      <i class="ars-dot"></i>
+                      <span><em class="ars-skel"></em><small>Growth Market · Open</small></span>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 6 6 6-6 6"/></svg>
+                    </div>
+                    <div class="ars-pop">
+                      <span class="ars-pop__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16ZM10 20.5a2 2 0 0 0 4 0"/></svg></span>
+                      <span><b>IPO opens Nov. 1</b><small>DFM IPO · 40,000,000 shares</small></span>
+                    </div>
+                    <div class="ars-pop">
+                      <span class="ars-pop__ic ars-pop__ic--g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+                      <span><b>Bought 12,000 FIN</b><small>Filled at <em>AED 1.20</em></small></span>
+                    </div>
+                    <div class="ars-pop ars-pop--chip">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 16 5-5 4 3 7-7M15 7h5v5"/></svg>
+                      <b>FIN +2.56%</b>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- ============ 02 SUBSCRIBE ============ -->
+              <article class="ars__step ars__step--subscribe" data-ars-step>
+                <div class="ars__copy">
+                  <span class="ars__pill">Step 02</span>
+                  <h3 class="ars__name">Subscribe</h3>
+                  <p class="ars__text">Enter your amount, review your subscription and <strong>pay from your linked account.</strong></p>
+                </div>
+
+                <div class="ars__scene" aria-hidden="true">
+                  <div class="ars__scene-in">
+                    <div class="ars-phone-wrap">
+                      <div class="ars-phone"><div class="ars-phone__bezel"><div class="ars-phone__screen">
+                        <span class="ars-phone__island"></span>
+    <div class="ars-v6" style="display:flex;flex-direction:column;height:100%;">
+    <div style="position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;height:calc(56 * var(--u));padding:calc(6 * var(--u)) calc(26 * var(--u)) 0 calc(34 * var(--u));font-weight:600;color:#15151A;"><span style="font-size:calc(16 * var(--u));letter-spacing:-0.01em;font-variant-numeric:tabular-nums;">9:41</span><span style="display:flex;align-items:center;gap:calc(5 * var(--u));"><svg style="height:calc(12 * var(--u));width:calc(18 * var(--u));display:block;" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg><svg style="height:calc(12 * var(--u));width:calc(16 * var(--u));display:block;" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0L8 11.5ZM3.3 6.6a6.6 6.6 0 0 1 9.4 0l-1.5 1.5a4.5 4.5 0 0 0-6.4 0L3.3 6.6ZM1 4.3a9.9 9.9 0 0 1 14 0l-1.5 1.5a7.8 7.8 0 0 0-11 0L1 4.3Z" fill="currentColor"/></svg><svg style="height:calc(12 * var(--u));width:calc(27 * var(--u));display:block;" viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3.2" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="8" rx="2" fill="currentColor"/><path d="M25 4v4a2 2 0 0 0 0-4Z" fill="currentColor" opacity=".4"/></svg></span></div>
+    <div style="display:flex;align-items:center;padding:calc(4 * var(--u)) calc(20 * var(--u)) 0;height:calc(40 * var(--u));"><svg style="width:calc(24 * var(--u));height:calc(24 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#5B2EF5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></div>
+    <div style="position:relative;flex:1;display:flex;flex-direction:column;gap:calc(12 * var(--u));padding:calc(10 * var(--u)) calc(20 * var(--u)) 0;min-height:0;">
+    <div style="display:flex;gap:calc(6 * var(--u));"><span style="padding:calc(3 * var(--u)) calc(7 * var(--u));border-radius:calc(4 * var(--u));background:#5B2EF5;color:#fff;font-size:calc(11 * var(--u));font-weight:500;">Subscription starts in 2 days</span><span style="padding:calc(3 * var(--u)) calc(7 * var(--u));border-radius:calc(4 * var(--u));background:#5B2EF5;color:#fff;font-size:calc(11 * var(--u));font-weight:500;">IPO</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:calc(12 * var(--u));"><div style="font-size:calc(26 * var(--u));font-weight:700;letter-spacing:-0.03em;color:#15151A;line-height:1.1;">DFM IPO</div><div style="flex:none;width:calc(40 * var(--u));height:calc(40 * var(--u));border-radius:50%;background:#EEF1F8;display:flex;align-items:center;justify-content:center;font-size:calc(11 * var(--u));font-weight:700;letter-spacing:0.02em;color:#15151A;"><img src="images/investor/dfm-emblem.png" alt="" style="width:66%;height:66%;display:block;"></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;padding:calc(12 * var(--u)) calc(16 * var(--u));border-radius:calc(10 * var(--u));background:#fff;"><div style="display:flex;flex-direction:column;gap:calc(3 * var(--u));padding-right:calc(12 * var(--u));border-right:calc(1 * var(--u)) solid #E6E6EA;"><div style="font-size:calc(12 * var(--u));color:#6E6E78;">Share price</div><div style="font-size:calc(16 * var(--u));font-weight:700;color:#15151A;">TBA</div></div><div style="display:flex;flex-direction:column;gap:calc(3 * var(--u));padding-left:calc(16 * var(--u));"><div style="font-size:calc(12 * var(--u));color:#6E6E78;">Shares offered</div><div style="font-size:calc(16 * var(--u));font-weight:700;color:#15151A;">40,000,000</div></div></div>
+    <div style="font-size:calc(18 * var(--u));font-weight:700;letter-spacing:-0.01em;color:#15151A;margin-top:calc(4 * var(--u));">Timeline</div>
+    <div class="ars-v6-tl" style="padding:calc(16 * var(--u));border-radius:calc(10 * var(--u));background:#fff;display:flex;flex-direction:column;gap:calc(14 * var(--u));">
+    <div style="position:relative;display:flex;gap:calc(14 * var(--u));"><div style="position:absolute;left:calc(8 * var(--u));top:calc(18 * var(--u));width:calc(2 * var(--u));height:calc(100% + calc(2 * var(--u)));background:#5B2EF5;"></div><div style="position:relative;flex:none;width:calc(18 * var(--u));height:calc(18 * var(--u));border-radius:50%;background:#5B2EF5;display:flex;align-items:center;justify-content:center;"><svg style="width:calc(10 * var(--u));height:calc(10 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div><div style="display:flex;flex-direction:column;gap:calc(1 * var(--u));"><div style="font-size:calc(14 * var(--u));font-weight:600;color:#15151A;">Upcoming</div><div style="font-size:calc(12 * var(--u));color:#6E6E78;">Public filing</div></div></div>
+    <div style="position:relative;display:flex;gap:calc(14 * var(--u));"><div style="position:absolute;left:calc(8 * var(--u));top:calc(18 * var(--u));width:calc(2 * var(--u));height:calc(100% + calc(2 * var(--u)));background:#EFEFF2;"></div><div class="ars-live ars-live--v" style="position:relative;flex:none;width:calc(18 * var(--u));height:calc(18 * var(--u));border-radius:50%;background:#5B2EF5;box-shadow:inset 0 0 0 calc(5 * var(--u)) #5B2EF5, inset 0 0 0 calc(7 * var(--u)) #fff;"></div><div style="display:flex;flex-direction:column;gap:calc(1 * var(--u));"><div style="font-size:calc(14 * var(--u));font-weight:600;color:#5B2EF5;">Subscription period</div><div style="font-size:calc(12 * var(--u));color:#6E6E78;">Nov. 1 – Nov. 14, 2025</div></div></div>
+    <div style="position:relative;display:flex;gap:calc(14 * var(--u));"><div style="position:absolute;left:calc(8 * var(--u));top:calc(18 * var(--u));width:calc(2 * var(--u));height:calc(100% + calc(2 * var(--u)));background:#EFEFF2;"></div><div style="position:relative;flex:none;width:calc(18 * var(--u));height:calc(18 * var(--u));border-radius:50%;background:#EFEFF2;"></div><div style="display:flex;flex-direction:column;gap:calc(1 * var(--u));"><div style="font-size:calc(14 * var(--u));font-weight:600;color:#15151A;">Allocation</div><div style="font-size:calc(12 * var(--u));color:#6E6E78;">Nov. 14 – 21, 2025</div></div></div>
+    <div style="position:relative;display:flex;gap:calc(14 * var(--u));"><div style="position:relative;flex:none;width:calc(18 * var(--u));height:calc(18 * var(--u));border-radius:50%;background:#EFEFF2;"></div><div style="display:flex;flex-direction:column;gap:calc(1 * var(--u));"><div style="font-size:calc(14 * var(--u));font-weight:600;color:#15151A;">Listing</div><div style="font-size:calc(12 * var(--u));color:#6E6E78;">Expected on Nov. 30, 2025</div></div></div>
+    <div style="display:flex;align-items:center;gap:calc(8 * var(--u));margin-top:calc(2 * var(--u));font-size:calc(13 * var(--u));font-weight:600;color:#5B2EF5;"><svg style="width:calc(20 * var(--u));height:calc(20 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#5B2EF5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="m14 16 1.6 1.6L19 14.2" stroke-width="1.6"/></svg>Add timeline to calendar</div>
+    </div>
+    </div>
+    <div style="position:relative;z-index:12;display:flex;flex-direction:column;gap:calc(10 * var(--u));padding:calc(12 * var(--u)) calc(20 * var(--u)) calc(30 * var(--u));background:#fff;"><div style="font-size:calc(12 * var(--u));color:#6E6E78;text-align:center;">Subscription period ends Nov. 14, 2025 12:00 PM</div><div class="ars-press" style="height:calc(48 * var(--u));border-radius:calc(12 * var(--u));background:#15151A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:calc(16 * var(--u));font-weight:600;">Subscribe</div></div>
+    <span style="position:absolute;z-index:13;left:50%;bottom:calc(9 * var(--u));width:calc(134 * var(--u));height:calc(5 * var(--u));margin-left:calc(-67 * var(--u));border-radius:calc(3 * var(--u));background:#15151A;"></span>
+    </div>
+                      </div></div></div>
+                    </div>
+                  </div>
+
+                  <div class="ars-pops">
+                    <div class="ars-pop">
+                      <span class="ars-pop__ic ars-pop__ic--y"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+                      <span><b>Subscription received</b><small>AED 10,000 · DFM IPO</small></span>
+                    </div>
+                    <div class="ars-pop ars-pop--dark">
+                      <span class="ars-pop__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="14" rx="2.5"/><path d="M3 10h18M15 15h3"/></svg></span>
+                      <span><b>Paid from •••• 2040</b><small>Linked account</small></span>
+                    </div>
+                    <div class="ars-pop ars-pop--chip">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+                      <b>Ends Nov. 14, 12:00 PM</b>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- ============ 03 TRADE ============ -->
+              <article class="ars__step ars__step--trade" data-ars-step>
+                <div class="ars__copy">
+                  <span class="ars__pill">Step 03</span>
+                  <h3 class="ars__name">Trade</h3>
+                  <p class="ars__text">When the offer closes you are notified of your allocation, and your shares <strong>trade on DFM infrastructure from listing day.</strong></p>
+                </div>
+
+                <div class="ars__scene" aria-hidden="true">
+                  <div class="ars__scene-in">
+                    <div class="ars-phone-wrap">
+                      <div class="ars-phone"><div class="ars-phone__bezel"><div class="ars-phone__screen">
+                        <span class="ars-phone__island"></span>
+    <div class="ars-v6" style="display:flex;flex-direction:column;height:100%;">
+    <div style="position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;height:calc(56 * var(--u));padding:calc(6 * var(--u)) calc(26 * var(--u)) 0 calc(34 * var(--u));font-weight:600;color:#15151A;"><span style="font-size:calc(16 * var(--u));letter-spacing:-0.01em;font-variant-numeric:tabular-nums;">9:41</span><span style="display:flex;align-items:center;gap:calc(5 * var(--u));"><svg style="height:calc(12 * var(--u));width:calc(18 * var(--u));display:block;" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg><svg style="height:calc(12 * var(--u));width:calc(16 * var(--u));display:block;" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0L8 11.5ZM3.3 6.6a6.6 6.6 0 0 1 9.4 0l-1.5 1.5a4.5 4.5 0 0 0-6.4 0L3.3 6.6ZM1 4.3a9.9 9.9 0 0 1 14 0l-1.5 1.5a7.8 7.8 0 0 0-11 0L1 4.3Z" fill="currentColor"/></svg><svg style="height:calc(12 * var(--u));width:calc(27 * var(--u));display:block;" viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3.2" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="8" rx="2" fill="currentColor"/><path d="M25 4v4a2 2 0 0 0 0-4Z" fill="currentColor" opacity=".4"/></svg></span></div>
+    <div style="display:flex;align-items:center;gap:calc(12 * var(--u));padding:calc(4 * var(--u)) calc(20 * var(--u)) 0;"><svg style="width:calc(24 * var(--u));height:calc(24 * var(--u));flex:none;" viewBox="0 0 24 24" fill="none" stroke="#5B2EF5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><div style="display:flex;flex-direction:column;gap:calc(1 * var(--u));min-width:0;flex:1;"><div style="font-size:calc(15 * var(--u));font-weight:700;letter-spacing:0.01em;color:#15151A;white-space:nowrap;">FINANCE LTD.</div><div style="font-size:calc(12 * var(--u));color:#3A3A44;">FIN • DFM</div></div><svg style="width:calc(22 * var(--u));height:calc(22 * var(--u));flex:none;" viewBox="0 0 24 24" fill="none" stroke="#5B2EF5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16ZM10 20.5a2 2 0 0 0 4 0"/></svg><svg style="width:calc(22 * var(--u));height:calc(22 * var(--u));flex:none;" viewBox="0 0 24 24" fill="none" stroke="#5B2EF5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4.1M8.2 13.2l7.6 4.1"/></svg><svg style="width:calc(22 * var(--u));height:calc(22 * var(--u));flex:none;" viewBox="0 0 24 24" fill="none" stroke="#5B2EF5" stroke-width="1.7" stroke-linejoin="round"><path d="m12 3.5 2.6 5.4 5.9.7-4.4 4 1.2 5.8L12 16.5l-5.3 2.9 1.2-5.8-4.4-4 5.9-.7L12 3.5Z"/></svg></div>
+    <div style="position:relative;flex:1;display:flex;flex-direction:column;gap:calc(12 * var(--u));padding:calc(16 * var(--u)) calc(20 * var(--u)) 0;min-height:0;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:calc(10 * var(--u));"><div style="display:flex;flex-direction:column;gap:calc(5 * var(--u));"><div style="display:flex;align-items:center;gap:calc(8 * var(--u));"><div style="font-size:calc(30 * var(--u));font-weight:700;letter-spacing:-0.03em;color:#15151A;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums;" data-ars-count data-to="1.20" data-dec="2" data-pre="AED ">AED 1.20</div><svg style="width:calc(22 * var(--u));height:calc(22 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#5B2EF5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M13 8.5l3.5 3.5-3.5 3.5"/></svg></div><div style="display:flex;align-items:center;gap:calc(6 * var(--u));font-size:calc(13 * var(--u));color:#15151A;"><div style="width:calc(18 * var(--u));height:calc(18 * var(--u));border-radius:50%;background:#0FA982;display:flex;align-items:center;justify-content:center;"><svg style="width:calc(10 * var(--u));height:calc(10 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg></div><span style="color:#0FA982;">0.03 (2.56%)</span> today</div></div><div style="flex:none;width:calc(40 * var(--u));height:calc(40 * var(--u));border-radius:50%;background:#15151A;display:flex;align-items:center;justify-content:center;"><svg style="width:calc(20 * var(--u));height:calc(20 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M8 3v3M8 16v5M16 3v5M16 18v3"/><rect x="5.5" y="6" width="5" height="10" rx="1.2"/><rect x="13.5" y="8" width="5" height="10" rx="1.2"/></svg></div></div>
+    <div style="display:grid;grid-template-columns:auto 1fr auto;column-gap:calc(14 * var(--u));row-gap:calc(3 * var(--u));font-size:calc(12 * var(--u));align-items:center;"><div style="color:#15151A;">Best Bid</div><div style="color:#0FA982;">1.19 x 12,000</div><div style="position:relative;display:flex;align-items:center;gap:calc(5 * var(--u));font-size:calc(11 * var(--u));font-weight:600;color:#0B8A6A;white-space:nowrap;"><span class="ars-live" style="position:relative;width:calc(6 * var(--u));height:calc(6 * var(--u));"><span style="position:absolute;inset:0;border-radius:50%;background:#0FA982;"></span></span>Market open<span class="ars-lift" style="right:calc(-12 * var(--u));top:50%;gap:calc(7 * var(--u));padding:calc(7 * var(--u)) calc(13 * var(--u)) calc(7 * var(--u)) calc(10 * var(--u));font-size:calc(14 * var(--u));border-radius:calc(20 * var(--u));"><svg style="width:calc(15 * var(--u));height:calc(15 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#64fba0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" fill="#64fba0"/><circle cx="12" cy="12" r="8.5"/></svg>Market open</span></div><div style="color:#15151A;">Best Offer</div><div style="color:#F0284A;">1.21 x 8,500</div><div></div></div>
+    <div style="position:relative;flex:1;min-height:calc(120 * var(--u));margin:calc(22 * var(--u)) calc(-20 * var(--u)) 0;"><svg viewBox="0 0 360 150" preserveAspectRatio="none" style="display:block;width:92%;height:100%;overflow:visible;"><defs><linearGradient id="ars-lg-fin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2EC9A6" stop-opacity="0.24"/><stop offset="1" stop-color="#2EC9A6" stop-opacity="0.02"/></linearGradient></defs><path class="ars-v6-area" d="M0.0 133.2 L1.0 133.9 L2.0 134.7 L3.0 135.0 L4.0 132.0 L5.1 128.8 L6.1 128.4 L7.1 129.2 L8.1 131.1 L9.1 133.3 L10.1 136.4 L11.1 139.4 L12.1 142.0 L13.1 139.7 L14.2 136.1 L15.2 132.7 L16.2 132.2 L17.2 133.5 L18.2 137.1 L19.2 136.5 L20.2 136.1 L21.2 136.9 L22.2 138.6 L23.3 138.6 L24.3 137.6 L25.3 136.5 L26.3 136.1 L27.3 136.8 L28.3 132.7 L29.3 132.2 L30.3 132.2 L31.3 128.8 L32.4 127.2 L33.4 125.5 L34.4 124.1 L35.4 122.8 L36.4 122.3 L37.4 122.3 L38.4 122.3 L39.4 122.9 L40.4 121.9 L41.5 119.5 L42.5 119.0 L43.5 119.0 L44.5 115.5 L45.5 111.8 L46.5 111.4 L47.5 112.3 L48.5 101.9 L49.6 100.9 L50.6 100.1 L51.6 99.8 L52.6 99.8 L53.6 99.3 L54.6 98.4 L55.6 98.2 L56.6 98.2 L57.6 98.2 L58.7 99.8 L59.7 105.6 L60.7 105.2 L61.7 104.5 L62.7 103.9 L63.7 103.7 L64.7 104.3 L65.7 104.3 L66.7 101.9 L67.8 100.5 L68.8 99.1 L69.8 98.2 L70.8 97.3 L71.8 96.5 L72.8 95.7 L73.8 95.4 L74.8 95.4 L75.8 95.4 L76.9 95.4 L77.9 95.4 L78.9 95.4 L79.9 94.4 L80.9 93.1 L81.9 92.7 L82.9 92.7 L83.9 92.7 L84.9 93.3 L86.0 94.7 L87.0 95.4 L88.0 95.4 L89.0 95.4 L90.0 95.4 L91.0 95.4 L92.0 95.4 L93.0 95.4 L94.0 95.4 L95.1 95.4 L96.1 94.4 L97.1 93.1 L98.1 92.7 L99.1 92.7 L100.1 92.7 L101.1 92.7 L102.1 92.7 L103.1 92.7 L104.2 84.0 L105.2 75.5 L106.2 74.5 L107.2 73.7 L108.2 70.8 L109.2 67.6 L110.2 61.1 L111.2 54.6 L112.2 54.2 L113.3 54.9 L114.3 53.8 L115.3 50.7 L116.3 50.3 L117.3 51.0 L118.3 52.4 L119.3 53.9 L120.3 55.6 L121.3 56.4 L122.4 56.4 L123.4 57.2 L124.4 59.1 L125.4 60.9 L126.4 62.0 L127.4 62.4 L128.4 61.2 L129.4 59.5 L130.4 59.1 L131.5 59.5 L132.5 60.1 L133.5 61.7 L134.5 66.7 L135.5 71.1 L136.5 73.6 L137.5 73.7 L138.5 73.4 L139.6 74.2 L140.6 75.9 L141.6 76.7 L142.6 76.7 L143.6 76.7 L144.6 76.7 L145.6 76.7 L146.6 76.7 L147.6 76.7 L148.7 75.5 L149.7 73.8 L150.7 73.1 L151.7 72.6 L152.7 72.3 L153.7 73.0 L154.7 74.4 L155.7 73.7 L156.7 73.4 L157.8 73.4 L158.8 73.4 L159.8 74.0 L160.8 74.8 L161.8 75.6 L162.8 73.4 L163.8 70.0 L164.8 67.8 L165.8 65.6 L166.9 65.2 L167.9 66.8 L168.9 70.0 L169.9 63.4 L170.9 63.0 L171.9 63.0 L172.9 63.0 L173.9 65.0 L174.9 72.7 L176.0 73.8 L177.0 72.5 L178.0 71.1 L179.0 69.2 L180.0 67.2 L181.0 65.3 L182.0 63.4 L183.0 63.0 L184.0 63.0 L185.1 63.0 L186.1 63.0 L187.1 63.0 L188.1 64.3 L189.1 69.0 L190.1 68.3 L191.1 67.9 L192.1 69.7 L193.1 76.3 L194.2 81.9 L195.2 82.4 L196.2 79.9 L197.2 79.5 L198.2 80.4 L199.2 82.9 L200.2 84.8 L201.2 85.2 L202.2 84.7 L203.3 80.0 L204.3 75.5 L205.3 75.1 L206.3 75.5 L207.3 76.0 L208.3 77.1 L209.3 79.2 L210.3 77.1 L211.3 76.7 L212.4 77.4 L213.4 78.5 L214.4 77.1 L215.4 76.7 L216.4 77.7 L217.4 79.9 L218.4 81.7 L219.4 82.5 L220.4 82.8 L221.5 82.8 L222.5 83.3 L223.5 80.6 L224.5 76.6 L225.5 76.2 L226.5 76.2 L227.5 75.9 L228.5 75.3 L229.6 74.5 L230.6 73.7 L231.6 72.2 L232.6 70.5 L233.6 70.1 L234.6 70.9 L235.6 72.2 L236.6 70.5 L237.6 70.1 L238.7 70.9 L239.7 72.2 L240.7 70.5 L241.7 69.6 L242.7 68.7 L243.7 68.5 L244.7 68.5 L245.7 65.6 L246.7 64.9 L247.8 64.3 L248.8 60.6 L249.8 60.0 L250.8 59.4 L251.8 57.1 L252.8 54.6 L253.8 54.2 L254.8 54.2 L255.8 54.2 L256.9 54.2 L257.9 54.2 L258.9 54.2 L259.9 54.2 L260.9 54.2 L261.9 54.2 L262.9 55.7 L263.9 61.2 L264.9 65.2 L266.0 65.2 L267.0 66.3 L268.0 67.6 L269.0 67.4 L270.0 67.4 L271.0 62.1 L272.0 56.8 L273.0 56.4 L274.0 56.4 L275.1 55.7 L276.1 54.6 L277.1 53.2 L278.1 51.8 L279.1 51.4 L280.1 51.4 L281.1 50.5 L282.1 49.0 L283.1 45.1 L284.2 41.4 L285.2 40.4 L286.2 39.6 L287.2 33.6 L288.2 27.7 L289.2 27.2 L290.2 27.2 L291.2 27.2 L292.2 27.7 L293.3 28.1 L294.3 27.5 L295.3 27.2 L296.3 27.2 L297.3 27.2 L298.3 28.5 L299.3 32.1 L300.3 33.6 L301.3 31.2 L302.4 28.8 L303.4 28.3 L304.4 28.3 L305.4 28.3 L306.4 29.2 L307.4 30.8 L308.4 31.6 L309.4 31.6 L310.4 32.6 L311.5 34.5 L312.5 32.1 L313.5 31.6 L314.5 32.2 L315.5 33.0 L316.5 33.7 L317.5 34.3 L318.5 34.4 L319.6 34.1 L320.6 33.4 L321.6 24.9 L322.6 16.5 L323.6 12.4 L324.6 8.4 L325.6 8.0 L326.6 10.1 L327.6 18.0 L328.7 25.2 L329.7 29.0 L330.7 33.8 L331.7 42.4 L332.7 49.4 L333.7 46.5 L334.7 41.3 L335.7 37.4 L336.7 33.7 L337.8 30.7 L338.8 27.7 L339.8 27.2 L340.8 28.5 L341.8 32.1 L342.8 35.3 L343.8 37.8 L344.8 40.7 L345.8 42.9 L346.9 37.0 L347.9 36.6 L348.9 37.3 L349.9 38.4 L350.9 40.0 L351.9 44.1 L352.9 45.7 L353.9 41.5 L354.9 37.5 L356.0 37.1 L357.0 37.5 L358.0 38.1 L359.0 38.2 L360.0 38.5 L360 150 L0 150 Z" fill="url(#ars-lg-fin)"/><path class="ars-v6-line" d="M0.0 133.2 L1.0 133.9 L2.0 134.7 L3.0 135.0 L4.0 132.0 L5.1 128.8 L6.1 128.4 L7.1 129.2 L8.1 131.1 L9.1 133.3 L10.1 136.4 L11.1 139.4 L12.1 142.0 L13.1 139.7 L14.2 136.1 L15.2 132.7 L16.2 132.2 L17.2 133.5 L18.2 137.1 L19.2 136.5 L20.2 136.1 L21.2 136.9 L22.2 138.6 L23.3 138.6 L24.3 137.6 L25.3 136.5 L26.3 136.1 L27.3 136.8 L28.3 132.7 L29.3 132.2 L30.3 132.2 L31.3 128.8 L32.4 127.2 L33.4 125.5 L34.4 124.1 L35.4 122.8 L36.4 122.3 L37.4 122.3 L38.4 122.3 L39.4 122.9 L40.4 121.9 L41.5 119.5 L42.5 119.0 L43.5 119.0 L44.5 115.5 L45.5 111.8 L46.5 111.4 L47.5 112.3 L48.5 101.9 L49.6 100.9 L50.6 100.1 L51.6 99.8 L52.6 99.8 L53.6 99.3 L54.6 98.4 L55.6 98.2 L56.6 98.2 L57.6 98.2 L58.7 99.8 L59.7 105.6 L60.7 105.2 L61.7 104.5 L62.7 103.9 L63.7 103.7 L64.7 104.3 L65.7 104.3 L66.7 101.9 L67.8 100.5 L68.8 99.1 L69.8 98.2 L70.8 97.3 L71.8 96.5 L72.8 95.7 L73.8 95.4 L74.8 95.4 L75.8 95.4 L76.9 95.4 L77.9 95.4 L78.9 95.4 L79.9 94.4 L80.9 93.1 L81.9 92.7 L82.9 92.7 L83.9 92.7 L84.9 93.3 L86.0 94.7 L87.0 95.4 L88.0 95.4 L89.0 95.4 L90.0 95.4 L91.0 95.4 L92.0 95.4 L93.0 95.4 L94.0 95.4 L95.1 95.4 L96.1 94.4 L97.1 93.1 L98.1 92.7 L99.1 92.7 L100.1 92.7 L101.1 92.7 L102.1 92.7 L103.1 92.7 L104.2 84.0 L105.2 75.5 L106.2 74.5 L107.2 73.7 L108.2 70.8 L109.2 67.6 L110.2 61.1 L111.2 54.6 L112.2 54.2 L113.3 54.9 L114.3 53.8 L115.3 50.7 L116.3 50.3 L117.3 51.0 L118.3 52.4 L119.3 53.9 L120.3 55.6 L121.3 56.4 L122.4 56.4 L123.4 57.2 L124.4 59.1 L125.4 60.9 L126.4 62.0 L127.4 62.4 L128.4 61.2 L129.4 59.5 L130.4 59.1 L131.5 59.5 L132.5 60.1 L133.5 61.7 L134.5 66.7 L135.5 71.1 L136.5 73.6 L137.5 73.7 L138.5 73.4 L139.6 74.2 L140.6 75.9 L141.6 76.7 L142.6 76.7 L143.6 76.7 L144.6 76.7 L145.6 76.7 L146.6 76.7 L147.6 76.7 L148.7 75.5 L149.7 73.8 L150.7 73.1 L151.7 72.6 L152.7 72.3 L153.7 73.0 L154.7 74.4 L155.7 73.7 L156.7 73.4 L157.8 73.4 L158.8 73.4 L159.8 74.0 L160.8 74.8 L161.8 75.6 L162.8 73.4 L163.8 70.0 L164.8 67.8 L165.8 65.6 L166.9 65.2 L167.9 66.8 L168.9 70.0 L169.9 63.4 L170.9 63.0 L171.9 63.0 L172.9 63.0 L173.9 65.0 L174.9 72.7 L176.0 73.8 L177.0 72.5 L178.0 71.1 L179.0 69.2 L180.0 67.2 L181.0 65.3 L182.0 63.4 L183.0 63.0 L184.0 63.0 L185.1 63.0 L186.1 63.0 L187.1 63.0 L188.1 64.3 L189.1 69.0 L190.1 68.3 L191.1 67.9 L192.1 69.7 L193.1 76.3 L194.2 81.9 L195.2 82.4 L196.2 79.9 L197.2 79.5 L198.2 80.4 L199.2 82.9 L200.2 84.8 L201.2 85.2 L202.2 84.7 L203.3 80.0 L204.3 75.5 L205.3 75.1 L206.3 75.5 L207.3 76.0 L208.3 77.1 L209.3 79.2 L210.3 77.1 L211.3 76.7 L212.4 77.4 L213.4 78.5 L214.4 77.1 L215.4 76.7 L216.4 77.7 L217.4 79.9 L218.4 81.7 L219.4 82.5 L220.4 82.8 L221.5 82.8 L222.5 83.3 L223.5 80.6 L224.5 76.6 L225.5 76.2 L226.5 76.2 L227.5 75.9 L228.5 75.3 L229.6 74.5 L230.6 73.7 L231.6 72.2 L232.6 70.5 L233.6 70.1 L234.6 70.9 L235.6 72.2 L236.6 70.5 L237.6 70.1 L238.7 70.9 L239.7 72.2 L240.7 70.5 L241.7 69.6 L242.7 68.7 L243.7 68.5 L244.7 68.5 L245.7 65.6 L246.7 64.9 L247.8 64.3 L248.8 60.6 L249.8 60.0 L250.8 59.4 L251.8 57.1 L252.8 54.6 L253.8 54.2 L254.8 54.2 L255.8 54.2 L256.9 54.2 L257.9 54.2 L258.9 54.2 L259.9 54.2 L260.9 54.2 L261.9 54.2 L262.9 55.7 L263.9 61.2 L264.9 65.2 L266.0 65.2 L267.0 66.3 L268.0 67.6 L269.0 67.4 L270.0 67.4 L271.0 62.1 L272.0 56.8 L273.0 56.4 L274.0 56.4 L275.1 55.7 L276.1 54.6 L277.1 53.2 L278.1 51.8 L279.1 51.4 L280.1 51.4 L281.1 50.5 L282.1 49.0 L283.1 45.1 L284.2 41.4 L285.2 40.4 L286.2 39.6 L287.2 33.6 L288.2 27.7 L289.2 27.2 L290.2 27.2 L291.2 27.2 L292.2 27.7 L293.3 28.1 L294.3 27.5 L295.3 27.2 L296.3 27.2 L297.3 27.2 L298.3 28.5 L299.3 32.1 L300.3 33.6 L301.3 31.2 L302.4 28.8 L303.4 28.3 L304.4 28.3 L305.4 28.3 L306.4 29.2 L307.4 30.8 L308.4 31.6 L309.4 31.6 L310.4 32.6 L311.5 34.5 L312.5 32.1 L313.5 31.6 L314.5 32.2 L315.5 33.0 L316.5 33.7 L317.5 34.3 L318.5 34.4 L319.6 34.1 L320.6 33.4 L321.6 24.9 L322.6 16.5 L323.6 12.4 L324.6 8.4 L325.6 8.0 L326.6 10.1 L327.6 18.0 L328.7 25.2 L329.7 29.0 L330.7 33.8 L331.7 42.4 L332.7 49.4 L333.7 46.5 L334.7 41.3 L335.7 37.4 L336.7 33.7 L337.8 30.7 L338.8 27.7 L339.8 27.2 L340.8 28.5 L341.8 32.1 L342.8 35.3 L343.8 37.8 L344.8 40.7 L345.8 42.9 L346.9 37.0 L347.9 36.6 L348.9 37.3 L349.9 38.4 L350.9 40.0 L351.9 44.1 L352.9 45.7 L353.9 41.5 L354.9 37.5 L356.0 37.1 L357.0 37.5 L358.0 38.1 L359.0 38.2 L360.0 38.5" pathLength="1" fill="none" stroke="#0FA982" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>
+    <div style="position:absolute;left:calc(92% * 0.904 - calc(10 * var(--u)));top:calc(-16 * var(--u));font-size:calc(10 * var(--u));color:#8A8A94;">1.22</div>
+    <div class="ars-v6-dot" style="position:absolute;left:calc(92% - calc(11 * var(--u)));top:calc(25.7% - calc(11 * var(--u)));width:calc(22 * var(--u));height:calc(22 * var(--u));border-radius:50%;background:rgba(15,169,130,0.16);display:flex;align-items:center;justify-content:center;"><div style="width:calc(8 * var(--u));height:calc(8 * var(--u));border-radius:50%;background:#0FA982;box-shadow:0 0 0 calc(2 * var(--u)) #fff;"></div></div></div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:calc(4 * var(--u));margin-top:calc(8 * var(--u));"><div style="height:calc(30 * var(--u));border-radius:calc(8 * var(--u));display:flex;align-items:center;justify-content:center;font-size:calc(12 * var(--u));font-weight:500;color:#15151A;">1D</div><div style="height:calc(30 * var(--u));border-radius:calc(8 * var(--u));display:flex;align-items:center;justify-content:center;font-size:calc(12 * var(--u));font-weight:600;background:#15151A;color:#fff;">1W</div><div style="height:calc(30 * var(--u));border-radius:calc(8 * var(--u));display:flex;align-items:center;justify-content:center;font-size:calc(12 * var(--u));font-weight:500;color:#15151A;">1M</div><div style="height:calc(30 * var(--u));border-radius:calc(8 * var(--u));display:flex;align-items:center;justify-content:center;font-size:calc(12 * var(--u));font-weight:500;color:#15151A;">3M</div><div style="height:calc(30 * var(--u));border-radius:calc(8 * var(--u));display:flex;align-items:center;justify-content:center;font-size:calc(12 * var(--u));font-weight:500;color:#15151A;">6M</div><div style="height:calc(30 * var(--u));border-radius:calc(8 * var(--u));display:flex;align-items:center;justify-content:center;font-size:calc(12 * var(--u));font-weight:500;color:#15151A;">1Y</div><div style="height:calc(30 * var(--u));border-radius:calc(8 * var(--u));display:flex;align-items:center;justify-content:center;font-size:calc(12 * var(--u));font-weight:500;color:#15151A;">ALL</div></div>
+    </div>
+    <div style="position:relative;z-index:12;display:grid;grid-template-columns:1fr 1fr;gap:calc(12 * var(--u));padding:calc(14 * var(--u)) calc(20 * var(--u)) calc(30 * var(--u));margin-top:calc(14 * var(--u));background:#fff;"><div class="ars-press" style="height:calc(50 * var(--u));border-radius:calc(12 * var(--u));background:#E9F8F3;box-shadow:inset 0 0 0 calc(1.5 * var(--u)) #0FA982;color:#15151A;display:flex;align-items:center;justify-content:center;gap:calc(10 * var(--u));font-size:calc(16 * var(--u));font-weight:600;"><svg style="width:calc(22 * var(--u));height:calc(22 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#0FA982" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>Buy</div><div style="height:calc(50 * var(--u));border-radius:calc(12 * var(--u));background:#FFF0F3;box-shadow:inset 0 0 0 calc(1.5 * var(--u)) #F0284A;color:#15151A;display:flex;align-items:center;justify-content:center;gap:calc(10 * var(--u));font-size:calc(16 * var(--u));font-weight:600;"><svg style="width:calc(22 * var(--u));height:calc(22 * var(--u));" viewBox="0 0 24 24" fill="none" stroke="#F0284A" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>Sell</div></div>
+    <span style="position:absolute;z-index:13;left:50%;bottom:calc(9 * var(--u));width:calc(134 * var(--u));height:calc(5 * var(--u));margin-left:calc(-67 * var(--u));border-radius:calc(3 * var(--u));background:#15151A;"></span>
+    </div>
+                      </div></div></div>
+                    </div>
+                  </div>
+
+                  <div class="ars-pops">
+                    <div class="ars-pop">
+                      <span class="ars-pop__ic ars-pop__ic--g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+                      <span><b>Allocation confirmed</b><small>DFM shares in your name</small></span>
+                    </div>
+                    <div class="ars-pop">
+                      <span class="ars-pop__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span>
+                      <span><b>Order filled</b><small>Buy 12,000 FIN @ <em>1.20</em></small></span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <div class="ars__rail" role="group" aria-label="Steps">
+                <button type="button" aria-label="Go to step 1, Discover" data-ars-go="0"></button>
+                <button type="button" aria-label="Go to step 2, Subscribe" data-ars-go="1"></button>
+                <button type="button" aria-label="Go to step 3, Trade" data-ars-go="2"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container"><p class="ars__note">For illustration only. Figures shown are examples, not live market data.</p></div>
     </section>
 
-    <!-- ============ Offerings board (empty state until launch) ============ -->
+    <!-- ============ Offerings (pre-launch: one row per market) ============ -->
     <section class="iv-board" id="offerings" aria-labelledby="offerings-title" data-header="dark" data-iv-board>
       <div class="container">
         <div class="iv-head iv-head--split">
@@ -442,54 +575,46 @@
           <p class="iv-head__lead" data-scroll-reveal>The first offerings are being prepared now. <strong>This board fills the moment subscriptions open.</strong></p>
         </div>
 
-        <div class="iv-board__frame" data-scroll-reveal>
-          <div class="iv-board__bar">
-            <div class="iv-board__tabs" role="tablist" aria-label="Filter by market">
-              <button class="iv-board__tab is-on" type="button" role="tab" aria-selected="true" data-iv-filter="all">All</button>
-              <button class="iv-board__tab" type="button" role="tab" aria-selected="false" data-iv-filter="growth"><i class="iv-dot iv-dot--growth"></i>Growth</button>
-              <button class="iv-board__tab" type="button" role="tab" aria-selected="false" data-iv-filter="private"><i class="iv-dot iv-dot--private"></i>Private</button>
-              <button class="iv-board__tab" type="button" role="tab" aria-selected="false" data-iv-filter="closed"><i class="iv-dot iv-dot--closed"></i>Closed</button>
-            </div>
-            <p class="iv-board__count"><span class="iv-board__live"><i></i>0 open</span> today</p>
+        <!-- Upcoming offerings: one row per market until live offers
+             replace them. -->
+        <div class="iv-upcoming" data-scroll-reveal>
+          <div class="iv-upcoming__bar">
+            <p class="iv-upcoming__label">Upcoming offerings</p>
+            <p class="iv-upcoming__meta"><span class="iv-upcoming__open"><i></i>0 open today</span><span>Updated <span data-iv-board-date>28 Oct 2026</span></span></p>
           </div>
 
-          <div class="iv-board__body">
-            <div class="iv-board__ghosts" aria-hidden="true">
-              <div class="iv-offer" data-market="growth">
-                <span class="iv-offer__head"><span class="iv-tag iv-tag--growth">Growth Market</span><span class="iv-offer__status">Opening soon</span></span>
-                <span class="iv-offer__name"></span>
-                <span class="iv-offer__line"></span>
-                <span class="iv-offer__stats"><span><small>Min. subscription</small>—</span><span><small>Closes</small>—</span></span>
-                <span class="iv-offer__meter"></span>
-              </div>
-              <div class="iv-offer" data-market="private">
-                <span class="iv-offer__head"><span class="iv-tag iv-tag--private">Private Market</span><span class="iv-offer__status">By invitation</span></span>
-                <span class="iv-offer__name"></span>
-                <span class="iv-offer__line"></span>
-                <span class="iv-offer__stats"><span><small>Min. subscription</small>—</span><span><small>Closes</small>—</span></span>
-                <span class="iv-offer__meter"></span>
-              </div>
-              <div class="iv-offer" data-market="closed">
-                <span class="iv-offer__head"><span class="iv-tag iv-tag--closed">Closed Market</span><span class="iv-offer__status">Admission only</span></span>
-                <span class="iv-offer__name"></span>
-                <span class="iv-offer__line"></span>
-                <span class="iv-offer__stats"><span><small>Min. subscription</small>—</span><span><small>Closes</small>—</span></span>
-                <span class="iv-offer__meter"></span>
-              </div>
-            </div>
+          <ul class="iv-upcoming__list">
+            <li class="iv-upcoming__row">
+              <div class="iv-upcoming__mkt"><i class="iv-dot iv-dot--growth"></i><div><p class="iv-upcoming__name">Growth Market</p><p class="iv-upcoming__sub">Open to the market</p></div></div>
+              <dl class="iv-upcoming__facts">
+                <div><dt>Next offering</dt><dd>To be announced</dd></div>
+                <div><dt>Who can subscribe</dt><dd>Any DFM investor number</dd></div>
+                <div><dt>Status</dt><dd class="is-prep">Preparing</dd></div>
+              </dl>
+            </li>
+            <li class="iv-upcoming__row">
+              <div class="iv-upcoming__mkt"><i class="iv-dot iv-dot--private"></i><div><p class="iv-upcoming__name">Private Market</p><p class="iv-upcoming__sub">By invitation</p></div></div>
+              <dl class="iv-upcoming__facts">
+                <div><dt>Next offering</dt><dd>To be announced</dd></div>
+                <div><dt>Who can subscribe</dt><dd>Approved investors</dd></div>
+                <div><dt>Status</dt><dd>By invitation</dd></div>
+              </dl>
+            </li>
+            <li class="iv-upcoming__row">
+              <div class="iv-upcoming__mkt"><i class="iv-dot iv-dot--closed"></i><div><p class="iv-upcoming__name">Closed Market</p><p class="iv-upcoming__sub">Admission only</p></div></div>
+              <dl class="iv-upcoming__facts">
+                <div><dt>Next offering</dt><dd>To be announced</dd></div>
+                <div><dt>Who can subscribe</dt><dd>Family and employees</dd></div>
+                <div><dt>Status</dt><dd>Admission only</dd></div>
+              </dl>
+            </li>
+          </ul>
 
-            <div class="iv-board__empty">
-              <span class="iv-board__bell" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16Zm4 4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <p class="iv-board__empty-title">No offerings open today.</p>
-              <p class="iv-board__empty-text">Register your interest and get a notification <strong>the moment the first offer goes live.</strong></p>
-              <a class="btn-pill" href="#notify">
-                <span class="btn-pill__label">Get notified</span>
-                <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
-              </a>
-            </div>
+          <div class="iv-upcoming__foot">
+            <p>Live offerings appear here the moment subscriptions open. <span>Register your interest and we will tell you when the first one goes live.</span></p>
+            <a class="iv-upcoming__cta" href="#notify">Get notified<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </div>
         </div>
-        <p class="iv-board__foot" data-scroll-reveal>Live offerings will appear here the moment the market opens.</p>
       </div>
     </section>
 

@@ -1,0 +1,200 @@
+@use "../abstracts" as *;
+
+// "Offerings, opening soon" (index.html, inside .iv-board): a plain
+// upcoming-offerings list. One wide row per market between thin rules:
+// name and three facts; one notify button under the list. Live offerings
+// replace the rows at launch. The date comes from js/components/invest-board.js.
+.iv-upcoming {
+  &__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px $space-24;
+    padding-bottom: 14px;
+    border-bottom: 1px solid $color-text-dark;
+  }
+
+  &__label {
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__meta {
+    display: flex;
+    gap: $space-20;
+    margin: 0;
+    font-size: 14px;
+    color: rgba($color-text-dark, 0.55);
+  }
+
+  &__open {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: $color-text-dark;
+
+    i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba($color-text-dark, 0.3);
+    }
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 3fr;
+    align-items: center;
+    gap: $space-24 fluid(24px, 48px);
+    padding: fluid(22px, 30px) 0;
+    border-bottom: 1px solid rgba($color-text-dark, 0.12);
+  }
+
+  &__mkt {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+
+    .iv-dot {
+      translate: 0 -3px;
+    }
+  }
+
+  &__name {
+    margin: 0;
+    font-size: fluid(20px, 26px);
+    line-height: 1.2;
+  }
+
+  &__sub {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: rgba($color-text-dark, 0.5);
+  }
+
+  &__facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-16 $space-24;
+    margin: 0;
+
+    dt {
+      font-size: 13px;
+      color: rgba($color-text-dark, 0.5);
+    }
+
+    dd {
+      margin: 4px 0 0;
+      font-size: fluid(15px, 17px);
+    }
+
+    .is-prep {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      &::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: $color-yellow-bright;
+        box-shadow: 0 0 0 3px rgba($color-yellow-bright, 0.2);
+      }
+    }
+  }
+
+  // Note + the one notify button, under the list.
+  &__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-24;
+    padding-top: fluid(22px, 30px);
+
+    p {
+      max-width: 640px;
+      margin: 0;
+      font-size: fluid(16px, 18px);
+      line-height: 1.4;
+    }
+
+    span {
+      color: rgba($color-text-dark, 0.55);
+    }
+  }
+
+  &__cta {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: 6px;
+    background: $color-text-dark;
+    color: $color-white;
+    font-size: 16px;
+    transition: background-color $duration $ease-out;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.35s $ease-out;
+    }
+
+    &:hover {
+      background: #000;
+
+      svg {
+        transform: translate(2px, -2px);
+      }
+    }
+  }
+
+  @include down("laptop") {
+    &__row {
+      grid-template-columns: 1fr;
+      gap: $space-16;
+    }
+  }
+
+  @include down("tablet") {
+    &__facts {
+      grid-template-columns: 1fr;
+      gap: 10px;
+
+      div {
+        display: flex;
+        justify-content: space-between;
+        gap: $space-16;
+      }
+
+      dd {
+        margin: 0;
+        text-align: right;
+      }
+    }
+
+    &__row {
+      grid-template-columns: 1fr;
+    }
+
+    &__foot {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    &__meta {
+      gap: $space-12;
+    }
+  }
+}
