@@ -1625,3 +1625,108 @@
     filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.55)) drop-shadow(0 8px 14px rgba(0, 0, 0, 0.35));
   }
 }
+
+// Desktop: the whole Subscribe card is one black gradient (copy side and
+// photo side together); the photo panel goes transparent and keeps only
+// its glow behind the phone, so there is no seam between the halves.
+@media (min-width: 960px) {
+  .ars--deck .ars__step--discover,
+  .ars--deck .ars__step--subscribe,
+  .ars--deck .ars__step--trade {
+    background:
+      radial-gradient(60% 80% at 0% 100%, rgba(100, 251, 160, 0.05), transparent 70%),
+      radial-gradient(50% 70% at 20% 0%, rgba(255, 255, 255, 0.04), transparent 70%),
+      linear-gradient(115deg, #17181f 0%, #111217 45%, #0a0a0d 75%, #060608 100%);
+  }
+
+  // Review keeps its own laptop panel; Subscribe's photo panel goes clear.
+  .ars--deck .ars__step--subscribe .ars__scene {
+    background:
+      radial-gradient(48% 50% at 48% 46%, rgba(100, 251, 160, 0.22), transparent 72%),
+      radial-gradient(50% 55% at 50% 42%, rgba(255, 255, 255, 0.05), transparent 70%);
+  }
+}
+
+// Subscribe and Allotment: a faint jade dot wave (the same wave as the
+// Review panel, arena-steps.js) across the top of the panel, where the
+// photo leaves space, fading out downwards.
+.ars--deck .ars__step--subscribe .ars-dots,
+.ars--deck .ars__step--trade .ars-dots {
+  inset: 0 0 auto;
+  display: block;
+  height: 62%;
+  opacity: 0.4;
+  transform: none;
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 85%);
+}
+
+// ---- Allotment and trading: same treatment ----
+// Hands and phone cut out of the photo (hand-phone-over-cut.webp); the
+// blurred shoulder in front is kept as a dark, out-of-focus shape with a
+// faint rim, so the phone still disappears behind it. Black gradient
+// panel with a jade glow behind the phone (the full-card gradient above
+// covers desktop).
+.ars--deck .ars__step--trade {
+  .ars__scene {
+    background:
+      radial-gradient(46% 48% at 46% 40%, rgba(100, 251, 160, 0.22), transparent 72%),
+      radial-gradient(50% 55% at 48% 38%, rgba(255, 255, 255, 0.05), transparent 70%),
+      linear-gradient(160deg, #1a1b22 0%, #0d0e12 55%, #050507 100%);
+  }
+
+}
+
+@media (min-width: 960px) {
+  .ars--deck .ars__step--trade .ars__scene {
+    background:
+      radial-gradient(46% 48% at 46% 40%, rgba(100, 251, 160, 0.22), transparent 72%),
+      radial-gradient(50% 55% at 48% 38%, rgba(255, 255, 255, 0.05), transparent 70%);
+  }
+}
+
+// ---- One colour per card ----
+// Every card is the same black gradient, tinted in its own colour: Review
+// blue, Subscribe jade, Allotment lime (the market colours, no purple).
+// The tint lifts the bottom-left corner, glows behind the device and
+// colours the dot wave (arena-steps.js). Desktop: the card carries the
+// gradient and the image panel is clear; stacked (phones), the panel
+// carries it on its own.
+.ars--deck [data-ars-step] {
+  --tint: 100, 251, 160;
+  --gx: 48%;
+  --gy: 46%;
+}
+
+.ars--deck .ars__step--discover {
+  --tint: 74, 159, 224;
+  --gx: 54%;
+  --gy: 50%;
+}
+
+.ars--deck .ars__step--trade {
+  --tint: 214, 232, 74;
+  --gx: 46%;
+  --gy: 40%;
+}
+
+.ars--deck [data-ars-step] .ars__scene {
+  background:
+    radial-gradient(48% 50% at var(--gx) var(--gy), rgba(var(--tint), 0.2), transparent 72%),
+    radial-gradient(50% 55% at var(--gx) var(--gy), rgba(255, 255, 255, 0.05), transparent 70%),
+    linear-gradient(160deg, #1a1b22 0%, #0d0e12 55%, #050507 100%);
+}
+
+@media (min-width: 960px) {
+  .ars--deck [data-ars-step] {
+    background:
+      radial-gradient(60% 80% at 0% 100%, rgba(var(--tint), 0.07), transparent 70%),
+      radial-gradient(50% 70% at 20% 0%, rgba(255, 255, 255, 0.04), transparent 70%),
+      linear-gradient(115deg, #17181f 0%, #111217 45%, #0a0a0d 75%, #060608 100%);
+  }
+
+  .ars--deck [data-ars-step] .ars__scene {
+    background:
+      radial-gradient(48% 50% at var(--gx) var(--gy), rgba(var(--tint), 0.2), transparent 72%),
+      radial-gradient(50% 55% at var(--gx) var(--gy), rgba(255, 255, 255, 0.05), transparent 70%);
+  }
+}
