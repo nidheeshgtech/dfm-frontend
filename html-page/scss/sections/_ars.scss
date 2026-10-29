@@ -1730,3 +1730,98 @@
       radial-gradient(50% 55% at var(--gx) var(--gy), rgba(255, 255, 255, 0.05), transparent 70%);
   }
 }
+
+// ---- Allotment and trading: the one light card ----
+// A soft light-grey gradient (close to the photo's own wall) so the
+// light shoulder in front of the phone sits naturally; dark copy, dark
+// step track; a faint grey dot wave instead of the lime one.
+.ars--deck .ars__step--trade {
+  .ars__scene {
+    background:
+      radial-gradient(48% 50% at 46% 40%, rgba(255, 255, 255, 0.9), transparent 72%),
+      linear-gradient(160deg, #eef0ee 0%, #dfe1df 55%, #cdd0cd 100%);
+  }
+
+  .ars-dots {
+    opacity: 0.22;
+  }
+}
+
+@media (min-width: 960px) {
+  .ars--deck .ars__step--trade {
+    --ars-step: #12a866;
+
+    background:
+      radial-gradient(60% 80% at 0% 100%, rgba(18, 168, 102, 0.06), transparent 70%),
+      radial-gradient(50% 70% at 20% 0%, rgba(255, 255, 255, 0.9), transparent 70%),
+      linear-gradient(115deg, #f4f5f3 0%, #e8eae7 45%, #dcdeda 75%, #d0d3cf 100%);
+
+    &::after {
+      background: $color-text-dark;
+    }
+
+    .ars__scene {
+      background: radial-gradient(48% 50% at 46% 40%, rgba(255, 255, 255, 0.8), transparent 72%);
+    }
+
+    .ars__name,
+    .ars__text strong {
+      color: $color-text-dark;
+    }
+
+    .ars__text {
+      color: rgba($color-text-dark, 0.6);
+    }
+
+    .ars__num::after {
+      background:
+        linear-gradient(var(--ars-step), var(--ars-step)) 0 0 / calc(var(--s, 1) * 33.34%) 100% no-repeat,
+        rgba(13, 14, 26, 0.12);
+    }
+
+    .ars__track {
+      color: rgba($color-text-dark, 0.4);
+
+      li.is-done {
+        color: rgba($color-text-dark, 0.6);
+      }
+
+      li.is-on {
+        color: $color-text-dark;
+
+        &::before {
+          box-shadow: 0 0 0 4px rgba(18, 168, 102, 0.2);
+        }
+      }
+    }
+  }
+}
+
+// ---- Subscribe: dark with purple (black / purple / light across the
+// three steps). The glow and dot wave follow in the purple tint. ----
+.ars--deck .ars__step--subscribe {
+  --tint: 139, 92, 246;
+}
+
+.ars--deck .ars__step--subscribe .ars__scene {
+  background:
+    radial-gradient(48% 50% at 48% 46%, rgba(139, 92, 246, 0.32), transparent 72%),
+    linear-gradient(160deg, #241a4a 0%, #15112b 55%, #09080f 100%);
+}
+
+@media (min-width: 960px) {
+  .ars--deck .ars__step--subscribe {
+    background:
+      radial-gradient(70% 90% at 100% 0%, rgba(78, 23, 229, 0.38), transparent 65%),
+      radial-gradient(60% 80% at 0% 100%, rgba(139, 92, 246, 0.14), transparent 70%),
+      linear-gradient(115deg, #17151f 0%, #120f1d 45%, #0c0a14 75%, #08070c 100%);
+
+    .ars__scene {
+      background: radial-gradient(48% 50% at 48% 46%, rgba(139, 92, 246, 0.32), transparent 72%);
+    }
+
+    .ars__text {
+      color: rgba($color-white, 0.7);
+    }
+  }
+}

@@ -11,7 +11,7 @@
 import { initDotWave } from "./xp-wave.js";
 
 // Version B: dot colour per step panel.
-const DOTS = { discover: "#4a9fe0", subscribe: "#64fba0", trade: "#d6e84a" };
+const DOTS = { discover: "#4a9fe0", subscribe: "#a38bf2", trade: "#5b6068" };
 
 export function initArenaSteps(root = document) {
   root.querySelectorAll("[data-ars]").forEach((section) => {
