@@ -5569,6 +5569,9 @@ body {
   color: var(--hero-text);
   text-align: center;
 }
+.hero.hero--company {
+  padding-bottom: 92px;
+}
 .hero__content {
   display: flex;
   flex-direction: column;
@@ -6270,6 +6273,94 @@ body {
     --ring-r: 52%;
   }
 }
+.page-company .markets {
+  padding-inline: 0;
+}
+.page-company .markets__list {
+  max-width: 1616px;
+  margin-inline: auto;
+  padding-inline: 40px;
+}
+@media (max-width: 767.98px) {
+  .page-company .markets__list {
+    padding-inline: 16px;
+  }
+}
+.page-company .market__card {
+  height: min(720px, 100svh - 40px);
+  min-height: 560px;
+  border-radius: 24px;
+}
+@media (max-width: 767.98px) {
+  .page-company .market__card {
+    height: auto;
+    min-height: 0;
+  }
+}
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .page-company .market__card {
+    height: min(720px, 100svh - var(--markets-stuck-h) - 2 * var(--market-gap) - 24px);
+    min-height: 0;
+  }
+}
+.page-company .market__content {
+  gap: clamp(1rem, 0.78vw + 0.817961165rem, 1.75rem);
+}
+.page-company .market__title {
+  font-size: min(clamp(1.875rem, 1.68vw + 1.4805825243rem, 3.5rem), 6vh);
+  letter-spacing: -0.02em;
+}
+.page-company .market__body {
+  gap: clamp(1.5rem, 0.52vw + 1.3786407767rem, 2rem);
+  max-width: 820px;
+}
+.page-company .market__copy {
+  gap: clamp(0.625rem, 0.26vw + 0.5643203883rem, 0.875rem);
+}
+.page-company .market__subtitle {
+  font-size: clamp(1.25rem, 0.52vw + 1.1286407767rem, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.page-company .market__text {
+  max-width: 560px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: clamp(0.9375rem, 0.13vw + 0.9071601942rem, 1.0625rem);
+  line-height: 1.45;
+}
+.page-company .market__panel {
+  gap: clamp(1.25rem, 0.26vw + 1.1893203883rem, 1.5rem);
+  padding: clamp(1.25rem, 0.26vw + 1.1893203883rem, 1.5rem) 20px 20px;
+}
+.page-company .market__stat {
+  gap: 6px;
+}
+.page-company .market__stat::before {
+  top: calc(0.6em - 4px);
+  font-size: 13px;
+}
+@media (max-width: 767.98px) {
+  .page-company .market__stat + .market__stat::before {
+    top: calc(16px + 0.6em - 4px);
+  }
+}
+.page-company .market__label {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+.page-company .market__value {
+  font-size: clamp(0.9375rem, 0.19vw + 0.8919902913rem, 1.125rem);
+  font-weight: 400;
+  line-height: 1.3;
+}
+@media (min-width: 768px) {
+  .page-company .market__content {
+    max-width: none;
+    padding-inline: clamp(2rem, 3.11vw + 1.2718446602rem, 5rem);
+  }
+}
+
 .xp {
   position: relative;
   z-index: 2;
@@ -8417,10 +8508,11 @@ body {
   min-width: 0;
 }
 .faq__aside {
+  position: sticky;
+  top: calc(var(--header-height) + 20px);
   display: flex;
   flex-direction: column;
   gap: 20px;
-  height: 100%;
 }
 .faq__tabs {
   display: flex;
@@ -8449,26 +8541,12 @@ body {
   white-space: nowrap;
   transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.faq__tab span {
-  display: grid;
-  place-items: center;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 6px;
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.1);
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
 .faq__tab:hover {
   color: #ffffff;
 }
 .faq__tab.is-on {
   background: #ffffff;
   color: #0d0e1a;
-}
-.faq__tab.is-on span {
-  background: rgba(13, 14, 26, 0.08);
 }
 .faq__tab:focus-visible {
   outline: 2px solid #ffffff;
@@ -8926,7 +9004,6 @@ body {
 }
 .contact-card {
   display: flex;
-  flex: 1;
   flex-direction: column;
   justify-content: space-between;
   gap: 40px;
@@ -9898,17 +9975,8 @@ body {
   color: rgba(255, 255, 255, 0.7);
 }
 .iv-hero__switch {
-  --switch-text: rgba(255, 255, 255, 0.75);
-  --switch-active-text: #ffffff;
-  border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 8px 32px rgba(0, 0, 0, 0.25);
-}
-.iv-hero__switch .switch__active {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
-}
-.iv-hero__switch .switch__option:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, #8592aa, #76839c);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 .iv-hero .iv-hero__title {
   font-size: clamp(44px, min(6.2vw, 10vh), 96px);
@@ -15179,14 +15247,6 @@ body {
   font-size: clamp(1.0625rem, 0.32vw + 0.9866504854rem, 1.375rem);
   text-align: center;
   color: rgba(255, 255, 255, 0.7);
-}
-.iv-faq .faq__aside {
-  position: sticky;
-  top: calc(var(--header-height) + 20px);
-  height: auto;
-}
-.iv-faq .contact-card {
-  flex: none;
 }
 .iv-faq .faq-item__btn {
   padding: clamp(1.125rem, 0.39vw + 1.0339805825rem, 1.5rem) clamp(1.125rem, 0.52vw + 1.0036407767rem, 1.625rem);

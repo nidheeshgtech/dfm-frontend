@@ -101,23 +101,14 @@
     color: rgba($color-white, 0.7);
   }
 
+  // Same light slate capsule as the Raise Capital hero's switch (there it
+  // is 10% white over the pale sky; on black it needs the colour itself).
   &__switch {
-    --switch-text: #{rgba($color-white, 0.75)};
-    --switch-active-text: #{$color-white};
-
-    border-color: rgba($color-white, 0.12);
-    background: rgba($color-white, 0.06);
+    background: linear-gradient(180deg, #8592aa, #76839c);
     box-shadow:
-      inset 0 1px 0 rgba($color-white, 0.12),
+      inset 0 1px 0 rgba($color-white, 0.35),
+      inset 0 0 0 1px rgba($color-white, 0.12),
       0 8px 32px rgba(0, 0, 0, 0.25);
-
-    .switch__active {
-      background: linear-gradient(90deg, rgba($color-white, 0.2), rgba($color-white, 0.05));
-    }
-
-    .switch__option:hover {
-      background: rgba($color-white, 0.1);
-    }
   }
 
   // Overrides the shared hero's centred, one-line title; sized by the

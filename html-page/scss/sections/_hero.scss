@@ -36,6 +36,13 @@
   color: var(--hero-text);
   text-align: center;
 
+  // Raise Capital: the button sits at the foot of the screen, so leave
+  // room under it for the fixed "Ask ARENA" dock (bottom-centre).
+  // (Doubled class so it also beats the phone padding further down.)
+  &#{&}--company {
+    padding-bottom: 92px;
+  }
+
   &__content {
     display: flex;
     flex-direction: column;

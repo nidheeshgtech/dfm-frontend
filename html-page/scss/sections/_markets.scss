@@ -583,3 +583,116 @@
     --ring-r: 52%;
   }
 }
+
+// Raise Capital page (body.page-company): the three route cards sit inside
+// the container, lined up with the heading and every other section.
+.page-company {
+  .markets {
+    padding-inline: 0;
+  }
+
+  .markets__list {
+    max-width: $container-max + $container-gutter * 2;
+    margin-inline: auto;
+    padding-inline: $container-gutter;
+
+    @include down("tablet") {
+      padding-inline: $container-gutter-mobile;
+    }
+  }
+
+  // A set card height (capped by the screen), not a full-screen panel, as
+  // with the Invest page's cards and the offer-steps deck.
+  .market__card {
+    height: min(720px, calc(100svh - 40px));
+    min-height: 560px;
+    border-radius: $radius-xl;
+
+    @include down("tablet") {
+      height: auto;
+      min-height: 0;
+    }
+  }
+
+  @media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+    .market__card {
+      height: min(720px, calc(100svh - var(--markets-stuck-h) - 2 * var(--market-gap) - #{$space-24}));
+      min-height: 0;
+    }
+  }
+
+  // Calmer type in the cards: a clear title, then a smaller subtitle (it
+  // used to read bigger than the title), short copy and small caps labels.
+  .market__content {
+    gap: fluid(16px, 28px);
+  }
+
+  .market__title {
+    font-size: min(#{fluid(30px, 56px)}, 6vh);
+    letter-spacing: -0.02em;
+  }
+
+  .market__body {
+    gap: fluid(24px, 32px);
+    max-width: 820px;
+  }
+
+  .market__copy {
+    gap: fluid(10px, 14px);
+  }
+
+  .market__subtitle {
+    font-size: fluid(20px, 28px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .market__text {
+    max-width: 560px;
+    color: rgba($color-white, 0.75);
+    font-size: fluid(15px, 17px);
+    line-height: 1.45;
+  }
+
+  .market__panel {
+    gap: fluid(20px, 24px);
+    padding: fluid(20px, 24px) $space-20 $space-20;
+  }
+
+  .market__stat {
+    gap: 6px;
+
+    &::before {
+      top: calc(0.6em - 4px);
+      font-size: 13px;
+    }
+
+    // Stacked stats (phones) start below their divider.
+    @include down("tablet") {
+      & + .market__stat::before {
+        top: calc(#{$space-16} + 0.6em - 4px);
+      }
+    }
+  }
+
+  .market__label {
+    color: rgba($color-white, 0.65);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+  }
+
+  .market__value {
+    font-size: fluid(15px, 18px);
+    font-weight: $font-weight-regular;
+    line-height: 1.3;
+  }
+
+  // The card is now the frame: content takes its own inset, not the
+  // page gutter.
+  @include up("tablet") {
+    .market__content {
+      max-width: none;
+      padding-inline: fluid(32px, 80px);
+    }
+  }
+}
