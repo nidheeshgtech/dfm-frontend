@@ -13,13 +13,7 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: $space-24;
-
-    // Figma: content sits ~193px in from each edge of the 1920 frame
-    // (≈10%), scaled with the viewport on desktop.
-    @include up("laptop") {
-      max-width: none;
-      padding-inline: max(#{$container-gutter}, 10vw);
-    }
+    // On the shared .container, so it lines up with every section.
   }
 
   &__brand {

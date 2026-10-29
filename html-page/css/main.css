@@ -796,12 +796,6 @@ body {
   justify-content: space-between;
   gap: 24px;
 }
-@media (min-width: 1024px) {
-  .site-footer__inner {
-    max-width: none;
-    padding-inline: max(40px, 10vw);
-  }
-}
 .site-footer__brand {
   display: flex;
   flex-wrap: wrap;
