@@ -3,6 +3,7 @@
 // when the figures scroll into view, the rightmost digit spinning most
 // and each figure a beat after the one before. The wrapping [data-roll-group]
 // gets .is-in at the same moment (its divider lines draw in, labels rise).
+// In the hero they wait for the page loader and the hero intro first.
 // Reduced motion or no IntersectionObserver: the static number stays.
 export function initStatRoll() {
   const groups = document.querySelectorAll("[data-roll-group]");
@@ -58,6 +59,13 @@ export function initStatRoll() {
       },
       { threshold: 0.4 },
     );
-    io.observe(group);
+    // Figures in the hero are on screen at load: wait for the page loader
+    // and the hero's own intro (buttons land ~1.5s after it) so they roll
+    // in last instead of behind the loader.
+    if (group.closest("[data-hero]")) {
+      (window.arenaLoaded || Promise.resolve()).then(() => setTimeout(() => io.observe(group), 1700));
+    } else {
+      io.observe(group);
+    }
   });
 }

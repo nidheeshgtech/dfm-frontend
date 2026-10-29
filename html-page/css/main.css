@@ -11042,6 +11042,10 @@ body {
   margin-top: clamp(8px, 1.4vh, 20px);
   font-size: 12px;
   color: rgba(255, 255, 255, 0.4);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s;
+}
+.iv-stats.is-roll:not(.is-in) + .iv-stats__src {
+  opacity: 0;
 }
 @media (max-width: 767.98px) {
   .iv-stats {
@@ -11229,44 +11233,26 @@ body {
   }
 }
 
-.iv-hero--flow:has(.iv-flow__stage--bare) {
+.iv-hero--flow:has(.iv-flow__stage--bare) .iv-flow__screen {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh + 38px);
-  min-height: calc(100svh + 38px);
-  padding-bottom: calc(clamp(16px, 3vh, 44px) + 38px);
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: var(--header-height);
 }
 .iv-hero--flow:has(.iv-flow__stage--bare) .iv-flow__intro {
-  flex: none;
-  margin-top: auto;
-  padding-top: calc(var(--header-height) + clamp(12px, 2.5vh, 48px));
+  padding-top: 0;
   padding-bottom: 0;
 }
 .iv-hero--flow:has(.iv-flow__stage--bare) .iv-flow__stage--bare {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
   padding-block: 0;
 }
 .iv-hero--flow:has(.iv-flow__stage--bare) .iv-hero__actions {
-  margin-top: clamp(20px, 3.5vh, 44px);
-  margin-bottom: clamp(24px, 4vh, 80px);
+  margin-top: clamp(28px, 4.5vh, 44px);
 }
 .iv-hero--flow:has(.iv-flow__stage--bare) .iv-stats {
-  margin-top: auto;
-}
-@media (min-width: 1024px) and (max-height: 880px) {
-  .iv-hero--flow:has(.iv-flow__stage--bare) .iv-flow__intro {
-    gap: clamp(12px, 2.2vh, 24px);
-  }
-  .iv-hero--flow:has(.iv-flow__stage--bare) .iv-hero__title {
-    font-size: clamp(40px, min(6vw, 9vh), 96px);
-  }
-  .iv-hero--flow:has(.iv-flow__stage--bare) .iv-hero__lead {
-    font-size: clamp(16px, 2.3vh, 20px);
-  }
+  margin-top: clamp(24px, 4vh, 48px);
 }
 
 .iv-hero--flow .iv-hero__visual--devices {
@@ -17702,6 +17688,27 @@ body {
   background: #15151a;
   color: #ffffff;
   font-size: calc(14 * var(--k));
+}
+
+.ars--deck .ars__step--subscribe .ars__scene {
+  background: radial-gradient(42% 46% at 50% 44%, rgba(100, 251, 160, 0.2), transparent 70%), radial-gradient(90% 80% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.45) 100%), linear-gradient(160deg, #10241b 0%, #0a1612 55%, #070d0b 100%);
+}
+.ars--deck .ars__step--subscribe .ars__scene::before {
+  content: "";
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  z-index: 0;
+  width: min(78%, 560px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(100, 251, 160, 0.16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 clamp(40px, 6vw, 90px) rgba(100, 251, 160, 0.03), inset 0 0 80px rgba(100, 251, 160, 0.08);
+  translate: -50% -50%;
+  pointer-events: none;
+}
+.ars--deck .ars__step--subscribe .ars-photo--cut .ars-photo__img {
+  filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.55)) drop-shadow(0 8px 14px rgba(0, 0, 0, 0.35));
 }
 
 .iv-faq__wave {

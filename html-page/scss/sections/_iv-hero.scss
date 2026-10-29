@@ -1414,6 +1414,12 @@
     margin-top: clamp(8px, 1.4vh, 20px);
     font-size: 12px;
     color: rgba($color-white, 0.4);
+    transition: opacity 0.8s $ease-out 0.6s;
+  }
+
+  // The source line fades in after the figures land.
+  &.is-roll:not(.is-in) + &__src {
+    opacity: 0;
   }
 
   @include down("tablet") {

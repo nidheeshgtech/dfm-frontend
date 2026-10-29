@@ -68,6 +68,8 @@
            1. centred intro (like the Raise Capital hero) filling the screen
            2. the iVestor phone rising into focus as you scroll (iv-flow.js)
            3. the DFM figures. -->
+      <!-- First screen: intro and buttons only; the figures follow below. -->
+      <div class="iv-flow__screen">
       <div class="container iv-flow__intro">
         <div class="hero__intro iv-hero__intro iv-hero__top">
           <p class="t-eyebrow" data-hero-intro>ARENA by Dubai Financial Market</p>
@@ -93,8 +95,8 @@
         <!-- The MacBook + iPad preview that sat here was removed
              (29 Oct 2026); index-v6.html keeps it. -->
 
-        <div class="hero__actions iv-hero__actions" data-scroll-reveal-group>
-          <a class="btn-cta liquid-glass btn-cta--purple" href="#notify">
+        <div class="hero__actions iv-hero__actions">
+          <a class="btn-cta liquid-glass btn-cta--purple" href="#notify" data-hero-intro>
             <span class="liquid-glass__effect"></span>
             <span class="liquid-glass__tint"></span>
             <span class="liquid-glass__shine"></span>
@@ -104,7 +106,7 @@
             </span>
             <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
           </a>
-          <a class="btn-cta liquid-glass btn-cta--white" href="#markets">
+          <a class="btn-cta liquid-glass btn-cta--white" href="#markets" data-hero-intro>
             <span class="liquid-glass__effect"></span>
             <span class="liquid-glass__tint"></span>
             <span class="liquid-glass__shine"></span>
@@ -116,10 +118,11 @@
           </a>
         </div>
       </div>
+      </div>
 
       <!-- Figures from DFM's published 2025 results; to be confirmed by DFM before launch. -->
       <div class="container">
-        <dl class="iv-stats" data-scroll-reveal-group data-roll-group>
+        <dl class="iv-stats" data-roll-group>
           <div class="iv-stats__item">
             <dt>Market value of DFM-listed companies, end of 2025</dt>
             <dd><small>AED</small> <span data-roll="992">992</span><small>bn</small></dd>
@@ -412,13 +415,14 @@
 
                 <div class="ars__scene" aria-hidden="true">
                   <div class="ars__scene-in">
-                <!-- A hand holding the phone at an angle (photo, screen cut out).
+                <!-- A hand holding the phone at an angle (photo with the background
+                     and screen cut out, so it floats on the dark panel).
                      arena-steps.js moves the live Subscribe screen into
                      .ars-photo__screen (mapped onto the photo's screen) and
                      scales the photo to cover the panel. -->
-                <div class="ars-photo" data-ars-photo data-w="1200" data-h="1021" data-fx="411" data-fy="389" data-zoom="1.25">
+                <div class="ars-photo ars-photo--cut" data-ars-photo data-w="1200" data-h="1021" data-fx="411" data-fy="389" data-zoom="1.25">
                   <div class="ars-photo__screen" style="transform: matrix3d(0.708488, -0.141397, 0, 3.04414e-5, 0.109457, 0.542423, 0, -0.000125796, 0, 0, 1, 0, 220.503, 173.74, 0, 1)"></div>
-                  <img class="ars-photo__img" src="images/investor/hand-phone-tilt.webp" width="1200" height="1021" alt="" loading="lazy" decoding="async">
+                  <img class="ars-photo__img" src="images/investor/hand-phone-tilt-cut.webp" width="1200" height="1021" alt="" loading="lazy" decoding="async">
                 </div>
                     <div class="ars-phone-wrap">
                       <div class="ars-phone"><div class="ars-phone__bezel"><div class="ars-phone__screen">

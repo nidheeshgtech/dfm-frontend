@@ -1607,3 +1607,39 @@
     font-size: calc(14 * var(--k));
   }
 }
+
+// ---- Subscribe: cut-out hand on the dark panel, with depth ----
+// The photo's own background is cut away (hand-phone-tilt-cut.webp), so
+// the hand and phone float on the panel: a jade glow and a faint ring sit
+// behind the phone, a soft shadow falls under the hand, and a vignette
+// darkens the corners. All static (no filters on moving layers).
+.ars--deck .ars__step--subscribe {
+  .ars__scene {
+    background:
+      radial-gradient(42% 46% at 50% 44%, rgba(100, 251, 160, 0.2), transparent 70%),
+      radial-gradient(90% 80% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.45) 100%),
+      linear-gradient(160deg, #10241b 0%, #0a1612 55%, #070d0b 100%);
+
+    // A thin ring and a wider halo around the phone, for depth.
+    &::before {
+      content: "";
+      position: absolute;
+      top: 44%;
+      left: 50%;
+      z-index: 0;
+      width: min(78%, 560px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(100, 251, 160, 0.16);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 clamp(40px, 6vw, 90px) rgba(100, 251, 160, 0.03),
+        inset 0 0 80px rgba(100, 251, 160, 0.08);
+      translate: -50% -50%;
+      pointer-events: none;
+    }
+  }
+
+  .ars-photo--cut .ars-photo__img {
+    filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.55)) drop-shadow(0 8px 14px rgba(0, 0, 0, 0.35));
+  }
+}
