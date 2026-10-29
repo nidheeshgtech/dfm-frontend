@@ -74,9 +74,10 @@ export function initChat() {
     ...FACTS,
   ].filter((k) => k.q && k.a);
 
-  // ?chat= wins; otherwise a page can pick its own (body data-chat-variant).
+  // C (the bottom-centre "Ask ARENA anything" dock) is the default on every
+  // page; ?chat= or body data-chat-variant still pick another demo.
   const param = new URLSearchParams(window.location.search).get("chat") || document.body.dataset.chatVariant;
-  const variant = ["b", "c", "d", "e", "f"].includes(param) ? param : "a";
+  const variant = ["a", "b", "c", "d", "e", "f"].includes(param) ? param : "c";
   const root = document.createElement("div");
   root.className = `chat chat--${variant}`;
   root.dataset.chat = "";
