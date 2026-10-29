@@ -1276,7 +1276,7 @@
     --ars-step: #{$color-jade};
 
     .ars__step {
-      border-color: transparent;
+      border: 0;
       background: $color-bg-dark-card;
 
       &::after {
