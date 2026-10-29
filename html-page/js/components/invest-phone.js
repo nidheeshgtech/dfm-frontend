@@ -33,13 +33,8 @@ export function initInvestPhone() {
 
   const chart = initChart(root);
 
-  let counted = false;
   const start = () => {
     chart?.play();
-    if (!counted) {
-      counted = true;
-      countUp(root);
-    }
     wallet?.classList.add("is-live");
     wallet?.classList.remove("is-paused");
     if (timer) return;
@@ -186,23 +181,4 @@ function initChart(root) {
       live.pause();
     },
   };
-}
-
-// ---- Device screens: figures count up once ----
-// [data-iv-count] holds the final value, data-dec its decimals; it rises
-// from 90% of the value with en-US grouping.
-function countUp(root) {
-  const fmt = (v, dec) => v.toLocaleString("en-US", { minimumFractionDigits: dec, maximumFractionDigits: dec });
-  root.querySelectorAll("[data-iv-count]").forEach((el) => {
-    const end = Number(el.dataset.ivCount);
-    const dec = Number(el.dataset.dec || 0);
-    const t0 = performance.now();
-    const step = (now) => {
-      const p = Math.min(1, (now - t0) / 1800);
-      const e = 1 - Math.pow(1 - p, 3);
-      el.textContent = fmt(end * (0.9 + 0.1 * e), dec);
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  });
 }
