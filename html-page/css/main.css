@@ -3775,14 +3775,19 @@ body {
   clip-path: none;
   background: rgba(12, 12, 22, 0.86);
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   translate: -50% -16px;
   scale: 0.97;
-  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), translate 0.5s cubic-bezier(0.22, 1, 0.36, 1), scale 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), translate 0.5s cubic-bezier(0.22, 1, 0.36, 1), scale 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.5s;
 }
 .chat--c.is-shown .chat__panel {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
   translate: -50% 0;
   scale: 1;
+  transition-delay: 0s;
 }
 .chat--c .chat__form {
   padding: 0;
@@ -4617,6 +4622,11 @@ body {
     scale: 0.7;
   }
 }
+.has-menu .chat {
+  visibility: hidden;
+  opacity: 0;
+}
+
 .one {
   --o-ink: #14151c;
   --o-soft: rgba(20, 21, 28, 0.55);
