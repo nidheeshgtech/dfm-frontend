@@ -1,0 +1,663 @@
+@use "../abstracts" as *;
+
+// Strategic fit assessment (eligibility.html). Light page with a soft dot
+// field and two faint glows; the intro and step list on the left (sticky
+// on desktop), the form in a white card on the right. Tap answers are
+// pills that fill dark with a jade tick; the result shows a fit badge,
+// the recommended route in its market colour and four readiness checks.
+// js/components/fit-form.js runs the steps.
+.fit {
+  position: relative;
+  isolation: isolate;
+  padding: calc(var(--header-height) + #{fluid(32px, 72px)}) 0 fluid(64px, 120px);
+  overflow: clip;
+  background: #f6f6f8;
+  color: $color-text-dark;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(40% 50% at 0% 0%, rgba($color-purple, 0.1), transparent 70%),
+      radial-gradient(35% 45% at 100% 30%, rgba($color-jade, 0.18), transparent 70%);
+    pointer-events: none;
+
+    // Dot field, fading out towards the bottom.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba($color-text-dark, 0.14) 1px, transparent 1.6px) 0 0 / 22px 22px;
+      mask-image: linear-gradient(180deg, #000 0%, transparent 65%);
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: fluid(32px, 96px);
+    align-items: start;
+  }
+
+  // ---- Intro ----
+  &__intro {
+    position: sticky;
+    top: calc(var(--header-height) + #{$space-32});
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    &::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #12a866;
+      box-shadow: 0 0 0 4px rgba(18, 168, 102, 0.18);
+    }
+  }
+
+  &__title {
+    margin: $space-20 0 0;
+    font-size: fluid(38px, 60px);
+    font-weight: $font-weight-regular;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+
+    em {
+      font-style: normal;
+      color: $color-purple;
+    }
+  }
+
+  &__lead {
+    max-width: 480px;
+    margin: $space-20 0 0;
+    color: rgba($color-text-dark, 0.65);
+    font-size: fluid(16px, 19px);
+    line-height: 1.45;
+  }
+
+  // Step list with a rule joining the numbers.
+  &__steps {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: $space-20;
+    margin: fluid(32px, 48px) 0 0;
+    padding: 0;
+    list-style: none;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 16px;
+      bottom: 16px;
+      left: 16px;
+      width: 1px;
+      background: rgba($color-text-dark, 0.12);
+    }
+
+    li {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: $space-16;
+      color: rgba($color-text-dark, 0.45);
+      font-size: 17px;
+      transition: color 0.4s $ease-out;
+    }
+
+    span {
+      display: grid;
+      place-items: center;
+      width: 33px;
+      height: 33px;
+      border: 1px solid rgba($color-text-dark, 0.15);
+      border-radius: 50%;
+      background: #f6f6f8;
+      font-size: 13px;
+      transition:
+        background-color 0.4s $ease-out,
+        border-color 0.4s $ease-out,
+        color 0.4s $ease-out;
+    }
+
+    .is-on {
+      color: $color-text-dark;
+
+      span {
+        border-color: $color-text-dark;
+        background: $color-text-dark;
+        color: $color-white;
+      }
+    }
+
+    .is-done {
+      color: rgba($color-text-dark, 0.7);
+
+      span {
+        border-color: #12a866;
+        background: #12a866;
+        color: transparent;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5 9.5 17 19 7.5'/%3E%3C/svg%3E");
+        background-position: center;
+        background-size: 16px;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+
+  &__note {
+    margin: fluid(32px, 48px) 0 0;
+    color: rgba($color-text-dark, 0.6);
+    font-size: 15px;
+
+    a {
+      color: $color-text-dark;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+
+  // ---- Card ----
+  &__card {
+    padding: fluid(24px, 48px);
+    border: 1px solid rgba($color-text-dark, 0.06);
+    border-radius: 28px;
+    background: $color-white;
+    box-shadow: 0 40px 80px -48px rgba(13, 14, 26, 0.35);
+  }
+
+  &__bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: fluid(24px, 36px);
+
+    i {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba($color-text-dark, 0.1);
+      transition: background-color 0.5s $ease-out;
+
+      &.is-on {
+        background: $color-text-dark;
+      }
+    }
+  }
+
+  &__card.is-done &__bar i {
+    background: #12a866;
+  }
+
+  @include down("laptop") {
+    &__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    &__intro {
+      position: static;
+    }
+
+    &__steps {
+      display: none;
+    }
+
+    &__note {
+      display: none;
+    }
+  }
+}
+
+// ---- Steps ----
+.fit-step {
+  animation: fit-in 0.5s $ease-out;
+
+  &__count {
+    margin: 0;
+    color: rgba($color-text-dark, 0.5);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 8px 0 0;
+    font-size: fluid(26px, 34px);
+    font-weight: $font-weight-regular;
+    letter-spacing: -0.01em;
+    outline: 0;
+  }
+
+  &__lead {
+    margin: 8px 0 0;
+    color: rgba($color-text-dark, 0.6);
+    font-size: 16px;
+  }
+}
+
+.fit-q {
+  min-width: 0;
+  margin: fluid(24px, 32px) 0 0;
+  padding: 0;
+  border: 0;
+
+  &__label {
+    margin-bottom: 12px;
+    padding: 0;
+    font-size: 17px;
+    transition: color 0.3s;
+
+    span {
+      margin-left: 6px;
+      color: rgba($color-text-dark, 0.45);
+      font-size: 14px;
+    }
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__why {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0 0;
+    color: rgba($color-text-dark, 0.5);
+    font-size: 14px;
+
+    &::before {
+      content: "i";
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      font-size: 10px;
+      font-style: italic;
+    }
+  }
+
+  &.is-missing &__label {
+    color: #c62f42;
+  }
+
+  &.is-missing .fit-chip {
+    border-color: rgba(198, 47, 66, 0.35);
+  }
+}
+
+.fit-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba($color-text-dark, 0.15);
+  border-radius: $radius-pill;
+  background: $color-white;
+  color: $color-text-dark;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.25s $ease-out,
+    border-color 0.25s $ease-out,
+    color 0.25s $ease-out,
+    transform 0.25s $ease-out;
+
+  // Jade tick, shown when chosen.
+  &::before {
+    content: "";
+    width: 0;
+    height: 14px;
+    background: $color-jade;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5 9.5 17 19 7.5'/%3E%3C/svg%3E") center / contain no-repeat;
+    margin-right: -8px;
+    transition:
+      width 0.25s $ease-out,
+      margin 0.25s $ease-out;
+  }
+
+  &:hover {
+    border-color: rgba($color-text-dark, 0.5);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-purple;
+    outline-offset: 2px;
+  }
+
+  &[aria-pressed="true"] {
+    border-color: $color-text-dark;
+    background: $color-text-dark;
+    color: $color-white;
+
+    &::before {
+      width: 14px;
+      margin-right: 0;
+    }
+  }
+}
+
+// ---- Text fields (underline, as in the booking popup) ----
+.fit-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-24 $space-32;
+  margin-top: fluid(24px, 32px);
+}
+
+.fit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: rgba($color-text-dark, 0.55);
+  font-size: 14px;
+
+  &--wide {
+    margin-top: fluid(24px, 32px);
+  }
+
+  input {
+    height: 44px;
+    padding: 6px 0;
+    border: 0;
+    border-bottom: 1.5px solid rgba($color-text-dark, 0.15);
+    border-radius: 0;
+    outline: 0;
+    background: none;
+    color: $color-text-dark;
+    font: inherit;
+    font-size: 17px;
+    transition: border-color 0.25s;
+
+    &::placeholder {
+      color: rgba($color-text-dark, 0.35);
+    }
+
+    &:focus {
+      border-color: $color-purple;
+    }
+  }
+
+  &.is-missing {
+    color: #c62f42;
+
+    input {
+      border-color: #c62f42;
+    }
+  }
+}
+
+.fit-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: $space-32;
+  color: rgba($color-text-dark, 0.7);
+  font-size: 15px;
+  line-height: 1.45;
+  cursor: pointer;
+
+  input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: $color-text-dark;
+  }
+}
+
+// ---- Footer: back, hint, continue ----
+.fit-form__foot {
+  display: flex;
+  align-items: center;
+  gap: $space-16;
+  margin-top: fluid(32px, 44px);
+  padding-top: $space-24;
+  border-top: 1px solid rgba($color-text-dark, 0.08);
+
+  .btn-pill {
+    margin-left: auto;
+    font: inherit;
+    cursor: pointer;
+  }
+}
+
+.fit-form__hint {
+  flex: 1;
+  margin: 0;
+  color: #c62f42;
+  font-size: 14px;
+  text-align: right;
+}
+
+.fit-back {
+  display: inline-flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 22px;
+  border: 1px solid rgba($color-text-dark, 0.18);
+  border-radius: $radius-pill;
+  background: $color-white;
+  color: $color-text-dark;
+  font: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background-color 0.25s $ease-out,
+    border-color 0.25s $ease-out;
+
+  &:hover {
+    border-color: rgba($color-text-dark, 0.45);
+    background: rgba($color-text-dark, 0.03);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-purple;
+    outline-offset: 2px;
+  }
+}
+
+// ---- Result ----
+.fit-result {
+  outline: 0;
+  animation: fit-in 0.6s $ease-out;
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 8px 16px;
+    border-radius: $radius-pill;
+    background: #f2f2f5;
+    font-size: 15px;
+
+    &::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    &[data-tone="ok"] {
+      background: #e3f8ec;
+      color: #12814a;
+    }
+
+    &[data-tone="mid"] {
+      background: #fbf3d6;
+      color: #8a6a00;
+    }
+  }
+
+  &__path {
+    --route-bg: #f1ecff;
+    --route-dot: #6b3cff;
+
+    margin-top: $space-24;
+    padding: fluid(22px, 32px);
+    border-radius: 20px;
+    background: var(--route-bg);
+
+    &[data-route="private"] {
+      --route-bg: #e6f8ee;
+      --route-dot: #2fcf78;
+    }
+
+    &[data-route="closed"] {
+      --route-bg: #f7f6dc;
+      --route-dot: #d6cf00;
+    }
+  }
+
+  &__label {
+    margin: 0;
+    color: rgba($color-text-dark, 0.55);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0 0;
+    font-size: fluid(30px, 42px);
+    letter-spacing: -0.02em;
+  }
+
+  &__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--route-dot);
+  }
+
+  &__why {
+    max-width: 520px;
+    margin: 10px 0 0;
+    color: rgba($color-text-dark, 0.7);
+    font-size: 17px;
+    line-height: 1.45;
+  }
+
+  &__flags {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: $space-24 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 16px 18px;
+      border: 1px solid rgba($color-text-dark, 0.08);
+      border-radius: 14px;
+    }
+
+    span {
+      color: rgba($color-text-dark, 0.55);
+      font-size: 14px;
+    }
+
+    b {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: $font-weight-regular;
+
+      &::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      &.is-ok::before {
+        background: #12a866;
+      }
+
+      &.is-warn::before {
+        background: #e0a800;
+      }
+    }
+  }
+
+  &__note {
+    margin: $space-24 0 0;
+    color: rgba($color-text-dark, 0.55);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  &__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: $space-24;
+  }
+}
+
+@keyframes fit-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+@include down("tablet") {
+  .fit-fields,
+  .fit-result__flags {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fit-form__foot {
+    flex-wrap: wrap;
+
+    .fit-form__hint {
+      order: -1;
+      flex-basis: 100%;
+      text-align: left;
+    }
+  }
+
+  .fit__card {
+    border-radius: 22px;
+  }
+}
+
+@include reduced-motion {
+  .fit-step,
+  .fit-result {
+    animation: none;
+  }
+}

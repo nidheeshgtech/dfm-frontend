@@ -1,0 +1,61 @@
+@use "../abstracts" as *;
+
+// "Access and classification" (index.html, copy deck v2 section 2): four
+// short blocks in a ruled row, each with its step number, title and text.
+// Two across on tablets, one on phones.
+.iv-access {
+  position: relative;
+  z-index: 1;
+  padding: fluid(56px, 110px) 0 fluid(56px, 100px);
+  background: $color-white;
+  color: $color-text-dark;
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: $space-24 fluid(20px, 40px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: $space-12;
+    padding-top: $space-20;
+    border-top: 1px solid $color-text-dark;
+  }
+
+  &__num {
+    color: $color-purple;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: fluid(22px, 26px);
+    font-weight: $font-weight-regular;
+    letter-spacing: -0.01em;
+  }
+
+  &__text {
+    margin: 0;
+    color: rgba($color-text-dark, 0.7);
+    font-size: fluid(16px, 17px);
+    line-height: 1.5;
+  }
+
+  @include down("laptop") {
+    &__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @include down("tablet") {
+    &__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}
