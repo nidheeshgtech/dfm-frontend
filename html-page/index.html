@@ -542,40 +542,84 @@
           <p class="iv-head__lead" data-scroll-reveal>The first offerings are being prepared now. <strong>This board fills the moment subscriptions open.</strong></p>
         </div>
 
-        <!-- Upcoming offerings: one row per market until live offers
-             replace them. -->
-        <div class="iv-upcoming" data-scroll-reveal>
-          <div class="iv-upcoming__bar">
-            <p class="iv-upcoming__label">Upcoming offerings</p>
-            <p class="iv-upcoming__meta"><span class="iv-upcoming__open"><i></i>0 open today</span><span>Updated <span data-iv-board-date>28 Oct 2026</span></span></p>
+        <!-- Upcoming offerings: one "coming soon" card per market, side by
+             side (js/components/invest-board.js). ?offers=a shows them as a
+             fanned deck, ?offers=b as full-photo cards. index-v5.html keeps
+             the plain list. -->
+        <div class="iv-soons" data-scroll-reveal data-iv-soons>
+          <div class="iv-soons__grid">
+            <article class="iv-soon iv-soon--growth" data-pos="-1">
+              <div class="iv-soon__window">
+                <img class="iv-soon__photo" src="images/markets/company-growth-hero.webp" width="1774" height="887" alt="" loading="lazy" decoding="async">
+                <span class="iv-soon__shade" aria-hidden="true"></span>
+                <img class="iv-soon__ring" src="images/markets/ring-company-growth-a.svg" width="910" height="910" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="iv-soon__top">
+                <span class="iv-soon__badge"><i></i>Coming soon</span>
+                <span class="iv-soon__num">01</span>
+              </div>
+              <div class="iv-soon__body">
+                <h3 class="iv-soon__name"><i class="iv-dot iv-dot--growth"></i>Growth Market</h3>
+                <p class="iv-soon__sub">Open to the market</p>
+                <p class="iv-soon__desc">Growth companies raising from any investor with a DFM investor number. Once listed, shares trade every trading day.</p>
+                <dl class="iv-soon__facts">
+                  <div><dt>Who can subscribe</dt><dd>Any DFM investor number</dd></div>
+                  <div><dt>Trading</dt><dd>Every trading day, on DFM</dd></div>
+                  <div><dt>Minimum</dt><dd>Set per offering</dd></div>
+                </dl>
+                <p class="iv-soon__next"><span>First offering</span><b>To be announced</b></p>
+              </div>
+            </article>
+            <article class="iv-soon iv-soon--private" data-pos="0">
+              <div class="iv-soon__window">
+                <img class="iv-soon__photo" src="images/markets/company-private.webp" width="1920" height="1080" alt="" loading="lazy" decoding="async">
+                <span class="iv-soon__shade" aria-hidden="true"></span>
+                <img class="iv-soon__ring" src="images/markets/ring-company-private.svg" width="910" height="910" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="iv-soon__top">
+                <span class="iv-soon__badge"><i></i>Coming soon</span>
+                <span class="iv-soon__num">02</span>
+              </div>
+              <div class="iv-soon__body">
+                <h3 class="iv-soon__name"><i class="iv-dot iv-dot--private"></i>Private Market</h3>
+                <p class="iv-soon__sub">By invitation</p>
+                <p class="iv-soon__desc">Pre-IPO companies placing shares with a group of approved investors. Trading stays inside that group.</p>
+                <dl class="iv-soon__facts">
+                  <div><dt>Who can subscribe</dt><dd>Approved investors</dd></div>
+                  <div><dt>Trading</dt><dd>Within the approved group</dd></div>
+                  <div><dt>Minimum</dt><dd>Set per offering</dd></div>
+                </dl>
+                <p class="iv-soon__next"><span>First offering</span><b>To be announced</b></p>
+              </div>
+            </article>
+            <article class="iv-soon iv-soon--closed" data-pos="1">
+              <div class="iv-soon__window">
+                <img class="iv-soon__photo" src="images/markets/company-closed.webp" width="1920" height="1080" alt="" loading="lazy" decoding="async">
+                <span class="iv-soon__shade" aria-hidden="true"></span>
+                <img class="iv-soon__ring" src="images/markets/ring-company-closed.svg" width="910" height="910" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="iv-soon__top">
+                <span class="iv-soon__badge"><i></i>Coming soon</span>
+                <span class="iv-soon__num">03</span>
+              </div>
+              <div class="iv-soon__body">
+                <h3 class="iv-soon__name"><i class="iv-dot iv-dot--closed"></i>Closed Market</h3>
+                <p class="iv-soon__sub">Admission only</p>
+                <p class="iv-soon__desc">Family businesses and employee share plans. Shares change hands only between eligible holders.</p>
+                <dl class="iv-soon__facts">
+                  <div><dt>Who can subscribe</dt><dd>Family members and employees</dd></div>
+                  <div><dt>Trading</dt><dd>Between eligible holders</dd></div>
+                  <div><dt>Minimum</dt><dd>Set by the company</dd></div>
+                </dl>
+                <p class="iv-soon__next"><span>First offering</span><b>To be announced</b></p>
+              </div>
+            </article>
           </div>
-
-          <ul class="iv-upcoming__list">
-            <li class="iv-upcoming__row">
-              <div class="iv-upcoming__mkt"><i class="iv-dot iv-dot--growth"></i><div><p class="iv-upcoming__name">Growth Market</p><p class="iv-upcoming__sub">Open to the market</p></div></div>
-              <dl class="iv-upcoming__facts">
-                <div><dt>Next offering</dt><dd>To be announced</dd></div>
-                <div><dt>Who can subscribe</dt><dd>Any DFM investor number</dd></div>
-                <div><dt>Status</dt><dd class="is-prep">Preparing</dd></div>
-              </dl>
-            </li>
-            <li class="iv-upcoming__row">
-              <div class="iv-upcoming__mkt"><i class="iv-dot iv-dot--private"></i><div><p class="iv-upcoming__name">Private Market</p><p class="iv-upcoming__sub">By invitation</p></div></div>
-              <dl class="iv-upcoming__facts">
-                <div><dt>Next offering</dt><dd>To be announced</dd></div>
-                <div><dt>Who can subscribe</dt><dd>Approved investors</dd></div>
-                <div><dt>Status</dt><dd>By invitation</dd></div>
-              </dl>
-            </li>
-            <li class="iv-upcoming__row">
-              <div class="iv-upcoming__mkt"><i class="iv-dot iv-dot--closed"></i><div><p class="iv-upcoming__name">Closed Market</p><p class="iv-upcoming__sub">Admission only</p></div></div>
-              <dl class="iv-upcoming__facts">
-                <div><dt>Next offering</dt><dd>To be announced</dd></div>
-                <div><dt>Who can subscribe</dt><dd>Family and employees</dd></div>
-                <div><dt>Status</dt><dd>Admission only</dd></div>
-              </dl>
-            </li>
-          </ul>
+          <div class="iv-soons__dots" role="group" aria-label="Choose a market">
+            <button type="button" aria-label="Growth Market"></button>
+            <button type="button" aria-label="Private Market" aria-pressed="true"></button>
+            <button type="button" aria-label="Closed Market"></button>
+          </div>
 
           <div class="iv-upcoming__foot">
             <p>Live offerings appear here the moment subscriptions open. <span>Register your interest and we will tell you when the first one goes live.</span></p>

@@ -198,3 +198,763 @@
     }
   }
 }
+
+// ---- Coming-soon cards (index.html) ----
+// One card per market: a tinted top in the market's colour with a "Coming
+// soon" badge and its number, then name, who it's for, one line, three
+// facts and the first offering's date. One notify button under the row.
+// Fanned deck: all three cards share one grid cell; the front card
+// (data-pos 0) sits in the middle, the others are tucked behind it on
+// either side, smaller, tilted and dimmed. invest-board.js swaps slots.
+.iv-soons {
+  --side-x: 58%;
+  --side-scale: 0.86;
+  --side-tilt: 4deg;
+
+  &__grid {
+    display: grid;
+    justify-items: center;
+    padding-block: $space-12 $space-8;
+    overflow-x: clip; // the tilted side cards never widen the page
+  }
+
+  .iv-soon {
+    grid-area: 1 / 1;
+    width: min(100%, 440px);
+    transition:
+      translate 0.7s $ease-out,
+      scale 0.7s $ease-out,
+      rotate 0.7s $ease-out,
+      box-shadow 0.7s $ease-out;
+
+    // Dim veil on the side cards (no filter, so nothing re-renders).
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: $color-white;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s $ease-out;
+    }
+
+    &[data-pos="0"] {
+      z-index: 2;
+      box-shadow: 0 30px 60px -24px rgba(13, 14, 26, 0.28);
+    }
+
+    &[data-pos="-1"],
+    &[data-pos="1"] {
+      z-index: 1;
+      cursor: pointer;
+      scale: var(--side-scale);
+
+      &::after {
+        opacity: 0.45;
+      }
+
+      &:hover::after {
+        opacity: 0.2;
+      }
+    }
+
+    &[data-pos="-1"] {
+      translate: calc(var(--side-x) * -1) 4%;
+      rotate: calc(var(--side-tilt) * -1);
+    }
+
+    &[data-pos="1"] {
+      translate: var(--side-x) 4%;
+      rotate: var(--side-tilt);
+    }
+  }
+
+  &__dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: fluid(24px, 32px);
+
+    button {
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      border-radius: 4px;
+      background: rgba($color-text-dark, 0.2);
+      transition:
+        width 0.4s $ease-out,
+        background-color 0.4s $ease-out;
+
+      &[aria-pressed="true"] {
+        width: 28px;
+        background: $color-text-dark;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $color-purple;
+        outline-offset: 3px;
+      }
+    }
+  }
+
+  .iv-upcoming__foot {
+    margin-top: fluid(20px, 28px);
+  }
+
+  // Phones: the front card is narrower and the side cards just peek out.
+  @include down("tablet") {
+    --side-x: 14%;
+    --side-scale: 0.9;
+    --side-tilt: 2deg;
+
+    .iv-soon {
+      width: 82%;
+    }
+  }
+
+  @include reduced-motion {
+    .iv-soon,
+    .iv-soon::after {
+      transition: none;
+    }
+  }
+}
+
+.iv-soon {
+  --tint: #f1ecff;
+  --ink: #4e17e5;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba($color-text-dark, 0.1);
+  border-radius: 20px;
+  background: $color-white;
+
+  &--private {
+    --tint: #e6f8ee;
+    --ink: #12814a;
+  }
+
+  &--closed {
+    --tint: #f7f6dc;
+    --ink: #6e6800;
+  }
+
+  &__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: fluid(96px, 120px);
+    padding: fluid(16px, 20px);
+    background: var(--tint);
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: $radius-pill;
+    background: $color-white;
+    color: var(--ink);
+    font-size: 14px;
+
+    i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: iv-soon-pulse 2s ease-in-out infinite;
+    }
+  }
+
+  &__num {
+    color: var(--ink);
+    font-size: fluid(28px, 40px);
+    line-height: 1;
+    opacity: 0.5;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: fluid(20px, 26px);
+  }
+
+  &__name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: fluid(22px, 28px);
+    font-weight: $font-weight-regular;
+    letter-spacing: -0.01em;
+  }
+
+  &__sub {
+    margin: 4px 0 0 18px;
+    font-size: 14px;
+    color: rgba($color-text-dark, 0.5);
+  }
+
+  &__desc {
+    margin: 16px 0 0;
+    font-size: 16px;
+    line-height: 1.45;
+    color: rgba($color-text-dark, 0.7);
+  }
+
+  &__facts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0 0;
+    padding: 16px;
+    border-radius: 12px;
+    background: #f6f6f8;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+      gap: $space-12;
+      font-size: 14px;
+    }
+
+    dt {
+      color: rgba($color-text-dark, 0.55);
+    }
+
+    dd {
+      margin: 0;
+      text-align: right;
+    }
+  }
+
+  &__next {
+    display: flex;
+    justify-content: space-between;
+    gap: $space-12;
+    margin: auto 0 0;
+    padding-top: 18px;
+    font-size: 14px;
+
+    span {
+      color: rgba($color-text-dark, 0.55);
+    }
+
+    b {
+      font-weight: $font-weight-regular;
+    }
+  }
+
+  @include reduced-motion {
+    &__badge i {
+      animation: none;
+    }
+  }
+}
+
+@keyframes iv-soon-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+// ---- Photo cards ----
+// The cards go dark with a full-bleed market photo (the Raise Capital
+// route photos) under a deep gradient; badge and number float on the
+// photo, the copy and a glass facts box sit on the dark lower half.
+.iv-soons .iv-soon {
+  width: min(100%, 480px);
+
+  &[data-pos="0"] {
+    box-shadow: 0 40px 70px -28px rgba(13, 14, 26, 0.55);
+  }
+
+  // Phones: narrower, so the cards behind peek out either side.
+  @include down("tablet") {
+    width: 82%;
+  }
+}
+
+.iv-soon {
+  --ink: #{$color-purple-tint};
+
+  min-height: fluid(560px, 640px);
+  border: 0;
+  border-radius: 24px;
+  background: #0d0e1a;
+  color: $color-white;
+  isolation: isolate;
+
+  &--private {
+    --ink: #{$color-jade};
+  }
+
+  &--closed {
+    --ink: #e8ef5a;
+  }
+
+  &__photo {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &--growth &__photo {
+    object-position: 72% 50%;
+  }
+
+  &__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(10, 11, 20, 0.35) 0%, rgba(10, 11, 20, 0.05) 22%, rgba(10, 11, 20, 0.7) 48%, rgba(10, 11, 20, 0.96) 70%, #0a0b14 100%);
+  }
+
+  &__top {
+    height: auto;
+    background: none;
+  }
+
+  &__badge {
+    background: rgba($color-white, 0.16);
+    color: $color-white;
+    font-size: 15px;
+
+    i {
+      background: var(--ink);
+    }
+  }
+
+  &__num {
+    color: $color-white;
+    font-size: fluid(32px, 48px);
+    opacity: 0.7;
+  }
+
+  &__body {
+    justify-content: flex-end;
+  }
+
+  &__name {
+    font-size: fluid(26px, 32px);
+  }
+
+  &__sub {
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  &__desc {
+    font-size: fluid(16px, 18px);
+    color: rgba($color-white, 0.75);
+  }
+
+  &__facts {
+    border: 1px solid rgba($color-white, 0.12);
+    background: rgba($color-white, 0.07);
+
+    div {
+      font-size: 15px;
+    }
+
+    dt {
+      color: rgba($color-white, 0.55);
+    }
+  }
+
+  &__next {
+    flex: none;
+    margin-top: 0;
+    font-size: 15px;
+
+    span {
+      color: rgba($color-white, 0.55);
+    }
+  }
+}
+
+// ---- Alternative: side by side (?offers=b, invest-board.js) ----
+// The same photo cards in a row of three, all at full strength. Hover
+// lifts a card and eases its photo in. Stacks below laptop width.
+.iv-soons--row {
+  .iv-soons__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $space-20;
+    justify-items: stretch;
+    overflow-x: visible;
+  }
+
+  .iv-soons__dots {
+    display: none;
+  }
+
+  .iv-soon,
+  .iv-soon[data-pos="0"] {
+    grid-area: auto;
+    width: auto;
+    box-shadow: 0 30px 50px -30px rgba(13, 14, 26, 0.45);
+    translate: none;
+    rotate: none;
+    scale: none;
+    transition:
+      translate 0.5s $ease-out,
+      box-shadow 0.5s $ease-out;
+
+    &::after {
+      display: none;
+    }
+
+    &:hover {
+      translate: 0 -8px;
+      box-shadow: 0 40px 60px -30px rgba(13, 14, 26, 0.6);
+    }
+  }
+
+  .iv-soon__photo {
+    transition: scale 1s $ease-out;
+  }
+
+  .iv-soon:hover .iv-soon__photo {
+    scale: 1.05;
+  }
+
+  @include down("laptop") {
+    .iv-soons__grid {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 560px;
+      margin-inline: auto;
+    }
+  }
+
+  @include reduced-motion {
+    .iv-soon,
+    .iv-soon__photo {
+      transition: none;
+    }
+  }
+}
+
+// Photo window: a pass-through wrapper (the photo covers the whole card)
+// except in variation C. The ring artwork only shows in C.
+.iv-soon__window {
+  display: contents;
+}
+
+.iv-soon__ring {
+  display: none;
+}
+
+// ---- Variation C (?offers=c): inset photo window ----
+// Dark card with the market photo in a rounded window at the top (the
+// market ring turning slowly over it), copy below and the facts as a
+// ruled list. The windows wipe open one after another as the row scrolls
+// in; hover eases the photo in and edges the card in its market colour.
+.iv-soons--c {
+  .iv-soon,
+  .iv-soon[data-pos="0"] {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 0;
+    padding: 10px;
+    border: 1px solid rgba($color-white, 0.08);
+    background: #10111b;
+    box-shadow: 0 30px 50px -34px rgba(13, 14, 26, 0.6);
+    transition:
+      translate 0.5s $ease-out,
+      box-shadow 0.5s $ease-out,
+      border-color 0.5s $ease-out;
+
+    &:hover {
+      border-color: color-mix(in srgb, var(--ink) 55%, transparent);
+    }
+  }
+
+  // The window (first row, under the badge row): photo, shade and the
+  // ring, clipped to its rounded box.
+  .iv-soon__window,
+  .iv-soon__top {
+    grid-area: 1 / 1;
+  }
+
+  .iv-soon__window {
+    position: relative;
+    display: grid;
+    height: fluid(220px, 260px);
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  .iv-soon__photo,
+  .iv-soon__shade,
+  .iv-soon__ring {
+    grid-area: 1 / 1;
+  }
+
+  .iv-soon__photo,
+  .iv-soon__shade {
+    position: relative;
+    z-index: 0;
+    height: 100%;
+    border-radius: 16px;
+  }
+
+  .iv-soon__photo {
+    clip-path: inset(100% 0 0 0 round 16px);
+    scale: 1.12;
+    transition:
+      clip-path 1.1s $ease-out,
+      scale 1.4s $ease-out;
+  }
+
+  .iv-soon__shade {
+    background: linear-gradient(180deg, rgba(10, 11, 20, 0.35) 0%, transparent 35%, transparent 60%, rgba(16, 17, 27, 0.85) 100%);
+    pointer-events: none;
+  }
+
+  .iv-soon__ring {
+    position: relative;
+    z-index: 1;
+    display: block;
+    align-self: center;
+    justify-self: end;
+    width: 70%;
+    max-width: none;
+    height: auto;
+    margin-right: -16%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s $ease-out 0.6s;
+    animation: iv-soon-turn 40s linear infinite;
+  }
+
+  .iv-soon__top {
+    position: relative;
+    z-index: 2;
+    align-self: start;
+    padding: 12px;
+  }
+
+  .iv-soon__body {
+    justify-content: flex-start;
+    padding: fluid(20px, 24px) fluid(12px, 16px) fluid(12px, 14px);
+  }
+
+  .iv-soon__desc {
+    min-height: 3em;
+  }
+
+  // Facts as a ruled list.
+  .iv-soon__facts {
+    gap: 0;
+    margin-top: 20px;
+    padding: 0;
+    border: 0;
+    background: none;
+
+    div {
+      padding: 11px 0;
+      border-top: 1px solid rgba($color-white, 0.1);
+    }
+  }
+
+  .iv-soon__next {
+    margin-top: auto;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba($color-white, 0.05);
+
+    b {
+      color: var(--ink);
+    }
+  }
+
+  // Scrolled in: the windows open in turn.
+  &.is-in {
+    .iv-soon__photo {
+      clip-path: inset(0 0 0 0 round 16px);
+      scale: 1;
+    }
+
+    .iv-soon__ring {
+      opacity: 0.75;
+    }
+
+    .iv-soon:nth-child(2) .iv-soon__photo {
+      transition-delay: 0.15s;
+    }
+
+    .iv-soon:nth-child(3) .iv-soon__photo {
+      transition-delay: 0.3s;
+    }
+
+    // After the wipe, hover zooms gently (no delay).
+    .iv-soon:hover .iv-soon__photo {
+      scale: 1.06;
+      transition-delay: 0s;
+    }
+  }
+
+  @include reduced-motion {
+    .iv-soon__photo {
+      clip-path: none;
+      scale: 1;
+      transition: none;
+    }
+
+    .iv-soon__ring {
+      opacity: 0.75;
+      animation: none;
+      transition: none;
+    }
+  }
+}
+
+@keyframes iv-soon-turn {
+  to {
+    rotate: 360deg;
+  }
+}
+
+// ---- Variation C, white (the default) ----
+// White cards. The top panel is a pale tint of the market colour with the
+// market's number set very large, fading out into the panel; no photo,
+// ring or reveal animation.
+.iv-soons--c {
+  .iv-soon {
+    --ink: #4e17e5;
+    --tint: #f1ecff;
+  }
+
+  .iv-soon--private {
+    --ink: #12814a;
+    --tint: #e6f8ee;
+  }
+
+  .iv-soon--closed {
+    --ink: #6e6800;
+    --tint: #f7f6dc;
+  }
+
+  .iv-soon,
+  .iv-soon[data-pos="0"] {
+    border-color: rgba($color-text-dark, 0.1);
+    background: $color-white;
+    color: $color-text-dark;
+    box-shadow: 0 24px 40px -32px rgba(13, 14, 26, 0.35);
+
+    &:hover {
+      box-shadow: 0 34px 50px -30px rgba(13, 14, 26, 0.4);
+    }
+  }
+
+  .iv-soon__photo,
+  .iv-soon__shade,
+  .iv-soon__ring {
+    display: none;
+  }
+
+  // One neutral panel for every market (the number carries the colour).
+  .iv-soon__window {
+    background:
+      radial-gradient(60% 80% at 100% 0%, rgba($color-white, 0.85), transparent 70%),
+      #fafafa;
+    clip-path: none;
+    transition: none;
+  }
+
+  // Badge on top, the big number at the foot of the panel.
+  .iv-soon__top {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    align-self: stretch;
+    overflow: hidden;
+    padding: 14px 14px 0 18px;
+    border-radius: 16px;
+  }
+
+  .iv-soon__badge {
+    background: $color-white;
+    color: var(--ink);
+
+    i {
+      background: var(--ink);
+    }
+  }
+
+  .iv-soon__num {
+    margin-bottom: -0.16em;
+    background: linear-gradient(180deg, var(--ink) 15%, rgba(255, 255, 255, 0) 92%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: fluid(140px, 190px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    opacity: 0.9;
+  }
+
+  .iv-soon__name {
+    color: $color-text-dark;
+  }
+
+  .iv-soon__sub {
+    color: var(--ink);
+  }
+
+  .iv-soon__desc {
+    color: rgba($color-text-dark, 0.7);
+  }
+
+  .iv-soon__facts {
+    div {
+      border-top-color: rgba($color-text-dark, 0.1);
+    }
+
+    dt {
+      color: rgba($color-text-dark, 0.55);
+    }
+  }
+
+  .iv-soon__next {
+    background: #f6f6f8;
+
+    span {
+      color: rgba($color-text-dark, 0.55);
+    }
+  }
+}
+
+// C, compact: no number and no top panel; the badge sits above the name,
+// so the card is only as tall as its content.
+.iv-soons--c {
+  .iv-soon__window,
+  .iv-soon__num {
+    display: none;
+  }
+
+  .iv-soon__top {
+    grid-area: auto;
+    padding: fluid(14px, 18px) fluid(12px, 16px) 0;
+    border-radius: 0;
+  }
+
+  .iv-soon__badge {
+    background: #f4f4f6;
+  }
+
+  .iv-soon__body {
+    padding-top: 16px;
+  }
+}
