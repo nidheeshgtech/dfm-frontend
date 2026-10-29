@@ -17,7 +17,8 @@ export function initIvFlow() {
 
   const intro = hero.querySelector(".iv-flow__intro");
   const stage = hero.querySelector(".iv-flow__stage");
-  const phone = stage?.querySelector(".iv-phone");
+  // The device(s): the MacBook + iPad pair, or the iPhone (index-v5).
+  const phone = stage?.querySelector(".iv-devices, .iv-phone");
   const chips = Array.from(stage?.querySelectorAll(".iv-chip") || []);
   if (!intro || !stage || !phone) return;
 
@@ -52,12 +53,11 @@ export function initIvFlow() {
       const fromLeft = chip.classList.contains("iv-chip--1") || chip.classList.contains("iv-chip--4");
       gsap.fromTo(
         chip,
-        // Slide + blur (their opacity belongs to invest-phone.js's
-        // active / dim cycle).
-        { x: fromLeft ? -90 : 90, filter: "blur(10px)" },
+        // Slide only (a scrubbed blur re-rendered every scroll frame; their
+        // opacity belongs to invest-phone.js's active / dim cycle).
+        { x: fromLeft ? -90 : 90 },
         {
           x: 0,
-          filter: "blur(0px)",
           ease: "none",
           scrollTrigger: { trigger: stage, start: `top ${85 - i * 6}%`, end: `top ${35 - i * 4}%`, scrub: 0.6 },
         },

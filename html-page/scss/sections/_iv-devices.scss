@@ -1,0 +1,189 @@
+@use "../abstracts" as *;
+
+// Invest hero (index.html): ARENA on a MacBook (investor home page) with an
+// iPad in landscape in front of it (investor dashboard), both drawn in CSS.
+// Each screen is a size container; its design image scrolls down through
+// the page and back up (translate in cqh, so the stop is always the
+// screen's own height). invest-phone.js adds .is-live / .is-paused to
+// [data-iv-wallet] so the scroll only runs while the hero is on screen.
+
+.iv-hero--flow .iv-hero__visual--devices {
+  width: min(100%, 1040px);
+
+  @media (min-width: 1600px) {
+    width: min(100%, 1200px);
+  }
+}
+
+.iv-devices {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-bottom: 4%;
+  // Own layer: iv-flow.js scrubs its tilt / scale on scroll.
+  will-change: transform;
+
+  // One soft shadow under the pair, drawn once (a filter: drop-shadow on
+  // each device re-painted every frame the screens scroll).
+  &::before {
+    content: "";
+    position: absolute;
+    inset: auto 2% 0 0;
+    height: 18%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.55), transparent 70%);
+    pointer-events: none;
+  }
+}
+
+// ---- Device frames (images/investor/frame-*.webp) ----
+// Each frame's screen is opaque (black); the design box sits over it at
+// the screen's measured position, in % of the frame image.
+.iv-mac,
+.iv-tab {
+  position: relative;
+}
+
+.iv-mac__frame,
+.iv-tab__frame {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+.iv-mac__screen,
+.iv-tab__screen {
+  position: absolute;
+  overflow: hidden;
+  background: $color-white;
+  container-type: size;
+  contain: strict;
+}
+
+// MacBook Pro 16 (2400 × 1420): display at x 9.22%, y 2.48%,
+// 81.56% × 89.12%; rounded top corners, square bottom.
+.iv-mac {
+  width: 80%;
+  margin-left: 2%;
+
+  &__screen {
+    top: 2.48%;
+    left: 9.22%;
+    width: 81.56%;
+    height: 89.12%;
+    border-radius: 1.1% 1.1% 0 0 / 1.7% 1.7% 0 0;
+  }
+}
+
+// iPad mini, landscape (1400 × 1003): display at x 8.32%, y 11.68%,
+// 83.46% × 76.51%.
+.iv-tab {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 40%;
+
+  &__screen {
+    top: 11.68%;
+    left: 8.32%;
+    width: 83.46%;
+    height: 76.51%;
+    border-radius: 3.5% / 5.3%;
+  }
+}
+
+// ---- Scrolling design ----
+.iv-shot {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  animation: iv-shot-scroll 30s ease-in-out infinite paused;
+  // Its own GPU layer, so the scroll only moves pixels (no repaint).
+  will-change: translate;
+
+  &--tab {
+    animation-duration: 34s;
+    animation-delay: -8s;
+  }
+}
+
+.iv-devices.is-live:not(.is-paused) .iv-shot {
+  animation-play-state: running;
+}
+
+// Down through the page (stopping above the footer), a pause, back up.
+@keyframes iv-shot-scroll {
+  0%,
+  8% {
+    translate: 0 0;
+  }
+
+  46%,
+  58% {
+    translate: 0 calc(-88% + 100cqh);
+  }
+
+  96%,
+  100% {
+    translate: 0 0;
+  }
+}
+
+// ---- Chips around the pair ----
+// Left chips sit mostly off the MacBook, right chips beside the lid and
+// above the iPad. Phones: the pair is small, so the chips are left out.
+.iv-hero__stage:has(.iv-devices) {
+  // No backdrop blur here: under it the screens scroll, which made the
+  // blur re-render every frame. A denser glass reads the same.
+  .iv-chip {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(22, 22, 38, 0.92);
+  }
+
+  .iv-chip--1 {
+    top: 18%;
+    left: -9%;
+  }
+
+  .iv-chip--2 {
+    top: 4%;
+    right: -2%;
+  }
+
+  .iv-chip--3 {
+    top: 30%;
+    right: -6%;
+  }
+
+  .iv-chip--4 {
+    top: 60%;
+    left: -7%;
+  }
+
+  @include down("laptop") {
+    .iv-chip--1,
+    .iv-chip--4 {
+      left: -2%;
+    }
+
+    .iv-chip--2,
+    .iv-chip--3 {
+      right: -2%;
+    }
+  }
+
+  @include down("tablet") {
+    .iv-chip {
+      display: none;
+    }
+  }
+}
+
+@include reduced-motion {
+  .iv-shot {
+    animation: none;
+  }
+}

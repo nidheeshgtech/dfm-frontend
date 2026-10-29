@@ -11225,6 +11225,150 @@ body {
   }
 }
 
+.iv-hero--flow .iv-hero__visual--devices {
+  width: min(100%, 1040px);
+}
+@media (min-width: 1600px) {
+  .iv-hero--flow .iv-hero__visual--devices {
+    width: min(100%, 1200px);
+  }
+}
+
+.iv-devices {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-bottom: 4%;
+  will-change: transform;
+}
+.iv-devices::before {
+  content: "";
+  position: absolute;
+  inset: auto 2% 0 0;
+  height: 18%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.55), transparent 70%);
+  pointer-events: none;
+}
+
+.iv-mac,
+.iv-tab {
+  position: relative;
+}
+
+.iv-mac__frame,
+.iv-tab__frame {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+.iv-mac__screen,
+.iv-tab__screen {
+  position: absolute;
+  overflow: hidden;
+  background: #ffffff;
+  container-type: size;
+  contain: strict;
+}
+
+.iv-mac {
+  width: 80%;
+  margin-left: 2%;
+}
+.iv-mac__screen {
+  top: 2.48%;
+  left: 9.22%;
+  width: 81.56%;
+  height: 89.12%;
+  border-radius: 1.1% 1.1% 0 0/1.7% 1.7% 0 0;
+}
+
+.iv-tab {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 40%;
+}
+.iv-tab__screen {
+  top: 11.68%;
+  left: 8.32%;
+  width: 83.46%;
+  height: 76.51%;
+  border-radius: 3.5%/5.3%;
+}
+
+.iv-shot {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  animation: iv-shot-scroll 30s ease-in-out infinite paused;
+  will-change: translate;
+}
+.iv-shot--tab {
+  animation-duration: 34s;
+  animation-delay: -8s;
+}
+
+.iv-devices.is-live:not(.is-paused) .iv-shot {
+  animation-play-state: running;
+}
+
+@keyframes iv-shot-scroll {
+  0%, 8% {
+    translate: 0 0;
+  }
+  46%, 58% {
+    translate: 0 calc(-88% + 100cqh);
+  }
+  96%, 100% {
+    translate: 0 0;
+  }
+}
+.iv-hero__stage:has(.iv-devices) .iv-chip {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(22, 22, 38, 0.92);
+}
+.iv-hero__stage:has(.iv-devices) .iv-chip--1 {
+  top: 18%;
+  left: -9%;
+}
+.iv-hero__stage:has(.iv-devices) .iv-chip--2 {
+  top: 4%;
+  right: -2%;
+}
+.iv-hero__stage:has(.iv-devices) .iv-chip--3 {
+  top: 30%;
+  right: -6%;
+}
+.iv-hero__stage:has(.iv-devices) .iv-chip--4 {
+  top: 60%;
+  left: -7%;
+}
+@media (max-width: 1023.98px) {
+  .iv-hero__stage:has(.iv-devices) .iv-chip--1,
+  .iv-hero__stage:has(.iv-devices) .iv-chip--4 {
+    left: -2%;
+  }
+  .iv-hero__stage:has(.iv-devices) .iv-chip--2,
+  .iv-hero__stage:has(.iv-devices) .iv-chip--3 {
+    right: -2%;
+  }
+}
+@media (max-width: 767.98px) {
+  .iv-hero__stage:has(.iv-devices) .iv-chip {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-shot {
+    animation: none;
+  }
+}
 .iv-why {
   position: relative;
   z-index: 1;

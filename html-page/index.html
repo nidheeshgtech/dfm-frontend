@@ -90,97 +90,29 @@
       </div>
 
       <div class="container iv-flow__stage" id="iv-flow-phone">
-        <!-- Illustrative iVestor preview (js/components/invest-phone.js):
-             each floating chip in turn lights up and pushes its text into
-             the phone as a notification. -->
-        <figure class="iv-hero__visual" data-iv-phone>
+        <!-- Illustrative ARENA preview on desktop and tablet
+             (js/components/invest-phone.js): each floating chip in turn
+             lights up. index-v5.html keeps the earlier iVestor phone. -->
+        <figure class="iv-hero__visual iv-hero__visual--devices" data-iv-phone>
           <div class="iv-hero__stage" aria-hidden="true">
-            <div class="iv-phone iv-phone--real">
-              <!-- iVestor wallet screen, built in HTML/SVG (sharp at any size)
-                   inside an Apple iPhone 17 bezel (Apple Design Resources).
-                   invest-phone.js grows the portfolio chart, counts the
-                   value and draws the holding chart; the screen scrolls
-                   slowly to the holdings and back while the status bar
-                   stays pinned. -->
-              <div class="iv-phone__screen">
-                <div class="iv-wallet" data-iv-wallet>
-                  <div class="iv-wallet__status">
-                    <span>9:41</span>
-                    <span class="iv-wallet__sys">
-                      <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
-                      <svg viewBox="0 0 16 12"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.2-1.2A10.2 10.2 0 0 0 8 .5 10.2 10.2 0 0 0 .8 3.4L2 4.6a8.5 8.5 0 0 1 6-2.4Zm0 3.4c1.4 0 2.6.5 3.6 1.4l1.2-1.2A6.9 6.9 0 0 0 8 3.9a6.9 6.9 0 0 0-4.8 1.9L4.4 7A5.2 5.2 0 0 1 8 5.6Zm0 3.4c.5 0 1 .2 1.3.5L8 11.5 6.7 9.5c.3-.3.8-.5 1.3-.5Z"/></svg>
-                      <svg viewBox="0 0 27 12"><rect x=".6" y=".6" width="22.8" height="10.8" rx="3.2" fill="none" stroke="currentColor" stroke-opacity=".4"/><rect x="2.3" y="2.3" width="19.4" height="7.4" rx="1.8"/><path d="M25 4v4c.8-.3 1.4-1.1 1.4-2S25.8 4.3 25 4Z" fill-opacity=".4"/></svg>
-                    </span>
-                  </div>
-
-                  <div class="iv-wallet__scroll">
-                    <div class="iv-wallet__hero">
-                      <div class="iv-wallet__bar">
-                        <svg class="iv-wallet__icon" viewBox="0 0 24 24"><path d="M12 3.5A8.5 8.5 0 1 0 20.5 12H12V3.5Z"/><path d="M15 2.6V9h6.4A8 8 0 0 0 15 2.6Z"/></svg>
-                        <p class="iv-wallet__title">Wallet, AED <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></svg></p>
-                        <svg class="iv-wallet__icon" viewBox="0 0 24 24"><path d="M15.5 13V5.5A2.5 2.5 0 0 0 13 3H6a2.5 2.5 0 0 0-2.5 2.5v13A2.5 2.5 0 0 0 6 21h5"/><path d="M7.5 8h5M7.5 12h3"/><circle cx="17" cy="17.5" r="4.2"/><path d="M17 15.6v2l1.3 1"/></svg>
-                      </div>
-
-                      <p class="iv-wallet__value"><span data-iv-value>99,537</span><small>.74</small></p>
-                      <p class="iv-wallet__toggle"><span><svg viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="m7 15 4-5 3 3 5-6"/></svg></span>Hide Graph</p>
-                      <p class="iv-wallet__change"><i></i>382.46 (0.80%) today</p>
-                      <p class="iv-wallet__legend"><i></i>Portfolio value</p>
-
-                      <div class="iv-wallet__chart">
-                        <svg class="iv-phone__spark" viewBox="0 0 300 70" preserveAspectRatio="none" data-iv-spark>
-                          <defs><linearGradient id="iv-wallet-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.14"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-                          <path class="iv-phone__spark-area" d="M0 44 L14 48 L24 58 L30 36 L50 38 L66 34 L80 40 L96 31 L110 38 L124 35 L140 40 L156 33 L172 34 L186 28 L200 30 L214 18 L228 22 L240 12 L254 16 L268 10 L284 8 L300 2 L300 70 L0 70 Z" fill="url(#iv-wallet-fill)"/>
-                          <path class="iv-phone__spark-line" d="M0 44 L14 48 L24 58 L30 36 L50 38 L66 34 L80 40 L96 31 L110 38 L124 35 L140 40 L156 33 L172 34 L186 28 L200 30 L214 18 L228 22 L240 12 L254 16 L268 10 L284 8 L300 2" fill="none" pathLength="1"/>
-                        </svg>
-                        <span class="iv-phone__cursor" data-iv-cursor><i></i><b></b></span>
-                      </div>
-
-                      <div class="iv-wallet__range"><span>Week</span><span>Month</span><span class="is-on">Year</span><span>All time</span></div>
-                    </div>
-
-                    <div class="iv-wallet__sheet">
-                      <div class="iv-wallet__seg"><span>Overview</span><span class="is-on">Holdings</span><span>Futures</span><span>Lending</span></div>
-
-                      <div class="iv-wallet__holding">
-                        <div class="iv-wallet__row">
-                          <span class="iv-wallet__logo"><svg viewBox="0 0 24 24"><path d="M13.5 4C10 8 8 12.5 7.5 18c2.6-1.8 6-2.6 10-2.4C14.5 13 13 9 13.5 4Z" fill="#1d2b4f"/><path d="M5 19.5c4-1.6 9-1.9 14-.8" stroke="#1d2b4f" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></span>
-                          <b>ALEC</b>
-                          <span class="iv-wallet__amt"><small>AED</small> 2,823.80</span>
-                        </div>
-                        <div class="iv-wallet__mini">
-                          <span class="iv-wallet__tag">AED 4.10</span>
-                          <svg viewBox="0 0 300 70" preserveAspectRatio="none">
-                            <defs><linearGradient id="iv-wallet-mint" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1fbf8f" stop-opacity="0.22"/><stop offset="1" stop-color="#1fbf8f" stop-opacity="0"/></linearGradient></defs>
-                            <path class="iv-wallet__mini-ref" d="M0 34 H300"/>
-                            <path class="iv-wallet__mini-area" d="M0 60 L8 63 L14 60 L22 64 L30 58 L40 55 L48 50 L56 50 L64 45 L72 44 L80 45 L90 43 L104 43 L110 32 L118 30 L126 34 L134 38 L142 37 L150 39 L158 36 L166 38 L174 37 L182 42 L190 37 L198 39 L206 37 L214 33 L222 31 L232 29 L240 23 L248 19 L256 21 L264 17 L272 22 L278 9 L284 21 L290 16 L296 22 L300 18 L300 70 L0 70 Z" fill="url(#iv-wallet-mint)"/>
-                            <path class="iv-wallet__mini-line" d="M0 60 L8 63 L14 60 L22 64 L30 58 L40 55 L48 50 L56 50 L64 45 L72 44 L80 45 L90 43 L104 43 L110 32 L118 30 L126 34 L134 38 L142 37 L150 39 L158 36 L166 38 L174 37 L182 42 L190 37 L198 39 L206 37 L214 33 L222 31 L232 29 L240 23 L248 19 L256 21 L264 17 L272 22 L278 9 L284 21 L290 16 L296 22 L300 18" pathLength="1"/>
-                          </svg>
-                        </div>
-                        <dl class="iv-wallet__facts">
-                          <div><dt>ALEC</dt><dd>2,017 shares</dd></div>
-                          <div><dt>Current price</dt><dd>AED 1.40</dd></div>
-                          <div><dt>Average cost price</dt><dd>AED 4.10</dd></div>
-                          <div><dt>Unrealised P&amp;L</dt><dd class="is-up">+520.00 AED (7.83 %)</dd></div>
-                        </dl>
-                        <div class="iv-wallet__actions">
-                          <span><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
-                          <span><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></span>
-                          <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 7.8v.2"/></svg></span>
-                          <span><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg></span>
-                        </div>
-                      </div>
-
-                      <ul class="iv-wallet__list">
-                        <li><span class="iv-wallet__logo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="url(#iv-wallet-dewa)" stroke-width="2.6"/><defs><linearGradient id="iv-wallet-dewa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2342b"/><stop offset=".5" stop-color="#f2a33a"/><stop offset="1" stop-color="#1f9b5a"/></linearGradient></defs></svg></span><b>DEWA</b><span class="iv-wallet__amt"><small>AED</small> 2,823.80</span></li>
-                        <li><span class="iv-wallet__logo"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2b33" stroke-width="1.3"><rect x="6.5" y="6.5" width="11" height="11" rx="1"/><rect x="6.5" y="6.5" width="11" height="11" rx="1" transform="rotate(45 12 12)"/><circle cx="12" cy="12" r="3"/></svg></span><b>DFM</b><span class="iv-wallet__amt"><small>AED</small> 2,823.80</span></li>
-                        <li><span class="iv-wallet__logo"><svg viewBox="0 0 24 24"><rect x="6" y="5" width="12" height="14" rx="1.5" fill="none" stroke="#1d2b6b" stroke-width="1.6"/><path d="M9.5 16.5c0-4 1.6-7.5 5-9.5-1 3.2-1.6 6.3-1.4 9.5" fill="none" stroke="#1d2b6b" stroke-width="1.4"/></svg></span><b>EMIRATESNBD</b><span class="iv-wallet__amt"><small>AED</small> 49,200.00</span></li>
-                        <li><span class="iv-wallet__logo iv-wallet__logo--orange"><svg viewBox="0 0 24 24"><path d="M11 5.5v10.2c0 1.6.9 2.5 2.6 2.5h2M8 9h8" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></svg></span><b>TALABAT</b><span class="iv-wallet__amt"><small>AED</small> 2,823.80</span></li>
-                      </ul>
-                    </div>
-                  </div>
+            <!-- ARENA on desktop and tablet: a MacBook Pro 16 with the
+                 investor home page and an iPad mini (landscape) with the
+                 investor dashboard. Each design sits over its frame's
+                 screen and scrolls slowly through and back (invest-phone.js
+                 adds .is-live while the hero is on screen). -->
+            <div class="iv-devices" data-iv-wallet>
+              <div class="iv-mac">
+                <img class="iv-mac__frame" src="images/investor/frame-macbook-pro.webp" width="2400" height="1420" alt="" decoding="async">
+                <div class="iv-mac__screen">
+                  <img class="iv-shot" src="images/investor/screen-macbook.webp" width="1440" height="3259" alt="" decoding="async">
                 </div>
               </div>
-              <img class="iv-phone__frame" src="images/investor/iphone-17-frame.webp" width="900" height="1840" alt="" decoding="async">
+              <div class="iv-tab">
+                <img class="iv-tab__frame" src="images/investor/frame-ipad-mini.webp" width="1400" height="1003" alt="" decoding="async">
+                <div class="iv-tab__screen">
+                  <img class="iv-shot iv-shot--tab" src="images/investor/screen-tablet.webp" width="1440" height="3170" alt="" decoding="async">
+                </div>
+              </div>
             </div>
 
             <div class="iv-chip iv-chip--1" data-iv-chip>
@@ -200,7 +132,7 @@
               <span class="iv-chip__text"><b>Allocation confirmed</b><small>Shares in your name</small></span>
             </div>
           </div>
-          <figcaption class="iv-hero__caption">Illustrative app preview</figcaption>
+          <figcaption class="iv-hero__caption">Illustrative preview</figcaption>
         </figure>
 
         <div class="hero__actions iv-hero__actions" data-scroll-reveal-group>
