@@ -336,12 +336,40 @@
 
                 <div class="ars__scene" aria-hidden="true">
                   <div class="ars__scene-in">
-                <!-- Version B: a real hand holding the phone (photo, background
-                     and screen cut out). arena-steps.js moves the live Discover
-                     screen into .ars-handshot__screen, under the photo. -->
-                <div class="ars-handshot">
-                  <div class="ars-handshot__screen"></div>
-                  <img class="ars-handshot__img" src="images/investor/hand-phone.webp" width="1000" height="1380" alt="" loading="lazy" decoding="async">
+                <!-- Discover on a MacBook Pro (same frame as the hero): the
+                     "Choose security" screen from the iVestor phone, as the
+                     web app. The search types "DFM" / "Dubai Financial"
+                     (arena-steps.js, [data-ars-type]) and the match shows
+                     once there is text. -->
+                <div class="ars-mac">
+                  <img class="ars-mac__frame" src="images/investor/frame-macbook-pro.webp" width="2400" height="1420" alt="" loading="lazy" decoding="async">
+                  <div class="ars-mac__screen">
+                    <div class="ars-web">
+                      <div class="ars-web__bar">
+                        <img class="ars-web__logo" src="images/investor/dfm-emblem.png" alt="">
+                        <span class="ars-web__nav"><b>The Exchange</b><b>Raise Capital</b><b class="is-on">Invest</b><b>Members</b></span>
+                        <span class="ars-web__user"><i></i>Ahmed Al Mansoori</span>
+                      </div>
+                      <div class="ars-web__body">
+                        <p class="ars-web__title"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Choose security</p>
+                        <div class="ars-web__search">
+                          <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 4.5 4.5"/></svg>
+                          <span class="ars-type" data-ars-type data-words="DFM|Dubai Financial"><span class="ars-type__ph">Search by name, symbol or ISIN</span><span class="ars-type__txt"></span><i class="ars-type__caret"></i></span>
+                        </div>
+                        <div class="ars-web__tabs"><b class="is-on">All</b><b>Growth</b><b>Private</b><b>Closed</b></div>
+                        <div class="ars-web__results">
+                          <p class="ars-web__group">Equities (1)</p>
+                          <div class="ars-web__row">
+                            <span class="ars-web__emblem"><img src="images/investor/dfm-emblem.png" alt=""></span>
+                            <span class="ars-web__name"><b>DFM</b><small>Dubai Financial Market</small></span>
+                            <span class="ars-web__tag">Main Market</span>
+                            <span class="ars-web__price"><b>AED 1.74</b><small>&#8599; 0.57%</small></span>
+                            <span class="ars-web__btn">View offering</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                     <div class="ars-phone-wrap">
                       <div class="ars-phone"><div class="ars-phone__bezel"><div class="ars-phone__screen">

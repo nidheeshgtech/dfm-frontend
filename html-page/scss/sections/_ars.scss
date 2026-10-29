@@ -816,9 +816,11 @@
   }
 }
 
-// The hand-held photos only belong to the deck version.
+// The hand-held photos and the Discover MacBook only belong to the deck
+// version.
 .ars-handshot,
-.ars-photo {
+.ars-photo,
+.ars-mac {
   display: none;
 }
 
@@ -1312,5 +1314,296 @@
         }
       }
     }
+  }
+}
+
+// ---- Discover on a MacBook Pro (deck) ----
+// Same frame as the hero (images/investor/frame-macbook-pro.webp, opaque
+// screen at x 9.22%, y 2.48%, 81.56% × 89.12%). In it, the iVestor
+// "Choose security" screen as a web page, sized off the screen width
+// (--k = 1 design px at a 960px-wide page, so it reads at this size).
+.ars--deck {
+  .ars-mac {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    display: block;
+    width: 90%;
+    translate: -50% -46%;
+
+    // One soft shadow under the base (no filter).
+    &::after {
+      content: "";
+      position: absolute;
+      inset: auto 4% -6% 4%;
+      z-index: -1;
+      height: 14%;
+      background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.55), transparent 70%);
+    }
+  }
+
+  .ars-mac__frame {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+  }
+
+  .ars-mac__screen {
+    position: absolute;
+    top: 2.48%;
+    left: 9.22%;
+    width: 81.56%;
+    height: 89.12%;
+    overflow: hidden;
+    border-radius: 1.1% 1.1% 0 0 / 1.7% 1.7% 0 0;
+    background: $color-white;
+    container-type: size;
+  }
+
+  // Pop-ups above the laptop.
+  .ars__step--discover .ars-pops {
+    z-index: 3;
+  }
+}
+
+.ars-web {
+  --k: calc(100cqw / 960);
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: #15151a;
+  font-size: calc(16 * var(--k));
+  line-height: 1.3;
+
+  svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: calc(36 * var(--k));
+    height: calc(72 * var(--k));
+    padding: 0 calc(40 * var(--k));
+    border-bottom: 1px solid #efeff2;
+  }
+
+  &__logo {
+    width: calc(34 * var(--k));
+    height: calc(34 * var(--k));
+  }
+
+  &__nav {
+    display: flex;
+    gap: calc(28 * var(--k));
+    font-size: calc(14 * var(--k));
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+
+    b {
+      font-weight: 500;
+      color: #6e6e78;
+    }
+
+    .is-on {
+      color: #15151a;
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: calc(10 * var(--k));
+    margin-left: auto;
+    font-size: calc(14 * var(--k));
+
+    i {
+      width: calc(30 * var(--k));
+      height: calc(30 * var(--k));
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c9c3ef, #8f84d9);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: calc(22 * var(--k));
+    padding: calc(36 * var(--k)) calc(56 * var(--k));
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: calc(14 * var(--k));
+    font-size: calc(30 * var(--k));
+    font-weight: 600;
+    letter-spacing: -0.02em;
+
+    svg {
+      width: calc(26 * var(--k));
+      height: calc(26 * var(--k));
+      color: #5b2ef5;
+    }
+  }
+
+  // The search field the typing runs in (.ars-type from the handoff).
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: calc(12 * var(--k));
+    height: calc(56 * var(--k));
+    padding: 0 calc(18 * var(--k));
+    border-radius: calc(12 * var(--k));
+    background: #f2f2f5;
+    color: #9a9aa2;
+    font-size: calc(18 * var(--k));
+    transition: box-shadow 0.2s;
+
+    > svg {
+      flex: none;
+      width: calc(22 * var(--k));
+      height: calc(22 * var(--k));
+      color: #5b2ef5;
+    }
+
+    &:has(.is-typing) {
+      box-shadow: 0 0 0 calc(2 * var(--k)) #5b2ef5;
+      background: $color-white;
+    }
+
+    .ars-type {
+      position: relative;
+      display: flex;
+      flex: 1;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .ars-type__txt {
+      color: #15151a;
+    }
+
+    .ars-type__caret {
+      width: calc(2 * var(--k));
+      height: calc(22 * var(--k));
+      margin-left: calc(2 * var(--k));
+    }
+  }
+
+  &__tabs {
+    display: flex;
+    gap: calc(30 * var(--k));
+    border-bottom: 1px solid #efeff2;
+    font-size: calc(17 * var(--k));
+
+    b {
+      padding-bottom: calc(14 * var(--k));
+      font-weight: 400;
+      color: #6e6e78;
+    }
+
+    .is-on {
+      box-shadow: inset 0 calc(-2 * var(--k)) 0 #5b2ef5;
+      color: #5b2ef5;
+      font-weight: 600;
+    }
+  }
+
+  // The match fades in once the search has text.
+  &__results {
+    display: flex;
+    flex-direction: column;
+    gap: calc(10 * var(--k));
+    opacity: 0;
+    translate: 0 calc(8 * var(--k));
+    transition:
+      opacity 0.35s ease,
+      translate 0.35s ease;
+  }
+
+  &:has(.ars-type.has-text) &__results {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  &__group {
+    font-size: calc(15 * var(--k));
+    color: #6e6e78;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+    align-items: center;
+    gap: calc(24 * var(--k));
+    padding: calc(16 * var(--k)) calc(20 * var(--k));
+    border: 1px solid #efeff2;
+    border-radius: calc(14 * var(--k));
+  }
+
+  &__emblem {
+    display: grid;
+    place-items: center;
+    width: calc(48 * var(--k));
+    height: calc(48 * var(--k));
+    border-radius: 50%;
+    background: #eef1f8;
+
+    img {
+      width: 66%;
+      height: 66%;
+    }
+  }
+
+  &__name,
+  &__price {
+    display: flex;
+    flex-direction: column;
+    gap: calc(3 * var(--k));
+
+    b {
+      font-size: calc(18 * var(--k));
+      font-weight: 500;
+    }
+
+    small {
+      font-size: calc(14 * var(--k));
+      color: #6e6e78;
+    }
+  }
+
+  &__price {
+    align-items: flex-end;
+
+    small {
+      padding: calc(2 * var(--k)) calc(6 * var(--k));
+      border-radius: calc(4 * var(--k));
+      background: #e3f6ef;
+      color: #0fa982;
+    }
+  }
+
+  &__tag {
+    padding: calc(5 * var(--k)) calc(10 * var(--k));
+    border-radius: calc(6 * var(--k));
+    background: #f1ecff;
+    color: #5b2ef5;
+    font-size: calc(13 * var(--k));
+  }
+
+  &__btn {
+    padding: calc(10 * var(--k)) calc(18 * var(--k));
+    border-radius: calc(10 * var(--k));
+    background: #15151a;
+    color: $color-white;
+    font-size: calc(14 * var(--k));
   }
 }
