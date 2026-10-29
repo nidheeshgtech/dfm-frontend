@@ -1,10 +1,13 @@
 @use "../abstracts" as *;
 
-// Invest page only (body.page-invest): the shared header and market cards
-// sit on the same container grid as every other section.
+// Invest page (body.page-invest): the shared header and market cards sit
+// on the same container grid as every other section.
 
-.page-invest {
-  // ---- Header: logo and nav line up with the container edges ----
+// ---- Header: logo and nav line up with the container edges (Raise
+// Capital page and the three market pages too) ----
+.page-invest,
+.page-company,
+.rt-page {
   .site-header__inner {
     max-width: $container-max + $container-gutter * 2;
     margin-inline: auto;
@@ -20,7 +23,9 @@
       padding-inline: $space-24 0;
     }
   }
+}
 
+.page-invest {
   // ---- Markets: cards inside the container, not full bleed ----
   // The list carries .container, so the section drops its own gutter.
   .markets {

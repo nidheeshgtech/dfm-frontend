@@ -117,6 +117,17 @@ $rt-accents: (
     animation: rt-settle 2.4s $ease-out both;
   }
 
+  // Subject sits right of the copy (growth-market.html). On screens
+  // narrower than the photo, crop from the left so the boat stays in with
+  // its bow; portrait screens centre on the rowers.
+  &__photo--right {
+    object-position: 80% 50%;
+
+    @media (min-aspect-ratio: 4/3) {
+      object-position: 100% 50%;
+    }
+  }
+
   // Dark at the top (header) and bottom (copy), lighter in between.
   &__shade {
     position: absolute;

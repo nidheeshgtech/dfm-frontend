@@ -5618,6 +5618,12 @@ body {
     padding-inline: 0;
   }
 }
+.hero__actions > :only-child {
+  grid-column: 1/-1;
+  justify-self: center;
+  width: 100%;
+  max-width: 368px;
+}
 .hero--investor {
   background: #f0f3f2;
 }
@@ -15321,21 +15327,28 @@ body {
     box-shadow: 0 0 0 14px rgba(163, 139, 242, 0);
   }
 }
-.page-invest .site-header__inner {
+.page-invest .site-header__inner,
+.page-company .site-header__inner,
+.rt-page .site-header__inner {
   max-width: 1616px;
   margin-inline: auto;
   padding-inline: 40px;
 }
 @media (max-width: 767.98px) {
-  .page-invest .site-header__inner {
+  .page-invest .site-header__inner,
+  .page-company .site-header__inner,
+  .rt-page .site-header__inner {
     padding-inline: 16px;
   }
 }
 @media (min-width: 1024px) {
-  .page-invest .site-header__nav {
+  .page-invest .site-header__nav,
+  .page-company .site-header__nav,
+  .rt-page .site-header__nav {
     padding-inline: 24px 0;
   }
 }
+
 .page-invest .markets {
   padding: 0 0 24px;
 }
@@ -15662,6 +15675,14 @@ body {
   max-width: none;
   object-fit: cover;
   animation: rt-settle 2.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.rt-hero__photo--right {
+  object-position: 80% 50%;
+}
+@media (min-aspect-ratio: 4/3) {
+  .rt-hero__photo--right {
+    object-position: 100% 50%;
+  }
 }
 .rt-hero__shade {
   position: absolute;

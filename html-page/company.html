@@ -8,7 +8,7 @@
   <script>document.documentElement.classList.add('js','is-page-loading');var lv=(location.search.match(/[?&]loader=([\w-]+)/)||[])[1];if(!lv)document.documentElement.classList.add('loader-default');if(lv)lv.split('-').forEach(function(_,i,a){document.documentElement.classList.add('loader-'+a.slice(0,i+1).join('-'));});setTimeout(function(){if(window.arenaLoaderRunning)return;document.documentElement.classList.remove('is-page-loading');var l=document.querySelector('[data-loader]');if(l)l.classList.add('is-gone');},6000);</script>
   <link rel="stylesheet" href="css/main.css">
 </head>
-<body class="theme-company">
+<body class="theme-company page-company">
   <!-- Page loader (js/components/loader.js); only shown with JS. -->
   <div class="loader" data-loader aria-hidden="true">
     <div class="loader__glow"></div>
@@ -38,13 +38,6 @@
           <img class="logo--dark" src="images/shared/logo-dark.svg" width="180" height="64" alt="ARENA">
           <img class="logo--light" src="images/shared/logo-light.svg" width="180" height="64" alt="ARENA">
         </a>
-        <nav class="toggle liquid-glass toggle--light" aria-label="Audience">
-          <span class="liquid-glass__effect"></span>
-          <span class="liquid-glass__tint"></span>
-          <span class="liquid-glass__shine"></span>
-          <a class="toggle__option" href="company.html" aria-current="page">Raise Capital</a>
-          <a class="toggle__option" href="index.html">Invest</a>
-        </nav>
       </div>
 
       <button class="site-header__menu-btn" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu" data-menu-button><span></span></button>
@@ -97,16 +90,6 @@
         </div>
 
         <div class="hero__actions">
-          <a class="btn-cta liquid-glass btn-cta--purple" href="#contact" data-hero-intro>
-            <span class="liquid-glass__effect"></span>
-            <span class="liquid-glass__tint"></span>
-            <span class="liquid-glass__shine"></span>
-            <span class="btn-cta__label">
-              <span class="btn-cta__text">Start a conversation</span>
-              <span class="btn-cta__text" aria-hidden="true">Start a conversation</span>
-            </span>
-            <img class="btn-cta__icon" src="images/shared/icons/chevron-purple.svg" width="20" height="20" alt="">
-          </a>
           <a class="btn-cta liquid-glass btn-cta--white" href="#about" data-hero-intro>
             <span class="liquid-glass__effect"></span>
             <span class="liquid-glass__tint"></span>

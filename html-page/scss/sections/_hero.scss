@@ -89,6 +89,14 @@
     @include down("laptop") {
       padding-inline: 0;
     }
+
+    // A single button keeps its half-width size, centred.
+    > :only-child {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: 100%;
+      max-width: 368px;
+    }
   }
 
   // ---- Static fallback backgrounds (replaced by the stage when live) ----
