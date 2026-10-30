@@ -145,6 +145,40 @@
     height: 22px;
   }
 
+  // Log in: a hairline pill at the end of the nav (icon + label), filling
+  // with the same soft chip as the home icon on hover. Follows the header
+  // colour (--header-fg), so it flips with the logo over dark / light.
+  &__nav {
+    margin-left: auto;
+  }
+
+  &__login {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    margin-left: -$space-8;
+    padding: 0 18px 0 14px;
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    border-radius: $radius-pill;
+    color: inherit;
+    transition:
+      background-color $duration $ease-out,
+      border-color $duration $ease-out;
+
+    &:hover,
+    &:focus-visible {
+      border-color: currentColor;
+      background: rgba(127, 127, 127, 0.16);
+    }
+  }
+
+  &__login-icon {
+    width: 20px;
+    height: 20px;
+  }
+
   // Smaller laptops: four links, so a tighter gap and type.
   @media (min-width: 1024px) and (max-width: 1279.98px) {
     &__nav {
@@ -229,6 +263,26 @@
 
     &__logo img {
       width: 104px;
+    }
+  }
+
+  // ---- Tablet + mobile: Log in shrinks to a round icon beside the menu
+  // button (the nav itself is the full-screen panel, out of the row) ----
+  @include down("laptop") {
+    &__login {
+      order: 1;
+      justify-content: center;
+      width: 40px;
+      margin-left: auto;
+      padding: 0;
+    }
+
+    &__login-text {
+      display: none;
+    }
+
+    &__menu-btn {
+      order: 2;
     }
   }
 
