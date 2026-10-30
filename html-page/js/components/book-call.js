@@ -301,7 +301,7 @@ function buildSingle() {
 
             <div class="one__done" role="status">
               <span class="one__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <h3>You’re booked in.</h3>
+              <h3>Request received.</h3>
               <p>We’ll confirm the details by email at <b data-s="email"></b> within one working day.</p>
               <button class="one__submit one__submit--ghost" type="button" data-one-close>Close</button>
             </div>
