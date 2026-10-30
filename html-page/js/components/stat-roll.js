@@ -14,8 +14,12 @@ export function initStatRoll() {
     group.classList.add("is-roll");
     group.querySelectorAll("[data-roll]").forEach((el, n) => {
       const text = el.dataset.roll;
-      el.setAttribute("aria-label", text);
       el.textContent = "";
+      // The digit strips are hidden from screen readers; this reads the figure.
+      const label = document.createElement("span");
+      label.className = "visually-hidden";
+      label.textContent = text;
+      el.append(label);
       const digits = [...text].filter((c) => /\d/.test(c)).length;
       let fromRight = digits;
       [...text].forEach((ch) => {

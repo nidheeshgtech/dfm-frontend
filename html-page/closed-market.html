@@ -1,10 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <link rel="icon" href="images/shared/favicon.svg" type="image/svg+xml">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Closed Market — ARENA</title>
+  <title>Closed Market — ARENA by Dubai Financial Market</title>
+  <meta name="description" content="Succession, without going public. Move ownership between generations and employees in a regulated, private setting on ARENA by DFM.">
+  <link rel="canonical" href="https://dfm-frontend-lac.vercel.app/html-page/closed-market.html">
+  <link rel="icon" href="images/favicon/favicon.ico" sizes="48x48">
+  <link rel="icon" href="images/favicon/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0f1220">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ARENA by Dubai Financial Market">
+  <meta property="og:title" content="Closed Market — ARENA by Dubai Financial Market">
+  <meta property="og:description" content="Succession, without going public. Move ownership between generations and employees in a regulated, private setting on ARENA by DFM.">
+  <meta property="og:url" content="https://dfm-frontend-lac.vercel.app/html-page/closed-market.html">
+  <meta property="og:image" content="https://dfm-frontend-lac.vercel.app/html-page/images/og/closed-market.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Closed Market — ARENA by Dubai Financial Market">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Closed Market — ARENA by Dubai Financial Market">
+  <meta name="twitter:description" content="Succession, without going public. Move ownership between generations and employees in a regulated, private setting on ARENA by DFM.">
+  <meta name="twitter:image" content="https://dfm-frontend-lac.vercel.app/html-page/images/og/closed-market.jpg">
   <script>document.documentElement.classList.add('js','is-page-loading');var lv=(location.search.match(/[?&]loader=([\w-]+)/)||[])[1];if(!lv)document.documentElement.classList.add('loader-default');if(lv)lv.split('-').forEach(function(_,i,a){document.documentElement.classList.add('loader-'+a.slice(0,i+1).join('-'));});setTimeout(function(){if(window.arenaLoaderRunning)return;document.documentElement.classList.remove('is-page-loading');var l=document.querySelector('[data-loader]');if(l)l.classList.add('is-gone');},6000);</script>
   <link rel="stylesheet" href="css/main.css">
 </head>
@@ -49,7 +68,7 @@
         <a class="site-header__link t-nav" href="private-market.html" style="--i: 2"><span class="site-header__link-text">Private Market</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
         <a class="site-header__link t-nav" href="closed-market.html" style="--i: 3" aria-current="page"><span class="site-header__link-text">Closed Market</span><span class="site-header__link-arrow" aria-hidden="true"></span></a>
         <div class="site-header__menu-foot">
-          <a class="site-header__menu-cta" href="#contact">Start a conversation<span aria-hidden="true"></span></a>
+          <a class="site-header__menu-cta" href="#contact" data-book-call>Start a conversation<span aria-hidden="true"></span></a>
           <a class="site-header__menu-mail" href="mailto:arena@dfm.ae">arena@dfm.ae</a>
           <p class="site-header__menu-tag">Capital, made simple.</p>
         </div>
@@ -118,8 +137,7 @@
             <li>Shares unencumbered, equal rights to owners</li>
           </ul>
           <div class="rt-elig__foot" data-scroll-reveal>
-            <!-- TODO: point at the eligibility tool once it exists. -->
-            <a class="btn-pill" href="#contact">
+            <a class="btn-pill" href="eligibility.html">
               <span class="btn-pill__label">Run the eligibility check</span>
               <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
             </a>
@@ -274,7 +292,7 @@
         </div>
         <div class="rt-others__grid" data-scroll-reveal-group>
           <a class="rt-route rt-route--growth" href="growth-market.html">
-            <img class="rt-route__photo" src="images/markets/company-growth.webp" width="1920" height="1080" alt="" loading="lazy">
+            <img class="rt-route__photo" src="images/markets/company-growth.webp" width="1680" height="945" alt="" loading="lazy">
             <span class="rt-route__shade" aria-hidden="true"></span>
             <span class="rt-route__body">
               <span class="rt-route__num">Route 01 · Open Offer</span>
@@ -306,7 +324,6 @@
           <p class="cta__lead" data-scroll-reveal>A confidential call with the Business Development team,<br>before you commit to anything.</p>
         </div>
         <div class="cta__actions" data-scroll-reveal-group>
-          <!-- TODO: point at the booking form once it exists. -->
           <a class="btn-pill btn-pill--glass-purple" href="mailto:arena@dfm.ae?subject=Closed Market%20-%20request%20a%20call" data-book-call data-book-market="closed">
             <span class="btn-pill__label">Request a call</span>
             <span class="btn-pill__chip"><img src="images/shared/icons/arrow-outward.svg" width="24" height="24" alt=""></span>
@@ -329,7 +346,7 @@
       <div class="site-footer__side">
         <nav class="site-footer__links" aria-label="Footer">
           <a href="company.html#about">About ARENA</a>
-          <a href="#contact">Contact</a>
+          <a href="company.html#contact">Contact</a>
           <a href="#legal">Legal</a>
           <a href="#risk">Risk warnings</a>
         </nav>

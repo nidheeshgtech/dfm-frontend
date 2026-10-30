@@ -4,6 +4,7 @@
 // the card is on screen and pauses when it leaves. Without JS (or with
 // reduced motion) the visuals stay as the static markup draws them.
 export function initInvestLoops() {
+  playInView();
   const gsap = window.gsap;
   const els = Array.from(document.querySelectorAll("[data-iv-loop]"));
   if (!gsap || !els.length) return;
@@ -21,97 +22,24 @@ export function initInvestLoops() {
   });
 }
 
+// "Why invest" render loops ([data-iv-video]): muted clips that play only
+// while on screen. With reduced motion they stay on their poster.
+function playInView() {
+  const vids = Array.from(document.querySelectorAll("[data-iv-video]"));
+  if (!vids.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!("IntersectionObserver" in window)) return vids.forEach((v) => v.play().catch(() => {}));
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => (e.isIntersecting ? e.target.play().catch(() => {}) : e.target.pause())),
+    { threshold: 0.25 },
+  );
+  vids.forEach((v) => io.observe(v));
+}
+
 const q = (el, s) => el.querySelector(s);
 const qa = (el, s) => Array.from(el.querySelectorAll(s));
 const toggle = (els, cls, on) => [].concat(els).forEach((e) => e && e.classList.toggle(cls, on));
 
-// ---- Isometric "Why" illustrations: each builds up, holds, clears and
-// builds again ----
-const ISO = { C: Math.cos(Math.PI / 6), S: 0.5 };
-const isoPt = (o, x, y, z) => [o.cx + (x - y) * ISO.C * o.s, o.cy + (x + y) * ISO.S * o.s - z * o.s];
-const pts = (o, list) => list.map(([x, y, z]) => isoPt(o, x, y, z).map((n) => n.toFixed(2)).join(",")).join(" ");
-// Redraws a box (left, right, top polygons) at height h.
-function setBox(g, o, [x, y, z, w, d], h) {
-  const [l, r, t] = g.querySelectorAll("polygon");
-  l.setAttribute("points", pts(o, [[x, y + d, z], [x + w, y + d, z], [x + w, y + d, z + h], [x, y + d, z + h]]));
-  r.setAttribute("points", pts(o, [[x + w, y, z], [x + w, y + d, z], [x + w, y + d, z + h], [x + w, y, z + h]]));
-  t.setAttribute("points", pts(o, [[x, y, z + h], [x + w, y, z + h], [x + w, y + d, z + h], [x, y + d, z + h]]));
-  g.querySelector("polyline")?.setAttribute("points", pts(o, [[x, y + d, z + h], [x + w, y + d, z + h], [x + w, y, z + h]]));
-}
-
-// Hold the finished scene, clear it, then play again from the top.
-const HOLD = 2.6;
-function loopIso(tl, out, gsap, onRepeat) {
-  tl.to(out, { opacity: 0, y: "-=8", duration: 0.5, ease: "power2.in", stagger: 0.04 }, `+=${HOLD}`);
-  return tl.repeat(-1).repeatDelay(0.35).eventCallback("onRepeat", onRepeat || null);
-}
-
 const LOOPS = {
-  // 01: the steps build up left to right, the building drops onto the
-  // top step, then the marker lands on the first step.
-  "iso-stage"(el, gsap) {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.from(qa(el, ".iso-step"), { y: 18, opacity: 0, duration: 0.6, stagger: 0.12 })
-      .from(q(el, ".iso-tower"), { y: -24, opacity: 0, duration: 0.6 }, "-=0.2")
-      .from(q(el, ".iso-marker .iso-pin, .iso-marker .iso-pin-dot"), { y: -46, opacity: 0, duration: 0.7, ease: "bounce.out" }, "+=0.1")
-      .from(q(el, ".iso-marker .iso-pin-dot"), { y: -46, opacity: 0, duration: 0.7, ease: "bounce.out" }, "<")
-      .from(q(el, ".iso-shadow"), { scale: 0.2, opacity: 0, transformOrigin: "50% 50%", duration: 0.7 }, "<");
-    return loopIso(tl, [q(el, ".iso-marker"), q(el, ".iso-tower"), ...qa(el, ".iso-step").reverse()], gsap);
-  },
-
-  // 02: the columns rise one after another (redrawn in iso, no squash),
-  // then the offer-price plane settles onto them.
-  "iso-demand"(el, gsap) {
-    const svg = q(el, "svg");
-    const [cx, cy, s] = (svg.dataset.iso || "150,58,10").split(",").map(Number);
-    const o = { cx, cy, s };
-    const cols = qa(el, "[data-iso-col]").map((g) => ({ g, spec: JSON.parse(g.dataset.isoCol), k: { v: 0 } }));
-    cols.forEach((c) => setBox(c.g, o, c.spec, 0.01));
-    const tl = gsap.timeline();
-    cols.forEach((c, i) =>
-      tl.to(c.k, { v: 1, duration: 0.7, ease: "power3.out", onUpdate: () => setBox(c.g, o, c.spec, Math.max(0.01, c.spec[5] * c.k.v)) }, i * 0.07),
-    );
-    tl.from(q(el, "[data-iso-plane]"), { y: -26, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.2");
-    // Clear: the plane lifts away and the columns sink back down.
-    tl.to(q(el, "[data-iso-plane]"), { y: -26, opacity: 0, duration: 0.5, ease: "power2.in" }, `+=${HOLD}`);
-    cols.forEach((c, i) =>
-      tl.to(c.k, { v: 0, duration: 0.5, ease: "power2.in", onUpdate: () => setBox(c.g, o, c.spec, Math.max(0.01, c.spec[5] * c.k.v)) }, `<${i ? 0.05 : 0.15}`),
-    );
-    return tl.repeat(-1).repeatDelay(0.35);
-  },
-
-  // 03: tiles set down in a row, the block hops along them to the end,
-  // then the shield pops up.
-  "iso-chain"(el, gsap) {
-    const block = q(el, "[data-iso-block]");
-    const path = JSON.parse(block.dataset.isoPath);
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.from(qa(el, ".iso-tile"), { y: 12, opacity: 0, duration: 0.5, stagger: 0.1 })
-      .from(qa(el, ".iso-etch"), { opacity: 0, duration: 0.4 }, "-=0.2")
-      .from(q(el, ".iso-track"), { opacity: 0, duration: 0.4 })
-      .from(block, { y: -30, opacity: 0, duration: 0.5, ease: "bounce.out" });
-    path.slice(1).forEach(([x, y], i) => {
-      const [px, py] = path[i];
-      tl.to(block, { x: (px + x) / 2, y: (py + y) / 2 - 10, duration: 0.22, ease: "power1.out" }, "+=0.12")
-        .to(block, { x, y, duration: 0.22, ease: "power1.in" });
-    });
-    tl.from(q(el, ".iso-shieldg"), { scale: 0.4, opacity: 0, transformOrigin: "50% 100%", duration: 0.5, ease: "back.out(2)" }, "+=0.05");
-    return loopIso(tl, [q(el, ".iso-shieldg"), block, q(el, ".iso-track"), ...qa(el, ".iso-etch"), ...qa(el, ".iso-tile").reverse()], gsap);
-  },
-
-  // 04: the ID card slides in, its links draw out, and the three market
-  // blocks light up in their colours one after another.
-  "iso-account"(el, gsap) {
-    const blocks = qa(el, "[data-iso-mkt]");
-    const links = qa(el, "[data-iso-link]");
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.from(q(el, "[data-iso-card]"), { x: -30, y: -16, opacity: 0, duration: 0.8 })
-      .from(blocks, { y: 14, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.3")
-      .from(links, { opacity: 0, duration: 0.3, stagger: 0.15 });
-    blocks.forEach((b, i) => tl.call(() => b.classList.add("is-lit"), null, `>-${i ? 0 : 0.1}`).to({}, { duration: 0.25 }));
-    return loopIso(tl, [...links, ...blocks.slice().reverse(), q(el, "[data-iso-card]")], gsap, () => toggle(blocks, "is-lit", false));
-  },
-
   // ---- Why 1: progress runs offer stage → listing day → IPO ----
   stage(el, gsap) {
     const fill = q(el, ".iv-stage-fill");

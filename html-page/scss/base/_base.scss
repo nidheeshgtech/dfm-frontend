@@ -22,3 +22,8 @@ body {
   height: 0;
   overflow: hidden;
 }
+
+// Text for screen readers only.
+.visually-hidden {
+  @include visually-hidden;
+}

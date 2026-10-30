@@ -1,0 +1,9 @@
+# Not part of the site: sources, backups, tooling.
+image-originals
+backups
+README.md
+.playwright-mcp
+html-page/node_modules
+html-page/scss
+html-page/package.json
+html-page/package-lock.json

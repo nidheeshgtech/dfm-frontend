@@ -516,7 +516,7 @@ async function setup(root) {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "globe-bubble";
-      b.setAttribute("aria-label", a.pin.getAttribute("aria-label") || "Investor");
+      b.setAttribute("aria-label", a.pin.dataset.label || "Investor");
       const imgs = a.pin.querySelectorAll(".globe-pin__avatar img");
       imgs.forEach((img) => b.append(img.cloneNode()));
       b.addEventListener("click", () => {

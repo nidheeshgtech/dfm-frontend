@@ -33,10 +33,13 @@ function setup(root) {
 
   const placePanel = (index, animate) => {
     if (!panel) return;
+    // Inside the tablist (vertical) the panel can't keep its tabpanel role.
     if (!vertical.matches) {
+      panel.setAttribute("role", "tabpanel");
       if (panel.parentNode !== panelHome) panelHome.append(panel);
       return;
     }
+    panel.removeAttribute("role");
     const tab = tabs[index];
     if (panel.previousElementSibling === tab) return;
 
@@ -68,10 +71,25 @@ function setup(root) {
     const from = current;
     current = index;
 
+    // Wide: a tablist. Narrow: the panel opens under its step, so the
+    // steps act as an accordion (aria-expanded) instead.
+    const accordion = vertical.matches;
+    if (accordion) steps.removeAttribute("role");
+    else steps.setAttribute("role", "tablist");
     tabs.forEach((tab, i) => {
       const active = i === index;
-      tab.setAttribute("aria-selected", String(active));
-      tab.tabIndex = active ? 0 : -1;
+      tab.classList.toggle("is-selected", active);
+      if (accordion) {
+        tab.removeAttribute("role");
+        tab.removeAttribute("aria-selected");
+        tab.setAttribute("aria-expanded", String(active));
+        tab.tabIndex = 0;
+      } else {
+        tab.setAttribute("role", "tab");
+        tab.setAttribute("aria-selected", String(active));
+        tab.removeAttribute("aria-expanded");
+        tab.tabIndex = active ? 0 : -1;
+      }
       tab.classList.toggle("is-visited", i < index);
     });
     if (focus) tabs[index].focus({ preventScroll: true });

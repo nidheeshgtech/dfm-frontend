@@ -1,0 +1,11 @@
+{
+  "name": "ARENA by Dubai Financial Market",
+  "short_name": "ARENA",
+  "icons": [
+    { "src": "images/favicon/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "images/favicon/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#0f1220",
+  "background_color": "#0f1220",
+  "display": "browser"
+}

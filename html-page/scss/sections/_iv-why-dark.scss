@@ -321,173 +321,33 @@
   }
 }
 
-// ---- Isometric illustrations (index.html, .iv-why__viz--iso) ----
-// 2.5D objects drawn in SVG, lit from the top left: each face is a
-// gradient (stops styled here), the visible top edges carry a bevel
-// highlight, objects cast soft blurred shadows onto a lit floor. One
-// accent per card (--acc). js/components/invest-loops.js (iso-*) plays
-// one short move when a card scrolls in.
-.iv-why-dark .iv-earn__card:first-child {
-  --acc: #8fd0ff;
-  --acc-rgb: 143, 208, 255;
-}
-
-.iv-why-dark .iv-why__viz--iso {
+// ---- Rendered visuals (index.html, .iv-why__viz--photo) ----
+// Client: the isometric drawings felt cartoony. Each card now shows a
+// studio render (glass / ceramic / metal on the panel's dark navy, lit in
+// the card's accent), made in Higgsfield, animated as a 5s loop that
+// plays while on screen (invest-loops.js, [data-iv-video]); the poster is
+// its first frame. A slow push-in on hover.
+.iv-why-dark .iv-why__viz--photo {
   padding: 0;
-  background:
-    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(var(--acc-rgb), 0.08), transparent 70%),
-    rgba($color-white, 0.03);
+  overflow: hidden;
+  background: #0b0c17;
 
-  .iso {
+  video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    overflow: visible;
+    object-fit: cover;
+    transition: scale 1.2s $ease-out;
   }
+}
 
-  // Face gradients. g = neutral, a = accent, b = base slab, m = metal.
-  .gt0 { stop-color: #f6f7fb; }
-  .gt1 { stop-color: #c4c9d6; }
-  .gl0 { stop-color: #aab0c2; }
-  .gl1 { stop-color: #6c7286; }
-  .gr0 { stop-color: #6f7487; }
-  .gr1 { stop-color: #3b3f4e; }
+.iv-why-dark .iv-earn__card:hover .iv-why__viz--photo video {
+  scale: 1.05;
+}
 
-  .at0 { stop-color: color-mix(in srgb, var(--acc) 70%, #fff); }
-  .at1 { stop-color: var(--acc); }
-  .al0 { stop-color: color-mix(in srgb, var(--acc) 85%, #0d0e1a); }
-  .al1 { stop-color: color-mix(in srgb, var(--acc) 55%, #0d0e1a); }
-  .ar0 { stop-color: color-mix(in srgb, var(--acc) 55%, #0d0e1a); }
-  .ar1 { stop-color: color-mix(in srgb, var(--acc) 30%, #0d0e1a); }
-
-  .bt0 { stop-color: #4a4e5f; }
-  .bt1 { stop-color: #303342; }
-  .bl0 { stop-color: #2c2f3c; }
-  .bl1 { stop-color: #1c1e27; }
-  .br0 { stop-color: #22242f; }
-  .br1 { stop-color: #14151c; }
-
-  .mt0 { stop-color: #f3e2a8; }
-  .mt1 { stop-color: #b8964a; }
-  .ml0, .mr0 { stop-color: #8a6f33; }
-  .ml1, .mr1 { stop-color: #5a4720; }
-
-  .fl0 { stop-color: rgba(255, 255, 255, 0.07); }
-  .fl1 { stop-color: rgba(255, 255, 255, 0); }
-
-  .iso-floor {
-    stroke: rgba($color-white, 0.14);
-    stroke-width: 1;
-  }
-
-  .iso-cast {
-    fill: rgba(0, 0, 0, 0.5);
-  }
-
-  .iso-hl {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.7);
-    stroke-width: 0.8;
-    stroke-linejoin: round;
-  }
-
-  .iso-win {
-    fill: #2b2f3c;
-
-    &.is-dim {
-      fill: #23262f;
-    }
-
-    &.is-lit {
-      fill: var(--acc);
-    }
-  }
-
-  .iso-shadow {
-    fill: rgba(0, 0, 0, 0.4);
-  }
-
-  .iso-pin {
-    fill: var(--acc);
-  }
-
-  .iso-pin-dot {
-    fill: #0d0e1a;
-  }
-
-  .iso-plane {
-    fill: rgba(var(--acc-rgb), 0.14);
-    stroke: rgba(var(--acc-rgb), 0.75);
-    stroke-width: 1;
-    stroke-dasharray: 4 3;
-  }
-
-  .iso-etch {
-    fill: rgba(13, 14, 26, 0.18);
-    stroke: rgba(13, 14, 26, 0.25);
-    stroke-width: 0.6;
-  }
-
-  .iso-track {
-    stroke: rgba(var(--acc-rgb), 0.6);
-    stroke-width: 1.4;
-    stroke-dasharray: 3 3;
-  }
-
-  .iso-shield {
-    fill: #e4e7ef;
-  }
-
-  .iso-shield-side {
-    fill: #b5bac8;
-  }
-
-  .iso-shield-tick {
-    fill: none;
-    stroke: #0d0e1a;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .iso-chipline {
-    fill: rgba(80, 60, 20, 0.6);
-  }
-
-  .iso-photo {
-    fill: rgba(var(--acc-rgb), 0.55);
-  }
-
-  .iso-line {
-    fill: #9aa0b2;
-  }
-
-  .iso-link {
-    stroke: rgba(var(--acc-rgb), 0.55);
-    stroke-width: 1.2;
-    stroke-dasharray: 2 3;
-  }
-
-  // Market blocks: neutral until lit, then their market colour.
-  .iso-mkt polygon {
-    transition: fill 0.5s ease;
-  }
-
-  .iso-mkt .iso-t { fill: #c4c9d6; }
-  .iso-mkt .iso-l { fill: #7d8396; }
-  .iso-mkt .iso-r { fill: #4e5262; }
-
-  &:not(.is-loop) .iso-mkt,
-  .iso-mkt.is-lit {
-    &.is-growth .iso-t { fill: #9b7dff; }
-    &.is-growth .iso-l { fill: #6b3cff; }
-    &.is-growth .iso-r { fill: #4523b8; }
-    &.is-private .iso-t { fill: #7dfdb2; }
-    &.is-private .iso-l { fill: #2fcf78; }
-    &.is-private .iso-r { fill: #1a8c4f; }
-    &.is-closed .iso-t { fill: #f2f78a; }
-    &.is-closed .iso-l { fill: #d6cf00; }
-    &.is-closed .iso-r { fill: #948f00; }
+@include reduced-motion {
+  .iv-why-dark .iv-why__viz--photo video {
+    transition: none;
   }
 }

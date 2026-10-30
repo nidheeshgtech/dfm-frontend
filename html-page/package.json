@@ -5,7 +5,7 @@
   "description": "ARENA landing pages (investor + company), static HTML/SCSS",
   "scripts": {
     "build": "sass scss/main.scss css/main.css --style=compressed --no-source-map",
-    "watch": "sass --watch scss/main.scss css/main.css",
+    "watch": "sass --watch scss/main.scss css/main.css --style=compressed --no-source-map",
     "dev": "sass --watch scss/main.scss css/main.css --embed-sources"
   },
   "devDependencies": {

@@ -1020,7 +1020,7 @@
 
   // Step number + three-part progress bar (this card's share lit), and the
   // step track at the foot of the copy (built by arena-steps.js).
-  --ars-step: #12a866;
+  --ars-step: #0e8f57; // jade, dark enough for small text on light
 
   .ars__pill {
     display: none;
@@ -1060,7 +1060,7 @@
     padding: 0;
     list-style: none;
     font-size: 14px;
-    color: rgba($color-text-dark, 0.4);
+    color: rgba($color-text-dark, 0.58);
 
     li {
       display: flex;
@@ -1076,7 +1076,7 @@
       }
 
       &.is-done {
-        color: rgba($color-text-dark, 0.6);
+        color: rgba($color-text-dark, 0.72);
       }
 
       &.is-on {
@@ -1749,7 +1749,7 @@
 
 @media (min-width: 960px) {
   .ars--deck .ars__step--trade {
-    --ars-step: #12a866;
+    --ars-step: #0e8f57;
 
     background:
       radial-gradient(60% 80% at 0% 100%, rgba(18, 168, 102, 0.06), transparent 70%),
@@ -1780,10 +1780,10 @@
     }
 
     .ars__track {
-      color: rgba($color-text-dark, 0.4);
+      color: rgba($color-text-dark, 0.58);
 
       li.is-done {
-        color: rgba($color-text-dark, 0.6);
+        color: rgba($color-text-dark, 0.72);
       }
 
       li.is-on {

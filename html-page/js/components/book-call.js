@@ -162,7 +162,6 @@ function initSingle(triggers) {
     data.markets = Array.from(form.querySelectorAll('[name="market"]:checked')).map((m) => m.value);
     data.date = date.toISOString().slice(0, 10);
     // TODO: POST to the booking endpoint once it exists.
-    console.info("ARENA booking request", data);
     s("email").textContent = data.email;
     dialog.classList.add("is-sent");
     body.scrollTop = 0;
@@ -277,10 +276,10 @@ function buildSingle() {
 
               <div class="one__row one__row--2">
                 <div class="one__date-wrap">
-                  <p class="one__label">Date</p>
-                  <button class="one__date" type="button" aria-haspopup="dialog" aria-expanded="false" data-date-btn>
+                  <p class="one__label" id="one-date-label">Date</p>
+                  <button class="one__date" type="button" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="one-date-label one-date-value" data-date-btn>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 3.5v4m8-4v4M4 10h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-                    <span data-date-label></span>
+                    <span id="one-date-value" data-date-label></span>
                     <i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
                   </button>
                   <div class="one__pop" data-date-pop hidden>

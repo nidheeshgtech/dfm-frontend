@@ -92,35 +92,37 @@
 .swipe-dots {
   display: flex;
   justify-content: center;
-  gap: $space-8;
-  margin-top: $space-24;
+  margin-top: $space-16;
 
   &[hidden] {
     display: none;
   }
 
   &__dot {
-    width: 8px;
-    height: 8px;
-    padding: 0;
-    border-radius: 8px;
-    background: rgba(13, 14, 26, 0.18);
-    transition:
-      width 0.4s $ease-out,
-      background-color 0.4s $ease-out;
-
-    // Bigger tap target than the visible dot.
+    // A 24px tap target (WCAG 2.5.8) around the visible 8px dot.
     position: relative;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: 12px;
+    background: none;
+    transition: width 0.4s $ease-out;
 
-    &::after {
+    &::before {
       content: "";
       position: absolute;
-      inset: -10px -6px;
+      inset: 8px;
+      border-radius: 8px;
+      background: rgba(13, 14, 26, 0.18);
+      transition: background-color 0.4s $ease-out;
     }
 
     &[aria-current="true"] {
-      width: 28px;
-      background: $color-purple;
+      width: 44px;
+
+      &::before {
+        background: $color-purple;
+      }
     }
 
     &:focus-visible {

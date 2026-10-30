@@ -25,7 +25,7 @@
 // [href="#assistant"] (the FAQ's "Ask the assistant" button) opens it too.
 import { words, near } from "./invest-ask.js";
 
-const CONTACT = "You can reach the ARENA team on <a href=\"tel:+97140000000\">+971 4 000 0000</a> or <a href=\"mailto:arena@dfm.ae\">arena@dfm.ae</a>.";
+const CONTACT = "You can reach the ARENA team on <a href=\"tel:+97140000000\">+971&nbsp;4&nbsp;000&nbsp;0000</a> or <a href=\"mailto:arena@dfm.ae\">arena@dfm.ae</a>.";
 
 // Facts every page can answer (copy from the Invest and routes deck).
 const FACTS = [

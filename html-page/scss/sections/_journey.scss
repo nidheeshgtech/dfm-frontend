@@ -165,7 +165,7 @@
     transition: opacity 0.4s $ease-out;
   }
 
-  &:hover:not([aria-selected="true"]) {
+  &:hover:not(.is-selected) {
     border-color: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
   }
@@ -190,7 +190,7 @@
   }
 
   // Current step.
-  &[aria-selected="true"] {
+  &.is-selected {
     border-color: $color-white;
     background: $color-text-dark;
 
@@ -224,7 +224,7 @@
     }
 
     &.is-visited,
-    &[aria-selected="true"] {
+    &.is-selected {
       background: $color-purple;
 
       .journey-step__badge {
@@ -431,7 +431,7 @@
     padding: $space-16 $space-16 $space-16 48px;
     text-align: left;
 
-    &:hover:not([aria-selected="true"]) {
+    &:hover:not(.is-selected) {
       transform: none;
     }
 
@@ -468,7 +468,7 @@
       }
     }
 
-    &[aria-selected="true"] .journey-step__text {
+    &.is-selected .journey-step__text {
       grid-template-rows: 1fr;
       margin-top: $space-8;
       opacity: 1;
@@ -478,7 +478,7 @@
       opacity: 0;
     }
 
-    &--milestone[aria-selected="true"] .journey-step__text {
+    &--milestone.is-selected .journey-step__text {
       opacity: 1;
     }
   }
