@@ -25,7 +25,8 @@ const q = (el, s) => el.querySelector(s);
 const qa = (el, s) => Array.from(el.querySelectorAll(s));
 const toggle = (els, cls, on) => [].concat(els).forEach((e) => e && e.classList.toggle(cls, on));
 
-// ---- Isometric "Why" illustrations: one short move each, played once ----
+// ---- Isometric "Why" illustrations: each builds up, holds, clears and
+// builds again ----
 const ISO = { C: Math.cos(Math.PI / 6), S: 0.5 };
 const isoPt = (o, x, y, z) => [o.cx + (x - y) * ISO.C * o.s, o.cy + (x + y) * ISO.S * o.s - z * o.s];
 const pts = (o, list) => list.map(([x, y, z]) => isoPt(o, x, y, z).map((n) => n.toFixed(2)).join(",")).join(" ");
@@ -38,6 +39,13 @@ function setBox(g, o, [x, y, z, w, d], h) {
   g.querySelector("polyline")?.setAttribute("points", pts(o, [[x, y + d, z + h], [x + w, y + d, z + h], [x + w, y, z + h]]));
 }
 
+// Hold the finished scene, clear it, then play again from the top.
+const HOLD = 2.6;
+function loopIso(tl, out, gsap, onRepeat) {
+  tl.to(out, { opacity: 0, y: "-=8", duration: 0.5, ease: "power2.in", stagger: 0.04 }, `+=${HOLD}`);
+  return tl.repeat(-1).repeatDelay(0.35).eventCallback("onRepeat", onRepeat || null);
+}
+
 const LOOPS = {
   // 01: the steps build up left to right, the building drops onto the
   // top step, then the marker lands on the first step.
@@ -48,7 +56,7 @@ const LOOPS = {
       .from(q(el, ".iso-marker .iso-pin, .iso-marker .iso-pin-dot"), { y: -46, opacity: 0, duration: 0.7, ease: "bounce.out" }, "+=0.1")
       .from(q(el, ".iso-marker .iso-pin-dot"), { y: -46, opacity: 0, duration: 0.7, ease: "bounce.out" }, "<")
       .from(q(el, ".iso-shadow"), { scale: 0.2, opacity: 0, transformOrigin: "50% 50%", duration: 0.7 }, "<");
-    return tl;
+    return loopIso(tl, [q(el, ".iso-marker"), q(el, ".iso-tower"), ...qa(el, ".iso-step").reverse()], gsap);
   },
 
   // 02: the columns rise one after another (redrawn in iso, no squash),
@@ -64,7 +72,12 @@ const LOOPS = {
       tl.to(c.k, { v: 1, duration: 0.7, ease: "power3.out", onUpdate: () => setBox(c.g, o, c.spec, Math.max(0.01, c.spec[5] * c.k.v)) }, i * 0.07),
     );
     tl.from(q(el, "[data-iso-plane]"), { y: -26, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.2");
-    return tl;
+    // Clear: the plane lifts away and the columns sink back down.
+    tl.to(q(el, "[data-iso-plane]"), { y: -26, opacity: 0, duration: 0.5, ease: "power2.in" }, `+=${HOLD}`);
+    cols.forEach((c, i) =>
+      tl.to(c.k, { v: 0, duration: 0.5, ease: "power2.in", onUpdate: () => setBox(c.g, o, c.spec, Math.max(0.01, c.spec[5] * c.k.v)) }, `<${i ? 0.05 : 0.15}`),
+    );
+    return tl.repeat(-1).repeatDelay(0.35);
   },
 
   // 03: tiles set down in a row, the block hops along them to the end,
@@ -74,6 +87,7 @@ const LOOPS = {
     const path = JSON.parse(block.dataset.isoPath);
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.from(qa(el, ".iso-tile"), { y: 12, opacity: 0, duration: 0.5, stagger: 0.1 })
+      .from(qa(el, ".iso-etch"), { opacity: 0, duration: 0.4 }, "-=0.2")
       .from(q(el, ".iso-track"), { opacity: 0, duration: 0.4 })
       .from(block, { y: -30, opacity: 0, duration: 0.5, ease: "bounce.out" });
     path.slice(1).forEach(([x, y], i) => {
@@ -82,7 +96,7 @@ const LOOPS = {
         .to(block, { x, y, duration: 0.22, ease: "power1.in" });
     });
     tl.from(q(el, ".iso-shieldg"), { scale: 0.4, opacity: 0, transformOrigin: "50% 100%", duration: 0.5, ease: "back.out(2)" }, "+=0.05");
-    return tl;
+    return loopIso(tl, [q(el, ".iso-shieldg"), block, q(el, ".iso-track"), ...qa(el, ".iso-etch"), ...qa(el, ".iso-tile").reverse()], gsap);
   },
 
   // 04: the ID card slides in, its links draw out, and the three market
@@ -95,7 +109,7 @@ const LOOPS = {
       .from(blocks, { y: 14, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.3")
       .from(links, { opacity: 0, duration: 0.3, stagger: 0.15 });
     blocks.forEach((b, i) => tl.call(() => b.classList.add("is-lit"), null, `>-${i ? 0 : 0.1}`).to({}, { duration: 0.25 }));
-    return tl;
+    return loopIso(tl, [...links, ...blocks.slice().reverse(), q(el, "[data-iso-card]")], gsap, () => toggle(blocks, "is-lit", false));
   },
 
   // ---- Why 1: progress runs offer stage → listing day → IPO ----
