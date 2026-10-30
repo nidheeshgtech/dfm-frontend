@@ -1,7 +1,8 @@
 // Page loader. Progress is real: hero images + web fonts + window load,
 // shown through a smoothed counter (never jumps, never goes backwards).
 // First visit in a session shows it for at least 2.8s; moving between
-// pages after that keeps it shorter (1.2s). Exit: content lifts out, the panel
+// pages after that keeps it shorter (1.2s). Phones get 1.2s / 0.6s and a
+// quicker exit so the page shows sooner on slower connections. Exit: content lifts out, the panel
 // sweeps up with a curved edge, and `window.arenaLoaded` resolves a moment
 // before it clears so the hero intro starts underneath.
 const MIN_FIRST = 2800;
@@ -29,7 +30,8 @@ export function initLoader() {
     seen = sessionStorage.getItem("arena-loaded") === "1";
     sessionStorage.setItem("arena-loaded", "1");
   } catch {}
-  const minTime = seen ? MIN_REPEAT : MIN_FIRST;
+  const phone = window.matchMedia("(max-width: 767px)").matches;
+  const minTime = (seen ? MIN_REPEAT : MIN_FIRST) * (phone ? 0.45 : 1);
   const t0 = performance.now();
 
   window.lenis?.stop();
@@ -66,7 +68,7 @@ export function initLoader() {
     // Time also nudges it along so it never looks stuck.
     const timeShare = Math.min(1, elapsed / minTime);
     const target = Math.min(real, timeShare) * (real >= 1 ? 1 : 0.92);
-    shown += (target - shown) * (reduce ? 1 : 0.08);
+    shown += (target - shown) * (reduce ? 1 : phone ? 0.14 : 0.08);
     if (target >= 1 && 1 - shown < 0.004) shown = 1;
     render(shown);
     if (shown >= 1) return exit();
@@ -99,6 +101,7 @@ export function initLoader() {
 
     const variant = ["type", "aperture", "shutter", "glass", "dots", "arch", "split", "counter"].find((v) => root.classList.contains(`loader-${v}`));
     const tl = gsap.timeline({ onComplete: clear });
+    if (phone) tl.timeScale(1.6);
 
     if (variant === "aperture") {
       // The window opens to the whole screen — the page is already behind it.
