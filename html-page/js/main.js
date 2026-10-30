@@ -22,6 +22,7 @@ import { initInvestPhone } from "./components/invest-phone.js";
 import { initIvScreens } from "./components/iv-screens.js";
 import { initFitForm } from "./components/fit-form.js";
 import { initInvestBoard } from "./components/invest-board.js";
+import { initIvAccess } from "./components/iv-access.js";
 import { initInvestAsk } from "./components/invest-ask.js";
 import { initInvestLoops } from "./components/invest-loops.js";
 import { initRouteSteps } from "./components/route-steps.js";
@@ -41,7 +42,7 @@ function init() {
     console.error("init: initSmoothScroll threw", e);
   }
 
-  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initXpApp, initGlobe, initFaq, initInvestPhone, initIvScreens, initInvestBoard, initInvestAsk, initInvestLoops, initStepsDeck, initRouteSteps, initRouteViz, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch, initChat, initIvFlow, initBookCall, initArenaSteps, initStatRoll, initFitForm].forEach((fn) => {
+  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initXpApp, initGlobe, initFaq, initInvestPhone, initIvScreens, initInvestBoard, initIvAccess, initInvestAsk, initInvestLoops, initStepsDeck, initRouteSteps, initRouteViz, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch, initChat, initIvFlow, initBookCall, initArenaSteps, initStatRoll, initFitForm].forEach((fn) => {
     try {
       fn();
     } catch (e) {

@@ -216,30 +216,62 @@
 
     <!-- ============ Access and classification (copy deck v2, section 2) ============
          How investors register, are classified and reach each offer. -->
-    <section class="iv-access" id="access" aria-labelledby="access-title" data-header="dark">
+    <!-- Access and classification. Default: ruled rows beside a sticky
+         heading (styled in _iv-access.scss, animated by
+         js/components/iv-access.js). For comparison: ?access=b the flow
+         strip with a UI token per step, ?access=d the stepper,
+         ?access=a the earlier plain ruled list. -->
+    <section class="iv-access iv-access--rows" id="access" aria-labelledby="access-title" data-header="dark" data-iv-access>
       <div class="container">
         <div class="iv-head iv-head--split">
           <h2 class="iv-head__title" id="access-title" data-scroll-reveal>Access and <em class="iv-hl">classification.</em></h2>
           <p class="iv-head__lead" data-scroll-reveal>One registration with your DFM investor number. <strong>Each offer then states who it is open to.</strong></p>
         </div>
-        <ol class="iv-access__list" data-scroll-reveal-group>
+        <ol class="iv-access__list">
           <li class="iv-access__item">
+            <span class="iv-access__node" aria-hidden="true"></span>
             <span class="iv-access__num">01</span>
+            <div class="iv-access__viz" aria-hidden="true">
+              <div class="iva-field">
+                <span class="iva-field__label">DFM investor number</span>
+                <span class="iva-field__row"><span class="iva-field__val">NIN&nbsp;<b>1048&nbsp;2291</b></span><i class="iva-field__ok"><svg viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5"/></svg></i></span>
+              </div>
+            </div>
             <h3 class="iv-access__title">One registration</h3>
             <p class="iv-access__text">Investors register on the ARENA web platform with their existing DFM investor number (NIN).</p>
           </li>
           <li class="iv-access__item">
+            <span class="iv-access__node" aria-hidden="true"></span>
             <span class="iv-access__num">02</span>
+            <div class="iv-access__viz" aria-hidden="true">
+              <div class="iva-qs"><i></i><i></i><i></i><span>3 questions</span></div>
+              <div class="iva-seg"><i class="iva-seg__thumb"></i><span>Professional</span><span>Retail</span></div>
+            </div>
             <h3 class="iv-access__title">Classification</h3>
             <p class="iv-access__text">Three further questions establish each investor’s classification: professional knowledge and risk appetite, CMA accreditation or employment with a regulated financial institution, and financial adequacy. The classification is either professional or retail.</p>
           </li>
           <li class="iv-access__item">
+            <span class="iv-access__node" aria-hidden="true"></span>
             <span class="iv-access__num">03</span>
+            <div class="iv-access__viz" aria-hidden="true">
+              <div class="iva-tags">
+                <span class="iva-tag">Retail + professional</span>
+                <span class="iva-tag">Professional only</span>
+                <span class="iva-tag iva-tag--lock"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>By invitation</span>
+              </div>
+            </div>
             <h3 class="iv-access__title">Per-offer access</h3>
             <p class="iv-access__text">Every offer document states its investor type: open to retail and professional investors, or professional only. Closed opportunities require an invitation, and each access request is reviewed and approved by the issuer.</p>
           </li>
           <li class="iv-access__item">
+            <span class="iv-access__node" aria-hidden="true"></span>
             <span class="iv-access__num">04</span>
+            <div class="iv-access__viz" aria-hidden="true">
+              <div class="iva-chs">
+                <span class="iva-ch"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="12" rx="2"/><path d="M8.5 20h7M12 16.5V20"/></svg>ARENA web</span>
+                <span class="iva-ch"><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>iVestor app</span>
+              </div>
+            </div>
             <h3 class="iv-access__title">Two channels</h3>
             <p class="iv-access__text">Subscriptions run on the ARENA web platform and through iVestor, DFM’s investor app and digital wallet.</p>
           </li>
