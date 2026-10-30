@@ -250,7 +250,7 @@ function buildSingle() {
         <header class="one__head">
           <div>
             <p class="one__eyebrow">ARENA · Business Development</p>
-            <h2 class="one__title" id="one-title">Book a meeting</h2>
+            <h2 class="one__title" id="one-title">Request a meeting</h2>
           </div>
           <button class="one__close" type="button" data-one-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
         </header>
