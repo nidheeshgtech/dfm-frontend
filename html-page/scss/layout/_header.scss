@@ -6,6 +6,7 @@
 // Variant .site-header--light = white logo/text for dark heroes (company).
 .site-header {
   --header-fg: #{$color-black};
+  --header-ink: #{$color-white};
   --header-glass: rgba(255, 255, 255, 0.62);
 
   position: fixed;
@@ -145,14 +146,18 @@
     height: 22px;
   }
 
-  // Log in: a hairline pill at the end of the nav (icon + label), filling
-  // with the same soft chip as the home icon on hover. Follows the header
-  // colour (--header-fg), so it flips with the logo over dark / light.
+  // Log in: a filled pill in the header colour (ink on white over dark
+  // sections, white on ink over light ones; --header-ink is the
+  // opposite of --header-fg). Hover, as on the CTA buttons: a purple dot
+  // grows out of the icon to flood the pill, the label rolls up to its
+  // duplicate and a soft glow comes on.
   &__nav {
     margin-left: auto;
   }
 
   &__login {
+    position: relative;
+    isolation: isolate;
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
@@ -160,17 +165,71 @@
     height: 40px;
     margin-left: -$space-8;
     padding: 0 18px 0 14px;
-    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    overflow: hidden;
     border-radius: $radius-pill;
-    color: inherit;
+    background: var(--header-fg);
+    color: var(--header-ink);
     transition:
-      background-color $duration $ease-out,
-      border-color $duration $ease-out;
+      color 0.4s $ease-out,
+      box-shadow 0.5s $ease-out,
+      transform 0.35s $ease-out;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 24px;
+      z-index: -1;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border-radius: 50%;
+      background: $color-purple;
+      transform: scale(0);
+      transition: transform 0.6s $ease-out;
+    }
 
     &:hover,
     &:focus-visible {
-      border-color: currentColor;
-      background: rgba(127, 127, 127, 0.16);
+      color: $color-white;
+      box-shadow: 0 0 24px 2px rgba(78, 23, 229, 0.35);
+      transform: translateY(-1px);
+
+      &::before {
+        transform: scale(12);
+      }
+
+      .site-header__login-text span {
+        transform: translateY(-100%);
+      }
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--header-fg);
+      outline-offset: 3px;
+    }
+  }
+
+  &__login-text {
+    position: relative;
+    display: block;
+    height: 16px;
+    overflow: hidden;
+    line-height: 16px;
+
+    span {
+      display: block;
+      transition: transform 0.5s $ease-out;
+
+      & + span {
+        position: absolute;
+        top: 100%;
+        left: 0;
+      }
     }
   }
 
@@ -202,6 +261,7 @@
   &--light,
   &.is-on-dark {
     --header-fg: #{$color-white};
+    --header-ink: #{$color-bg-dark};
     --header-glass: rgba(1, 33, 74, 0.55); // ARENA navy
 
     .logo--dark {
@@ -216,6 +276,7 @@
   // Light-hero override: over white sections, back to the dark header.
   &.is-on-light {
     --header-fg: #{$color-black};
+    --header-ink: #{$color-white};
     --header-glass: rgba(255, 255, 255, 0.62);
 
     .logo--dark {
@@ -275,6 +336,10 @@
       width: 40px;
       margin-left: auto;
       padding: 0;
+
+      &::before {
+        left: 50%;
+      }
     }
 
     &__login-text {
@@ -588,6 +653,7 @@
     // While open: header content turns white over the dark panel.
     &.is-menu-open {
       --header-fg: #{$color-white};
+      --header-ink: #{$color-bg-dark};
 
       .logo--dark {
         display: none;
@@ -657,6 +723,7 @@
     // Light panel open: header content back to dark.
     &[data-menu-theme="light"].is-menu-open {
       --header-fg: #{$color-black};
+      --header-ink: #{$color-white};
 
       .logo--dark {
         display: block;
