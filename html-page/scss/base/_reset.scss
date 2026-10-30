@@ -50,3 +50,10 @@ ol {
   padding: 0;
   list-style: none;
 }
+
+// Hero art switches to a lighter phone file through <picture>; the
+// wrapper stays out of layout so the img keeps its own sizing.
+.iv-hero__bg > picture,
+.stage__float > picture {
+  display: contents;
+}

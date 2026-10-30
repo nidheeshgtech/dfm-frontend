@@ -248,8 +248,9 @@
 
 // ---- A touch of colour: one accent per card ----
 // 02 jade · 03 lime · 04 lavender (01 stays white, as before). Each
-// card's number, title highlight, key visual element and a faint glow atop
-// its visual box take its accent; everything else stays white / grey.
+// card's key visual element and a faint glow atop its visual box take its
+// accent. Numbers and title highlights stay white / grey (client: no
+// colour on the text).
 .iv-why-dark .iv-earn__card:not(:first-child) {
   &:nth-child(2) {
     --acc: #{$color-jade};
@@ -264,11 +265,6 @@
   &:nth-child(4) {
     --acc: #{$color-purple-tint};
     --acc-rgb: 163, 139, 242;
-  }
-
-  .iv-earn__num,
-  .iv-earn__title strong {
-    color: var(--acc);
   }
 
   .iv-why__viz {
