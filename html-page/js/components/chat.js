@@ -420,7 +420,7 @@ function tabsMarkup() {
           <input type="text" name="q" placeholder="Ask about investing, markets, fees…" autocomplete="off" data-chat-input>
           <button class="chat__send" type="submit" aria-label="Send" disabled><svg viewBox="0 0 24 24"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </label>
-        <p class="chat__person">Prefer a person? <a href="#contact" data-book-call>Book a call</a></p>
+        <p class="chat__person">Prefer a person? <a href="#contact" data-book-call>Request a call</a></p>
       </form>
     </section>`;
 }
