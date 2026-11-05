@@ -504,11 +504,11 @@
 
   .market {
     position: sticky;
-    top: calc(var(--market-top) + var(--i, 0) * var(--market-gap));
+    top: var(--market-top);
     padding-bottom: $space-24;
   }
 
-  // v2 deck (stack.js setupDeck): all cards share one slot, low enough
+  // Deck (stack.js setupDeck): all cards share one slot, low enough
   // that the cards behind can step up into the gap above it.
   .markets__list--deck {
     --deck-peek: var(--market-gap);

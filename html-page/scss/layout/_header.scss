@@ -356,8 +356,8 @@
   }
 
   // ---- Tablet + mobile: menu button opens a full-screen panel ----
-  // Two themes: light (default) and dark — data-menu-theme="dark" on the
-  // header, or ?menu=dark / ?menu=light in the URL (header.js).
+  // Two themes: light (data-menu-theme="light" on the header, used on every
+  // page) overriding the dark base below.
   @include down("laptop") {
     --menu-gutter: #{$container-gutter};
     --menu-link-size: 56px;
@@ -460,52 +460,6 @@
       mask-image: radial-gradient(120% 90% at 100% 0%, #000 0%, rgba(0, 0, 0, 0.35) 45%, transparent 75%);
       pointer-events: none;
       animation: menu-dots 24s linear infinite;
-    }
-
-    // Variation "aurora" (data-menu-bg="aurora" / ?menubg=aurora): two big
-    // soft colour fields drifting and blending, instead of the dot grid.
-    &[data-menu-bg="aurora"] &__menu-bg {
-      inset: 0;
-      background: none;
-      -webkit-mask-image: none;
-      mask-image: none;
-      animation: none;
-      overflow: hidden;
-
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        width: 120vmax;
-        height: 120vmax;
-        border-radius: 50%;
-        filter: blur(60px);
-        opacity: 0.55;
-      }
-
-      &::before {
-        top: -60vmax;
-        right: -50vmax;
-        background: radial-gradient(circle, var(--aurora-a) 0%, transparent 65%);
-        animation: aurora-a 16s ease-in-out infinite alternate;
-      }
-
-      &::after {
-        bottom: -70vmax;
-        left: -55vmax;
-        background: radial-gradient(circle, var(--aurora-b) 0%, transparent 65%);
-        animation: aurora-b 20s ease-in-out infinite alternate;
-      }
-    }
-
-    &[data-menu-bg="aurora"] {
-      --aurora-a: rgba(124, 77, 255, 0.9);
-      --aurora-b: rgba(78, 23, 229, 0.8);
-    }
-
-    &[data-menu-bg="aurora"][data-menu-theme="light"] {
-      --aurora-a: rgba(163, 139, 242, 0.95);
-      --aurora-b: rgba(214, 200, 255, 0.95);
     }
 
     &__link {
@@ -797,18 +751,6 @@
   overflow: hidden;
 }
 
-@keyframes aurora-a {
-  to {
-    transform: translate(-18vmax, 22vmax) scale(1.15);
-  }
-}
-
-@keyframes aurora-b {
-  to {
-    transform: translate(20vmax, -16vmax) scale(0.9);
-  }
-}
-
 @keyframes menu-dots {
   to {
     transform: translate(22px, 22px); // one grid cell: seamless loop
@@ -816,9 +758,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-header__menu-bg,
-  .site-header__menu-bg::before,
-  .site-header__menu-bg::after {
+  .site-header__menu-bg {
     animation: none !important;
   }
 }

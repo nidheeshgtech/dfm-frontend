@@ -1,9 +1,10 @@
 @use "../abstracts" as *;
 
 // Invest hero (index.html, .iv-hero--flow): one continuous dark
-// section in three beats on a single background —
+// section in beats on a single background —
 //   1. the intro centred on the first screen (like the Raise Capital hero)
-//   2. the iVestor phone, rising into focus as you scroll (iv-flow.js)
+//   2. the stage below it (now device-free, .iv-flow__stage--bare: just the
+//      buttons; see the --bare rules at the end of this file)
 //   3. the DFM figures.
 // Glows run down the whole height so the beats read as one surface.
 .iv-hero--flow {
@@ -18,7 +19,7 @@
     radial-gradient(ellipse 40% 40vh at 92% 35%, rgba(#8fd0ff, 0.04), transparent 70%),
     $color-bg-dark;
 
-  // The swirl turns behind the phone (mid-section) instead of the floor.
+  // The swirl turns mid-section instead of on the floor.
   .iv-hero__swirl {
     top: 46%;
     bottom: auto;
@@ -66,13 +67,13 @@
     font-size: clamp(17px, min(1.6vw, 2.8vh), 24px);
   }
 
-  // Buttons sit under the phone (beat 2), centred.
+  // Buttons sit in the stage (beat 2), centred.
   & .iv-hero__actions {
     width: min(100%, 640px);
     margin: clamp(24px, 4vh, 40px) auto 0;
   }
 
-  // ---- 2. Phone stage ----
+  // ---- 2. Stage ----
   .iv-flow__stage {
     position: relative;
     display: flex;
@@ -80,59 +81,6 @@
     align-items: center;
     justify-content: center;
     padding-block: 0 clamp(16px, 4vh, 48px);
-  }
-
-  // Wide enough for the chips either side of the phone.
-  .iv-hero__visual {
-    grid-column: auto;
-    grid-row: auto;
-    align-self: auto;
-    width: min(100%, 820px);
-  }
-
-  .iv-hero__stage {
-    --pw: clamp(260px, 24vw, 340px);
-
-    width: 100%;
-    padding-inline: 0;
-  }
-
-  // Large desktops: a bigger phone (chips scale with it).
-  @media (min-width: 1600px) {
-    .iv-hero__stage {
-      --pw: clamp(360px, 22vw, 440px);
-    }
-
-    .iv-hero__visual {
-      width: min(100%, 1000px);
-    }
-
-    .iv-hero__stage .iv-chip {
-      zoom: 1.12;
-    }
-  }
-
-  // Chips have room on both sides here: undo the small-laptop tuck.
-  @media (min-width: 1024px) {
-    .iv-chip {
-      zoom: 1;
-    }
-
-    .iv-chip--1 {
-      left: 2%;
-    }
-
-    .iv-chip--2 {
-      right: 4%;
-    }
-
-    .iv-chip--3 {
-      right: 0;
-    }
-
-    .iv-chip--4 {
-      left: 6%;
-    }
   }
 
   // ---- 3. Stats ----
@@ -145,16 +93,6 @@
       min-height: 0;
       padding-top: calc(var(--header-height) + #{$space-48});
       padding-bottom: $space-64;
-    }
-
-    .iv-hero__stage {
-      --pw: 280px;
-    }
-  }
-
-  @include down("tablet") {
-    .iv-hero__stage {
-      --pw: 248px;
     }
   }
 }

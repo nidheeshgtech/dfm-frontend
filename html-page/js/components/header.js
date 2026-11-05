@@ -102,13 +102,6 @@ function bindMenu(header) {
   const nav = header.querySelector("[data-menu]");
   if (!button || !nav) return;
 
-  // Menu theme: data-menu-theme on the header, ?menu=light|dark overrides.
-  const theme = new URLSearchParams(window.location.search).get("menu");
-  if (theme === "light" || theme === "dark") header.dataset.menuTheme = theme;
-  // Background variation: dots (default) or aurora — ?menubg=aurora.
-  const bg = new URLSearchParams(window.location.search).get("menubg");
-  if (bg === "dots" || bg === "aurora") header.dataset.menuBg = bg;
-
   const setOpen = (open) => {
     // The panel grows out of the button, wherever it sits.
     if (open) {

@@ -584,8 +584,8 @@
   }
 }
 
-// ?globe=orbit: cards ride with their country (globe3d.js sets translate /
-// scale each frame). Tablet and up; mobile keeps the swipe row.
+// .globe--orbit (set by globe3d.js): cards ride with their country
+// (translate / scale each frame). Tablet and up; mobile is below.
 @include up("tablet") {
   .globe--orbit .globe-pins__item {
     top: 0;

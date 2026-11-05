@@ -2,14 +2,11 @@ import { initSmoothScroll } from "./components/smooth-scroll.js";
 import { initLoader } from "./components/loader.js";
 import { initScrollReveal } from "./components/gsap-reveal.js";
 import { initCountUp } from "./components/count-up.js";
-import { initGlass } from "./components/glass.js";
 import { initHeader } from "./components/header.js";
 import { initStage } from "./components/stage.js";
 import { initHero } from "./components/hero.js";
-import { initVersionSwitch } from "./components/version-switch.js";
 import { initStack } from "./components/stack.js";
 import { initJourney } from "./components/journey.js";
-import { initInvestorXp } from "./components/investor-xp.js";
 import { initGlobe } from "./components/globe3d.js";
 import { initFaq } from "./components/faq.js";
 import { initSpotlight } from "./components/spotlight.js";
@@ -17,19 +14,12 @@ import { initSkeletonLoader } from "./components/skeleton-loader.js";
 import { initVideoModal } from "./components/video-modal.js";
 import { initSwipeDots } from "./components/swipe-dots.js";
 import { initXpWave } from "./components/xp-wave.js";
-import { initXpApp } from "./components/xp-app.js";
-import { initInvestPhone } from "./components/invest-phone.js";
-import { initIvScreens } from "./components/iv-screens.js";
 import { initFitForm } from "./components/fit-form.js";
-import { initInvestBoard } from "./components/invest-board.js";
 import { initIvAccess } from "./components/iv-access.js";
-import { initInvestAsk } from "./components/invest-ask.js";
 import { initInvestLoops } from "./components/invest-loops.js";
 import { initRouteSteps } from "./components/route-steps.js";
 import { initRouteViz } from "./components/route-viz.js";
-import { initStepsDeck } from "./components/steps-deck.js";
 import { initChat } from "./components/chat.js";
-import { initIvFlow } from "./components/iv-flow.js";
 import { initBookCall } from "./components/book-call.js";
 import { initArenaSteps } from "./components/arena-steps.js";
 import { initStatRoll } from "./components/stat-roll.js";
@@ -42,7 +32,7 @@ function init() {
     console.error("init: initSmoothScroll threw", e);
   }
 
-  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initInvestorXp, initXpWave, initXpApp, initGlobe, initFaq, initInvestPhone, initIvScreens, initInvestBoard, initIvAccess, initInvestAsk, initInvestLoops, initStepsDeck, initRouteSteps, initRouteViz, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initGlass, initVersionSwitch, initChat, initIvFlow, initBookCall, initArenaSteps, initStatRoll, initFitForm].forEach((fn) => {
+  [initLoader, initSkeletonLoader, initHeader, initStage, initHero, initStack, initJourney, initXpWave, initGlobe, initFaq, initIvAccess, initInvestLoops, initRouteSteps, initRouteViz, initSpotlight, initVideoModal, initSwipeDots, initScrollReveal, initCountUp, initChat, initBookCall, initArenaSteps, initStatRoll, initFitForm].forEach((fn) => {
     try {
       fn();
     } catch (e) {

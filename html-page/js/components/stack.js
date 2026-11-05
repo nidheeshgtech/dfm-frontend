@@ -1,13 +1,10 @@
 // Markets: stacking cards (heading scrolls away normally). Each
-// .market is position:sticky
-// (CSS, only in the media query below); this scrubs the card UNDERNEATH
-// as the next one slides over it — shrinks a little and darkens (no 3D) —
-// and gives each card's photo a gentle settle as it arrives.
+// .market is position:sticky (CSS, only in the media query below).
 //
-// v2 "deck" (default via data-stack-variant="v2"; ?stack=v1 shows the old one; after
-// Skiper UI "Card stack scroll"): every card sticks at the same spot; as
-// each new card rises in, the ones behind shrink and step UP, so their top
-// edges fan out above the current card.
+// "Deck" (after Skiper UI "Card stack scroll"): every card sticks at the
+// same spot; as each new card rises in, the ones behind shrink, darken and
+// step UP, so their top edges fan out above the current card. Each card's
+// photo gets a gentle settle as it arrives.
 const STACK_QUERY = "(min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)";
 
 export function initStack() {
@@ -22,60 +19,17 @@ export function initStack() {
   // matchMedia sets up / tears down the tweens as the query flips.
   const mm = gsap.matchMedia();
   mm.add(STACK_QUERY, () => {
-
     lists.forEach((list) => {
-      const cards = Array.from(list.querySelectorAll("[data-stack-item]"));
-      cards.forEach((item, index) => item.style.setProperty("--i", index));
-
-      const fromUrl = new URLSearchParams(window.location.search).get("stack");
-      if ((fromUrl || list.dataset.stackVariant) === "v2") {
-        setupDeck(list, cards);
-        return;
-      }
-
-      cards.forEach((item, index) => {
-        const card = item.querySelector(".market__card");
-        const shade = item.querySelector(".market__shade");
-        const photo = item.querySelector(".market__media");
-
-        // Arrival: photo settles from a slight zoom while the card rises in.
-        if (photo) {
-          gsap.fromTo(
-            photo,
-            { scale: 1.12 },
-            {
-              scale: 1,
-              ease: "none",
-              scrollTrigger: { trigger: item, start: "top bottom", end: "top top", scrub: true },
-            },
-          );
-        }
-
-        const next = cards[index + 1];
-        if (!next || !card) return;
-
-        // Departure: as the next card travels from the bottom of the screen
-        // to its sticky slot, this one eases back (flat) and dims.
-        const scrollTrigger = {
-          trigger: next,
-          start: "top bottom",
-          end: () => `top ${parseFloat(getComputedStyle(next).top) || 0}px`,
-          scrub: true,
-          invalidateOnRefresh: true,
-        };
-        gsap.fromTo(card, { scale: 1 }, { scale: 0.94, ease: "none", scrollTrigger });
-        if (shade) gsap.fromTo(shade, { opacity: 0 }, { opacity: 0.55, ease: "none", scrollTrigger: { ...scrollTrigger } });
-      });
+      setupDeck(list, Array.from(list.querySelectorAll("[data-stack-item]")));
     });
 
     return () => {
       document.querySelectorAll("[data-stack]").forEach((list) => list.classList.remove("markets__list--deck"));
-      document.querySelectorAll("[data-stack-item]").forEach((item) => item.style.removeProperty("--i"));
     };
   });
 }
 
-// ---- v2: deck ----
+// ---- Deck ----
 // Each card's "depth" = how many later cards have (partly) landed on it,
 // as a continuous value from their scroll progress. Depth drives scale,
 // upward step and shade, so the motion is fully scrubbed and reversible.
@@ -94,7 +48,7 @@ function setupDeck(list, cards) {
     photo: item.querySelector(".market__media"),
   }));
 
-  // Photo settle on arrival, as in v1.
+  // Photo settles from a slight zoom as the card rises in.
   parts.forEach(({ item, photo }) => {
     if (!photo) return;
     gsap.fromTo(photo, { scale: 1.12 }, { scale: 1, ease: "none", scrollTrigger: { trigger: item, start: "top bottom", end: "top top", scrub: true } });

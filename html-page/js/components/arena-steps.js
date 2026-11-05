@@ -1,8 +1,5 @@
-// ARENA — Discover / Subscribe / Trade steps (PRYPCO-style pinned scroll)
-// Desktop (>=960px): the stage pins and steps swap with scroll progress.
-// Mobile: steps stack; each one activates as it enters the viewport.
-// Plain JS, no dependencies. Works alongside Lenis (reads window scroll).
-// Version B (?how=b, .ars--deck): no pinned stage; each step is a card.
+// ARENA — Review / Subscribe / Allotment steps (index.html #how, .ars--deck).
+// Each step is a card. Works alongside Lenis (reads window scroll).
 // Desktop (>=960px): the cards are sticky and stack, each later card
 // sliding up over the one before, which shrinks a touch, steps up and dims
 // (--depth, scrubbed both ways). The front card is the active one, so its
@@ -10,29 +7,18 @@
 // stack and play once.
 import { initDotWave } from "./xp-wave.js";
 
-// Version B: dot colour per step panel.
+// Dot colour per step panel.
 const DOTS = { discover: "#4a9fe0", subscribe: "#a38bf2", trade: "#5b6068" };
 
 export function initArenaSteps(root = document) {
   root.querySelectorAll("[data-ars]").forEach((section) => {
-    // The stacking deck is the default; ?how=a shows the pinned version.
-    if (new URLSearchParams(window.location.search).get("how") === "a") section.classList.remove("ars--deck");
-    const deck = section.classList.contains("ars--deck");
-    // B: the Discover screen goes into the hand-held photo's screen box.
-    const handScreen = deck && section.querySelector(".ars-handshot__screen");
-    const discoverScreen = section.querySelector(".ars__step--discover .ars-phone__screen");
-    if (handScreen && discoverScreen) handScreen.append(discoverScreen);
-    // B: Subscribe and Trade screens go onto hand photos ([data-ars-photo],
+    // Subscribe and Trade screens sit on hand photos ([data-ars-photo],
     // natural size data-w × data-h, phone at data-fx / data-fy). Each photo
     // covers its panel, zoomed by data-zoom and shifted to keep the phone
     // centred; the screen box is mapped onto the photo's phone in CSS.
-    if (deck) {
+    {
       const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
       section.querySelectorAll("[data-ars-photo]").forEach((photo) => {
-        const step = photo.closest("[data-ars-step]");
-        const screen = step?.querySelector(".ars-phone-wrap .ars-phone__screen");
-        if (!screen) return;
-        photo.querySelector(".ars-photo__screen").append(screen);
         const { w, h, fx, fy, zoom = 1 } = Object.fromEntries(Object.entries(photo.dataset).map(([k, v]) => [k, Number(v)]));
         photo.style.width = `${w}px`;
         photo.style.height = `${h}px`;
@@ -49,10 +35,10 @@ export function initArenaSteps(root = document) {
         new ResizeObserver(fit).observe(scene);
       });
     }
-    // Deck: each card gets its step number with a three-part progress bar
+    // Each card gets its step number with a three-part progress bar
     // ("03 ▬▬▬") above the title and "01 Discover · 02 Subscribe · 03 Trade"
     // at the foot of the copy, this card's step lit (built from the titles).
-    if (deck) {
+    {
       const cards = [...section.querySelectorAll("[data-ars-step]")];
       const titles = cards.map((c) => c.querySelector(".ars__name")?.textContent.trim() || "");
       cards.forEach((card, i) => {
@@ -78,8 +64,8 @@ export function initArenaSteps(root = document) {
       });
     }
 
-    // B: a rippling dot wave (the FAQ one) behind each phone.
-    if (deck) {
+    // A rippling dot wave (the FAQ one) behind each phone.
+    {
       section.querySelectorAll("[data-ars-step]").forEach((step) => {
         const scene = step.querySelector(".ars__scene");
         const key = Object.keys(DOTS).find((k) => step.classList.contains(`ars__step--${k}`));
@@ -92,10 +78,7 @@ export function initArenaSteps(root = document) {
         initDotWave(dots);
       });
     }
-    const scroller = section.querySelector("[data-ars-scroller]");
     const steps = [...section.querySelectorAll("[data-ars-step]")];
-    const rail = [...section.querySelectorAll("[data-ars-go]")];
-    const panel = section.querySelector(".ars__panel");
     const mq = window.matchMedia("(min-width: 960px)");
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let active = -1;
@@ -119,7 +102,7 @@ export function initArenaSteps(root = document) {
       });
     }
 
-    // types into the search field on the Discover screen while that step is active
+    // types into the search field on the Discover (laptop) screen while that step is active
     const typers = [...section.querySelectorAll("[data-ars-type]")].map((el) => ({
       el,
       step: el.closest("[data-ars-step]"),
@@ -164,47 +147,18 @@ export function initArenaSteps(root = document) {
         s.classList.toggle("is-active", j === i);
         s.classList.toggle("is-past", j < i);
       });
-      if (panel) panel.style.setProperty("--ars-i", i);
       if (steps[i]) countUp(steps[i]);
       syncTyping();
     }
 
-    const pinned = () => mq.matches && !deck;
-
-    function onScroll() {
-      if (!pinned()) return;
-      const r = scroller.getBoundingClientRect();
-      const span = scroller.offsetHeight - window.innerHeight;
-      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, span)));
-      const n = steps.length;
-      setActive(Math.min(n - 1, Math.floor(p * n * 0.9999)));
-      rail.forEach((b, j) => {
-        const local = Math.min(1, Math.max(0, p * n - j));
-        b.style.setProperty("--p", local.toFixed(3));
-        b.toggleAttribute("aria-current", j === active);
-      });
-    }
-
-    rail.forEach((b) =>
-      b.addEventListener("click", () => {
-        const j = Number(b.dataset.arsGo);
-        const span = scroller.offsetHeight - window.innerHeight;
-        const top = window.scrollY + scroller.getBoundingClientRect().top + (span * (j + 0.15)) / steps.length;
-        window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
-      })
-    );
-
-    let deckKick = null;
+    const deckKick = initDeck(steps, mq, reduce, setActive);
 
     function setupMode() {
       if (io) { io.disconnect(); io = null; }
-      if (pinned()) {
-        active = -1;
-        onScroll();
-      } else if (deck && mq.matches) {
+      if (mq.matches) {
         active = -1;
         steps.forEach((s) => s.classList.remove("is-active", "is-past"));
-        deckKick?.();
+        deckKick();
       } else {
         // stacked: each step plays once when it scrolls into view and then
         // stays on (toggling it off and on again restarted the pop-ups and
@@ -226,17 +180,13 @@ export function initArenaSteps(root = document) {
       }
     }
 
-    if (deck) deckKick = initDeck(steps, mq, reduce, setActive);
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
     mq.addEventListener ? mq.addEventListener("change", setupMode) : mq.addListener(setupMode);
     setupMode();
   });
 }
 
 
-// ---- Version B: sticky card deck ----
+// ---- Sticky card deck ----
 // --i offsets each card's sticky top so the edges of the cards behind show.
 // For every card but the last, --depth (0 → 1) is how far the next card
 // has slid over it; CSS turns it into scale, lift and a dimming veil.

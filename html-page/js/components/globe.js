@@ -7,13 +7,8 @@
 //   - pointer: subtle parallax, deeper for front dots
 // Pins (investor cards) are HTML on top; they pop in once the globe is up.
 //
-// v1 — kept as the fallback for globe3d.js (no WebGL) and for review via
-// ?globe=v1. Backup of the original files: ../backups/globe-v1-canvas/.
+// The fallback for globe3d.js when WebGL is unavailable (setupFlatGlobe).
 const DATA_URL = new URL("../data/globe.json", import.meta.url);
-
-export function initGlobe() {
-  document.querySelectorAll("[data-globe]").forEach(setupFlatGlobe);
-}
 
 export async function setupFlatGlobe(root) {
   const canvas = root.querySelector("canvas");

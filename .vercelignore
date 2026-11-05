@@ -1,6 +1,4 @@
-# Not part of the site: sources, backups, tooling.
-image-originals
-backups
+# Not part of the site: sources and tooling.
 README.md
 .playwright-mcp
 html-page/node_modules

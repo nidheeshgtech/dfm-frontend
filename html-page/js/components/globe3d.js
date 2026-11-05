@@ -8,27 +8,24 @@
 //     frame, so their pulse markers ride the surface while the cards stay in
 //     their design positions. Hover / focus highlights the country and draws
 //     a fine line card → anchor; click rotates that country to the front.
-//   - Slow auto-spin (~105s per turn), soft float, mouse parallax, horizontal
+//   - Slow auto-spin (~70s per turn), soft float, mouse parallax, horizontal
 //     drag with inertia (touch: pan-y stays native, so page scroll is never
 //     captured).
 //   - Renders only while on screen. Reduced motion: static, no auto-spin.
 //
-// Fallback: no WebGL (or ?globe=v1) → the v1 flat canvas globe (globe.js).
+// Fallback: no WebGL (or a failed setup) → the flat canvas globe (globe.js).
 import { setupFlatGlobe } from "./globe.js";
 
 const THREE_URL = new URL("../vendor/three.module.min.js", import.meta.url).href;
 const MASK_URL = new URL("../data/land-mask.json", import.meta.url);
 
 const DIST = 4; // camera distance in globe radii
-const TURN_SECONDS = 105;
 const TILT = 0.42; // rad — north leans toward the viewer, like the design
 const FRONT_LON = 22; // Africa / Europe face the viewer by default
 
 export function initGlobe() {
-  const forceFlat = new URLSearchParams(window.location.search).get("globe") === "v1";
-
   document.querySelectorAll("[data-globe]").forEach((root) => {
-    if (forceFlat || !hasWebGL()) {
+    if (!hasWebGL()) {
       useFlat(root);
       return;
     }
@@ -271,7 +268,6 @@ async function setup(root) {
   };
 
   // ---- Investor crowd ----
-  const crowdOn = new URLSearchParams(window.location.search).get("crowd") !== "0";
   const crowdMaterial = new THREE.ShaderMaterial({
     vertexShader: CROWD_VERTEX,
     fragmentShader: CROWD_FRAGMENT,
@@ -285,23 +281,20 @@ async function setup(root) {
       uColor: { value: new THREE.Color("#f4ff22") },
     },
   });
-  let crowd = null;
-  if (crowdOn) {
-    const list = window.innerWidth < 768 ? CROWD.filter((_, i) => i % 5 !== 1 && i % 5 !== 3) : CROWD;
-    const pos = [];
-    const phase = [];
-    list.forEach(([lat, lon], i) => {
-      const v = toVec(THREE, lat, lon).multiplyScalar(1.004);
-      pos.push(v.x, v.y, v.z);
-      phase.push(((i * 37) % 60) / 60);
-    });
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-    geo.setAttribute("aPhase", new THREE.Float32BufferAttribute(phase, 1));
-    crowd = new THREE.Points(geo, crowdMaterial);
-    crowd.renderOrder = 2;
-    globe.add(crowd);
-  }
+  const crowdList = window.innerWidth < 768 ? CROWD.filter((_, i) => i % 5 !== 1 && i % 5 !== 3) : CROWD;
+  const crowdPos = [];
+  const crowdPhase = [];
+  crowdList.forEach(([lat, lon], i) => {
+    const v = toVec(THREE, lat, lon).multiplyScalar(1.004);
+    crowdPos.push(v.x, v.y, v.z);
+    crowdPhase.push(((i * 37) % 60) / 60);
+  });
+  const crowdGeo = new THREE.BufferGeometry();
+  crowdGeo.setAttribute("position", new THREE.Float32BufferAttribute(crowdPos, 3));
+  crowdGeo.setAttribute("aPhase", new THREE.Float32BufferAttribute(crowdPhase, 1));
+  const crowd = new THREE.Points(crowdGeo, crowdMaterial);
+  crowd.renderOrder = 2;
+  globe.add(crowd);
 
   // ---- Anchors (HTML markers riding the surface) ----
   const anchors = pins.map((pin) => {
@@ -496,13 +489,11 @@ async function setup(root) {
   let running = false;
   let dirty = true;
   let last = performance.now();
-  // Orbit (default): the investor cards ride on the globe with their
-  // country (desktop / tablet); mobile gets avatar bubbles + a carousel.
-  // ?globe=v1 keeps the old static card row.
-  const orbitMode = new URLSearchParams(window.location.search).get("globe") !== "v1";
-  if (orbitMode) root.classList.add("globe--orbit");
-  const orbitOn = () => orbitMode && window.innerWidth >= 768;
-  const bubblesOn = () => orbitMode && window.innerWidth < 768;
+  // Orbit: the investor cards ride on the globe with their country
+  // (desktop / tablet); mobile gets avatar bubbles + a carousel.
+  root.classList.add("globe--orbit");
+  const orbitOn = () => window.innerWidth >= 768;
+  const bubblesOn = () => window.innerWidth < 768;
 
   // Mobile orbit: a small avatar bubble rides each country; the front-most
   // investor's full card shows under the globe. Tap a bubble to bring that
@@ -511,23 +502,21 @@ async function setup(root) {
   let syncAuto = null;
   let featuredOnce = false;
   let swapTimer = 0;
-  if (orbitMode) {
-    anchors.forEach((a, i) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "globe-bubble";
-      b.setAttribute("aria-label", a.pin.dataset.label || "Investor");
-      const imgs = a.pin.querySelectorAll(".globe-pin__avatar img");
-      imgs.forEach((img) => b.append(img.cloneNode()));
-      b.addEventListener("click", () => {
-        setActive(i);
-        focusOn(i);
-        feature(i);
-      });
-      anchorLayer.append(b);
-      a.bubble = b;
+  anchors.forEach((a, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "globe-bubble";
+    b.setAttribute("aria-label", a.pin.dataset.label || "Investor");
+    const imgs = a.pin.querySelectorAll(".globe-pin__avatar img");
+    imgs.forEach((img) => b.append(img.cloneNode()));
+    b.addEventListener("click", () => {
+      setActive(i);
+      focusOn(i);
+      feature(i);
     });
-  }
+    anchorLayer.append(b);
+    a.bubble = b;
+  });
   const feature = (i) => {
     if (i === featured) return;
     featured = i;
@@ -557,7 +546,7 @@ async function setup(root) {
     }
     anchors.forEach((a, j) => a.bubble?.classList.toggle("is-front", j === i));
   };
-  const autoSpeed = (Math.PI * 2) / (orbitMode ? 70 : TURN_SECONDS);
+  const autoSpeed = (Math.PI * 2) / 70; // one turn per 70s
 
   const frame = (now) => {
     if (!running) return;
@@ -747,14 +736,9 @@ async function setup(root) {
   let autoTimer = 0;
   let idleUntil = 0;
 
+  // One card in fixed slots — no row to scroll.
   const showCard = (i) => {
     autoIndex = i;
-    const item = items[i];
-    // Orbit mode shows one card in fixed slots — no row to scroll.
-    if (!orbitMode) {
-      const pad = parseFloat(getComputedStyle(list).scrollPaddingLeft) || 0;
-      list.scrollTo({ left: item.offsetLeft - list.offsetLeft - pad, behavior: reduceMotion ? "auto" : "smooth" });
-    }
     setActive(i);
     focusOn(i);
   };
@@ -767,7 +751,7 @@ async function setup(root) {
         showCard((autoIndex + 1) % items.length);
       }
       tick();
-    }, orbitMode ? 6500 : 3800); // orbit: give each investor time to read
+    }, 6500); // give each investor time to read
   };
 
   if (list && !reduceMotion) {
@@ -775,20 +759,6 @@ async function setup(root) {
     list.addEventListener("pointerdown", hold, { passive: true });
     list.addEventListener("touchstart", hold, { passive: true });
     list.addEventListener("wheel", hold, { passive: true });
-    // Keep the index in step with manual swipes.
-    list.addEventListener(
-      "scroll",
-      () => {
-        if (!mobile.matches || orbitMode) return;
-        const left = list.scrollLeft;
-        let best = 0;
-        items.forEach((item, i) => {
-          if (Math.abs(item.offsetLeft - list.offsetLeft - left) < Math.abs(items[best].offsetLeft - list.offsetLeft - left)) best = i;
-        });
-        autoIndex = best;
-      },
-      { passive: true },
-    );
     tick();
   }
 
@@ -801,7 +771,7 @@ async function setup(root) {
     gsap.registerPlugin(ScrollTrigger);
     gsap.set(canvas, { opacity: 0 });
     // Orbit (mobile) cards are placed by CSS transforms — fade only.
-    const fadeOnly = orbitMode && window.innerWidth < 768;
+    const fadeOnly = window.innerWidth < 768;
     gsap.set(items, fadeOnly ? { opacity: 0 } : { opacity: 0, y: 24 });
 
     const intro = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
@@ -838,7 +808,7 @@ async function setup(root) {
       document.removeEventListener("visibilitychange", onVisibility);
       points?.geometry.dispose();
       material.dispose();
-      crowd?.geometry.dispose();
+      crowd.geometry.dispose();
       crowdMaterial.dispose();
       renderer.dispose();
     },

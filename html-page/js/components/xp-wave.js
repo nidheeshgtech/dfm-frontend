@@ -1,24 +1,19 @@
-// "A familiar investor experience" backdrop: the dot-wave artwork
-// (dot_wave_transparent.svg, 2,368 dots → js/data/xp-wave.json) drawn on a
-// canvas and set rippling — a slow travelling wave lifts the dots, crests
-// catch the light (bigger + brighter), and on desktop the pointer pushes a
-// soft swell through the fabric. Sits where the static xp-dots.webp was;
-// the phone stays on top. Renders only while on screen.
+// Rippling dot-wave backdrop: the dot-wave artwork (dot_wave_transparent.svg,
+// 2,368 dots → js/data/xp-wave.json) drawn on a canvas and set rippling — a
+// slow travelling wave lifts the dots, crests catch the light (bigger +
+// brighter), and on desktop the pointer pushes a soft swell through the
+// fabric. Renders only while on screen.
 //
-// Any [data-dot-wave] box gets the same rippling dots as a backdrop
-// (e.g. the invest FAQ panel); there the canvas just fills the box.
-// initDotWave(box) does the same on demand; box.dataset.dotColor sets
-// the dot colour (white by default).
+// Any [data-dot-wave] box gets the rippling dots as a backdrop (e.g. the
+// invest FAQ panel); the canvas just fills the box. initDotWave(box) does
+// the same on demand; box.dataset.dotColor sets the dot colour (white by
+// default).
 //
-// ?xpbg=v1 (or reduced motion / no canvas) keeps the static image.
+// Reduced motion (or no canvas) leaves the box empty.
 const DATA_URL = new URL("../data/xp-wave.json", import.meta.url);
 
 export function initXpWave() {
-  if (new URLSearchParams(window.location.search).get("xpbg") === "v1") return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  document.querySelectorAll("[data-xp] .xp__visual").forEach((visual) => {
-    setup(visual, "xp__wave").catch((e) => console.warn("xp-wave: keeping static dots", e));
-  });
   document.querySelectorAll("[data-dot-wave]").forEach((box) => {
     setup(box, "dot-wave__canvas").catch((e) => console.warn("xp-wave: no dot wave", e));
   });

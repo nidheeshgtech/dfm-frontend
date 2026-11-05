@@ -1,4 +1,4 @@
-import { createWarp, JOURNEY_EFFECTS } from "./journey-warp.js";
+import { createWarp } from "./journey-warp.js";
 
 // "Your listing journey" tabs. Each [data-journey-tab] selects a step:
 // the lime progress line grows to its dot, earlier steps become
@@ -102,29 +102,10 @@ function setup(root) {
     swapPanel(from, index, animate && !reduceMotion && gsap);
   };
 
-  // Review picker for the image effects: shown only when ?journey= is in
-  // the URL (e.g. company.html?journey=ripple). Remove once one is chosen.
-  const params = new URLSearchParams(window.location.search);
-  if (params.has("journey") && !document.querySelector(".version-switch--journey")) {
-    const chosen = params.get("journey") || "ripple";
-    const nav = document.createElement("nav");
-    nav.className = "version-switch version-switch--journey";
-    nav.setAttribute("aria-label", "Image effect");
-    JOURNEY_EFFECTS.forEach((name) => {
-      const link = document.createElement("a");
-      params.set("journey", name);
-      link.href = `?${params.toString()}#journey`;
-      link.textContent = name;
-      if (name === chosen) link.setAttribute("aria-current", "true");
-      nav.append(link);
-    });
-    document.body.append(nav);
-  }
-
   // WebGL warp, loaded when the section gets close.
   let warp = null;
   let warpToken = 0;
-  const wantWarp = new URLSearchParams(window.location.search).get("journey") !== "v1" && !reduceMotion && gsap;
+  const wantWarp = !reduceMotion && gsap;
   const mediaBox = root.querySelector(".journey-panel__media");
   if (wantWarp && mediaBox && "IntersectionObserver" in window) {
     const wio = new IntersectionObserver(
@@ -192,7 +173,8 @@ function setup(root) {
 
     const forward = to > from;
 
-    // Liquid warp (default; ?journey=v1 keeps the wipe below).
+    // Liquid warp; the clip-path wipe below covers the time before it has
+    // loaded and browsers without WebGL.
     if (warp && outgoing && outgoing.complete && incoming.complete) {
       images.forEach((img) => gsap.killTweensOf(img));
       const token = ++warpToken;
