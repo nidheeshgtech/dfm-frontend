@@ -307,6 +307,16 @@ $rt-accents: (
   background: $color-white;
   color: $color-text-dark;
 
+  // Growth Market: Eligibility follows the dark How panel, so it needs its own gap
+  .rt-how + & {
+    padding-top: fluid(56px, 100px);
+  }
+
+  // ...and hands straight to the investor-side panel, which brings its own gap
+  &:has(+ .rt-side) {
+    padding-bottom: fluid(16px, 24px);
+  }
+
   &__card {
     padding: fluid(28px, 64px);
     border-radius: $radius-xl;
@@ -703,6 +713,11 @@ $rt-accents: (
   padding: fluid(72px, 120px) 0 fluid(40px, 72px);
   background: $color-white;
   color: $color-text-dark;
+
+  // The investor-side panel above already adds its own bottom gap
+  .rt-side + & {
+    padding-top: fluid(32px, 56px);
+  }
 
   &__grid {
     display: grid;
