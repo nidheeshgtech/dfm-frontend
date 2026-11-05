@@ -3,10 +3,26 @@
 // is on screen and pauses when it leaves. Without JS (or with reduced
 // motion) the markup's resting frame stays. Same pattern as
 // invest-loops.js on the Invest page.
+// Cards marked [data-rt-still] never animate (client: six moving cards at
+// once was distracting), so only a couple per page move. Most still cards
+// rest on their markup frame; the ones in STILL_AT need JS to lay out, so
+// their timeline is built, frozen at that time and never played.
+const STILL_AT = { stairs: 4.2, ring3d: 0.9 };
+
 export function initRouteViz() {
   const gsap = window.gsap;
-  const els = Array.from(document.querySelectorAll("[data-rt-viz]"));
-  if (!gsap || !els.length) return;
+  if (!gsap) return;
+
+  document.querySelectorAll("[data-rt-viz][data-rt-still]").forEach((el) => {
+    const at = STILL_AT[el.dataset.rtViz];
+    const build = VIZ[el.dataset.rtViz];
+    if (at == null || !build) return;
+    const tl = build(el, gsap);
+    if (tl) tl.pause().seek(at, false);
+  });
+
+  const els = Array.from(document.querySelectorAll("[data-rt-viz]:not([data-rt-still])"));
+  if (!els.length) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   els.forEach((el) => {
