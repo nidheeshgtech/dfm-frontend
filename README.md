@@ -15,15 +15,15 @@ npm install
 npm run watch   # Sass: scss/main.scss → css/main.css (minified)
 ```
 
-Serve `dfm_arena/` from any local server (e.g. MAMP: http://localhost:8888/dfm_arena/html-page/). Fonts load from `../assets/fonts`.
+Serve `dfm_arena/` from any local server (e.g. MAMP: http://localhost:8888/dfm_arena/html-page/). Fonts are in `html-page/fonts`.
 
 ## Folders
 
-- `assets/` — fonts
+- `html-page/fonts/` — Fester typeface
 
 ## Deploy (Vercel)
 
-Static, no build step — `css/main.css` is committed, minified (`npm run watch` and `npm run build` both write it compressed; `npm run dev` keeps sources for debugging). `vercel.json` redirects `/` to `/html-page/` (investor page); company page is `/html-page/company.html`. Keep the Vercel project root at the repo root so `../assets/fonts` resolves.
+Static, no build step — `css/main.css` is committed, minified (`npm run watch` and `npm run build` both write it compressed; `npm run dev` keeps sources for debugging). `vercel.json` redirects `/` to `/html-page/` (investor page); company page is `/html-page/company.html`.
 
 ## SEO and sharing
 

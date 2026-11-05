@@ -1,6 +1,6 @@
-// Fester, served from the project-level assets/fonts folder.
+// Fester, served from html-page/fonts.
 // Path is relative to the compiled css/main.css.
-$font-path: "../../assets/fonts";
+$font-path: "../fonts";
 
 $fester-faces: (
   ("Fester-Book", 350, "opentype", "otf"),
