@@ -2,28 +2,23 @@
 // ([data-rt-viz]) is a GSAP timeline. Without JS (or with reduced motion)
 // the markup's resting frame stays.
 //
-// Two versions for the client to choose from (Nov 2026):
-//   B (default): only the two cards without [data-rt-still] animate. Each
-//     plays once, slower, when it first comes into view, then stops on its
-//     END frame.
-//   A (?why=a):  no animation; every card stays still.
-// Still cards rest on their markup frame; the ones in STILL_AT need JS to
-// lay out (or have no good markup frame), so their timeline is built,
-// frozen at that time and never played.
-// TODO: once the client picks A or B, delete the other branch.
+// Only the two cards per page without [data-rt-still] animate (client
+// choice, Nov 2026): each plays once, slower, when it first comes into
+// view, then stops on its END frame. Still cards rest on their markup
+// frame; the ones in STILL_AT need JS to lay out (or have no good markup
+// frame), so their timeline is built, frozen at that time and never played.
 const STILL_AT = { stairs: 4.2, ring3d: 0.9, orbit: 0, race: 5.3, pool: 4.4, donut: 3.6, gauge: 4.8, succession: 4.4 };
 // Where a play-once card stops: the frame where its story is complete,
 // before the loop would reset it.
 const END = { race: 5.3, pool: 4.4, donut: 3.6, cap: 4.4, gauge: 4.8, succession: 4.4, owners: 4.6, trade: 5.4 };
-const SPEED = 0.6; // B plays at 60% speed
+const SPEED = 0.6; // plays at 60% speed
 
 export function initRouteViz() {
   const gsap = window.gsap;
   if (!gsap) return;
 
-  const allStill = new URLSearchParams(location.search).get("why") === "a";
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const moving = (el) => !allStill && !reduced && !el.hasAttribute("data-rt-still") && END[el.dataset.rtViz] != null;
+  const moving = (el) => !reduced && !el.hasAttribute("data-rt-still") && END[el.dataset.rtViz] != null;
 
   document.querySelectorAll("[data-rt-viz]").forEach((el) => {
     const name = el.dataset.rtViz;
