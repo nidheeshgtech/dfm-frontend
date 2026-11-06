@@ -4,7 +4,7 @@ ARENA (Dubai Financial Market) landing pages — static HTML + Sass + vanilla JS
 
 - `html-page/index.html` — Investors page
 - `html-page/company.html` — Home (raise capital) page
-- `html-page/growth-market.html` (Growth companies), `private-market.html` (Private companies), `closed-market.html` (Family business), `esop.html` (ESOP) — the four company pages, same section order
+- `html-page/growth-companies.html` (Growth companies), `private-companies.html` (Private companies), `family-business.html` (Family business), `esop.html` (ESOP) — the four company pages, same section order
 
 Review: "Why companies choose it" has two versions on the company pages. Default = B (two cards play once, slower, then stop); add `?why=a` for A (no animation). Remove the unused one in `js/components/route-viz.js` once the client chooses.
 - `html-page/eligibility.html` — strategic fit assessment

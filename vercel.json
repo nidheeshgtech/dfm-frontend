@@ -5,7 +5,10 @@
   "redirects": [
     { "source": "/", "destination": "/html-page/", "permanent": false },
     { "source": "/index.html", "destination": "/html-page/", "permanent": false },
-    { "source": "/company", "destination": "/html-page/company.html", "permanent": false }
+    { "source": "/company", "destination": "/html-page/company.html", "permanent": false },
+    { "source": "/html-page/growth-market.html", "destination": "/html-page/growth-companies.html", "permanent": true },
+    { "source": "/html-page/private-market.html", "destination": "/html-page/private-companies.html", "permanent": true },
+    { "source": "/html-page/closed-market.html", "destination": "/html-page/family-business.html", "permanent": true }
   ],
   "headers": [
     {

@@ -5,9 +5,9 @@
 // four readiness checks. Scoring follows the issuer assessment prototype.
 // Nothing is sent anywhere in this build.
 const ROUTES = {
-  growth: { name: "Growth companies", href: "growth-market.html", why: "Raising from the wide market, with shares that trade freely, matches what you told us." },
-  private: { name: "Private companies", href: "private-market.html", why: "A select circle of approved investors and a pre-IPO profile point this way." },
-  closed: { name: "Family business", href: "closed-market.html", why: "Keeping ownership inside a trusted circle points to the Family business option." },
+  growth: { name: "Growth companies", href: "growth-companies.html", why: "Raising from the wide market, with shares that trade freely, matches what you told us." },
+  private: { name: "Private companies", href: "private-companies.html", why: "A select circle of approved investors and a pre-IPO profile point this way." },
+  closed: { name: "Family business", href: "family-business.html", why: "Keeping ownership inside a trusted circle points to the Family business option." },
 };
 
 // Questions each step must answer (step 4 checks the contact fields).

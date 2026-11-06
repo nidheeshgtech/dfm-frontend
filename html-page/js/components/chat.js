@@ -16,17 +16,17 @@ const FACTS = [
   {
     q: "What is Growth companies?",
     a: "Growth companies is open to the market: growing companies raise capital from the wide market, anyone with a DFM investor number can subscribe in the iVestor app, and shares trade freely from listing day.",
-    link: ["growth-market.html", "Explore Growth companies"],
+    link: ["growth-companies.html", "Explore Growth companies"],
   },
   {
     q: "What is Private companies?",
     a: "Private companies is by invitation: pre-IPO companies raise from a select circle of approved investors, and shares change hands in private trading windows.",
-    link: ["private-market.html", "Explore Private companies"],
+    link: ["private-companies.html", "Explore Private companies"],
   },
   {
     q: "What is Family business?",
     a: "Family business is for succession: ownership moves between family members and generations, and trading stays private, inside the circle you approve.",
-    link: ["closed-market.html", "Explore Family business"],
+    link: ["family-business.html", "Explore Family business"],
   },
   {
     q: "How do I contact the ARENA team?",

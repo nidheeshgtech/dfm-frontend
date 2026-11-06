@@ -1,7 +1,7 @@
 @use "sass:map";
 @use "../abstracts" as *;
 
-// Company pages (growth-market / private-market / closed-market (Family
+// Company pages (growth-companies / private-companies / family-business (Family
 // business) / esop.html), all in the same order: photo hero with ticket,
 // who it's designed for, how it works as a timeline (js/components/
 // route-steps.js), six reasons, eligibility checklist, who the investors
@@ -118,7 +118,7 @@ $rt-accents: (
     animation: rt-settle 2.4s $ease-out both;
   }
 
-  // Subject sits right of the copy (growth-market.html). On screens
+  // Subject sits right of the copy (growth-companies.html). On screens
   // narrower than the photo, crop from the left so the boat stays in with
   // its bow; portrait screens centre on the rowers.
   &__photo--right {
