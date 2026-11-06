@@ -355,7 +355,10 @@
   // page) overriding the dark base below.
   @include down("laptop") {
     --menu-gutter: #{$container-gutter};
-    --menu-link-size: 56px;
+    --menu-link-size: 44px;
+    --menu-link-pad: 18px;
+    --menu-arrow: 40px;
+    --menu-top: #{$space-40};
 
     &__menu-btn {
       display: inline-grid;
@@ -420,7 +423,7 @@
       justify-content: flex-start;
       gap: 0;
       height: 100dvh;
-      padding: calc(var(--header-height) + #{$space-40}) var(--menu-gutter) calc(#{$space-32} + env(safe-area-inset-bottom));
+      padding: calc(var(--header-height) + var(--menu-top)) var(--menu-gutter) calc(#{$space-32} + env(safe-area-inset-bottom));
       overflow: hidden;
       background:
         radial-gradient(90% 60% at 100% 0%, rgba(78, 23, 229, 0.45), rgba(78, 23, 229, 0) 60%),
@@ -462,7 +465,7 @@
       align-items: center;
       justify-content: flex-start;
       gap: $space-16;
-      padding: $space-20 0;
+      padding: var(--menu-link-pad) 0;
       overflow: hidden;
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       color: $color-white;
@@ -506,8 +509,8 @@
     // Round arrow chip (same purple chip as the pill buttons).
     &__link-arrow {
       flex-shrink: 0;
-      width: 44px;
-      height: 44px;
+      width: var(--menu-arrow);
+      height: var(--menu-arrow);
       border-radius: 50%;
       background: $color-purple url("../images/shared/icons/arrow-outward.svg") center / 22px no-repeat;
       box-shadow: 0 6px 18px rgba(78, 23, 229, 0.45);
@@ -671,9 +674,55 @@
     }
   }
 
+  // Phones: five links, so smaller type, rows and arrows; the contact
+  // block shrinks with them.
   @include down("tablet") {
     --menu-gutter: #{$container-gutter-mobile};
-    --menu-link-size: 32px; // five links: "Growth companies" stays on one line
+    --menu-link-size: 26px;
+    --menu-link-pad: 14px;
+    --menu-arrow: 34px;
+    --menu-top: #{$space-24};
+
+    &__link::before {
+      margin-top: 0;
+      font-size: 11px;
+    }
+
+    &__link-arrow {
+      background-size: 18px;
+    }
+
+    &__menu-foot {
+      gap: $space-12;
+    }
+
+    &__menu-cta {
+      padding: $space-8 $space-8 $space-8 $space-20;
+      font-size: 16px;
+
+      span {
+        width: 34px;
+        height: 34px;
+        background-size: 17px;
+      }
+    }
+
+    &__menu-mail {
+      font-size: 16px;
+    }
+
+    &[data-menu-theme="light"] .site-header__menu-cta span {
+      background-size: 17px;
+    }
+  }
+
+  // Short phones (iPhone SE and similar): tighter still, so the whole menu
+  // fits without crowding.
+  @media (max-width: 767.98px) and (max-height: 700px) {
+    --menu-link-size: 22px;
+    --menu-link-pad: 11px;
+    --menu-arrow: 30px;
+    --menu-top: #{$space-12};
   }
 
   // Menu extras exist only in the full-screen panel.
