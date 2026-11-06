@@ -46,27 +46,8 @@
     top: calc(var(--header-height) + #{$space-32});
   }
 
-  &__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0;
-    font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-
-    &::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #12a866;
-      box-shadow: 0 0 0 4px rgba(18, 168, 102, 0.18);
-    }
-  }
-
   &__title {
-    margin: $space-20 0 0;
+    margin: 0;
     font-size: fluid(38px, 60px);
     font-weight: $font-weight-regular;
     line-height: 1.08;

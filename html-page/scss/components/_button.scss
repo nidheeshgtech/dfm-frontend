@@ -167,6 +167,15 @@
     --btn-dot: rgba(244, 255, 34, 0.2);
   }
 
+  &--blue {
+    --btn-bg: linear-gradient(90deg, rgba(143, 160, 255, 0.28), rgba(143, 160, 255, 0.08));
+    --btn-border: rgba(143, 160, 255, 0.25);
+    --btn-bg-hover: rgba(143, 160, 255, 0.2);
+    --btn-border-hover: rgba(143, 160, 255, 0.4);
+    --btn-glow: rgba(143, 160, 255, 0.22);
+    --btn-dot: rgba(143, 160, 255, 0.2);
+  }
+
   &--white {
     --btn-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
     --btn-border: rgba(255, 255, 255, 0.2);

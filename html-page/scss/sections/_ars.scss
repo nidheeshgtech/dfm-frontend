@@ -36,7 +36,7 @@
   z-index: 1;
   background: #ffffff;
   color: var(--ars-ink);
-  padding-top: clamp(4.5rem, 4.4vw + 3.47rem, 8.75rem);
+  padding-top: clamp(2.25rem, 2.2vw + 1.74rem, 4.375rem);
   font-family: inherit;
 }
 .ars *, .ars *::before, .ars *::after { box-sizing: border-box; }
@@ -394,7 +394,7 @@
   --ars-panel-bot: #07080d;
   --ars-panel-glow: rgba(143, 208, 255, 0.14);
 
-  padding-top: fluid(56px, 100px);
+  padding-top: fluid(28px, 50px);
 
   // Copy in the site's voice: regular-weight Fester, neutral step tag.
   .ars__pill {

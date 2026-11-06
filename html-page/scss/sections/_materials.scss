@@ -4,17 +4,17 @@
 .materials {
   position: relative;
   z-index: 2;
-  padding: fluid(64px, 96px) 0;
+  padding: fluid(32px, 48px) 0;
   background: $color-white;
   color: $color-text-dark;
 
   // Same vertical rhythm as every standard section below desktop.
   @include down("laptop") {
-    padding-block: 72px;
+    padding-block: 36px;
   }
 
   @include down("tablet") {
-    padding-block: 64px;
+    padding-block: 32px;
   }
 
   &__head {
@@ -112,14 +112,6 @@
     flex-direction: column;
     gap: $space-24;
     max-width: 562px;
-  }
-
-  &__eyebrow {
-    margin-bottom: $space-12;
-    font-size: fluid(14px, 18px);
-    font-weight: $font-weight-semibold;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
 
   &__title {

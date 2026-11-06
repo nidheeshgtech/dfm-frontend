@@ -7,7 +7,7 @@
 // Wrapper = sticky range: heading + cards stay pinned until the last
 // card has passed, then leave together.
 .markets-wrap {
-  --head-pad-top: #{fluid(64px, 120px)};
+  --head-pad-top: #{fluid(32px, 60px)};
   --head-stuck-gap: 16px; // white space kept above the title once stuck
   --markets-stuck-h: 0px; // visible heading height when stuck (stack.js)
 
@@ -19,7 +19,7 @@
   position: relative;
   z-index: 6;
   margin-top: -38px;
-  padding: var(--head-pad-top) 0 fluid(24px, 40px);
+  padding: var(--head-pad-top) 0 fluid(16px, 24px);
   border-radius: 40px 40px 0 0;
   background: $color-white;
   color: $color-text-dark;
@@ -224,13 +224,17 @@
       ring-turn 90s linear infinite;
   }
 
-  // Closed — breathing lattice: gentle twist + glow swelling from centre.
+  // Family business and ESOP — breathing lattice: gentle twist + glow
+  // swelling from centre.
   &--closed &__ring-img,
-  &--closed &__ring-glow {
+  &--closed &__ring-glow,
+  &--esop &__ring-img,
+  &--esop &__ring-glow {
     animation: ring-twist 10s ease-in-out infinite alternate;
   }
 
-  &--closed &__ring-glow {
+  &--closed &__ring-glow,
+  &--esop &__ring-glow {
     -webkit-mask-image: radial-gradient(circle, #000 var(--ring-r), transparent calc(var(--ring-r) + 22%));
     mask-image: radial-gradient(circle, #000 var(--ring-r), transparent calc(var(--ring-r) + 22%));
     animation:
@@ -379,6 +383,10 @@
 
   &--closed &__card {
     --dot: #{$color-yellow-bright};
+  }
+
+  &--esop &__card {
+    --dot: #8fa0ff;
   }
 
   // ---- Tablet / small laptop ----

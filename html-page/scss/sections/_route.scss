@@ -1,14 +1,15 @@
 @use "sass:map";
 @use "../abstracts" as *;
 
-// Raise Capital route pages (growth-market / private-market /
-// closed-market.html): photo hero with breadcrumb + ticket, who it's for,
-// eligibility checklist, the raise as a timeline (js/components/
-// route-steps.js), six reasons, the investor side, the other routes and
-// the closing strip. Section headings reuse .iv-head / .iv-hl.
+// Company pages (growth-market / private-market / closed-market (Family
+// business) / esop.html), all in the same order: photo hero with ticket,
+// who it's designed for, how it works as a timeline (js/components/
+// route-steps.js), six reasons, eligibility checklist, who the investors
+// (or holders) are, common questions, the other options and the closing
+// strip. Section headings reuse .iv-head / .iv-hl.
 
-// Each route wears its market's colour (as on the market cards' buttons):
-// Growth purple, Private jade, Closed yellow.
+// Each option wears its colour (as on the market cards' buttons):
+// Growth purple, Private jade, Family business yellow, ESOP blue.
 //   --rt-ink     text / icons / fills on white
 //   --rt-bright  accents on the dark panels
 //   --rt-deep    solid fills and glows (as "r, g, b" for rgba())
@@ -16,6 +17,7 @@ $rt-accents: (
   growth: (ink: $color-purple, bright: $color-purple-tint, deep: "78, 23, 229"),
   private: (ink: #0d8a4b, bright: $color-jade, deep: "13, 138, 75"),
   closed: (ink: #8f7f00, bright: $color-yellow-bright, deep: "143, 127, 0"),
+  esop: (ink: $color-velvet-blue, bright: #8fa0ff, deep: "6, 45, 253"),
 );
 
 @each $key, $c in $rt-accents {
@@ -27,8 +29,7 @@ $rt-accents: (
 }
 
 .rt-page {
-  .iv-hl,
-  .iv-head__eyebrow {
+  .iv-hl {
     color: var(--rt-ink);
   }
 
@@ -175,41 +176,6 @@ $rt-accents: (
   }
 }
 
-.rt-crumbs {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba($color-white, 0.7);
-
-  > * + *::before {
-    content: "";
-    display: inline-block;
-    width: 4px;
-    height: 4px;
-    margin-right: 10px;
-    border-radius: 50%;
-    background: currentColor;
-    vertical-align: middle;
-  }
-
-  a {
-    color: $color-white;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 4px;
-    transition: text-decoration-color 0.3s;
-
-    &:hover,
-    &:focus-visible {
-      text-decoration-color: currentColor;
-    }
-  }
-}
-
 // Built for · Timeline · Valuation
 .rt-ticket {
   display: flex;
@@ -264,9 +230,9 @@ $rt-accents: (
   }
 }
 
-// ---- Who this route is for ----
+// ---- Who is this designed for? ----
 .rt-who {
-  padding: fluid(72px, 140px) 0 fluid(40px, 72px);
+  padding: fluid(36px, 70px) 0 fluid(28px, 48px);
   background: $color-white;
   color: $color-text-dark;
 
@@ -303,19 +269,9 @@ $rt-accents: (
 
 // ---- Eligibility, in brief ----
 .rt-elig {
-  padding: 0 0 fluid(56px, 100px);
+  padding: 0 0 fluid(28px, 50px);
   background: $color-white;
   color: $color-text-dark;
-
-  // Growth Market: Eligibility follows the dark How panel, so it needs its own gap
-  .rt-how + & {
-    padding-top: fluid(56px, 100px);
-  }
-
-  // ...and hands straight to the investor-side panel, which brings its own gap
-  &:has(+ .rt-side) {
-    padding-bottom: fluid(16px, 24px);
-  }
 
   &__card {
     padding: fluid(28px, 64px);
@@ -381,7 +337,7 @@ $rt-accents: (
   background: $color-white;
 
   &__panel {
-    padding: fluid(56px, 110px) 0 fluid(48px, 96px);
+    padding: fluid(40px, 72px) 0 fluid(36px, 64px);
     overflow: hidden;
     border-radius: 30px;
     background:
@@ -555,7 +511,7 @@ $rt-accents: (
 
 // ---- Why companies choose it ----
 .rt-why {
-  padding: fluid(72px, 140px) 0 fluid(40px, 72px);
+  padding: fluid(36px, 70px) 0 fluid(28px, 48px);
   background: $color-white;
   color: $color-text-dark;
 
@@ -582,16 +538,9 @@ $rt-accents: (
     }
   }
 
-  &__num,
   &__title,
   &__text {
     padding-inline: $space-12;
-  }
-
-  &__num {
-    font-size: 14px;
-    letter-spacing: 0.12em;
-    color: var(--rt-ink);
   }
 
   &__title {
@@ -630,102 +579,81 @@ $rt-accents: (
   }
 }
 
-// ---- On the investor side ----
-.rt-side {
-  padding: fluid(24px, 40px) 0;
+// ---- Who your investors will be / Who can hold your shares ----
+// One line, then three plain columns. No animation.
+.rt-inv {
+  padding: fluid(20px, 36px) 0 fluid(24px, 40px);
   background: $color-white;
+  color: $color-text-dark;
 
-  &__card {
-    position: relative;
-    isolation: isolate;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: fluid(40px, 88px) fluid(24px, 80px);
-    overflow: hidden;
-    border-radius: 30px;
-    background:
-      radial-gradient(ellipse 60% 80% at 100% 50%, rgba(var(--rt-deep), 0.6), transparent 70%),
-      $color-navy;
-    color: $color-white;
-
-    @include rt-glass-pills;
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $space-20;
   }
 
-  // The market's ring, turning slowly behind the copy.
-  &__ring {
-    position: absolute;
-    top: 50%;
-    right: -8%;
-    z-index: -1;
-    width: min(620px, 70%);
-    height: auto;
-    max-width: none;
-    opacity: 0.55;
-    translate: 0 -50%;
-    animation: rt-spin 90s linear infinite;
-  }
-
-  &__eyebrow {
-    color: var(--rt-bright);
+  &__col {
+    padding: fluid(24px, 32px);
+    border-top: 3px solid var(--rt-ink);
+    border-radius: 0 0 $radius-xl $radius-xl;
+    background: $color-bg-light;
   }
 
   &__title {
-    margin-top: $space-16;
-    font-size: fluid(40px, 88px);
-    line-height: 1;
-    letter-spacing: tracking(-1.28px, 64px);
-    text-transform: uppercase;
+    font-size: fluid(20px, 24px);
+    line-height: 1.2;
   }
 
   &__text {
-    max-width: 620px;
-    margin: $space-20 0 $space-32;
-    font-size: fluid(18px, 24px);
-    line-height: 1.35;
-    color: rgba($color-white, 0.78);
+    margin-top: $space-12;
+    font-size: fluid(16px, 18px);
+    line-height: 1.45;
+    color: rgba($color-text-dark, 0.7);
   }
 
-  @include down("tablet") {
-    &__ring {
-      top: auto;
-      right: -30%;
-      bottom: -30%;
-      width: 110%;
-      opacity: 0.35;
-      translate: 0 0;
-    }
-
-    .btn-pill {
-      width: 100%;
-    }
+  &__foot {
+    margin-top: fluid(24px, 40px);
   }
 
-  @include reduced-motion {
-    &__ring {
-      animation: none;
+  @include down("laptop") {
+    &__grid {
+      grid-template-columns: 1fr;
+      gap: $space-12;
     }
   }
 }
 
-// ---- The other routes ----
+// ---- Common questions: the home page accordion, one list, all closed ----
+.rt-faq {
+  .faq__panel {
+    background:
+      radial-gradient(ellipse 50% 60% at 100% 0%, rgba(var(--rt-deep), 0.4), transparent 70%),
+      $color-navy;
+  }
+
+  .iv-hl {
+    color: var(--rt-bright);
+  }
+
+  .faq__list {
+    max-width: 960px;
+    margin-inline: auto;
+  }
+}
+
+// ---- The other options (three cards) ----
 .rt-others {
-  padding: fluid(72px, 120px) 0 fluid(40px, 72px);
+  padding: fluid(28px, 50px) 0 fluid(16px, 24px);
   background: $color-white;
   color: $color-text-dark;
 
-  // The investor-side panel above already adds its own bottom gap
-  .rt-side + & {
-    padding-top: fluid(32px, 56px);
-  }
-
   &__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: $space-20;
   }
 
-  @include down("tablet") {
+  @include down("laptop") {
     &__grid {
       grid-template-columns: 1fr;
     }
@@ -770,13 +698,6 @@ $rt-accents: (
     align-items: flex-start;
     gap: 6px;
     padding: fluid(20px, 32px);
-  }
-
-  &__num {
-    font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--route-bright);
   }
 
   &__name {
@@ -840,6 +761,11 @@ $rt-accents: (
     --route-deep: 143, 127, 0;
   }
 
+  &--esop {
+    --route-bright: #8fa0ff;
+    --route-deep: 6, 45, 253;
+  }
+
   @include down("tablet") {
     aspect-ratio: 4 / 3;
   }
@@ -865,8 +791,3 @@ $rt-accents: (
   }
 }
 
-@keyframes rt-spin {
-  to {
-    rotate: 360deg;
-  }
-}

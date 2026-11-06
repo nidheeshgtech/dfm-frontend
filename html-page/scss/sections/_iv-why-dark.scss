@@ -5,10 +5,6 @@
 // Markup reuses the .iv-earn panel + card classes and the .iv-why__viz box;
 // this file sets the dark box, the grid and the rendered video visuals.
 .iv-why-dark {
-  .iv-head__eyebrow {
-    color: $color-purple-tint;
-  }
-
   &__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -59,14 +55,6 @@
 // the Growth Market dot (that market's colour). Everything else inside the
 // cards goes white / grey; the regulated ticks keep their green.
 .iv-why-dark {
-  .iv-head__eyebrow {
-    color: rgba($color-white, 0.55);
-  }
-
-  .iv-earn__num {
-    color: rgba($color-white, 0.4);
-  }
-
   .iv-earn__title strong {
     color: $color-white;
     font-weight: $font-weight-semibold;

@@ -16,9 +16,10 @@ const PEOPLE = [
   { id: "meera", name: "Meera Al Ghobash", role: "Senior Manager", img: "images/team/p3.webp" },
 ];
 const MARKETS = [
-  ["growth", "Growth Market"],
-  ["private", "Private Market"],
-  ["closed", "Closed Market"],
+  ["growth", "Growth companies"],
+  ["private", "Private companies"],
+  ["closed", "Family business"],
+  ["esop", "ESOP"],
 ];
 const TIMES = ["10:00", "13:00", "15:00"];
 const MONTHS = "January February March April May June July August September October November December".split(" ");
@@ -217,7 +218,7 @@ function initSingle(triggers) {
 }
 
 function buildSingle() {
-  const MARKET_DOT = { growth: "#a38bf2", private: "#64fba0", closed: "#f4ff22" };
+  const MARKET_DOT = { growth: "#a38bf2", private: "#64fba0", closed: "#f4ff22", esop: "#8fa0ff" };
   const float = (name, label, type = "text", auto = "") =>
     `<label class="one__float"><input name="${name}" type="${type}" placeholder=" "${auto ? ` autocomplete="${auto}"` : ""} required><span>${label}</span><em>${type === "email" ? "Enter a valid email" : "Required"}</em></label>`;
   const seg = (name, values) =>

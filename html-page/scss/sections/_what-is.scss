@@ -12,7 +12,7 @@
   align-items: center;
   min-height: 100vh;
   min-height: 100lvh;
-  padding-block: fluid(80px, 120px);
+  padding-block: fluid(40px, 60px);
   overflow: hidden;
   color: $color-white;
 
@@ -40,7 +40,7 @@
 
   &__cards {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: $space-20;
   }
 
@@ -75,6 +75,7 @@
 
   @include down("laptop") {
     &__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: $space-12;
     }
   }
@@ -130,6 +131,11 @@
     &--closed {
       background: $tag-closed-bg;
       border-color: $tag-closed-border;
+    }
+
+    &--esop {
+      background: $tag-esop-bg;
+      border-color: $tag-esop-border;
     }
   }
 

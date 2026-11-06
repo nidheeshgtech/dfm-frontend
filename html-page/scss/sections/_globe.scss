@@ -6,18 +6,18 @@
 .globe {
   position: relative;
   z-index: 2;
-  padding: fluid(64px, 132px) 0 fluid(48px, 100px);
+  padding: fluid(32px, 66px) 0 fluid(24px, 50px);
   overflow: hidden;
   background: $color-white;
   color: $color-text-dark;
 
   // Same vertical rhythm as every standard section below desktop.
   @include down("laptop") {
-    padding-block: 72px;
+    padding-block: 36px;
   }
 
   @include down("tablet") {
-    padding-block: 64px;
+    padding-block: 32px;
   }
 
   &__inner {

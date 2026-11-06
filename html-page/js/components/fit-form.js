@@ -1,13 +1,13 @@
 // Strategic fit assessment (eligibility.html): four steps of tap answers
 // ([data-key] groups of .fit-chip, [data-multi] = choose several) plus a
 // contact step. Each step checks its answers before moving on; the last
-// one scores the answers into a recommended ARENA route, a fit badge and
+// one scores the answers into a recommended ARENA option, a fit badge and
 // four readiness checks. Scoring follows the issuer assessment prototype.
 // Nothing is sent anywhere in this build.
 const ROUTES = {
-  growth: { name: "Growth Market", href: "growth-market.html", why: "Raising from the wide market, with shares that trade freely, matches what you told us." },
-  private: { name: "Private Market", href: "private-market.html", why: "A select circle of approved investors and a pre-IPO profile point this way." },
-  closed: { name: "Closed Market", href: "closed-market.html", why: "Keeping ownership inside a trusted circle points to a Closed Market admission." },
+  growth: { name: "Growth companies", href: "growth-market.html", why: "Raising from the wide market, with shares that trade freely, matches what you told us." },
+  private: { name: "Private companies", href: "private-market.html", why: "A select circle of approved investors and a pre-IPO profile point this way." },
+  closed: { name: "Family business", href: "closed-market.html", why: "Keeping ownership inside a trusted circle points to the Family business option." },
 };
 
 // Questions each step must answer (step 4 checks the contact fields).

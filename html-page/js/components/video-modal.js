@@ -13,7 +13,6 @@ export function initVideoModal() {
 
   const dialog = buildDialog();
   const frame = dialog.querySelector(".video-modal__frame");
-  const eyebrow = dialog.querySelector(".video-modal__eyebrow");
   const title = dialog.querySelector(".video-modal__title");
   const meta = dialog.querySelector(".video-modal__meta");
   let opener = null;
@@ -25,7 +24,6 @@ export function initVideoModal() {
     opener = trigger;
 
     // Copy the card's text so the popup always matches it.
-    eyebrow.textContent = trigger.querySelector(".video-card__eyebrow")?.textContent || "";
     title.textContent = trigger.querySelector(".video-card__title")?.textContent || "";
     meta.innerHTML = trigger.querySelector(".video-card__meta")?.innerHTML || "";
 
@@ -93,7 +91,6 @@ function buildDialog() {
     <div class="video-modal__panel">
       <div class="video-modal__head">
         <div>
-          <p class="video-modal__eyebrow"></p>
           <h2 class="video-modal__title" id="video-modal-title"></h2>
         </div>
         <button class="video-modal__close" type="button" aria-label="Close video" autofocus>

@@ -77,14 +77,6 @@
     gap: $space-16;
   }
 
-  &__eyebrow {
-    margin-bottom: $space-8;
-    color: $color-purple-tint;
-    font-size: fluid(13px, 15px);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
   &__title {
     font-size: fluid(22px, 36px);
     font-weight: $font-weight-regular;

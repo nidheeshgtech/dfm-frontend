@@ -1,39 +1,55 @@
-// Route pages, "Why companies choose it": each card's mini visual
-// ([data-rt-viz]) gets its own GSAP timeline that repeats while the card
-// is on screen and pauses when it leaves. Without JS (or with reduced
-// motion) the markup's resting frame stays. Same pattern as
-// invest-loops.js on the Invest page.
-// Cards marked [data-rt-still] never animate (client: six moving cards at
-// once was distracting), so only a couple per page move. Most still cards
-// rest on their markup frame; the ones in STILL_AT need JS to lay out, so
-// their timeline is built, frozen at that time and never played.
-const STILL_AT = { stairs: 4.2, ring3d: 0.9 };
+// Company pages, "Why companies choose it": each card's mini visual
+// ([data-rt-viz]) is a GSAP timeline. Without JS (or with reduced motion)
+// the markup's resting frame stays.
+//
+// Two versions for the client to choose from (Nov 2026):
+//   B (default): only the two cards without [data-rt-still] animate. Each
+//     plays once, slower, when it first comes into view, then stops on its
+//     END frame.
+//   A (?why=a):  no animation; every card stays still.
+// Still cards rest on their markup frame; the ones in STILL_AT need JS to
+// lay out (or have no good markup frame), so their timeline is built,
+// frozen at that time and never played.
+// TODO: once the client picks A or B, delete the other branch.
+const STILL_AT = { stairs: 4.2, ring3d: 0.9, orbit: 0, race: 5.3, pool: 4.4, donut: 3.6, gauge: 4.8, succession: 4.4 };
+// Where a play-once card stops: the frame where its story is complete,
+// before the loop would reset it.
+const END = { race: 5.3, pool: 4.4, donut: 3.6, cap: 4.4, gauge: 4.8, succession: 4.4, owners: 4.6, trade: 5.4 };
+const SPEED = 0.6; // B plays at 60% speed
 
 export function initRouteViz() {
   const gsap = window.gsap;
   if (!gsap) return;
 
-  document.querySelectorAll("[data-rt-viz][data-rt-still]").forEach((el) => {
-    const at = STILL_AT[el.dataset.rtViz];
-    const build = VIZ[el.dataset.rtViz];
-    if (at == null || !build) return;
-    const tl = build(el, gsap);
-    if (tl) tl.pause().seek(at, false);
-  });
+  const allStill = new URLSearchParams(location.search).get("why") === "a";
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const moving = (el) => !allStill && !reduced && !el.hasAttribute("data-rt-still") && END[el.dataset.rtViz] != null;
 
-  const els = Array.from(document.querySelectorAll("[data-rt-viz]:not([data-rt-still])"));
-  if (!els.length) return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  els.forEach((el) => {
-    const build = VIZ[el.dataset.rtViz];
+  document.querySelectorAll("[data-rt-viz]").forEach((el) => {
+    const name = el.dataset.rtViz;
+    const build = VIZ[name];
     if (!build) return;
+
+    if (!moving(el)) {
+      const at = STILL_AT[name];
+      if (at == null) return;
+      const tl = build(el, gsap);
+      if (tl) tl.pause().seek(at, false);
+      return;
+    }
+
     el.classList.add("is-loop");
     const tl = build(el, gsap);
     if (!tl) return;
-    tl.pause();
-    if (!("IntersectionObserver" in window)) return tl.play();
-    new IntersectionObserver(([entry]) => (entry.isIntersecting ? tl.play() : tl.pause()), { threshold: 0.3 }).observe(el);
+    tl.pause().repeat(0);
+    const play = () => tl.timeScale(SPEED).tweenTo(END[name]);
+    if (!("IntersectionObserver" in window)) return play();
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      play();
+    }, { threshold: 0.4 });
+    io.observe(el);
   });
 }
 
