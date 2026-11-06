@@ -547,27 +547,6 @@
       transition-delay: 0.5s;
     }
 
-    &__menu-cta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: $space-12 $space-12 $space-12 $space-24;
-      border: 1px solid rgba(169, 139, 255, 0.45);
-      border-radius: 80px;
-      background: linear-gradient(90deg, rgba(78, 23, 229, 0.55), rgba(78, 23, 229, 0.25));
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-      color: $color-white;
-      font-size: 18px;
-
-      span {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: $color-white url("../images/shared/icons/arrow-outward-dark.svg") center / 20px no-repeat;
-      }
-    }
-
     &__menu-mail {
       color: rgba(255, 255, 255, 0.8);
       font-size: 18px;
@@ -630,17 +609,6 @@
         box-shadow: 0 6px 18px rgba(78, 23, 229, 0.3);
       }
 
-      .site-header__menu-cta {
-        border-color: rgba(78, 23, 229, 0.5);
-        background: linear-gradient(90deg, rgba(78, 23, 229, 0.2), rgba(78, 23, 229, 0.08));
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-        color: $color-text-dark;
-
-        span {
-          background: $color-purple url("../images/shared/icons/arrow-outward.svg") center / 20px no-repeat;
-        }
-      }
-
       .site-header__menu-mail {
         color: rgba(13, 14, 26, 0.8);
         text-decoration-color: rgba(13, 14, 26, 0.3);
@@ -674,8 +642,7 @@
     }
   }
 
-  // Phones: five links, so smaller type, rows and arrows; the contact
-  // block shrinks with them.
+  // Phones: five links, so smaller type, rows and arrows.
   @include down("tablet") {
     --menu-gutter: #{$container-gutter-mobile};
     --menu-link-size: 26px;
@@ -696,23 +663,8 @@
       gap: $space-12;
     }
 
-    &__menu-cta {
-      padding: $space-8 $space-8 $space-8 $space-20;
-      font-size: 16px;
-
-      span {
-        width: 34px;
-        height: 34px;
-        background-size: 17px;
-      }
-    }
-
     &__menu-mail {
       font-size: 16px;
-    }
-
-    &[data-menu-theme="light"] .site-header__menu-cta span {
-      background-size: 17px;
     }
   }
 
